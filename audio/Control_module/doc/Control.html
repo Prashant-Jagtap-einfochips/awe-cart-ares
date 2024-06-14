@@ -1,0 +1,206 @@
+<html>
+
+<head>
+<title>Control</title>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Century Gothic";
+	panose-1:2 11 5 2 2 2 2 2 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	font-size:10.0pt;
+	font-family:Arial;}
+h1
+	{margin-top:.25in;
+	margin-right:0in;
+	margin-bottom:.5in;
+	margin-left:-.3in;
+	page-break-after:avoid;
+	font-size:36.0pt;
+	font-family:"Century Gothic";}
+h2
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:-.3in;
+	page-break-after:avoid;
+	font-size:14.0pt;
+	font-family:Arial;
+	color: #111155}
+h3
+	{margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:12.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:12.0pt;
+	font-family:Arial;
+	font-style:italic;}
+h4
+	{margin-top:.25in;
+	margin-right:0in;
+	margin-bottom:.5in;
+	margin-left:-.3in;
+	page-break-after:avoid;
+	font-size:24.0pt;
+	font-family:"Century Gothic";}
+p.MsoListBullet, li.MsoListBullet, div.MsoListBullet
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:.25in;
+	text-indent:-.25in;
+	font-size:10.0pt;
+	font-family:Arial;}
+p.CodeLeft, li.CodeLeft, div.CodeLeft
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:9.0pt;
+	font-family:"Courier New";}
+p.CodeIndent, li.CodeIndent, div.CodeIndent
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	font-size:9.0pt;
+	font-family:"Courier New";}
+p2
+	{display: block;
+	height: 8px;
+    background: #111155;
+    background: -webkit-linear-gradient(to right, #111155, #F6FBFF);	/* support older browswers */
+    background:    -moz-linear-gradient(to right, #111155, #F6FBFF);
+    background:         linear-gradient(to right, #111155, #F6FBFF);
+	width: 100%;
+	position: relative;
+	margin-left:0in;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US>
+
+<div class=Section1>
+<h4 style='margin-left:0in'><img src="..\..\..\Images\AWE.ico" alt="Launch Pic" style="width:48px;height:48px;">&nbsp&nbspDSPConcepts<p2></h1>
+
+
+<h1 align="center">Control - Third Party</h1>
+<h2 style='margin-left:0in'>Overview</h2>
+<p class=MsoNormal style=margin-left:.2in> Copies input wire to output wire </p>
+
+<h2 style='margin-left:0in'>Discussion</h2>
+
+<p class=MsoNormal style=margin-left:.2in>Copies the input to the output. 
+</p>
+
+
+
+<h2 style='margin-left:0in'>Type Definition</h2>
+
+<p class=CodeIndent>typedef struct _ModuleControl</p>
+<p class=CodeIndent>{</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspModuleInstanceDescriptor instance;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Common Audio Weaver module instance structure</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspFLOAT32* coeff;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Coefficent Data</p>
+<p class=CodeIndent>} ModuleControlClass;</p>
+
+
+<h2 style='margin-left:0in'>Variables</h2>
+<h3>Properties</h3>
+<table class=MsoNormalTable border=3 cellspacing=0 cellpadding=0 width="80%"
+ style='width:80.0%%;margin-left: auto;margin-right: auto;border-collapse:collapse'>
+ <tr>
+  <td width="18%%" valign=top style='width:18.48%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Name</b></p>
+  </td>
+  <td width="9%%" valign=top style='width:9.78%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Type</b></p>
+  </td>
+  <td width="14%%" valign=top style='width:14.8%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Usage</b></p>
+  </td>
+  <td width="12%%" valign=top style='width:12.24%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>isHidden</b></p>
+  </td>
+  <td width="16%%" valign=top style='width:16.42%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Default value</b></p>
+  </td>
+  <td width="18%%" valign=top style='width:18.48%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Range</b></p>
+  </td>
+  <td width="9%%" valign=top style='width:9.78%%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><b>Units</b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>coeff</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>float*</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>[11 x 1]</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0:1</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>linear</span></p>
+  </td>
+ </tr>
+</table>
+
+
+<h2 style='margin-left:0in'>Pins</h2>
+
+
+<h2 style='margin-left:0in'>MATLAB Usage</h2>
+<p class=MsoNormal>File Name: Control_module.m</p>
+<p class=CodeLeft> &nbsp;M&nbsp;=&nbsp;Control_module(NAME)</p>
+<p class=CodeLeft> &nbsp;Copies&nbsp;input&nbsp;pin&nbsp;data&nbsp;to&nbsp;the&nbsp;output&nbsp;pin.</p>
+<p class=CodeLeft> </p>
+<p class=CodeLeft> &nbsp;Arguments:</p>
+<p class=CodeLeft> &nbsp;NAME&nbsp;-&nbsp;name&nbsp;of&nbsp;the&nbsp;module</p>
+<p class=CodeLeft> </p>
+
+
+<p><A HREF="_Control_module.html">Return to Control_module</A></p>
+
+<p class=MsoNormal align=center> &#169 DSP Concepts: 2007-2022 </p>
+</div>
+
+</body>
+
+</html>
+

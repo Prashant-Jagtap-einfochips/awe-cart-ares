@@ -1,0 +1,14 @@
+audio/TestAudio_module/.vs/*
+audio/Control_module/.vs/*
+audio/TestAudio_module/projects/VS2019/BuildDll/Release/*
+audio/TestAudio_module/projects/VS2019/BuildDll/x64/*
+audio/TestAudio_module/projects/VS2019/BuildDll/Debug/*
+audio/TestAudio_module/projects/VS2019/BuildLib/Release/*
+audio/TestAudio_module/projects/VS2019/BuildLib/x64/*
+audio/TestAudio_module/projects/VS2019/BuildLib/Debug/*
+audio/Control_module/projects/VS2019/BuildDll/Release/*
+audio/Control_module/projects/VS2019/BuildDll/x64/*
+audio/Control_module/projects/VS2019/BuildDll/Debug/*
+audio/Control_module/projects/VS2019/BuildLib/Release/*
+audio/Control_module/projects/VS2019/BuildLib/x64/*
+audio/Control_module/projects/VS2019/BuildLib/Debug/*
