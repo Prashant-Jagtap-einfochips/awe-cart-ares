@@ -10,37 +10,46 @@ gain_val = 0
 
 tsf_obj = AresTsf(argv=sys.argv[1:])
 
-DC = tsf_obj.get_symbol('DC1')
+dc = tsf_obj.get_symbol('DC1')
+Source = tsf_obj.get_symbol('Source1')
 Audio = tsf_obj.get_symbol('TestAudio1')
 
 # Open a TCP socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((TCP_IP, TCP_PORT))
 
-print(DC.symbol_name)
+print(dc.symbol_name)
+print(Source.symbol_name)
 print(Audio.symbol_name)
 
-#while gain_val<11:
-#    mystring = f'set_value,DC1.value,{gain_val}\n'.encode()
-#    # Write the value of the coeff
-#    s.send(mystring)
-#    gain_val = gain_val + 1
-#    data = s.recv(BUFFER_SIZE)
-#    time.sleep(2)
-#    print (data)
-
-# Write harmonic order
-s.send(f',write_float_array,TestAudio1.coeff[0],1.0\n'.encode())
-print("Write coeff data")
+# Write the inital value of the gain
+mystring = f'set_value,DC1.value,0\n'.encode()
+s.send(mystring)
 data = s.recv(BUFFER_SIZE)
-print(data.decode())
 
-gain_val = 10
-while ((gain_val >= 0) & (gain_val <= 11)):
-    mystring = f'set_value,TestAudio1.gain,{gain_val}\n'.encode()
+idx = 0
+value = 1;
+
+while idx < 10:
+    mystring = f'write_float_array,Source1.value[0],{value},0,1,0,1,0,1,0,1,0,1,0\n'.encode()
     # Write the value of the coeff
+    idx = idx + 1
     s.send(mystring)
-    gain_val = gain_val - 1
+    data = s.recv(BUFFER_SIZE)
+    time.sleep(2)
+    if value == 1:
+        value = 0
+    else:
+        value = 1
+    print (data)
+
+myGain = 0
+
+while myGain < 10:
+    mystring = f'set_value,DC1.value,{myGain}\n'.encode()
+    # Write the value of the gain
+    myGain = myGain + 1
+    s.send(mystring)
     data = s.recv(BUFFER_SIZE)
     time.sleep(2)
     print (data)

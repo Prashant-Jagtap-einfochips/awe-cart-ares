@@ -39,6 +39,8 @@ M.coeff.units='linear';
 awe_addcodemarker(M, 'processFunction', 'Insert:\InnerTestAudio_Process.c');
 awe_addcodemarker(M, 'setFunction', 'Insert:\InnerTestAudio_Set.c');
 awe_addcodemarker(M, 'getFunction', 'Insert:\InnerTestAudio_Get.c');
+awe_addcodemarker(M, 'constructorFunction', 'Insert:\InnerControl_Construct.c');
+
 awe_addcodemarker(M, 'discussion', {'Copies the input to the output. '});
 
 % ----------------------------------------------------------------------

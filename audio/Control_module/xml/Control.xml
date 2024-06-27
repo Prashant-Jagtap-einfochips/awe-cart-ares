@@ -5,7 +5,7 @@
         <image>../images/Control.bmp</image>
         <svgimage></svgimage>
         <targetclasses>ModuleControl</targetclasses>
-        <datatype></datatype>
+        <datatype>float,fract32,int</datatype>
         <searchtags>Control pass thru through copy</searchtags>
         <mfile>Control_module</mfile>
         <helpfile>../Doc/Control.html</helpfile>
@@ -13,10 +13,10 @@
         <property propsheet = 'Build Settings' name='allocationPriority' type='int' value='0'/>
         <property propsheet = 'Build Settings' name='objectID' type='int' value='' min = '1'/>
         <property propsheet = 'Build Settings' name='objectAlias' type='string' value=''/>
-        <property propsheet = 'Build Settings' name='clockDivider' type='string' value='' isValueEditable='1'/>
+        <property propsheet = 'Build Settings' name='clockDivider' type='string' value='' isValueEditable='0'/>
         <property propsheet = 'Build Settings' name='isTunable' type='bool' value='1' min = '0'/>
         <property propsheet = 'Array: coeff' name='coeff' description='Coefficent Data' dim1='11' type='float' min='0' max='1' step='' isRangeEditable='1' format='%g' hide='0' isComplex='0'/>
-        
+        <pin name='in' legend='in' usage='input' pos='left' show='0' hide='0'  />
         Copies input wire to output wire
         <shape color='#000000' fill='#ffffff' style='0'>
         <poly>

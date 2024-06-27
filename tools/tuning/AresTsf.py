@@ -16,12 +16,6 @@ Assumptions:
 Options:
   -h,   --help   Display usage information (this message)
   -t,   --tsf    Default locations:
-                    EHC Basic: audio\\AWEDesigner\\boot_model_ehcbasic\\ehcbasic_subsystem_release.tsf
-                    EHC Premium: audio\\AWEDesigner\\boot_model_ehcpremium\\ehcpremium_subsystem_release.tsf
-                    RNC Basic: audio\\AWEDesigner\\boot_model_rncbasic\\rncbasic_subsystem_release.tsf
-                    RNC Premium: audio\\AWEDesigner\\boot_model_rncpremium\\rncpremium_subsystem_release.tsf
-                    RNC PremiumPlus: audio\\AWEDesigner\\boot_model_rncpremiumplus\\rncpremiumplus_subsystem_release.tsf
-
 """
 
 class AweSymbol(object):
@@ -36,7 +30,7 @@ class AresTsf(object):
     def __init__(self, tsf_file=None, argv=None):
         if argv is not None:
             tsf_file = self._parse_args(argv)
-            self._tsf_file = "C:\\Users\\110468\\Downloads\\audioWeaver\\CustomModule-ARES\\audio\\AWEDesigner\\ControlAudio_release.tsf"
+            self._tsf_file = "C:\\Users\\110468\\Downloads\\audioWeaver\\CustomModule-ARES-Set1\\audio\\AWEDesigner\\ControlAudio_release.tsf"
             self.tsf_symbols = {}
             self._parse_tsf_file()
 

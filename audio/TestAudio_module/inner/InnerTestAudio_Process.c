@@ -6,9 +6,12 @@ FLOAT *pDst = (FLOAT *)(pWires[1] ->buffer);
 UINT32 i;
 for (i = 0; i < numSamples; i++)
 {
-    switch(S->gain) {
+	switch(S->gain) {
+	case 0:
+		*pDst++ = *pSrc++ * S->coeff[0];
+		break;
 	case 1:
-	    *pDst++ = *pSrc++ * S->coeff[1];
+		*pDst++ = *pSrc++ * S->coeff[1];
 		break;
 	case 2:
 		*pDst++ = *pSrc++ * S->coeff[2];

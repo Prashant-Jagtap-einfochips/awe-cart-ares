@@ -50,7 +50,7 @@ typedef struct _awe_modControlInstance
     ModuleInstanceDescriptor instance;
     
     FLOAT32*           coeff;               // Coefficent Data
-    awe_modTestAudioInstance*    pTestAudio;
+    awe_modTestAudioInstance*     pTestAudio;
 } awe_modControlInstance;
 
 #if !defined(NOREDEF)

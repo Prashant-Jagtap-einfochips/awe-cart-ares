@@ -17,8 +17,8 @@ M.name=NAME;
 M.defaultName='Control';
 
 % % Add input and output pins with no data or size restrictions
-%PT=new_pin_type([], [], [], '*32', []);
-%add_pin(M, 'input', 'in', 'Input signal', PT);
+PT=new_pin_type([], [], [], '*32', []);
+add_pin(M, 'input', 'in', 'Input signal', PT);
 %add_pin(M, 'output', 'out', 'Output signal', PT);
 
 % ----------------------------------------------------------------------
