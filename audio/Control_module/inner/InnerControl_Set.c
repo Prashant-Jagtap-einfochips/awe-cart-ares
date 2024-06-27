@@ -4,4 +4,7 @@ UINT32 i;
 for (i = 0; i < 11; i++) {
 	pAudio->coeff[i] = S->coeff[i];
 }
+
+AWE_CLASSMODULE_SETALL(pAudio);
+
 return 0;

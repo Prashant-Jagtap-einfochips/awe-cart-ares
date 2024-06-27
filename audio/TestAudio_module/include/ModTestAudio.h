@@ -67,7 +67,9 @@ ModInstanceDescriptor * awe_modTestAudioConstructor(INT32 * FW_RESTRICT retVal, 
 
 void awe_modTestAudioProcess(void *pInstance);
 
+UINT32 awe_modTestAudioSet(void *pInstance, UINT32 mask);
  
+UINT32 awe_modTestAudioGet(void *pInstance, UINT32 mask);
 
 
 

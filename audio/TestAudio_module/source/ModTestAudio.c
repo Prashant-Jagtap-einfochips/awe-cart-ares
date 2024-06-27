@@ -54,8 +54,8 @@ const Class_awe_modTestAudio awe_modTestAudioClass =
         { awe_modTestAudioConstructor, CLASSID_TESTAUDIO, },
         awe_modTestAudioProcess,                // Processing function
         IOMatchUpModule_Bypass,                 // Bypass function
-        0,                                    // Set function
-        0,                                    // Get function
+        awe_modTestAudioSet,                    // Set function
+        awe_modTestAudioGet,                    // Get function
         0,				                      // Unused field
         ClassModule_PackArgCounts(1, 1),    // (Public words, private words)
         {0x00000002, 0x00000000}, // Specifies which variables are floating-point
@@ -114,6 +114,9 @@ void awe_modTestAudioProcess(void *pInstance)
     for (i = 0; i < numSamples; i++)
     {
         switch(S->gain) {
+        case 0:
+            *pDst++ = *pSrc++ * S->coeff[0];
+            break;
     	case 1:
     	    *pDst++ = *pSrc++ * S->coeff[1];
     		break;
@@ -151,7 +154,34 @@ void awe_modTestAudioProcess(void *pInstance)
     }
 }
 
+/* ----------------------------------------------------------------------
+** Set function which updates derived parameters based on the
+** module's interface variables.
+** ------------------------------------------------------------------- */
 
+AWE_MOD_SLOW_CODE
+UINT32 awe_modTestAudioSet(void *pInstance, UINT32 mask)
+{
+    awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)pInstance;
+    if (S->coeff[0] == 0)
+        S->coeff[0] = 0.1;
+    else
+        S->coeff[0] = S->coeff[0];
+    return 0;
+}
+
+/* ----------------------------------------------------------------------
+** Get function which updates high-level variables based on the module's
+** internal variables.
+** ------------------------------------------------------------------- */
+
+AWE_MOD_SLOW_CODE
+UINT32 awe_modTestAudioGet(void *pInstance, UINT32 mask)
+{
+    awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)pInstance;
+    S->coeff[0] = 0.1;
+    return 0;
+}
 
 
 #ifdef __cplusplus

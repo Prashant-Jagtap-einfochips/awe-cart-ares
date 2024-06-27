@@ -12,3 +12,8 @@ audio/Control_module/projects/VS2019/BuildDll/Debug/*
 audio/Control_module/projects/VS2019/BuildLib/Release/*
 audio/Control_module/projects/VS2019/BuildLib/x64/*
 audio/Control_module/projects/VS2019/BuildLib/Debug/*
+audio/TestAudio_module/projects/VS2010/BuildDll/Release/*
+audio/TestAudio_module/projects/VS2010/BuildDll/TestAudioDll.vcxproj.user
+audio/TestAudio_module/projects/VS2010/BuildDll/x64/*
+audio/TestAudio_module/projects/VS2010/BuildLib/TestAudioLib.vcxproj.user
+audio/TestAudio_module/projects/VS2010/BuildLib/x64/*

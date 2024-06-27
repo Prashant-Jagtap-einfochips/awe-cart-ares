@@ -29,7 +29,7 @@ add_variable(M, 'gain', 'int', 1, 'parameter', 'Linear gain');
 M.gain.range=[0 10];
 M.gain.units='linear';
 
-add_array(M, 'coeff', 'float', [0; 0.1; 0.2; 0.3; 0.4; 0.5; 0.6; 0.7; 0.8; 0.9; 1], 'parameter', 'Coefficent Data');
+add_array(M, 'coeff', 'float', zeros(11,1), 'parameter', 'Coefficent Data');
 M.coeff.range=[0 1];
 M.coeff.units='linear';
 
@@ -37,6 +37,8 @@ M.coeff.units='linear';
 % Code generation details
 % ----------------------------------------------------------------------
 awe_addcodemarker(M, 'processFunction', 'Insert:\InnerTestAudio_Process.c');
+awe_addcodemarker(M, 'setFunction', 'Insert:\InnerTestAudio_Set.c');
+awe_addcodemarker(M, 'getFunction', 'Insert:\InnerTestAudio_Get.c');
 awe_addcodemarker(M, 'discussion', {'Copies the input to the output. '});
 
 % ----------------------------------------------------------------------

@@ -28,21 +28,25 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -120,7 +124,7 @@
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>TestAudioLib.lib;FrameDLL.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../../lib/VC2010/debug</AdditionalLibraryDirectories>
-   </Link>
+    </Link>
     <PostBuildEvent>
       <Command>if not exist "C:\DSP Concepts\AWE Designer 8.D.2.3 Pro\Bin\win32-vc142-rel\..\win32-vc100-dbg" mkdir "C:\DSP Concepts\AWE Designer 8.D.2.3 Pro\Bin\win32-vc142-rel\..\win32-vc100-dbg"
 	  xcopy /Y "..\..\..\Debug\TestAudioDll.dll" "C:\DSP Concepts\AWE Designer 8.D.2.3 Pro\Bin\win32-vc142-rel\..\win32-vc100-dbg"
