@@ -77,23 +77,24 @@ const Class_awe_modTestAudio awe_modTestAudioClass =
 AWE_MOD_SLOW_CODE
 ModInstanceDescriptor *awe_modTestAudioConstructor(INT32 * FW_RESTRICT retVal, UINT32 nIO, WireInstance ** FW_RESTRICT pWires, size_t argCount, const Sample * FW_RESTRICT args)
 {   
-	awe_modTestAudioInstance *S = (awe_modTestAudioInstance *) BaseClassModule_Constructor((ModClassModule *) &awe_modTestAudioClass, retVal, nIO, pWires, argCount, args);
 	
-	// Check if BaseClassModule_Constructor() finished properly.  If not,
-	// the error code is in *retVal
-	if (S == NULL)
-	{
-	    return 0;
-	}
 	
-    if ((S->coeff = (FLOAT32 *) awe_fwMalloc(sizeof(FLOAT32) * 11, AWE_HEAP_FAST2SLOW, retVal)) == 0)            
+    awe_modTestAudioInstance *S = (awe_modTestAudioInstance *) BaseClassModule_Constructor((ModClassModule *) &awe_modTestAudioClass, retVal, nIO, pWires, argCount, args);            
+                
+    // Check if BaseClassModule_Constructor() finished properly.  If not,            
+    // the error code is in *retVal            
+    if (S == NULL)            
     {            
-        // Error code is in *retVal            
-        return 0;            
+    	return 0;            
     }            
                 
+    if ((S->coeff = (FLOAT32 *) awe_fwMalloc(sizeof(FLOAT32) * 11, AWE_HEAP_FAST2SLOW, retVal)) == 0)                        
+    {                        
+    	// Error code is in *retVal                        
+    	return 0;                        
+    }                        
                 
-    return ((ModInstanceDescriptor *) S);            
+    return ((ModInstanceDescriptor *) S);              
 
     
 }
@@ -113,12 +114,12 @@ void awe_modTestAudioProcess(void *pInstance)
     UINT32 i;
     for (i = 0; i < numSamples; i++)
     {
-        switch(S->gain) {
-        case 0:
-            *pDst++ = *pSrc++ * S->coeff[0];
-            break;
+    	switch(S->gain) {
+    	case 0:
+    		*pDst++ = *pSrc++ * S->coeff[0];
+    		break;
     	case 1:
-    	    *pDst++ = *pSrc++ * S->coeff[1];
+    		*pDst++ = *pSrc++ * S->coeff[1];
     		break;
     	case 2:
     		*pDst++ = *pSrc++ * S->coeff[2];
@@ -167,6 +168,9 @@ UINT32 awe_modTestAudioSet(void *pInstance, UINT32 mask)
         S->coeff[0] = 0.1;
     else
         S->coeff[0] = S->coeff[0];
+    
+    if (S->gain != S->gain)
+        S->gain == S->gain;
     return 0;
 }
 
@@ -178,8 +182,10 @@ UINT32 awe_modTestAudioSet(void *pInstance, UINT32 mask)
 AWE_MOD_SLOW_CODE
 UINT32 awe_modTestAudioGet(void *pInstance, UINT32 mask)
 {
+    static int init = 0;
     awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)pInstance;
-    S->coeff[0] = 0.1;
+    if (init == 0)
+        S->coeff[0] = 0.1;
     return 0;
 }
 

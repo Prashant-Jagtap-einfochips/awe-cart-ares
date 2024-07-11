@@ -33,7 +33,11 @@
 #include "ModTestAudio.h"
 
 #define MASK_Control_coeff 0x00000100
+#define MASK_Control_modPtr 0x00000200
+#define MASK_Control_varPtr 0x00000400
 #define OFFSET_Control_coeff 0x00000008
+#define OFFSET_Control_modPtr 0x00000009
+#define OFFSET_Control_varPtr 0x0000000A
 
 #define CLASSID_CONTROL (CLASS_ID_MODBASE + 60120)
 
@@ -50,7 +54,8 @@ typedef struct _awe_modControlInstance
     ModuleInstanceDescriptor instance;
     
     FLOAT32*           coeff;               // Coefficent Data
-    awe_modTestAudioInstance*     pTestAudio;
+    void *             modPtr;              // Points to the module to set
+    void *             varPtr;              // Points to the variable to set within the module instance structure
 } awe_modControlInstance;
 
 #if !defined(NOREDEF)

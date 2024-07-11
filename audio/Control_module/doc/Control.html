@@ -119,6 +119,8 @@ ul
 <p class=CodeIndent>{</p>
 <p class=CodeIndent>&nbsp&nbsp&nbsp&nbspModuleInstanceDescriptor instance;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Common Audio Weaver module instance structure</p>
 <p class=CodeIndent>&nbsp&nbsp&nbsp&nbspFLOAT32* coeff;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Coefficent Data</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspvoid * modPtr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Points to the module to set</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspvoid * varPtr;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Points to the variable to set within the module instance structure</p>
 <p class=CodeIndent>} ModuleControlClass;</p>
 
 
@@ -179,18 +181,70 @@ ul
   style='font-family:"Courier New"'>linear</span></p>
   </td>
  </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>modPtr</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>void *</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>varPtr</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>void *</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
 </table>
 
 
 <h2 style='margin-left:0in'>Pins</h2>
-<h3>Input Pins</h3>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Name: in</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Description: Input signal</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Data type: {float, int, fract32}</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channel range: Unrestricted</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;Block size range: Unrestricted</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;Sample rate range: Unrestricted</p>
-<p class=CodeLeft>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Complex support: Real and Complex</p>
 
 
 <h2 style='margin-left:0in'>MATLAB Usage</h2>
@@ -200,6 +254,7 @@ ul
 <p class=CodeLeft> </p>
 <p class=CodeLeft> &nbsp;Arguments:</p>
 <p class=CodeLeft> &nbsp;NAME&nbsp;-&nbsp;name&nbsp;of&nbsp;the&nbsp;module</p>
+<p class=CodeLeft> &nbsp;MODULE&nbsp;-&nbsp;name&nbsp;of&nbsp;module&nbsp;to&nbsp;control</p>
 <p class=CodeLeft> </p>
 
 
