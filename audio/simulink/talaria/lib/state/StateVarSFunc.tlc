@@ -1,0 +1,72 @@
+%implements StateVarSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+%include "StateVarCommon.tlc"
+
+%%   This block collaborates with StateVar and TSP blocks to accomplish
+%%   the interpretation of Target State Probe Data into State Variable
+%%   data --- but only for code generation and usually in a partitioned
+%%   Interpretation Engine model.
+%% Users (generally tuning tools) request a StateVar which flags both the
+%% StateVar and its supplying Interpretation Trigger for action.
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %<StateVarTypeSetup()>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign dispTableFileName = ModelPrefix() + "StateVar"
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+    %assign DTypeConstCount = SIZE(DTypeConstName)[1]
+
+    %% S Function RTW Data Variables
+    %assign Path = ParamSettings.Path
+    %assign Trigger = ParamSettings.Trigger
+    %assign DatatypeName = ParamSettings.DatatypeName
+
+    %% Declare the StateVar number
+    %openfile buffer
+        ID_StateVar_%<Path>, /* '%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+    %<LibSetSourceFileCustomSection(fileH,"StateVarEnumEntries",buffer)>
+
+    %assign InDataTypeId = LibBlockInputSignalDataTypeId(0)
+    %if (InDataTypeId < DTypeConstCount)
+        %assign inDT = DTypeConstName[InDataTypeId]
+    %else
+        %assign inDT = InDataTypeId
+    %endif
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        {  /* '%<LibGetBlockName(block)>' */ ...
+            "%<Path>", 0, ...
+            %<inDT>, ...
+            "%<DatatypeName>", ...
+            sizeof(%<LibBlockInputSignalDataTypeName(0,"")>), ...
+            %<LibBlockInputSignalWidth(0)>, ...
+            %<LibBlockInputSignalAddr(0, "", "", 0)>, ...
+            ID_%<Trigger>
+        },
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+
+%endfunction

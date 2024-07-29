@@ -1,0 +1,113 @@
+<deployment-project plugin="plugin.toolbox" plugin-version="1.0">
+  <configuration file="c:\work\Talaria_Training\common\util\build\mingw_toolbox_build\mingw6.3.0.prj" location="c:\work\Talaria_Training\common\util\build\mingw_toolbox_build" name="mingw6.3.0" target="target.toolbox" target-name="Package Toolbox">
+    <param.appname>mingw6.3.0</param.appname>
+    <param.authnamewatermark>https://mingw-w64.org</param.authnamewatermark>
+    <param.email />
+    <param.company />
+    <param.summary>Version 6.3.0 of the MinGW-w64 C/C++ compiler... but WITH its 32-bit support as well as 64-bit support.</param.summary>
+    <param.description>The MathWorks supported add-on for MinGW-w64 does not include 32 bit support which is necessary for the Talaria translation engine DLL to interface with the Windows Perl distribution used in builds. This installation of MinGW-w64 is v6.3.0 just like the MathWorks add-on, but it uses sjlj exception handling instead of seh exception handling... thereby enabling support for 32-bit builds.</param.description>
+    <param.screenshot>${PROJECT_ROOT}\mingw.bmp</param.screenshot>
+    <param.version>1.0</param.version>
+    <param.output>${PROJECT_ROOT}\mingw6.3.0.mltbx</param.output>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.guid>6e4287c5-278d-44ed-a623-328e8ec4fbb0</param.guid>
+    <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
+% from packaging.  Excludes should be listed relative to the toolbox folder.
+% Some examples of how to specify excludes are provided below:
+%
+% A single file in the toolbox folder:
+% .svn
+%
+% A single file in a subfolder of the toolbox folder:
+% example/.svn
+%
+% All files in a subfolder of the toolbox folder:
+% example/*
+%
+% All files of a certain name in all subfolders of the toolbox folder:
+% **/.svn
+%
+% All files matching a pattern in all subfolders of the toolbox folder:
+% **/*.bak
+%
+*.xcf
+*.bmp
+startup.asv
+readme.txt</param.exclude.filters>
+    <param.examples />
+    <param.demosxml />
+    <param.apps />
+    <param.registered.apps />
+    <param.docs />
+    <param.getting.started.guide />
+    <param.matlabpath.excludes />
+    <param.javaclasspath.excludes />
+    <unset>
+      <param.email />
+      <param.company />
+      <param.version />
+      <param.output />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.examples />
+      <param.demosxml />
+      <param.apps />
+      <param.registered.apps />
+      <param.docs />
+      <param.getting.started.guide />
+      <param.matlabpath.excludes />
+      <param.javaclasspath.excludes />
+    </unset>
+    <fileset.rootdir>
+      <file>C:\work\Talaria_Training\common\util\build\mingw_toolbox_build</file>
+    </fileset.rootdir>
+    <fileset.rootfiles>
+      <file>${PROJECT_ROOT}\mingw64-6.3.0</file>
+      <file>${PROJECT_ROOT}\startup.m</file>
+    </fileset.rootfiles>
+    <fileset.depfun.included />
+    <fileset.depfun.excluded />
+    <fileset.package />
+    <build-deliverables>
+      <file location="c:\work\Talaria_Training\common\util\build\mingw_toolbox_build" name="mingw6.3.0.mltbx" optional="false">c:\work\Talaria_Training\common\util\build\mingw_toolbox_build\mingw6.3.0.mltbx</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>C:\Program Files\MATLAB\R2017b</root>
+      <toolboxes>
+        <toolbox name="matlabcoder" />
+        <toolbox name="embeddedcoder" />
+      </toolboxes>
+      <toolbox>
+        <matlabcoder>
+          <enabled>true</enabled>
+        </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+    </matlab>
+    <platform>
+      <unix>false</unix>
+      <mac>false</mac>
+      <windows>true</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>10.0</osver>
+      <os32>false</os32>
+      <os64>true</os64>
+      <arch>win64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

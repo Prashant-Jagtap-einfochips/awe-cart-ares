@@ -1,0 +1,60 @@
+{
+    "version": "R2021b",
+    "entries": [
+        {
+            "type": "PopupList",
+            "id": "autoBlockHeightList",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "autoHeight40Action"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "autoHeight60Action"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "autoHeight80Action"
+                }
+            ]
+        },
+        {
+            "type": "PopupList",
+            "id": "automateBtcList",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "automateBlockBtcAction"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "addBreedSupportToBlockBtcAction"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "automateModelBtcAction"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "removeDotCommentsAction"
+                }
+            ]
+        },
+        {
+            "type": "PopupList",
+            "id": "addAllTuneVarsList",
+            "children": [
+                {
+                    "type": "ListItem",
+                    "action": "addTuneVarsMainClassAction"
+                },
+                {
+                    "type": "ListItem",
+                    "action": "addTuneVarsSeparateClassAction"
+                }
+            ]
+        }
+
+    ]
+}

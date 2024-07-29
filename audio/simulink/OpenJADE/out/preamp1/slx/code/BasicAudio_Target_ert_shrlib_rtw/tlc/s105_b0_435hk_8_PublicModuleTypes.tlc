@@ -1,0 +1,20 @@
+%implements s105_b0_435hk_8_PublicModuleTypes "C"
+
+%function PublicModuleTypes(block) Output
+
+
+/* Custom Type definition for MATLAB Function: '<S40>/tone control' */
+#ifndef struct_tag_suFnE4DIYISSjYbtQHPXOwD
+#define struct_tag_suFnE4DIYISSjYbtQHPXOwD
+struct tag_suFnE4DIYISSjYbtQHPXOwD
+{
+    real32_T frames;
+    real32_T target_linear;
+    real32_T current_linear;
+};
+#endif /* struct_tag_suFnE4DIYISSjYbtQHPXOwD */
+#ifndef typedef_suFnE4DIYISSjYbtQHPXOwD_BasicAudio_Target_T
+#define typedef_suFnE4DIYISSjYbtQHPXOwD_BasicAudio_Target_T
+typedef struct tag_suFnE4DIYISSjYbtQHPXOwD suFnE4DIYISSjYbtQHPXOwD_BasicAudio_Target_T;
+#endif /* typedef_suFnE4DIYISSjYbtQHPXOwD_BasicAudio_Target_T */
+%endfunction

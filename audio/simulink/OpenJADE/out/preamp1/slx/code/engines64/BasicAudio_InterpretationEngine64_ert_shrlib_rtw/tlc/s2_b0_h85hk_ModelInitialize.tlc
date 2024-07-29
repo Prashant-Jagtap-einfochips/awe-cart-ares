@@ -1,0 +1,26 @@
+%implements s2_b0_h85hk_ModelInitialize "C"
+
+%function ModelInitialize(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%<SLibInsertAsyncTaskInitializeCode(system)>
+%<SLibWriteMachineInitialize()>
+%<SLibCGIRDumpSystemUserCode(2, "Start", "Header")>\
+%<SLibCGIRDumpSystemUserCode(2, "Start", "Body")>\
+%<SLibCGIRDumpSystemUserCode(2, "Start", "Trailer")>\
+%<SLibCGIRDumpSystemUserCode(2, "Initialize", "Header")>\
+%<SLibCGIRDumpSystemUserCode(2, "Initialize", "Body")>\
+%<SLibCGIRDumpSystemUserCode(2, "Initialize", "Trailer")>\
+%<SLibInsertInitPeriodicCStatesFcn(system)>
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function ModelInitializeFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void ModelInitialize(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(1, 2, fcnProtoType)>
+%endfunction

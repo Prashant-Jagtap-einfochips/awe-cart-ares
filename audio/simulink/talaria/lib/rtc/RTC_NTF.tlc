@@ -1,0 +1,248 @@
+%implements RTC_NTF "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Retrieve common RTC methods
+%include "RTC_Common.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign idFileName = "%<RtcGetIdFileName()>"
+    
+    %% ------------------- notify table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetNtfFileName())
+    %% Includes :
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include "%<LibGetModelName()>.h" // for access to signal buffers for sequence, caller handle, etc.
+        #include "%<idFileName>.h"  // for RTCIDs and NTF payload formats
+        #include "%<FeaturePathGetAsdIdFileName()>.h"    // for AsdIdStatus_type and ASDSTATUS_RTC_NOTIFICATION
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    
+    %% Declare the datatype used for the table
+    %openfile buffer
+        
+        // Function pointer type for RTC request completion checking
+        typedef void (*RTC_NTF_Check)( void );
+
+        // Function pointer type for RTC notification message packing
+        typedef void (*RTC_NTF_Pack)(void* pNtfBuf);
+
+        // Struct for notification table. Note some datatypes must match
+        // variables defined by Simulink-generated code (uint32_T,boolean_T)
+        typedef struct RTC_NotificationTable_tag
+        {
+            uint32_t            message_id;
+            RTC_NTF_Check       check_complete_func;
+            RTC_NTF_Pack        pack_notification_func;
+            uint32_t            ntf_payload_bytes;
+            uint32_T*           requested_sequence_ptr;
+            uint32_T*           requested_caller_handle_ptr;
+            boolean_T*          is_completed_ptr;
+            uint32_t            completed_sequence;
+            uint32_t            completed_caller_handle;
+            uint32_t            last_sent_sequence;
+        } %<RtcGetNtfFileName()>_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "CheckPrototypes")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "PackPrototypes")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+    %openfile buffer
+        // ----- Function prototypes for request completion checking:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"CheckPrototypes",buffer)>
+    %openfile buffer
+        // ----- Function prototypes for notification message packing:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"PackPrototypes",buffer)>
+
+    %openfile buffer
+
+        // ----- The NOTIFY TABLE -----:
+        static %<RtcGetNtfFileName()>_type notify_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        // End Sentinel to prevent empty initializer if no NTF payloads.
+        { 0,NULL,NULL,0,0,0,0,0,0,0 }
+        };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+    
+    %% Add framework entry point to use the notification table
+    %% .. but only for top models
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_NTF_Handler.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %% ------------------- 
+        %% Hook up the RTC notifications to the shared notification service entrypoint
+        %% [SHARED_HANDLER] ASDID HANDLER FUNCTION INTEGRATION (NOTIFICATIONS)
+        %openfile headerFileBuffer
+            // Declare prototype of RTC's notification service handler
+            int %<ModelPrefix()>ServiceRtcNotifications(void* pNtfBuf, uint32_t ntfBufSize);
+        %closefile headerFileBuffer
+        %openfile handlerCodeBuffer
+            // Handle RTC notifications
+            if (retVal == 0)
+            {
+                retVal = %<ModelPrefix()>ServiceRtcNotifications(pNtfBuf, ntfBufSize);
+            }
+        %closefile handlerCodeBuffer
+        %<FeaturePathAddAsdNotificationService(headerFileBuffer,handlerCodeBuffer)>
+    %endif
+
+    %% ------------------- message id *.h file
+    %% NOTE - declaration of the message ID is handled by the REQ_RSP block
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign idFileName = "%<RtcGetIdFileName()>"
+
+    %% S Function RTW Data Parameters
+    %assign MessagePath = SFcnParamSettings.MessagePath
+    %assign NotificationRole = SFcnParamSettings.NotificationRole
+    %assign NTF_Bytes = SFcnParamSettings.NTF_Bytes
+
+    %switch NotificationRole
+        %case 0 %%     NOTIFY_OFF = 0,
+        %break
+
+        %case 1 %%     NOTIFY_ON = 1,
+            %% Declare the NTF check complete function (IN TWO PLACES!)
+            %% Place 1 (model private header)
+            %openfile buffer
+                void RtcNtfCheck_%<MessagePath>( void );
+            %closefile buffer
+            %<LibCacheFunctionPrototype(buffer)>
+            %% Place 2 (dispatch table code)
+            %openfile buffer
+                extern void RtcNtfCheck_%<MessagePath>( void );
+            %closefile buffer
+            %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetNtfFileName())
+            %<LibSetSourceFileCustomSection(fileH,"CheckPrototypes",buffer)>
+
+            %% Declare the NTF message packing function (IN TWO PLACES!)
+            %% Place 1 (model private header)
+            %openfile buffer
+                void RtcNtfPack_%<MessagePath>(void* pNtfBuf);
+            %closefile buffer
+            %<LibCacheFunctionPrototype(buffer)>
+            %% Place 2 (dispatch table code)
+            %openfile buffer
+                extern void RtcNtfPack_%<MessagePath>(void* pNtfBuf);
+            %closefile buffer
+            %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetNtfFileName())
+            %<LibSetSourceFileCustomSection(fileH,"PackPrototypes",buffer)>
+        %break
+    %endswitch %% (NotificationRole)
+
+
+    %% ------------------- message id *.h file
+    %% Declare the message ID in a custom header file for RTC message IDs
+    %% NOTE - declaration of the message ID is handled by the REQ_RSP block
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+    %% S Function RTW Data Parameters
+    %assign MessagePath = SFcnParamSettings.MessagePath
+    %assign NotificationRole = SFcnParamSettings.NotificationRole
+    %assign NTF_Bytes = SFcnParamSettings.NTF_Bytes
+
+    %switch NotificationRole
+        %case 0 %%     NOTIFY_OFF = 0,
+        %break
+
+        %case 1 %%     NOTIFY_ON = 1,
+            %% Gather code that calls the downstream f-c subsystem - it can inline
+            %% This first trigger checks for notification readiness
+            %openfile bufferTrigs
+                %<LibBlockExecuteFcnCall(block, 0)>\
+            %closefile bufferTrigs
+
+            %% Emit code for the check complete function
+            %openfile funcbuf
+            // %<MessagePath> RTC NTF check complete '%<LibGetBlockName(block)>' ---------------------------------
+            void RtcNtfCheck_%<MessagePath>( void )
+            {
+                %if WHITE_SPACE(bufferTrigs)
+                    {
+                        ; // There is nothing to do for this message!
+                    }
+                %else
+                    %<bufferTrigs>\
+                %endif
+            }
+            %closefile funcbuf
+            %assign srcFile = LibGetModelDotCFile()
+            %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)>
+
+            %% Emit code for the notification table entry
+            %% ------------------- notify table *.c file
+            %% Define an entry in the notify table
+            %openfile buffer
+                // Name: %<MessagePath> '%<LibGetBlockName(block)>'
+                { RTCID_%<MessagePath>,  &RtcNtfCheck_%<MessagePath>, 
+                  &RtcNtfPack_%<MessagePath>, sizeof(%<MessagePath>_NTF_T), /*%<NTF_Bytes> char*/
+                  %<LibBlockInputSignalAddr(0, "", "", 0)>,
+                  %<LibBlockInputSignalAddr(1, "", "", 0)>,
+                  %<LibBlockInputSignalAddr(2, "", "", 0)>,
+                  0, 0, 0 },
+            %closefile buffer
+            %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetNtfFileName())
+            %%<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+            %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+            %% Gather code that calls the downstream f-c subsystem - it can inline
+            %% This second trigger prepares notification signals
+            %openfile bufferPrepTrig
+                %<LibBlockExecuteFcnCall(block, 1)>\
+            %closefile bufferPrepTrig
+            %% This third trigger packages notification signals
+            %openfile bufferPackTrig
+                %<LibBlockExecuteFcnCall(block, 2)>\
+            %closefile bufferPackTrig
+
+            %% Emit code for the notification message pack function
+            %openfile funcbuf
+            // %<MessagePath> RTC NTF message preparation and packing '%<LibGetBlockName(block)>' ---------------------------------
+            void RtcNtfPack_%<MessagePath>(void* pNTFBuf)
+            {
+                %if WHITE_SPACE(bufferPrepTrig)
+                    // This message does not specify any special signal preparation
+                %else
+                    // Prepare the notification signals
+                    %<bufferPrepTrig>\
+                %endif
+                // Package the notification signals
+                %<bufferPackTrig>
+            }
+            %closefile funcbuf
+            %assign srcFile = LibGetModelDotCFile()
+            %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)>
+        %break
+    %endswitch %% (NotificationRole)
+
+%endfunction

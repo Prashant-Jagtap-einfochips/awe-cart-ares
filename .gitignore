@@ -17,3 +17,11 @@ audio/TestAudio_module/projects/VS2010/BuildDll/TestAudioDll.vcxproj.user
 audio/TestAudio_module/projects/VS2010/BuildDll/x64/*
 audio/TestAudio_module/projects/VS2010/BuildLib/TestAudioLib.vcxproj.user
 audio/TestAudio_module/projects/VS2010/BuildLib/x64/*
+audio/simulink/talaria/.svn
+audio/simulink/talaria/.svn/*
+audio/simulink/OpenJADE/.svn
+audio/simulink/OpenJADE/.svn/*
+audio/simulink/blocklib/.svn
+audio/simulink/blocklib/.svn/*
+audio/simulink/blocklib/util/hexagon_patch/pycparser/.git
+audio/simulink/blocklib/util/hexagon_patch/pycparser/.git/*

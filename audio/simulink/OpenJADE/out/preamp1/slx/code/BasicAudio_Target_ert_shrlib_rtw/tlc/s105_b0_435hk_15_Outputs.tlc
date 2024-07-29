@@ -1,0 +1,156 @@
+%implements s105_b0_435hk_15_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+int32_T db_offset;
+int32_T tmp;
+real32_T percent;
+uint32_T idx;
+uint8_T j;
+boolean_T exitg1;
+%closefile localVarDecl
+/*@>15d75d*/idx/*@>12f0f3*/ = /*@>15d773*/rtu_idx;
+/*@>15d738*/db_offset/*@>12f0f6*/ = /*@>15d775*/rtu_db_offset;
+/*  */
+/*  Lookup volume table  */
+/*  Output Gain vlue from table */
+/*  */
+/* MATLAB Function 'BasicAudio/Volume/volume/InnerLink/Index2DbTable/lookup db from index': '<S127>:1' */
+/* '<S127>:1:8' j = uint8(1); */
+/*@>15d73a*/j/*@>12f0f8*/ = /*@>1601da*/1U;
+/* '<S127>:1:9' gain_value = single(0.0); */
+/*@>15fd9f*/localB->/*@>1602e3*/gain_value/*@>12f0f9*/ = /*@>15d765*/0.0F;
+/* '<S127>:1:10' interpolated_gain_dB=single(0.0); */
+/* '<S127>:1:11' interpolated_gain_dB_with_offset=single(0.0); */
+/*  workaround to type problem */
+/* '<S127>:1:14' idx = cast(idx, class(volTableIdx(end))); */
+/*   bounds checking for vol - clip to max idx */
+/* '<S127>:1:17' if (idx > volTableIdx(end)) */
+/*@>12f11f*/if (/*@>15d777*/rtu_idx/*@>12f10c*/ > /*@>15fc95*/rtu_volTableIdx/*@>15fc97*/[/*@>15fc93*/7]) {
+    /* '<S127>:1:18' idx = volTableIdx(end); */
+    /*@>15d73e*/idx/*@>12f0fc*/ = /*@>15fc9b*/rtu_volTableIdx/*@>15fc9d*/[/*@>15fc99*/7];
+}
+/*   bounds checking for gain offset(No Boost) - clip to max offset level */
+/* '<S127>:1:21' if (db_offset > int32(maxgain)) */
+/*@>15e8e3*/percent/*@>15e8e5*/ = /*@>15f773*/roundf(/*@>15d77b*/rtu_maxgain);
+/*@>15e71d*/if (/*@>15e9fa*/percent/*@>15e321*/ < /*@>15e324*/2.14748365E+9F) {
+    /*@>15e722*/if (/*@>15e9fc*/percent/*@>15e326*/ >= /*@>15e329*/-2.14748365E+9F) {
+        /*@>15e726*/tmp/*@>15e725*/ = /*@>15e32a*/(int32_T)/*@>15e9fe*/percent;
+    } else {
+        /*@>15e721*/tmp/*@>15e720*/ = /*@>15e32d*/MIN_int32_T;
+    }
+} else {
+    /*@>15e716*/tmp/*@>15e718*/ = /*@>15e32e*/MAX_int32_T;
+}
+/*@>12f123*/if (/*@>15d779*/rtu_db_offset/*@>12f10f*/ > /*@>15e71a*/tmp) {
+    /* '<S127>:1:22' db_offset = int32(maxgain); */
+    /*@>15e70a*/if (percent/*@>15e335*/ < /*@>15e338*/2.14748365E+9F) {
+        /*@>15e70f*/if (percent/*@>15e33a*/ >= /*@>15e33d*/-2.14748365E+9F) {
+            /*@>15e713*/db_offset/*@>15e712*/ = /*@>15e33e*/(int32_T)percent;
+        } else {
+            /*@>15e70e*/db_offset/*@>15e70d*/ = /*@>15e341*/MIN_int32_T;
+        }
+    } else {
+        /*@>15d740*/db_offset/*@>12f0fd*/ = /*@>15e342*/MAX_int32_T;
+    }
+}
+/* '<S127>:1:24' if (db_offset < int32(-10.0)) */
+/*@>12f126*/if (/*@>15d742*/db_offset/*@>12f111*/ < /*@>15d766*/-10) {
+    /* '<S127>:1:25' db_offset = int32(-10.0); */
+    /*@>15d744*/db_offset/*@>12f0ff*/ = /*@>1601dd*/-10;
+}
+/*  search through volume table to find index closest to vol */
+/* '<S127>:1:29' while (j <= numel(volTableIdx)) */
+exitg1 = false;
+while/*@<12f12b*/ ((!exitg1) && (/*@>15d746*/j/*@>12f112*/ <= /*@>15d768*/8)) {
+    uint32_T q0;
+    /* '<S127>:1:30' if (idx <= volTableIdx(j)) */
+    /*@>15e903*/q0/*@>15e905*/ = /*@>15fca5*/rtu_volTableIdx/*@>15fca7*/[/*@>15fca2*/j/*@>15fc9f*/ - /*@>15fca3*/1];
+    /*@>12f12c*/if (/*@>15d748*/idx/*@>12f115*/ <= /*@>15e907*/q0) {
+        /* '<S127>:1:31' if (j <= 1) */
+        /*@>12f12d*/if (/*@>15d74a*/j/*@>12f116*/ <= /*@>15d74c*/1) {
+            /*  first indexed value is linearly interpolated to zero */
+            /* '<S127>:1:32' if (volTableIdx(j)) */
+            /*@>12f12f*/if (/*@>15fcab*/rtu_volTableIdx/*@>15fcad*/[/*@>15fca9*/0]/*@>12f118*/ != /*@>15d752*/0U) {
+                /* '<S127>:1:33' percent = single(idx) / single(volTableIdx(j)); */
+                /*@>15d759*/percent/*@>12f16b*/ = /*@>12f187*/(real32_T)/*@>15d75f*/idx/*@>12f16a*/ / /*@>12f18a*/(real32_T)/*@>15fcb1*/rtu_volTableIdx/*@>15fcb3*/[/*@>15fcaf*/0];
+            } else {
+                /* '<S127>:1:34' else */
+                /* '<S127>:1:35' percent = single(1); */
+                /*@>15d753*/percent/*@>12f106*/ = /*@>15d769*/1.0F;
+            }
+            /* '<S127>:1:37' gain_value = percent * 10 ^ ( (volTabledB(j)+ single(db_offset)) / 20); */
+            /*@>15fda6*/localB->/*@>1602e6*/gain_value/*@>12f108*/ = /*@>15f777*/powf(/*@>15e385*/10.0F, (/*@>15fcc1*/rtu_volTabledB/*@>15fcc3*/[/*@>15fcbf*/0]/*@>15e42c*/ + /*@>15e432*/(real32_T)/*@>15e434*/db_offset)/*@>15e42b*/ / /*@>15e435*/20.0F)/*@>15d817*/ * /*@>15d755*/percent;
+        } else {
+            uint32_T qY;
+            uint32_T qY_tmp;
+            /* '<S127>:1:38' else */
+            /*  other values are interpolated in db space */
+            /* '<S127>:1:39' lastIdx = volTableIdx(j-1); */
+            /* '<S127>:1:40' percent = single(idx - lastIdx) / single(volTableIdx(j) - lastIdx); */
+            /* '<S127>:1:41' interpolated_gain_dB = (percent * (volTabledB(j) - volTabledB(j-1) ) ) + volTabledB(j-1); */
+            /* '<S127>:1:42' interpolated_gain_dB_with_offset= interpolated_gain_dB + single(db_offset); */
+            /* '<S127>:1:43' gain_value = 10 ^ ( (interpolated_gain_dB_with_offset) / 20); */
+            /*@>15e923*/qY_tmp/*@>15e925*/ = /*@>15fcbb*/rtu_volTableIdx/*@>15fcbd*/[/*@>15fcb8*/j/*@>15fcb5*/ - /*@>15fcb9*/2];
+            /*@>15d7d3*/qY/*@>15d7d5*/ = /*@>15e315*/idx/*@>15d7d2*/ - /*MW:OvSatOk*/ /*@>15e927*/qY_tmp;
+            /*@>15d7e4*/if (/*@>15d7da*/qY/*@>15d7dd*/ > /*@>15e317*/idx) {
+                /*@>15d7e0*/qY/*@>15d7e2*/ = /*@>15d7df*/0U;
+            }
+            /*@>15d7f3*/idx/*@>15d7f5*/ = q0/*@>15d7f2*/ - /*MW:OvSatOk*/ qY_tmp;
+            /*@>15d804*/if (/*@>15d7fa*/idx/*@>15d7fd*/ > q0) {
+                /*@>15d800*/idx/*@>15d802*/ = /*@>15d7ff*/0U;
+            }
+            /*@>15e94b*/percent/*@>15e94d*/ = /*@>15fccb*/rtu_volTabledB/*@>15fccd*/[/*@>15fcc8*/j/*@>15fcc5*/ - /*@>15fcc9*/2];
+            /*@>15fdad*/localB->/*@>1602e9*/gain_value/*@>15deb8*/ = /*@>15f775*/powf(/*@>15e04a*/10.0F, (((/*@>15fcd5*/rtu_volTabledB/*@>15fcd7*/[/*@>15fcd2*/j/*@>15fccf*/ - /*@>15fcd3*/1]/*@>15e356*/ - /*@>15e94f*/percent)/*@>15e34e*/ * (/*@>15e350*/(real32_T)/*@>15e352*/qY/*@>15e34f*/ / /*@>15e353*/(real32_T)/*@>15e355*/idx)/*@>15e34d*/ + percent)/*@>15e34c*/ + /*@>15e372*/(real32_T)/*@>15e374*/db_offset)/*@>15e34b*/ / /*@>15e375*/20.0F);
+        }
+        exitg1 = true;
+    } else {
+        /* '<S127>:1:46' else */
+        /* '<S127>:1:47' j = j + 1; */
+        /*@>15d750*/j/*@>160209*/++;
+    }
+}
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[15].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(15, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(15, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(15, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_lookupdbfromindex(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(15, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_lookupdbfromindex", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%<comma>const uint32_T rtu_volTableIdx[8]\
+%assign comma = ", "
+%<comma>const real32_T rtu_volTabledB[8]\
+%assign comma = ", "
+%<comma>uint32_T rtu_idx\
+%assign comma = ", "
+%<comma>int32_T rtu_db_offset\
+%assign comma = ", "
+%<comma>real32_T rtu_maxgain\
+%assign comma = ", "
+%<comma>B_lookupdbfromindex_BasicAudio_Target_T *localB\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(15, 0, fcnProtoType)>
+%endfunction

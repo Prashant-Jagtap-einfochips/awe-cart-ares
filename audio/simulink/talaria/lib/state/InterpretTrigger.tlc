@@ -1,0 +1,388 @@
+%implements InterpretTrigger "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+    %assign interpretErrorsFileName = ModelPrefix() + "InterpretError"
+    %assign stateVarFileName = ModelPrefix() + "StateVar"
+    %assign tspInterpretFileName = ModelPrefix() + "TSP_Interpret"
+
+    %% Add include file directly to model header
+    %<LibAddToCommonIncludes(interpretErrorsFileName+".h")>
+
+    %% The InterpretTrigger block assumes the responsibility for the overall
+    %% "interpretation engine" DLL entry-points / public API. However, only
+    %% add this engine code (interpret_dll) if building a top-model
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+    %% Add interpretation engine source file
+    %assign fileH = LibCreateSourceFile("Source","Custom","interpret_dll")
+    %openfile buffer
+        %include "tlc_interpret_dll.c"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %% ... and header file (for MATLAB loadlibrary
+    %assign fileH = LibCreateSourceFile("Header","Custom","interpret_dll")
+    %openfile buffer
+        #include "%<interpretTriggerFileName>.h"
+        #include "%<tspInterpretFileName>.h"
+        #include "%<stateVarFileName>.h"
+
+%if EXISTS(::TALARIA_ENGINE) && (TLC_FALSE == LibIsModelReferenceTarget())
+        // DLL Interface prototypes:
+        // ---- Initialize the engine at startup
+        void InitializeInterpretationEngine( void );
+%endif
+        // ---- Retrieve list of StateVar names
+        const char* FirstStateVar( void );
+        const char* NextStateVar( void );
+
+        // ---- Get get names of required tsps
+        const char* GetTspsForStateVar(const char* stateVarName);
+
+        // ---- Set tsp value
+        int SetTsp(const char* name, char* spaceDelimitedValues);
+        const char* CalculateStateVar( void );
+
+        // ---- Retrieve TSP COMPAT numbers
+        unsigned int GetTspCompat(unsigned int nameHash);
+        unsigned int GetTspCompatByName(const char* featureName);
+       
+        // ---- Error state and strings
+        unsigned int GetInterpretationErrorState( void );
+        const char* GetInterpretationErrorStrings( void );
+        void ClearInterpretationErrorState( void );
+        const char* GetTSPErrorStrings( void );
+        void ClearTSPErrorStrings( void );
+        
+        // ---- Clear various flags
+        void ClearAllTSPSightings( void );
+        void ClearAllStateRequests( void );
+        void ClearAllInterpretationRequiredFlags( void );
+        
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- dispatch table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+
+    %% Includes :
+    %openfile buffer
+        #include <stdint.h>
+        #include "%<interpretTriggerFileName>.h"
+        #include "%<stateVarFileName>.h"
+        #include "%<tspInterpretFileName>.h"
+        #include "%<ModelPrefix()>ModelCount.h"
+        #include <stdio.h>  // for vsnprintf
+        #include <string.h> // for strncpy
+        #include <stdarg.h> // for variadic args (va_start)
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Prototypes")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Sources")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Destinations")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+    %% Forward declare the datatypes
+    %openfile buffer
+
+        // Interpretation table record
+        typedef void (*InterpretationFunc)(void);
+        typedef struct InterpretationRecord_tag
+        {
+            int                 requested_state_vars;   // "dirty flag" counting requested StateVars
+            InterpretationFunc  interpretation_func;    // interpretation function
+            int                 tsp_count;              // indicates how many TSPs feed this interpretation
+            enum TSPNumber      *tsps;                  // array of TSP IDs that feed this interpretation
+            int                 stateVar_count;         // indicates how many StateVars receive value from this interpretation
+            enum StateVarNumber *stateVars;             // array of StateVar numbers that receive values from this interpretation
+        } InterpretationRecord_type;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %openfile buffer
+
+        // ----- Interpretation functions (generated in the model):
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Source TSPs for each interpretation function:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Sources",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Dependent StateVars for each interpretation function:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Destinations",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Interpretation object table listing all interpretations
+        static InterpretationRecord_type interpretation_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        };
+
+        // Share table in a public interface for use by top-model
+        void* %<ModelPrefix()>interpretation_table = interpretation_table;
+        int %<ModelPrefix()>interpretation_table_count = sizeof(interpretation_table) / sizeof(InterpretationRecord_type);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+    
+    %% Add the source code only for top-model code generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %include "tlc_interpret_trigger.c"
+          %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% Define our model's interpretation root and register it
+    %openfile buffer
+    InterpretationRoot %<ModelPrefix()>InterpretationRoot =
+    {
+        &%<ModelPrefix()>state_var_table,
+        &%<ModelPrefix()>interpretation_table,
+        &%<ModelPrefix()>tsp_interpret_table,
+        &%<ModelPrefix()>state_var_table_count,
+        &%<ModelPrefix()>interpretation_table_count,
+        &%<ModelPrefix()>tsp_interpret_table_count
+    };
+    void %<ModelPrefix()>InitializeInterpretationRoot()
+    {
+        RegisterInterpretationRoot(&%<ModelPrefix()>InterpretationRoot);
+    }
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",interpretTriggerFileName)
+
+    %openfile buffer
+        // ------------------------------------------------
+        // Structure to access engine parts from each model
+        typedef struct InterpretationRoot_tag
+        {
+            void* statevar_table;
+            void* interpretation_table;
+            void* tsp_interpret_table;
+            int* statevar_count;
+            int* interpretation_count;
+            int* tsp_interpret_table_count;
+        } InterpretationRoot;
+	
+      %% Only add model root structures if building code for a top-model
+      %if TLC_FALSE == LibIsModelReferenceTarget()
+        // ------------------------------------------------
+        // Iterator for use with StateVars and Interpretation
+        typedef struct
+        {
+            int model;
+            int index;
+        }
+        InterpretEngineIterator;
+        extern InterpretEngineIterator INVALID_INTERPRET_ITERATOR;
+        int IsValidInterpretIterator(InterpretEngineIterator anIterator);
+
+        // Share the interpretation roots with the rest of our engine
+        extern InterpretationRoot* interpretationRoots[];
+        extern int numInterpretationRoots;
+      %endif
+
+        // Register engine
+        void RegisterInterpretationRoot(InterpretationRoot* aRoot);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Add the source code only for top-model code generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+          #ifdef INCLUDE_INTERPRETATION_DLL_API
+            // Retrieve space-delimited list of TSPs needed for specified interpretation
+            // Returns char count placed in buffer
+            int ListTSPsForInterpretation(InterpretEngineIterator interpretationIn, char* bufferIn, int bufferSizeIn);
+
+            // Return the first interpretation record that has been touched to run (or -1 if none)
+            InterpretEngineIterator FindFirstNeededInterpretation( void );
+
+            // Return the next interpretation record that has been touched to run (or -1 if no more)
+            InterpretEngineIterator FindNextNeededInterpretation(InterpretEngineIterator afterThisOne);
+          #endif
+
+            // Verify that all TSPs read by the specified interpretation have been seen
+            // returns 0 for OK, nonzero is error
+            int CheckInterpretationSourceSightingsOK(InterpretEngineIterator interpretationNumIn);
+
+            // Checks source sightings & calls interpretation function, but does *not* reset dirty flags
+            // returns error state (0 means OK);
+            int CallInterpretation(InterpretEngineIterator interpretationNumIn);
+
+            // Touch a interpretation object to indicate source tuning variables
+            // ... have changed. This indicates the interpretation must be run.
+            void TouchInterpretation(InterpretEngineIterator interpretationNumIn);
+
+            // Clear all flags that would indicate a interpretation must be run
+            void ClearAllInterpretationRequiredFlags( void );
+
+            // Find all touched interpretations and list their source TSPs
+            const char* GetTspsForStateVar(const char* stateVarName);
+
+            // Retrieve interpretation error state
+            unsigned int GetInterpretationErrorState( void );
+
+            // Retrieve reported error strings
+            const char* GetInterpretationErrorStrings( void );
+
+            // Clear errors and error strings
+            void ClearInterpretationErrorState( void );
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+    
+    %% ------------------- Dump our interpretation numbers to the STATEVAR file
+    %assign fileH = LibCreateSourceFile("Source","Custom",stateVarFileName)
+    %<FeaturePathAddTable(fileH,"Typedefs","InterpretEnum")>
+    %openfile buffer
+    // Interpretation numbers local to this model:
+    enum InterpretationNumber {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InterpretEnumTop",buffer)>
+    %openfile buffer
+        NUM_INTERPRETATION_NUMBERS
+    };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InterpretEnumBottom",buffer)>
+
+    %% ------------------- interpret error *.h file (variadic functions)
+    %assign fileH = LibCreateSourceFile("Header","Custom",interpretErrorsFileName)
+    %openfile buffer
+        // MATLAB's loadlibrary does not support variadic functions (...)
+        // and gives the warning that looks something like:
+        //   Warning: The data type 'error' used by function InterpretError does not exist. 
+        // So to eliminate these warnings, the following variadic functions
+        // have been removed from %<interpretTriggerFileName>.h which is used
+        // to load interpretation DLLs into MATLAB. Instead, these functions
+        // are declared here out of the way.
+
+        // Report a interpretation error (works like printf)
+        // Called from the model code
+        void InterpretError(const char* formatString, ...);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Hookup registration of our interpretation root into model init
+    %assign fileH = LibGetModelDotCFile()
+    %openfile buffer
+        extern void %<ModelPrefix()>InitializeInterpretationRoot( void );
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %openfile buffer
+        // Register interpretation engine among the model roots
+        %<ModelPrefix()>InitializeInterpretationRoot();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+    
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+    %% NOTE: this code is required to be in "Output" due to the invocation
+    %% of the LibBlockExecuteFcnCall method. Otherwise, up in BlockInstanceSetup
+    %% this method returns empty strings. Here... it returns scary looking
+    %% strings, like  /*@[2ef74*/InterpretTest_interpretation/*@]*/ but somehow
+    %% TLC eventually resolves this mumbo jumbo into the actual function name
+
+    %% File Names  (without the LibGetModelName())
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+    %assign stateVarFileName = ModelPrefix() + "StateVar"
+
+    %% S Function RTW Data Parameters
+    %assign Trigger = SFcnParamSettings.Trigger
+    %assign TSPs = SFcnParamSettings.TSPs
+    %assign TSPsList = FEVAL("strsplit",TSPs,",")
+    %assign TSPsCount = SIZE(TSPsList)[1]
+    %assign StateVars = SFcnParamSettings.StateVars
+    %assign StateVarsList = FEVAL("strsplit",StateVars,",")
+    %assign StateVarsCount = SIZE(StateVarsList)[1]
+
+    %% If there are no StateVars, do nothing
+    %if 0 == StateVarsCount
+        %return
+    %endif
+
+    %% Retrieve the function name... just the name
+    %assign functionCallStr = LibBlockExecuteFcnCall(block, 0)
+    %assign funcName = FEVAL("strtok",functionCallStr,"(")
+
+    %% ---------------- StateVar Source
+    %assign fileH = LibCreateSourceFile("Source","Custom",stateVarFileName)
+    %% Declare the interpretation number for the StateVar to reference as a source
+    %openfile buffer
+        ID_%<Trigger>, /* '%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InterpretEnumEntries",buffer)>
+
+    %% ---------------- Source
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+    %% Declare the interpretation function. The function's definition will reside in the default model file
+    %openfile buffer
+        extern void /* [%<TSPs>]-->[%<StateVars>]*/ \
+            %<funcName>(void); /* %<Trigger>:'%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %% Define the array of source TSP objects
+    %openfile buffer
+        static enum TSPNumber %<Trigger>_Sources[] = { /* '%<LibGetBlockName(block)>' */
+            %foreach j = TSPsCount
+                ID_TSP_%<TSPsList[j]>,
+            %endforeach
+            };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Sources",buffer)>
+
+    %% Define the array of dependent StateVar objects
+    %openfile buffer
+        static enum StateVarNumber %<Trigger>_Destinations[] = { /* '%<LibGetBlockName(block)>' */
+            %foreach j = StateVarsCount
+                ID_StateVar_%<StateVarsList[j]>,
+            %endforeach
+            };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Destinations",buffer)>
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        // Interpretation record for %<StateVars> '%<LibGetBlockName(block)>'
+        { 0, &%<funcName>, %<TSPsCount>, %<Trigger>_Sources, %<StateVarsCount>, %<Trigger>_Destinations
+        },
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+%endfunction

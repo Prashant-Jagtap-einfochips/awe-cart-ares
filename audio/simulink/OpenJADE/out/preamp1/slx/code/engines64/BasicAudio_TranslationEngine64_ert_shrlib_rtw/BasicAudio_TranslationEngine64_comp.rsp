@@ -1,0 +1,7 @@
+-IC:/work_dev/ares/AWE/ARES_AWE_02/audio/simulink/OpenJADE/out/preamp1/slx/code/engines64
+-IC:/work_dev/ares/AWE/ARES_AWE_02/audio/simulink/OpenJADE/out/preamp1/slx/code/engines64/BasicAudio_TranslationEngine64_ert_shrlib_rtw
+-IC:/Program\ Files/MATLAB/R2022b/extern/include
+-IC:/Program\ Files/MATLAB/R2022b/simulink/include
+-IC:/Program\ Files/MATLAB/R2022b/rtw/c/src
+-IC:/Program\ Files/MATLAB/R2022b/rtw/c/src/ext_mode/common
+-IC:/Program\ Files/MATLAB/R2022b/rtw/c/ert

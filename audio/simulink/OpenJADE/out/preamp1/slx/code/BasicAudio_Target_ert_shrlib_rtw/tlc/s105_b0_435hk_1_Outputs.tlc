@@ -1,0 +1,44 @@
+%implements s105_b0_435hk_1_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcOutputsFcnOfS10B0 = OpaqueTLCBlockFcn("Outputs", 10, 0, 1, 0, 0)
+%assign tlcUpdateFcnOfS10B0 = OpaqueTLCBlockFcn("Update", 10, 0, 1, 0, 1)
+%if !WHITE_SPACE(tlcOutputsFcnOfS10B0)
+/* M-S-Function: '<S35>/InsertLockCode' */
+%<SLibCG_DumpSSCode("/*@[136d94*/",tlcOutputsFcnOfS10B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcUpdateFcnOfS10B0)
+/* Update for M-S-Function: '<S35>/InsertLockCode' */
+%<SLibCG_DumpSSCode("/*@[136d95*/",tlcUpdateFcnOfS10B0,"/*@]*/")>\
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[1].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(1, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(1, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(1, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_LockExit(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(1, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_LockExit", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(1, 0, fcnProtoType)>
+%endfunction

@@ -45,7 +45,7 @@ extern "C" {
 ** variables.
 ** ------------------------------------------------------------------- */
 
-CREATE_MODULE_CLASS(Class_awe_modControl, (0 + 3))
+CREATE_MODULE_CLASS(Class_awe_modControl, (0 + 5))
 
 AWE_MOD_SLOW_ANY_CONST
 const Class_awe_modControl awe_modControlClass =
@@ -57,12 +57,14 @@ const Class_awe_modControl awe_modControlClass =
         awe_modControlSet,                    // Set function
         awe_modControlGet,                    // Get function
         0,				                      // Unused field
-        ClassModule_PackArgCounts(0, 3),    // (Public words, private words)
+        ClassModule_PackArgCounts(0, 5),    // (Public words, private words)
         {0x00000001, 0x00000000}, // Specifies which variables are floating-point
     },
 #ifdef BUILD64
     {
         offsetof(awe_modControlInstance, coeff),
+        offsetof(awe_modControlInstance, CONTROL_REQUEST),
+        offsetof(awe_modControlInstance, CONTROL_RESPONSE),
         offsetof(awe_modControlInstance, modPtr),
         offsetof(awe_modControlInstance, varPtr),
     }
@@ -93,6 +95,20 @@ ModInstanceDescriptor *awe_modControlConstructor(INT32 * FW_RESTRICT retVal, UIN
     {                                    
         // Error code is in *retVal                                    
         return 0;                                    
+    }            
+                
+    // CONTROL_REQUEST Message Pointer            
+    if ((S->CONTROL_REQUEST = (UINT32 *)awe_fwMalloc(CONTROL_MAX_PAYLOAD_SIZE*sizeof(UINT32), AWE_HEAP_FAST2SLOW, retVal)) == 0)            
+    {            
+        // Error code is in *retVal            
+        return 0;            
+    }            
+                
+    // CONTROL_RESPONSE Message Pointer            
+    if ((S->CONTROL_RESPONSE = (UINT32 *)awe_fwMalloc(CONTROL_MAX_PAYLOAD_SIZE*sizeof(UINT32), AWE_HEAP_FAST2SLOW, retVal)) == 0)            
+    {            
+        // Error code is in *retVal            
+        return 0;            
     }            
                 
     return ((ModInstanceDescriptor *) S);            
@@ -131,6 +147,7 @@ UINT32 awe_modControlSet(void *pInstance, UINT32 mask)
     	awe_modTestAudioInstance* pAudio = (awe_modTestAudioInstance*)S->modPtr;
         for (i = 0; i < 11; i++) {
         	pAudio->coeff[i] = S->coeff[i];
+    		pAudio->CONTROL_REQUEST[i] = S->CONTROL_REQUEST[i];
         }
         
         AWE_CLASSMODULE_SETALL(pAudio);

@@ -1,0 +1,135 @@
+%implements s55_b0_c75hk_ModelInitialize "C"
+
+%function ModelInitialize(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%<SLibInsertAsyncTaskInitializeCode(system)>
+%<SLibWriteMachineInitialize()>
+%<SLibCGIRDumpSystemUserCode(50, "Start", "Header")>\
+%<SLibCGIRDumpSystemUserCode(50, "Start", "Body")>\
+%<SLibCGIRDumpSystemUserCode(50, "Start", "Trailer")>\
+%<SLibCGIRDumpSystemUserCode(50, "Initialize", "Header")>\
+%<SLibCGIRDumpSystemUserCode(50, "Initialize", "Body")>\
+%assign   SystemInitialize_open_Balance_50_0 = ""
+%openfile SystemInitialize_open_Balance_50_0
+
+/* SystemInitialize for Atomic SubSystem: '<S1>/Balance' */
+%closefile SystemInitialize_open_Balance_50_0
+
+%assign    SystemInitialize_body_Balance_50_0 = ""
+%openfile  SystemInitialize_body_Balance_50_0
+
+%<SLibCG_DumpSSCode("/*@[ef54c*/",SLibCGIRDumpSystemUserCode(14, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef54d*/",SLibCGIRDumpSystemUserCode(14, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef54e*/",SLibCGIRDumpSystemUserCode(14, "Initialize", "Trailer"),"/*@]*/")>\
+%closefile SystemInitialize_body_Balance_50_0
+
+%assign    SystemInitialize_close_Balance_50_0 = ""
+%openfile  SystemInitialize_close_Balance_50_0
+
+/* End of SystemInitialize for SubSystem: '<S1>/Balance' */
+%closefile SystemInitialize_close_Balance_50_0
+%<SLibCG_DumpSSCode(SystemInitialize_open_Balance_50_0, SystemInitialize_body_Balance_50_0, SystemInitialize_close_Balance_50_0)>
+
+
+%assign   SystemInitialize_open_Bass_50_1 = ""
+%openfile SystemInitialize_open_Bass_50_1
+
+/* SystemInitialize for Atomic SubSystem: '<S1>/Bass' */
+%closefile SystemInitialize_open_Bass_50_1
+
+%assign    SystemInitialize_body_Bass_50_1 = ""
+%openfile  SystemInitialize_body_Bass_50_1
+
+%<SLibCG_DumpSSCode("/*@[ef54f*/",SLibCGIRDumpSystemUserCode(27, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef550*/",SLibCGIRDumpSystemUserCode(27, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef551*/",SLibCGIRDumpSystemUserCode(27, "Initialize", "Trailer"),"/*@]*/")>\
+%closefile SystemInitialize_body_Bass_50_1
+
+%assign    SystemInitialize_close_Bass_50_1 = ""
+%openfile  SystemInitialize_close_Bass_50_1
+
+/* End of SystemInitialize for SubSystem: '<S1>/Bass' */
+%closefile SystemInitialize_close_Bass_50_1
+%<SLibCG_DumpSSCode(SystemInitialize_open_Bass_50_1, SystemInitialize_body_Bass_50_1, SystemInitialize_close_Bass_50_1)>
+
+
+%assign   SystemInitialize_open_Mute_50_2 = ""
+%openfile SystemInitialize_open_Mute_50_2
+
+/* SystemInitialize for Atomic SubSystem: '<S1>/Mute' */
+%closefile SystemInitialize_open_Mute_50_2
+
+%assign    SystemInitialize_body_Mute_50_2 = ""
+%openfile  SystemInitialize_body_Mute_50_2
+
+%<SLibCG_DumpSSCode("/*@[ef552*/",SLibCGIRDumpSystemUserCode(30, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef553*/",SLibCGIRDumpSystemUserCode(30, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef554*/",SLibCGIRDumpSystemUserCode(30, "Initialize", "Trailer"),"/*@]*/")>\
+%closefile SystemInitialize_body_Mute_50_2
+
+%assign    SystemInitialize_close_Mute_50_2 = ""
+%openfile  SystemInitialize_close_Mute_50_2
+
+/* End of SystemInitialize for SubSystem: '<S1>/Mute' */
+%closefile SystemInitialize_close_Mute_50_2
+%<SLibCG_DumpSSCode(SystemInitialize_open_Mute_50_2, SystemInitialize_body_Mute_50_2, SystemInitialize_close_Mute_50_2)>
+
+
+%assign   SystemInitialize_open_Treble_50_3 = ""
+%openfile SystemInitialize_open_Treble_50_3
+
+/* SystemInitialize for Atomic SubSystem: '<S1>/Treble' */
+%closefile SystemInitialize_open_Treble_50_3
+
+%assign    SystemInitialize_body_Treble_50_3 = ""
+%openfile  SystemInitialize_body_Treble_50_3
+
+%<SLibCG_DumpSSCode("/*@[ef555*/",SLibCGIRDumpSystemUserCode(42, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef556*/",SLibCGIRDumpSystemUserCode(42, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef557*/",SLibCGIRDumpSystemUserCode(42, "Initialize", "Trailer"),"/*@]*/")>\
+%closefile SystemInitialize_body_Treble_50_3
+
+%assign    SystemInitialize_close_Treble_50_3 = ""
+%openfile  SystemInitialize_close_Treble_50_3
+
+/* End of SystemInitialize for SubSystem: '<S1>/Treble' */
+%closefile SystemInitialize_close_Treble_50_3
+%<SLibCG_DumpSSCode(SystemInitialize_open_Treble_50_3, SystemInitialize_body_Treble_50_3, SystemInitialize_close_Treble_50_3)>
+
+
+%assign   SystemInitialize_open_Volume_50_4 = ""
+%openfile SystemInitialize_open_Volume_50_4
+
+/* SystemInitialize for Atomic SubSystem: '<S1>/Volume' */
+%closefile SystemInitialize_open_Volume_50_4
+
+%assign    SystemInitialize_body_Volume_50_4 = ""
+%openfile  SystemInitialize_body_Volume_50_4
+
+%<SLibCG_DumpSSCode("/*@[ef558*/",SLibCGIRDumpSystemUserCode(49, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef559*/",SLibCGIRDumpSystemUserCode(49, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[ef55a*/",SLibCGIRDumpSystemUserCode(49, "Initialize", "Trailer"),"/*@]*/")>\
+%closefile SystemInitialize_body_Volume_50_4
+
+%assign    SystemInitialize_close_Volume_50_4 = ""
+%openfile  SystemInitialize_close_Volume_50_4
+
+/* End of SystemInitialize for SubSystem: '<S1>/Volume' */
+%closefile SystemInitialize_close_Volume_50_4
+%<SLibCG_DumpSSCode(SystemInitialize_open_Volume_50_4, SystemInitialize_body_Volume_50_4, SystemInitialize_close_Volume_50_4)>
+
+%<SLibCGIRDumpSystemUserCode(50, "Initialize", "Trailer")>\
+%<SLibInsertInitPeriodicCStatesFcn(system)>
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function ModelInitializeFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void ModelInitialize(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(28, 2, fcnProtoType)>
+%endfunction

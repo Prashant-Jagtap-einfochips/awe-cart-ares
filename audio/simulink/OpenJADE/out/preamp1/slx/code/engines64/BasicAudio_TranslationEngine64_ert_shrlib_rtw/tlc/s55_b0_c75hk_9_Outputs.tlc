@@ -1,0 +1,192 @@
+%implements s55_b0_c75hk_9_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+real_T cleanIdx_data[30];
+real_T tmp_data[30];
+int32_T indx_data[30];
+int32_T i;
+int32_T loop_ub;
+real32_T tmp_0;
+uint32_T tmp;
+char_T k_data[78];
+char_T i_data[74];
+char_T j_data[13];
+int8_T g_tmp_data[30];
+int8_T remainingPairs_data[30];
+static const char_T l[74] = %<(TLC_STR_CTX(0))>;
+static const char_T m[13] = %<(TLC_STR_CTX(1))>;
+static const char_T n[78] = %<(TLC_STR_CTX(2))>;
+int32_T indx_size;
+int32_T remainingPairs_size_idx_1;
+%closefile localVarDecl
+/* {S!d487}MATLAB Function: '<S16>/Balance_Table_Translation' */
+/* {S!d490}MATLAB Function: '<S16>/Balance_Table_Translation' incorporates:
+ *  S-Function (TuneVarMEX): '<S16>/TuneVarBalanceTable'
+ *
+ * Block description for '<S16>/TuneVarBalanceTable':
+ *  Define the balance curve using a table, with the first column being
+ *  the list of indices and the second column being the corresponding
+ *  balance gains in dB. Gain values for indices in between the elements
+ *  in the table are linearly interpolated.
+ */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'TranslateTrigger/tfunc': '<S41>:1' */
+/* '<S41>:1:3' f(); */
+/*  Set up the size and datatype of our TOP outputs: */
+/* MATLAB Function 'BasicAudio/Balance/balance/InnerLink/TuneVarTable/Balance_Table_Translation': '<S39>:1' */
+/* '<S39>:1:5' maxTableSize = numel(balanceTable.Value) / 2; */
+/* '<S39>:1:6' idxType = 'uint8'; */
+/* '<S39>:1:7' idxStorageType = 'uint32'; */
+/* '<S39>:1:8' dbType = 'single'; */
+/* '<S39>:1:9' tableIdx = zeros(1,maxTableSize,idxStorageType); */
+/* '<S39>:1:10' tableDb = zeros(1,maxTableSize,dbType); */
+/*@>d43e5*/memset(&/*@>d5690*/BasicAudio_TranslationEngine64_B./*@>d6b0c*/tableIdx/*@>d3817*/[/*@>d3805*/0], /*@>d68d9*/0, /*@>d3815*/30U/*@>d381d*/ * /*@>d381c*/sizeof(uint32_T));
+/*@>d43e7*/memset(&/*@>d5696*/BasicAudio_TranslationEngine64_B./*@>d6b0f*/tableDb/*@>d382e*/[/*@>d3813*/0], /*@>d68dc*/0, /*@>d382c*/30U/*@>d3834*/ * /*@>d3833*/sizeof(real32_T));
+/*  separate the pairs into their index and value components */
+/* '<S39>:1:13' givenPairs = balanceTable.Size(1); */
+/* '<S39>:1:14' indexes = balanceTable.Value(1:givenPairs,1); */
+/* '<S39>:1:15' values = balanceTable.Value(1:givenPairs,2); */
+/*  then sort and ignore duplicates */
+/* '<S39>:1:18' [cleanIdx,map] = unique(indexes); */
+/*@>cfd75*/if (/*@>d569c*/BasicAudio_TranslationEngine64_B./*@>d6b12*/Table./*@>d6b03*/Size/*@>d51b2*/[/*@>d51ab*/0]/*@>c62ac*/ < /*@>cd47f*/1.0) {
+    /*@>cfd79*/loop_ub/*@>cfd78*/ = /*@>d68df*/-1;
+} else {
+    /*@>cd678*/loop_ub/*@>cc84e*/ = /*@>cd9f8*/(int32_T)/*@>d56a2*/BasicAudio_TranslationEngine64_B./*@>d6b15*/Table./*@>d6b06*/Size/*@>d51bb*/[/*@>d51b4*/0]/*@>c62b5*/ - /*@>cd481*/1;
+}
+i/*@>c9573*/ = /*@>cd676*/loop_ub + 1;
+if (/*@>d33c0*/loop_ub >= /*@>d33be*/0) {
+    /*@>d43f4*/memcpy(&/*@>d3398*/tmp_data/*@>d3399*/[/*@>d3385*/0], &/*@>d56a8*/BasicAudio_TranslationEngine64_B./*@>d6b18*/Table./*@>d6b00*/Value[0], /*@>d3383*/(uint32_T)(/*@>d337f*/loop_ub + 1)/*@>d33aa*/ * /*@>d33a9*/sizeof(real_T));
+}
+%<SLibCG_DumpSSCode("/*@[d6542*/",(SLibCGCallSubFcn("BasicAudio_TranslationEngine64_unique_vector", ["/*@>d6bcf*/tmp_data", "&i", "/*@>d6be4*/cleanIdx_data", "&loop_ub", "/*@>d6bf9*/indx_data", "&indx_size"], 9, 2, 0)),"/*@]*/")>;
+/*  Validate input sizes */
+/* '<S39>:1:21' numPairs = numel(map); */
+/* '<S39>:1:22' argName='BalanceTable'; */
+/*  Validate: enough data? */
+/* '<S39>:1:25' if (numPairs < 2) */
+/*@>bf12b*/if (indx_size/*@>befd3*/ < /*@>cd46d*/2) {
+    /* '<S39>:1:26' TranslateError('%<"\%s must have at least 2 index pairs. Encounted value with only \%f pairs\\n\', argName, numPairs);"> */
+    /* TRANSLATEERROR (For use in Functions triggered by TranslationTrigger blocks.) */
+    /* Print error message during tune data translation. */
+    /*   Do not include a final newline as this behavior is already built in. */
+    /*   Note that escape sequences such as '\n' will not work here. To emit */
+    /*   special characters, pass them in as arguments to %<"\%c or \%s format"> */
+    /*   specifiers. */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /* 'TranslateError:10' coder.extrinsic('gcb') */
+    /* 'TranslateError:11' coder.extrinsic('warning') */
+    /* 'TranslateError:12' coder.allowpcode('plain'); */
+    /*  enable code generation from p-file */
+    /* 'TranslateError:14' if (coder.target('MATLAB')) */
+    /* 'TranslateError:19' if (coder.target('Sfun')) */
+    /* 'TranslateError:22' else */
+    /*  Generated C-language code */
+    /* 'TranslateError:24' count = numel(varargin); */
+    /* 'TranslateError:25' fixedArgs = varargin; */
+    /* 'TranslateError:26' for i=1:count */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:31' coder.ceval('TranslateError',fixedArgs{:}); */
+    /*@>d43f6*/memcpy(&/*@>d3325*/i_data[/*@>d3315*/0], &/*@>d332d*/l/*@>d332e*/[/*@>d3322*/0], /*@>d3324*/74U/*@>d3331*/ * /*@>d3330*/sizeof(char_T));
+/*@>ca41d*/    for (/*@>d695a*/i = /*@>d6959*/0; /*@>d6964*/i < /*@>d6962*/13; /*@>d6960*/i/*@>d6968*/++) {
+        /*@>d25ad*/j_data[/*@>cd631*/i]/*@>ca410*/ = /*@>d51ef*/m/*@>d51f1*/[/*@>d51ee*/i];
+    }
+    /*@>d3fd3*/TranslateError(&/*@>d257a*/i_data/*@>d258d*/[/*@>cd63d*/0], &/*@>d2590*/j_data/*@>d25a3*/[/*@>cd641*/0], /*@>ce6c7*/(real_T)indx_size);
+}
+/*  Validate: Highest index still below 255? */
+/* '<S39>:1:30' if (cleanIdx(1) < 0 || cleanIdx(end) > intmax(idxType)) */
+/*@>bf14b*/if ((/*@>d51be*/cleanIdx_data/*@>d51c0*/[/*@>d51bd*/0]/*@>befd4*/ < /*@>cd46e*/0.0)/*@>d6409*/ || (/*@>d51c6*/cleanIdx_data/*@>d51c8*/[loop_ub/*@>d51c2*/ - /*@>d51c5*/1]/*@>befd8*/ > /*@>cd46f*/255.0)) {
+    /* '<S39>:1:31' TranslateError('%<"\%s out of range table index \%f encountered. Index must be between 0 and \%d.\\n\',argName,cleanIdx(end),intmax(idxType));"> */
+    /* TRANSLATEERROR (For use in Functions triggered by TranslationTrigger blocks.) */
+    /* Print error message during tune data translation. */
+    /*   Do not include a final newline as this behavior is already built in. */
+    /*   Note that escape sequences such as '\n' will not work here. To emit */
+    /*   special characters, pass them in as arguments to %<"\%c or \%s format"> */
+    /*   specifiers. */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /* 'TranslateError:10' coder.extrinsic('gcb') */
+    /* 'TranslateError:11' coder.extrinsic('warning') */
+    /* 'TranslateError:12' coder.allowpcode('plain'); */
+    /*  enable code generation from p-file */
+    /* 'TranslateError:14' if (coder.target('MATLAB')) */
+    /* 'TranslateError:19' if (coder.target('Sfun')) */
+    /* 'TranslateError:22' else */
+    /*  Generated C-language code */
+    /* 'TranslateError:24' count = numel(varargin); */
+    /* 'TranslateError:25' fixedArgs = varargin; */
+    /* 'TranslateError:26' for i=1:count */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:31' coder.ceval('TranslateError',fixedArgs{:}); */
+    /*@>d43f8*/memcpy(&/*@>d3290*/k_data[/*@>d3280*/0], &/*@>d3298*/n/*@>d3299*/[/*@>d328d*/0], /*@>d328f*/78U/*@>d329c*/ * /*@>d329b*/sizeof(char_T));
+/*@>ca552*/    for (/*@>d6949*/i = /*@>d6948*/0; /*@>d6953*/i < /*@>d6951*/13; /*@>d694f*/i/*@>d6969*/++) {
+        /*@>d267c*/j_data[/*@>cd656*/i]/*@>ca545*/ = /*@>d5211*/m/*@>d5213*/[/*@>d5210*/i];
+    }
+    /*@>d3fd7*/TranslateError(&/*@>d2646*/k_data/*@>d2659*/[/*@>cd662*/0], &/*@>d265c*/j_data/*@>d266f*/[/*@>cd666*/0], /*@>d520b*/cleanIdx_data/*@>d520d*/[loop_ub/*@>d5207*/ - /*@>d520a*/1], /*@>ce6eb*/MAX_uint8_T);
+}
+/*  fill in the table buffer with provided pairs */
+/* '<S39>:1:35' tableIdx(1:numPairs) = cleanIdx(1:numPairs); */
+/*@>cfd7a*/if (indx_size/*@>c62d0*/ < /*@>cd484*/1) {
+    /*@>cfd7e*/loop_ub/*@>cfd7d*/ = /*@>d68e2*/-1;
+} else {
+    /*@>cd67a*/loop_ub/*@>cc853*/ = indx_size/*@>c62d8*/ - /*@>cd486*/1;
+}
+/*@>c9820*/for (/*@>d6939*/i = /*@>d6938*/0; /*@>d6944*/i <= /*@>d6942*/loop_ub; /*@>d693f*/i/*@>d696a*/++) {
+    /*@>d56ae*/BasicAudio_TranslationEngine64_B./*@>d6b1b*/tableIdx/*@>c9806*/[/*@>cd50f*/i]/*@>c980d*/ = /*@>cd9fd*/(uint32_T)%<SLibCG_DumpSSCode("/*@[d6559*/",(SLibCGCallSubFcn("rt_roundd_snf", ["/*@>d6c0f*/cleanIdx_data/*@>d6c0e*/[/*@>d6c10*/i]"], 9, 2, 1)),"/*@]*/")>;
+}
+/* '<S39>:1:36' tableDb(1:numPairs) = values(map(1:numPairs)); */
+/*@>cfd7f*/if (indx_size/*@>bf0fc*/ < /*@>cd478*/1) {
+    /*@>cfd83*/loop_ub/*@>cfd82*/ = /*@>d68e5*/0;
+} else {
+    /*@>cd67e*/loop_ub/*@>cc85d*/ = indx_size;
+}
+/*@>c9aaa*/for (/*@>d6926*/i = /*@>d6925*/0; /*@>d6933*/i < /*@>d6930*/loop_ub; /*@>d692c*/i/*@>d696b*/++) {
+    /*@>d56b4*/BasicAudio_TranslationEngine64_B./*@>d6b1e*/tableDb/*@>c9a92*/[/*@>cd53f*/i]/*@>c9a99*/ = /*@>c9a6f*/(real32_T)/*@>d56ba*/BasicAudio_TranslationEngine64_B./*@>d6b21*/Table./*@>d6b09*/Value/*@>d51e3*/[/*@>d51d9*/indx_data/*@>d51d8*/[/*@>d51db*/i]/*@>d51d6*/ + /*@>d51dc*/29];
+}
+/*  fill the rest of the table buffer with the last entry */
+/* '<S39>:1:39' remainingPairs = numel(map)+1:maxTableSize; */
+/*@>bf183*/if (indx_size/*@>bf0b3*/ + /*@>cd479*/1/*@>bf0ff*/ > /*@>cd475*/30) {
+    remainingPairs_size_idx_1/*@>c793e*/ = /*@>d68e8*/0;
+} else {
+    remainingPairs_size_idx_1/*@>c9b6b*/ = /*@>cf527*/30/*@>d0dfe*/ - indx_size;
+    /*@>cd56e*/loop_ub/*@>c9bae*/ = /*@>cf530*/29/*@>d0e00*/ - indx_size;
+/*@>c9b93*/    for (/*@>d6916*/i = /*@>d6915*/0; /*@>d6921*/i <= /*@>d691f*/loop_ub; /*@>d691c*/i/*@>d696e*/++) {
+        /*@>d2477*/remainingPairs_data[/*@>cd563*/i]/*@>c9b7f*/ = /*@>ce6de*/(int8_T)((indx_size/*@>d588b*/ + /*@>d588e*/1)/*@>c9b74*/ + /*@>cd55e*/i);
+    }
+}
+/* '<S39>:1:40' tableIdx(remainingPairs) = tableIdx(numPairs); */
+if (remainingPairs_size_idx_1/*@>d3205*/ - /*@>d3208*/1 >= /*@>d3204*/0) {
+    /*@>d43fa*/memcpy(&/*@>d31e6*/g_tmp_data[/*@>d31d6*/0], &/*@>d31ee*/remainingPairs_data[/*@>d31e5*/0], /*@>d31d4*/(uint32_T)remainingPairs_size_idx_1/*@>d31f2*/ * /*@>d31f1*/sizeof(int8_T));
+}
+/*@>cd4b9*/tmp/*@>c8bf1*/ = /*@>d56c0*/BasicAudio_TranslationEngine64_B./*@>d6b24*/tableIdx/*@>d51eb*/[indx_size/*@>d51e5*/ - /*@>d51e8*/1];
+/*@>c9ff5*/for (/*@>d6903*/i = /*@>d6902*/0; /*@>d6910*/i < remainingPairs_size_idx_1; /*@>d6909*/i/*@>d696c*/++) {
+    /*@>d56c6*/BasicAudio_TranslationEngine64_B./*@>d6b27*/tableIdx/*@>c9fd0*/[/*@>d51f5*/g_tmp_data[/*@>d51f4*/i]/*@>c9fd5*/ - /*@>cd5bf*/1]/*@>c9fdd*/ = /*@>cd5b6*/tmp;
+}
+/* '<S39>:1:41' tableDb(remainingPairs) =  tableDb(numPairs); */
+/*@>cd4bb*/tmp_0/*@>c8c06*/ = /*@>d56cc*/BasicAudio_TranslationEngine64_B./*@>d6b2a*/tableDb/*@>d51ff*/[indx_size/*@>d51f9*/ - /*@>d51fc*/1];
+/*@>ca1fd*/for (/*@>d68f0*/i = /*@>d68ef*/0; /*@>d68fd*/i < remainingPairs_size_idx_1; /*@>d68f6*/i/*@>d696d*/++) {
+    /*@>d56d2*/BasicAudio_TranslationEngine64_B./*@>d6b2d*/tableDb/*@>ca1d8*/[/*@>d5203*/g_tmp_data[/*@>d5202*/i]/*@>ca1dd*/ - /*@>cd5e6*/1]/*@>ca1e5*/ = /*@>cd5dd*/tmp_0;
+}
+/* {E!d490}End of MATLAB Function: '<S16>/Balance_Table_Translation' */
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void FuncTranslation_BasicAudio_2333_295_90(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(9, 2, fcnProtoType)>
+%endfunction

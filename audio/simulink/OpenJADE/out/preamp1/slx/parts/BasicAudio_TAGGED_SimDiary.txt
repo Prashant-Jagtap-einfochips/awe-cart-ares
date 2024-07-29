@@ -1,0 +1,4 @@
+Warning: Environment Controller block will be removed in a future release. Replace Environment Controller block 'BasicAudio_TAGGED/Input/Environment Controller' with Variant Source block with the Variant control mode parameter set to 'sim codegen switching'. Use Model Advisor to do this automatically.
+
+SimPause block will cause assertion to invoke a pause:
+Warning: Assertion detected in 'BasicAudio_TAGGED/SimPause/intentionally pause via assertion' at time 0.000666667

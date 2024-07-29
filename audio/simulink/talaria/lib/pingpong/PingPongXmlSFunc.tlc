@@ -1,0 +1,77 @@
+%implements PingPongXmlSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%addincludepath "../util" 
+%include "SyncApiTypeSetup.tlc"
+
+
+%% Submitted MathWorks case #02747792 for the inability to pass empty matrix values.
+%% As a workaround, we instead pass an empty string which has size [1 0].
+%% Happily our normal matrix values have a second dimention of "2" (not "0").
+%% So -this EmptyWorkaroundCount will recognize empty strings and return 0.
+%function EmptyWorkaroundCount(value)
+    %assign theCount = 0
+    %if (SIZE(value)[1] > 0)
+        %assign theCount = SIZE(value)[0]
+    %endif
+    %return theCount
+%endfunction
+
+%function EmptyWorkaroundVector(value)
+    %if (SIZE(value)[1] == 0)
+        %return ""
+    %else
+        %return value[0]
+    %endif
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+    %% do the setup, in case we're first before ModelSyncApiSFunc or FeaturePath
+    %<SetupSyncApi(block, system)>
+
+    %% File Names (note pingPongFilename should match BoseFlatStructure.tlc)
+    %assign pingPongFileName = ModelPrefix() + "ping_pong_struct"
+    %assign crossCoreBaseName = "TalariaCrossCore"
+    %assign crossCoreAPIFileName = ModelPrefix() + crossCoreBaseName
+
+    %% S Function RTW Data Parameters "ParamSettings" ?
+    %assign Names   = ParamSettings.NameList
+    %assign PortTID = EmptyWorkaroundVector(ParamSettings.PortTID)
+    %assign IsIn    = EmptyWorkaroundVector(ParamSettings.IsIn)
+    %assign PingPongBufferCount = ParamSettings.PingPongBufferCount[0][0]
+
+    %assign IsLocallyPresent = EmptyWorkaroundVector(ParamSettings.IsLocallyPresent)
+    %assign MyCoreSpec = ParamSettings.MyCoreSpec[0]
+
+    %% create a list of buffer names
+    %assign NameList = FEVAL("strsplit",Names,",")
+    %assign NamesCount = SIZE(NameList)[1]
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",ModelSyncApiFilename())
+    %foreach j = NamesCount
+        %if IsLocallyPresent[j]
+            %if IsIn[j]
+                %assign elementName = "Inport"
+                %assign section = SPRINTF("Inports%d",PortTID[j])
+            %else
+                %assign elementName = "Outport"
+                %assign section = SPRINTF("Outports%d",PortTID[j])
+            %endif
+            %assign bufferName = NameList[j]
+            %assign accessType = "ImportedPointer"
+            %openfile buffer
+                <%<elementName> access_type="%<accessType>" id="%<bufferName>" cross_core="1" data_type="struct %<bufferName>_tag" dimensions="[1 1]"/>
+            %closefile buffer
+            %<LibSetSourceFileCustomSection(fileH,section,buffer)>
+        %endif
+    %endforeach
+
+
+%endfunction
+

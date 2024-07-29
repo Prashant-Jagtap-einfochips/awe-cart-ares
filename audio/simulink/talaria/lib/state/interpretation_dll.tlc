@@ -1,0 +1,33 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%% 
+%% 
+%%
+%% Abstract:
+%%   File customization template for the Interpretation Engine
+%%
+%%   Note: This file can contain any valid TLC code, which Embedded Coder
+%%   executes just prior to writing the generated source files to disk.
+%%   Using this template "hook" file, you are able to augment the generated
+%%   source code and create additional files.
+%%
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%selectfile NULL_FILE
+
+%%   Copyright 2018 Bose Corporation
+
+%% ==============================================================================
+%% 
+%% 
+%% 
+%%
+%% Abstract:
+%%   Example main for bare board target (single rate model)
+%%
+%%
+%selectfile NULL_FILE
+
+%% ==============================================================================
+%% Nothing to do for a dll-based engine
+%% ==============================================================================

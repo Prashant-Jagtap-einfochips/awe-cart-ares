@@ -1,0 +1,10 @@
+EnableGainLimiter =1;
+GainChangeStepIndB = 0.5;
+GainDecreaseDurationInSeconds = 0.5;
+GainIncreaseDurationInSeconds = 0.5;
+MaxEnergyLevelIndB = -3;
+MaxChannels = 8;
+MaxGainReductionIndB = 6;
+EnergyMeasurementTimeConstantInSeconds = 0.4;
+EnergyAdjustmentFactorIndB = 0;
+CurrentGainVal=1.0;

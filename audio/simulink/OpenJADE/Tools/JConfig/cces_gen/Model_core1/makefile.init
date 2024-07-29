@@ -1,0 +1,2 @@
+override RM := rm -f
+override SHELL := /bin/sh

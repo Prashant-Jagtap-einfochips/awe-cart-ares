@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+	<PLATFORM type="Spetter" board="spetter_board"/>
+	<BAF_XML  file="../../Message_Id.xml"/>
+	<PROCESSOR  clock_rate="1000000000"/>
+</root>
+
+

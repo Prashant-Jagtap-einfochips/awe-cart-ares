@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaskBoostDisable" has_lock="0" id="BasicAudioBalanceBoostDisable" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarBoostDisable/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaskChanRampMap" has_lock="0" id="BasicAudioBalanceChanRampMap" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarChanRampMap" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaskOffset" has_lock="0" id="BasicAudioBalanceOffset" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarOffset/Tune Variable" />
+  <TuneVar configurable="0" default="30" has_lock="0" id="BasicAudioBalanceRampTime" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarRampTime/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaskSilentExtremeBass" has_lock="0" id="BasicAudioBalanceSleepingBeautyMutesBass" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarSilentBass/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaskSilentExtreme" has_lock="0" id="BasicAudioBalanceEnableSilentExtreme" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarSilentExtreme/Tune Variable" />
+  <TuneVar configurable="0" default="[[0,10,31,52,74,95,116,128,138,159,180,202,223,244,255];[-30,-27,-14,-7,-5,-3,-1,0,-1,-3,-5,-7,-14,-27,-30]]'" has_lock="0" id="BasicAudioBalanceTable" simulink_block_path="BasicAudio/BasicAudio/Balance/balance/InnerLink/TuneVarTable/TuneVarBalanceTable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultBoostHz" has_lock="0" id="BasicAudioBassBoostFrequencyHz" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/BoostHz" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultBoostDb" has_lock="0" id="BasicAudioBassBoostMaximum_dB" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/Boost_dB" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultCutHz" has_lock="0" id="BasicAudioBassCutFrequencyHz" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/CutHz" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultCutDb" has_lock="0" id="BasicAudioBassCutMaximum_dB" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/Cut_dB" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultOffset" has_lock="0" id="BasicAudioBassOffset" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/TuneVarOffset/Tune Variable" />
+  <TuneVar configurable="0" default="30" has_lock="0" id="BasicAudioBassramptime" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/TuneVarRampTime/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultScale" has_lock="0" id="BasicAudioBassScale" simulink_block_path="BasicAudio/BasicAudio/Bass/Tone/InnerLink/TuneVarScale/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultRampTimeMsec" has_lock="0" id="BasicAudioMuteRampTime" simulink_block_path="BasicAudio/BasicAudio/Mute/mute/InnerLink/MuteControl/TuneVarRampTime/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultBoostHz" has_lock="0" id="BasicAudioTrebleBoostFrequencyHz" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/BoostHz" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultBoostDb" has_lock="0" id="BasicAudioTrebleBoostMaximum_dB" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/Boost_dB" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultCutHz" has_lock="0" id="BasicAudioTrebleCutFrequencyHz" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/CutHz" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultCutDb" has_lock="0" id="BasicAudioTrebleCutMaximum_dB" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/Cut_dB" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultOffset" has_lock="0" id="BasicAudioTrebleOffset" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/TuneVarOffset/Tune Variable" />
+  <TuneVar configurable="0" default="30" has_lock="0" id="BasicAudioTrebleramptime" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/TuneVarRampTime/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultScale" has_lock="0" id="BasicAudioTrebleScale" simulink_block_path="BasicAudio/BasicAudio/Treble/Tone/InnerLink/TuneVarScale/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultMaxDbOffset" has_lock="0" id="BasicAudioVolumemaxgain" simulink_block_path="BasicAudio/BasicAudio/Volume/volume/InnerLink/Index2DbTable/TuneTOP/Tune Variable" />
+  <TuneVar configurable="0" default="InnerLinkConfig.DefaultTable" has_lock="0" id="BasicAudioVolumeTable" simulink_block_path="BasicAudio/BasicAudio/Volume/volume/InnerLink/Index2DbTable/TuneVar_Table" />
+  <TuneVar configurable="0" default="100" has_lock="0" id="BasicAudioVolumeRampTime" simulink_block_path="BasicAudio/BasicAudio/Volume/volume/InnerLink/TuneVarRampTimeMs/Tune Variable" />
+</root>

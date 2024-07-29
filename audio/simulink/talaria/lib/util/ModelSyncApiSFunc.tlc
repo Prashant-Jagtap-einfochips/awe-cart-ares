@@ -1,0 +1,44 @@
+%implements ModelSyncApiSFunc "C"
+
+%%   Copyright 2020 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+%include "SyncApiTypeSetup.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% do the setup, featurepath also calls this function
+    %% multiple calls in case ModelSyncApiSFunc not present
+    %<SetupSyncApi(block, system)>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===========================================
+%function BlockInstanceSetup(block, system) void
+
+    %assign IsIn = ParamSettings.IsIn[0][0]
+    %assign bufferName = ParamSettings.BufferName
+    %assign accessType = ParamSettings.AccessType
+    %assign dataTypeName = FEVAL("RtwToC99",LibBlockInputSignalDataTypeName(0,""))
+    %assign dim = LibBlockInputSignalDimensions(0)
+
+    %if IsIn
+        %assign section = SPRINTF("Inports%d",block.TID)
+        %openfile buffer
+            <InPort id="%<bufferName>" data_type="%<dataTypeName>" dimensions="%<dim>" access_type="%<accessType>" cross_core="0"/>
+        %closefile buffer
+    %else
+        %assign section = SPRINTF("Outports%d",block.TID)
+        %openfile buffer
+            <OutPort id="%<bufferName>" data_type="%<dataTypeName>" dimensions="%<dim>" access_type="%<accessType>" cross_core="0"/>
+        %closefile buffer
+    %endif
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",ModelSyncApiFilename())
+    %<LibSetSourceFileCustomSection(fileH,section,buffer)>
+
+%endfunction
+
+

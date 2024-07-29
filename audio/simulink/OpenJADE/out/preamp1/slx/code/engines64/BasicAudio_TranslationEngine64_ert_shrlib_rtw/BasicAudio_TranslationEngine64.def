@@ -1,0 +1,9 @@
+        EXPORTS
+        BasicAudio_TranslationEngine64_M
+    BasicAudio_TranslationEngine64_initialize
+            BasicAudio_TranslationEngine64_step
+        BasicAudio_TranslationEngine64_terminate
+
+
+        
+

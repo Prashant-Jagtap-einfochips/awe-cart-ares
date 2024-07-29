@@ -1,0 +1,53 @@
+classdef $(PREFIX)$(SUFFIX) < BtcVariant
+% $(FILENAME) Build-time configuration class for the $(PREFIX) variant
+% Usage:
+%    <automatically allocated by setting the "Variant" property of the
+%    containing object derived from BtcBaseClassWithVariants
+%
+
+%   Copyright 2023 Bose Corporation
+
+%--------------------------------------------------------------------------
+% DEPRECATED. USE BREED PATTERN INSTEAD OF "VARIANT" PATTERN
+%--------------------------------------------------------------------------
+
+  properties (GetObservable,SetObservable)
+    % PropertyName size class {validation functions} = DefaultValue
+
+  end
+  methods
+    %----------------------------------------------------------------------
+    function this = $(PREFIX)$(SUFFIX)(constructingParentObj)
+        %.$(PREFIX)$(SUFFIX) constructor. Lock and Default, use Parent, but
+        %.only in calculated @() values because the parent object might not
+        %.be fully constructed yet (e.g. if this is the default variant).
+        this@BtcVariant(constructingParentObj);
+        %. <<Insert code below>>
+    end
+    %----------------------------------------------------------------------
+    function VariantValidate(this)
+        % VariantValidate validates cross-property interactions. Our parent
+        % object calls us during block mask initialization.
+
+        %.Use the "Parent" property if necessary to access the containing
+        %.BtcBaseClassWithVariants object.
+        %.If there are no cross-property interactions, then this entire
+        %.method can be deleted!
+        VariantValidate@BtcVariant(this);
+    end
+    %----------------------------------------------------------------------
+    function VariantDoMaskInit(this,blockHandle)
+        % VariantDoMaskInit performs automation of code generation settings
+        % and other canvas interactions for a variant subsystem. Our parent
+        % object calls us during block mask initialization.
+
+        %.If there are no CscUtil code generation settings or other canvas
+        %.interactions, this entire method can be deleted!
+        %.Avoid making design-time changes - find another way if possible.
+        %.e.g. avoid calling: set_param, add_block, replace_block).
+        %.If there is an error, just call the error function!
+        VariantDoMaskInit@BtcVariant(this,blockHandle);
+    end
+
+  end
+end

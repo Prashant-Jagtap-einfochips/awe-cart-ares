@@ -1,0 +1,147 @@
+%%   Copyright 2020 Bose Corporation
+
+
+%%   This block collaborates with StateVar and TSP blocks to accomplish
+%%   the interpretation of Target State Probe Data into State Variable
+%%   data --- but only for code generation and usually in a partitioned
+%%   Interpretation Engine model.
+%% Users (generally tuning tools) request a StateVar which flags both the
+%% StateVar and its supplying Interpretation Trigger for action.
+
+%function StateVarTypeSetup() void
+
+    %% Keep track of whether this setup has happened
+    %if EXISTS(::STATEVAR_TYPE_SETUP)
+        %return
+    %endif
+    %assign ::STATEVAR_TYPE_SETUP = 1
+
+    %% File Names  (without the LibGetModelName())
+    %assign dispTableFileName = ModelPrefix() + "StateVar"
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+
+    %% ------------------- dispatch table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %% Includes :
+    %openfile buffer
+        #include <ctype.h>
+        #include "rtwtypes.h"
+        #include "%<dispTableFileName>.h"
+        #include "%<interpretTriggerFileName>.h"
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        #include "%<LibGetMdlPubHdrBaseName()>.h" // for state variable input signals
+        #include <stdio.h> // for sscanf, fprintf
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+
+        // StateVar table record
+        typedef struct StateVar_tag
+        {
+            const char*            name;               // name of StateVar
+            int                    requested;          // counts RequestStateVariable invocations
+            SimulinkDatatypeId     dtype_id;           // SimulinkDatatypeId of numeric data type
+            const char*            dtype_name;         // Name of numeric data type
+            int                    element_bytes;      // byte size of a single element
+            int                    width;              // number of elements in StateVar value
+            void*                  value_ptr;          // array of current numeric value
+            enum InterpretationNumber interpretation;  // interpretation number feeding this StateVar
+        } StateVar_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %openfile buffer
+        static const char* dtypeStr[] = {"DOUBLE","SINGLE","INT8","UINT8","INT16","UINT16","INT32","UINT32","BOOLEAN"};
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+    %openfile buffer
+
+        // ----- State variable table:
+        static StateVar_type state_var_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        };
+
+        // Share table in a public interface for use by top-model
+        void* %<ModelPrefix()>state_var_table = state_var_table;
+        int %<ModelPrefix()>state_var_table_count = sizeof(state_var_table) / sizeof(StateVar_type);
+
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+    
+    %% Add StateVar access code- but only for top-model
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %include "tlc_statevar_access.c"
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",dispTableFileName)
+    %% Add framework entry point to use the request dispatch table
+    %openfile buffer
+
+      %% Only add access code for top-model generation
+      %if TLC_FALSE == LibIsModelReferenceTarget()
+        #include "%<interpretTriggerFileName>.h" // for InterpretEngineIterator
+
+        #ifdef INCLUDE_INTERPRETATION_DLL_API
+        // Returns a state variable record if name is recognized, INVALID_STATEVAR otherwise
+        // Also "touches" any interpretation that will be impacted by changing the found variable
+        InterpretEngineIterator RequestStateVariable(const char* variableName);
+	    #endif
+
+        // Reset all StateVar requested flags to zero
+        void ClearAllStateRequests( void );
+
+        // Return whether the specified StateVar has been requested
+        int GetStateVarRequested(InterpretEngineIterator stateVarNumberIn);
+
+        // Return StateVar name (or NULL if bad number)
+        const char* GetStateVarName(InterpretEngineIterator stateVarNumberIn);
+        const char* GetFirstStateVarName(InterpretEngineIterator* stateVarNumberIn);
+        const char* GetNextStateVarName(InterpretEngineIterator* stateVarNumberIn);
+
+
+        // Receive a new interpreted value, resetting request flag & printing value to buffer
+        // returns char count placed in buffer
+        int ReceiveInterpretation(InterpretEngineIterator rcvStateVarNumIn, char* bufferIn, int bufferSizeIn);
+
+        // Return the first requested record to run (or INVALID_STATEVAR if none)
+        InterpretEngineIterator FindFirstRequestedStateVar( void );
+
+        // Return the next StateVar record that is requested (or INVALID_INTERPRET_ITERATOR if no more)
+        InterpretEngineIterator FindNextRequestedStateVar(InterpretEngineIterator afterThisOne);
+        %endif
+
+        // Local model StateVar table
+        extern void* %<ModelPrefix()>state_var_table;
+        extern int %<ModelPrefix()>state_var_table_count;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Define the IDs used to access StateVars
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+    %<FeaturePathAddTable(fileH,"Types","StateVarEnum")>
+    %openfile buffer
+        enum StateVarNumber {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"StateVarEnumTop",buffer)>
+    %openfile buffer
+            NUM_STATEVAR_NUMBERS
+        };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"StateVarEnumBottom",buffer)>
+%endfunction
+

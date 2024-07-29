@@ -1,0 +1,58 @@
+%implements InitTriggerControl "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% FeaturePath / ASDID utilities and defines
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+    %% We must update the system initialization code here in instance setup
+    %% ... however, the function name/packaging has not yet been determined
+    %% so LibBlockExecuteFcnCall() would return emptyness if we call it.
+    %% Our crazy trick is that our mask already specified the funciton name
+    %% so that we already know something we're not supposed to know.
+    %% Matlab function block creates this function for us. 
+    %% Controlled by the mask code (RTWFcnName).
+    %assign CodeID = SFcnParamSettings.CodeID
+
+    %openfile buffer
+        /* InitTriggerControl '%<LibGetBlockName(block)>' */
+        %<CodeID>();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+    %% Ensure the init function is created as it is called in BlockInstanceSetup. 
+    %% It might have been optimized out! 
+    %assign CodeID = SFcnParamSettings.CodeID
+    %assign theFunction = LibBlockExecuteFcnCall(block, 0)
+    %if WHITE_SPACE(theFunction)
+        %% Header File Global
+        %openfile buffer
+            /* InitTriggerControl '%<LibGetBlockName(block)>' */
+            extern void %<CodeID>( void );
+        %closefile buffer
+        %assign srcFile = LibGetModelDotHFile()
+        %<LibSetSourceFileSection(srcFile, "Declarations", buffer)> 
+
+        %% Code File
+        %openfile buffer
+            /* InitTriggerControl '%<LibGetBlockName(block)>' */
+            void %<CodeID>( void )
+            {
+                // Nothing to see here as this function was optimized out!
+            }
+        %closefile buffer
+        %assign srcFile = LibGetModelDotCFile()
+        %<LibSetSourceFileSection(srcFile, "Functions", buffer)> 
+    %endif
+
+%endfunction

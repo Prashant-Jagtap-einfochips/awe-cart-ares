@@ -1,0 +1,1210 @@
+%%   Copyright 2021 Bose Corporation
+%% Make sure no white space in this file shows up in code.
+%% Based on 2021b FlatStructure.tlc
+
+%% Target language is C
+%implements * "C"
+
+
+%%=============================================================================
+%function AddWs(s) void
+  %if ISEMPTY(s)
+    %return ""
+  %else
+    %return "%<s> "
+  %endif
+%endfunction
+
+
+%%=============================================================================
+%function VerifyBooleanScalars(classrec) void
+  %assign numData = LibCustomStorageClassRecordNumData(classrec)
+  %foreach idx = numData
+    %assign datarec = LibGetDataRecord(classrec, idx)
+    %<LibCustomStorageVerifyRecordIsScalar(datarec)>
+    %<LibCustomStorageVerifyRecordIsNonComplex(datarec)>
+  %endforeach
+%endfunction
+
+
+%%=============================================================================
+%function GetPointer(cscDefn, msDefn) void
+
+  %if cscDefn.DataAccess == "Pointer"
+    %return "*"
+  %else
+    %return ""
+  %endif
+%endfunction
+
+
+%%=============================================================================
+%function GetPointerForData(cscDefn, msDefn, datarec) void
+
+  %assign dataAccess = SLibGetDataAccess(cscDefn, datarec)
+  %if dataAccess == "Pointer"
+    %return "*"
+  %else
+    %return ""
+  %endif
+%endfunction
+
+
+%%=============================================================================
+%function GetActualStructNameForData(cscDefn, datarec)
+  %assign caProps    = LibGetCustomStorageAttributes(datarec)
+  %assign structName = LibGetInstanceSpecificProp(cscDefn, caProps, "StructName")
+
+  %if ISEMPTY(structName)
+    %% If instance specific struct name is empty (user didn't specify in
+    %% object), use default generated struct name here, which should be
+    %% able to avoid conflict among multiple packages and CSCs.
+
+    %assign cscTypeAttributes    = cscDefn.CSCTypeAttributes
+    %assign isStructNameInstSpec = cscTypeAttributes.IsStructNameInstanceSpecific
+
+    %if isStructNameInstSpec
+      %assign coderInfoPkg = LibGetRTWInfoObjectPackage(datarec)
+      %assign cscName    = cscDefn.Name
+      %assign structName = "rt_" + coderInfoPkg + "_" + cscName
+    %endif
+  %endif
+
+  %return structName
+%endfunction
+
+
+%%=============================================================================
+%function GetDataRecTypedef(datarec, bitpack)
+  %assign id        = LibGetRecordIdentifier(datarec)
+  %assign useStdContainerName = TLC_FALSE
+  %assign dtThruId  = LibGetDataTypeIdAliasedThruToFromId(LibGetRecordDataTypeId(datarec))
+  %assign dataWidth = LibGetDataSymbolicWidth(datarec)
+  %assign dataDims = ""
+  %if dataWidth != "1"
+    %assign dataDims = "[%<dataWidth>]"
+  %endif
+  %if !ISEMPTY(dataDims) && SLibIsContainerCGTypeStdContainer(datarec)
+    %assign dataDims = ""
+    %assign useStdContainerName = TLC_TRUE
+  %endif
+  
+  %assign dtName    = LibGetRecordCompositeOptStdDataTypeName(datarec, useStdContainerName)
+
+  %if bitpack && (dtThruId == tSS_BOOLEAN)
+    %% Hardcode bit field datatype as uint_T
+    %% Depending on the word size specified in the ConfigSet Dialog
+    %% uint_T will be typedef'd in rtwtypes.h
+    %assign boolType   = "uint_T"  
+    %assign typedefStr = "%<boolType> %<id> : 1;"
+  %else
+    %assign typedefStr = "%<dtName> %<id>%<dataDims>;"
+  %endif
+
+  %if CGMODEL_ACCESS("CGModel.getCustomDataTraceIsEnabled")  
+    %assign typedefStr = SLibAddBlockTraceForDeclarationFromDataRec(datarec, typedefStr)
+    %if ISFIELD(datarec, "GraphicalRef")
+      %assign typedefStr = "%<typedefStr> %<SLibGetRefBlockCommentForDataRec(datarec)>"
+    %endif
+  %endif
+  
+  %% Put Description field of SDO in comments if the option is on
+  %assign desc = SLibGetDescriptionForData(datarec)
+  %if !ISEMPTY(desc)
+    %assign typedefStr = "%<typedefStr> /* %<desc> */"
+  %endif
+
+  %assign hasElementName = ISFIELD(datarec,"HasStructCSCElement") ? datarec.HasStructCSCElement : ""
+  %assign def = ISEMPTY(hasElementName)? "" : "#define %<hasElementName>"
+  %assign vcRecord = SLibGetDataInlineVariantNetConditions(datarec)
+  %assign ifCond = vcRecord.ifCond
+  %assign endIfCond = vcRecord.endIfCond
+    
+  %assign typedefStr = "%<ifCond>\n%<typedefStr>\n%<def>\n%<endIfCond>"     
+
+  %return typedefStr
+%endfunction
+
+
+%%=============================================================================
+%function GetDataRecInit(datarec, comma)
+  %assign id = LibGetRecordIdentifier(datarec)
+  %if LibCustomStorageRecordIsModelParameter(datarec)
+    %assign prmWidth = LibGetRecordWidth(datarec)
+    %assign mdlPrmIdx = SLibGetModelParameterIndex(datarec)
+    %assign initData = SLibGetParameterInitValueWithVariantCondition(datarec, prmWidth, mdlPrmIdx, "")
+  %else
+    %assign dataWidth = LibGetDataSymbolicWidth(datarec)
+    %assign isSymbolic = (dataWidth != "%<LibGetDataWidth(datarec)>")
+    %assign dataCmplx = SLibGetRecordIsComplex(datarec)
+    %assign dtIdx     = LibGetRecordDataTypeId(datarec)
+    %% For signal/dwork CSC static init, use InitialValue if suitable
+    %if ISEMPTY(datarec.InitialValue)
+      %% [Bose]
+      %% [TALARIA-249] *** HACK ALERT ***
+      %% The value may secretly exist in the mysterious ModelParameters object.
+      %% Look for it there first, otherwise choose the "ground" value
+      %assign GrSrc = datarec.GrSrc
+      %assign foundInModelParams = TLC_FALSE
+      %assign numData = ::CompiledModel.ModelParameters.NumParameters
+      %foreach iParams = numData
+        %% The GrSrc field in the datarec object appears to be a unique identifier for 
+        %% DSM we need an initial value for. Look through the ModelParameters
+        %% corresponding GraphicalRef field (may be array) for matching value
+        %assign paramGRef = ::CompiledModel.ModelParameters.Parameter[iParams].GraphicalRef
+        %foreach iRef = SIZE(paramGRef,0)
+          %assign ref = paramGRef[iRef]
+          %if (ref == GrSrc)
+            %assign data = ::CompiledModel.ModelParameters.Parameter[iParams].Value
+            %assign initData = SLibExpandInitialValueForStaticInit(dataWidth, isSymbolic, ...
+                           dataCmplx, dtIdx, data)
+            %assign foundInModelParams = TLC_TRUE
+            %break
+          %endif
+        %endforeach
+      %endforeach
+      %if (foundInModelParams == TLC_FALSE)
+        %assign ground   = LibGetGroundInitFromId(dtIdx)
+        %assign initData = SLibExpandGroundForStaticInit(dataWidth, isSymbolic, dataCmplx, ground)
+      %endif
+      %% [/Bose]
+    %else
+      %assign initData = SLibExpandInitialValueForStaticInit(dataWidth, isSymbolic, ...
+                         dataCmplx, dtIdx, datarec.InitialValue)
+    %endif
+  %endif
+  
+  %assign hasElementName = ISFIELD(datarec,"HasStructCSCElement") ? datarec.HasStructCSCElement : ""
+  %assign def = ISEMPTY(hasElementName)? "" : "#define %<hasElementName>"
+  
+  %assign vcRecord = SLibGetDataInlineVariantNetConditions(datarec)
+  %assign ifCond = vcRecord.ifCond
+  %assign endIfCond = vcRecord.endIfCond
+  %return "\n/* %<id> */\n%<ifCond>\n%<initData>%<comma>\n%<def>\n%<endIfCond>"
+%endfunction
+
+
+%% [Bose] recast and simplify sorting, placing struct first
+%%=============================================================================
+%% Abstract:
+%%   Sort by order of:
+%%     1st order:  data struct name
+%%     2nd order:  data type size (in reverse order)
+%%     3rd order:  data type name
+%%     4th order:  data identifier
+%%
+%function FcnSortGroupData(cscDefn, classrec) void
+  %% e.g.:
+  %%
+  %%   sortedDataIndices = [0, 3, 1, 2, 4, 5]  %% datarec indices after sort
+  %assign sortedDataIndices = []
+  %% Sort by struct first and "simplify" how reverse size order works.
+  %% e.g.: sort by struct name, reverse datatype size (biggest first), datatype, element identifier
+  %% We want struct name first because that's how the code emits to file (one struct at a time)
+  %% Datatype size comes next in reverse order to minimize struct padding
+  %% The rest of the sort order is to promote deterministic behavior (type name and signal identifier)
+  %%
+  %%   tmpDataMap {
+  %%     Struct1_991_DAlias_PrmA  0           %%   struct "Struct1", size 8 (999-8 is 991), type "DAlias", data id "PrmA", datarec idx 0
+  %%     Struct1_995_int16_SigA   3           %%   struct "Struct1", size 4 (999-4 is 995), type "int16", data id "SigA", datarec idx 3
+  %%     Struct1_995_int16_Struct1_PrmB   1   %%   struct "Struct1", size 4 (999-4 is 995), type "int16", data id "PrmB", datarec idx 1
+  %%     Struct2_991_double_DwA   2           %%   struct "Struct2", size 8 (999-8 is 991), type "double", data id "DwA",  datarec idx 2
+  %%     Struct2_995_int16_SigA   4           %%   struct "Struct2", size 4 (999-4 is 995), type "int16", data id "SigA", datarec idx 4
+  %%     Struct1_998_boolean_SigB 5           %%   struct "Struct1", size 1 (999-1 is 998), type "boolean", data id "SigB", datarec idx 5
+  %%   }
+  %createrecord tmpDataMap {}
+
+  %% Scan through datarec by their un-sorted order
+  %assign numData = LibCustomStorageClassRecordNumData(classrec)
+  %foreach iData = numData
+    %assign datarec = LibGetDataRecord(classrec, iData)
+    %assign dtId    = LibGetRecordDataTypeId(datarec)
+    %assign dtSize  = LibGetDataTypeSLSizeFromId(dtId)
+    %assign dtName  = LibGetDataTypeNameFromId(dtId)
+    %assign dataId  = LibGetRecordIdentifier(datarec)
+    %assign structName = GetActualStructNameForData(cscDefn, datarec)
+
+    %% Patternize the fieldname such that FIELDNAMES will sort them accordingly
+    %assign sortname = SPRINTF("%s_%3.3u_%s_%s", structName, 999 - dtSize, dtName, dataId)
+    %addtorecord tmpDataMap %<sortname> iData
+  %endforeach
+
+  %% FIELDNAMES will do the actual sort
+  %assign sortedNames = FIELDNAMES(tmpDataMap)
+  %foreach sortIdx = numData
+    %assign iData = GETFIELD(tmpDataMap, sortedNames[sortIdx])
+    %assign sortedDataIndices = sortedDataIndices + iData
+  %endforeach
+  %return sortedDataIndices
+%endfunction
+%% [/Bose] (recast and simplify sorting, placing struct first) 
+
+%%Function : IsGuardingRequired ==========================================================================
+%% Abstract :
+%% Need to check if guarding is required for the struct element.
+%% guarding is required iff
+%% a) there is another element in the classrec with the same identifier &&
+%% b) The datarec is a signal record &&
+%% c) The record corresponds to a signal present within the variant subsystem
+%%    This can  be evaluated using the VariantCondition field being present in the 
+%%    record
+%% TopTester : test/toolbox/simulink/variants/tVSSSigObj.m
+%function IsGuardingRequired(classrec,datarecNum,datarec) void
+%%if the record is not a signal, there is no need to guard the structure
+%if !ISEQUAL(datarec.RecordType, "BlockOutput")
+ %return TLC_FALSE
+%endif
+
+%% Check if identifier present in the datarec, is present in 
+%% any other datarec of the class
+%assign numData =  LibCustomStorageClassRecordNumData(classrec)
+%foreach iData = numData
+  %if ISEQUAL(iData,datarecNum) 
+    %continue
+  %endif
+  %assign tmpDatarec = LibGetDataRecord(classrec,iData)
+  %% get the signal identifer and compare the name against the passed datarec
+  %% if there is any other record with the same identifer, we might have to guard
+  %if ISEQUAL(LibGetRecordIdentifier(tmpDatarec),LibGetRecordIdentifier(datarec))
+      %return TLC_TRUE
+  %endif
+%endforeach
+
+%return TLC_FALSE  
+
+%endfunction
+
+%%=============================================================================
+%% [Bose] This function gets the size of the provided datatype in bits.
+%% This number is fed directly from model configuration settings
+%function GetBitSizeForDataTypeId(storageId) void
+    %switch storageId
+      %case tSS_DOUBLE
+        %assign charSize = ConfigSet.ProdBitPerDouble
+        %break
+      %case tSS_SINGLE
+        %assign charSize = ConfigSet.ProdBitPerFloat
+        %break
+      %case tSS_INT8
+      %case tSS_UINT8
+      %case tSS_BOOLEAN
+        %assign charSize = ConfigSet.ProdBitPerChar
+        %break
+      %case tSS_INT16
+      %case tSS_UINT16
+        %assign charSize = ConfigSet.ProdBitPerShort
+        %break
+      %case tSS_INT32
+      %case tSS_UINT32
+        %assign charSize = ConfigSet.ProdBitPerLong
+        %break
+      %default
+        %break
+    %endswitch
+    %return charSize
+%endfunction
+%%[/Bose]
+%%=============================================================================
+%% [Bose] This function gets the size of the provided datatype in char count.
+%% This number should match the C language sizeof method
+%function GetCharSizeForDataTypeId(storageId) void
+    %assign typeBits = GetBitSizeForDataTypeId(storageId)
+    %assign charBits = GetBitSizeForDataTypeId(tSS_INT8)
+    %return typeBits / charBits
+%endfunction
+%%[/Bose]
+
+%%=============================================================================
+%% Abstract:
+%%   Return an vector of [typedefs decls defns] for data of this grouped custom
+%%   storage class.  In the case of instance-specific struct name, typedefs/
+%%   decls/defns each can be a string containing multiple C typedefs/decls/
+%%   defns.
+%%
+%function GetGroupTypeDeclDefnFlatStructure(cscDefn, msDefn, classrec) void
+  %assert cscDefn.DataInit != "Macro"
+
+  %assign cscName              = cscDefn.Name
+  %assign cscTypeAttributes    = cscDefn.CSCTypeAttributes
+  %assign isTypeDef            = cscTypeAttributes.IsTypeDef
+  %assign bitpack              = cscTypeAttributes.BitPackBoolean
+  %assign isStructNameInstSpec = cscTypeAttributes.IsStructNameInstanceSpecific
+  %assign isOneStruct          = 1
+  %assign isOneDataType        = 1
+  %assign directStaticInit     = ...
+    (cscDefn.DataAccess == "Direct") && (cscDefn.DataInit == "Static")
+  %assign directAutoInitMayHavePrm = ...
+    (cscDefn.DataAccess == "Direct") && ...
+    (cscDefn.DataInit == "Auto") && ...
+    (cscDefn.DataUsage.IsParameter)
+  %assign useCppStyleStructDef = CGMODEL_ACCESS("CGModel.getUseCppStyleStructFlag")
+  
+  %% [Bose] Extract additional custom storage class attributes
+  %assign preprocessorDefine   = cscTypeAttributes.PreprocessorDefine
+  %assign createIDsForTOPs     = cscTypeAttributes.CreateIDsForTOPs
+  %assign outputTopXml         = (createIDsForTOPs)
+  %assign outputPingPongXml    = (cscName == "PingPongStruct")
+  %assign isDirectAddressing  = (createIDsForTOPs && EXISTS(::TOP_GROUP_BANK_IDS))
+  %if (cscName == "TOP") || (cscName == "StructStaticInit")
+    %% For our SPECIAL CSCs, ensure they get static initialization regardless
+    %% of what their claims are to Simulink (e.g. "imported")
+    %assign directStaticInit = TLC_TRUE
+  %endif
+  %% [/Bose]
+
+  %if bitpack
+    %<VerifyBooleanScalars(classrec)>
+  %endif
+
+  %assign numData = LibCustomStorageClassRecordNumData(classrec)
+
+  %%---------------------------------------------------------------------------
+  %% Determine if the data resides in a single structure, even if the structure
+  %% name is in fact instance-specific; this will allow us to optimize
+  %% performance later
+  %%
+  %% Also determine if the data are all same data-type-through-id
+  %% This records holds the number of data elements present in a given structure. This is required 
+  %% to determine if the data init for a structure requires a comma or not.  
+  %createrecord tmpStructElementsCount { }
+  %foreach iData = numData
+    %assign datarec = LibGetDataRecord(classrec, iData)
+    %assign currentStructName = GetActualStructNameForData(cscDefn, datarec)
+    %if !ISFIELD(tmpStructElementsCount, currentStructName)
+       %addtorecord tmpStructElementsCount \
+          %<currentStructName> { \
+                NumElements 1\
+        }
+    %else
+        %assign structRec = GETFIELD(tmpStructElementsCount,currentStructName)
+        %assign structRec.NumElements = structRec.NumElements + 1
+    %endif 
+
+    %if iData == 0
+      %assign structName = GetActualStructNameForData(cscDefn, datarec)
+      %assign dtThruId   = LibGetDataTypeIdAliasedThruToFromId(LibGetRecordDataTypeId(datarec))
+    %else
+      %% Check if struct name varies
+      %if isOneStruct && (currentStructName != structName)
+        %assign isOneStruct = 0
+      %endif
+      %% Check if data-type-through-id varies
+      %if isOneDataType && ...
+          (LibGetDataTypeIdAliasedThruToFromId(LibGetRecordDataTypeId(datarec)) != dtThruId)
+        %assign isOneDataType = 0
+      %endif
+    %endif
+  %endforeach
+
+  %%---------------------------------------------------------------------------
+  %% Sort data (currently by data-type-size, data-type-name, data-identifier)
+
+  %assign isDataSorted = TLC_FALSE
+  %% [Bose]--- ALWAYS sort data for deterministic output. (PingPongStruct must match among cores!)
+  %% %if !isOneDataType
+    %assign tmpSortedDataList = FcnSortGroupData(cscDefn, classrec)
+    %assert SIZE(tmpSortedDataList, 1) == numData
+    %assign isDataSorted = TLC_TRUE
+  %%endif
+  %% [/Bose]
+
+  %%---------------------------------------------------------------------------
+  %% Scan each data of this CSC, save any instance-specific struct name info,
+  %% and partially construct instance-specific typedef / initstr
+
+  %% Create a tmp map to save all instance-specific struct name info
+  %createrecord tmpInstSpecStructs { }
+  %createrecord tmpStructHasConditionalElements { }  
+
+  %% Assign default attributes
+  %assign typeToken = AddWs(cscTypeAttributes.TypeToken)
+  %assign typeTag   = AddWs(cscTypeAttributes.TypeTag)
+  %assign typeName  = AddWs(cscTypeAttributes.TypeName)
+  %assign allElemConditional = TLC_TRUE %%assume, if we find at least one unconditional, set this to false
+  %assign dummyElementName = "rt_unused"
+
+  %foreach idx = numData
+    %assign iData = isDataSorted ? tmpSortedDataList[idx] : idx
+    %assign datarec = LibGetDataRecord(classrec, iData)
+    %assign id      = LibGetRecordIdentifier(datarec)
+    %assign structName = GetActualStructNameForData(cscDefn, datarec)
+    %assign vcRecord = SLibGetDataInlineVariantNetConditions(datarec)  
+    %%One fallout of this is that if a vss has 2 choices and each of these have a mutually exclusive signal of struct storage class
+    %% even if the vss has azvc off, we will generate #ifndef guards for the dummy elements. This should be OK because
+    %% these are preprocessor directives.
+   
+    %%This loop iterates over all structured data and potentially data can exist
+    %% across different structures. We need to determine if a given structure is always
+    %% conditional or not. Therefore, we maintain a record for every structure and determine if 
+    %% that structure is always conditional or not    
+    %if !ISFIELD(tmpStructHasConditionalElements, structName)
+      %% assume all elements to be conditional and create the record
+      %addtorecord tmpStructHasConditionalElements \
+        %<structName> { \
+           AllElementsConditional TLC_TRUE \
+           ElementIdx 1 \ 
+        }
+    %else
+        %assign vrec = GETFIELD(tmpStructHasConditionalElements, structName)
+        %assign vrec.ElementIdx = vrec.ElementIdx + 1
+    %endif  
+
+    %if !vcRecord.hasConds
+        %% if we encouter an unconditional element, update the field
+        %assign vrec = GETFIELD(tmpStructHasConditionalElements, structName)
+        %assign vrec.AllElementsConditional = TLC_FALSE
+    %endif 
+    %% [Bose]--- Override / fill in the InitialValue if specified
+    %assign caProps = LibGetCustomStorageAttributes(datarec)
+    %assign codeInitialValue  = LibGetInstanceSpecificProp(cscDefn, caProps, "CodeInitialValue")
+    %if !ISEMPTY(codeInitialValue)
+        %% Workaround to "defect" [MathWork's Case# 02525444]
+        %% Not sure how better to do this: get an appropriate TLC numeric
+        %% derived from a MATLAB numerical expression (type matters)
+        %% This works... single value scalars look like "5" instead of "[5]"
+        %% but otherwise the conversion very much resembles what we would
+        %% have achieved with datarec.InitialValue
+        %assign theFlatNumeric = FEVAL("EvalToFlatNumeric",codeInitialValue)
+        %assign datarec.InitialValue = theFlatNumeric
+    %endif
+    %% [/Bose]
+    
+    %%--- Check that actual struct name to use is a valid C identifier
+    %if !LibIsValidCVariable(structName)
+      %assign errTxt = "StructName '%<structName>' for data '%<id>' " + ...
+	"of custom storage class '%<cscName>' is not a valid C identifier"
+      %<LibReportError(errTxt)>
+    %endif
+
+    %% Override default attributes in the instance-specific case
+    %if isStructNameInstSpec
+      %assign typeToken = ""  %% can't share same type token among different struct (?) 
+      %assign typeTag   = "%<structName>_tag"
+      %assign typeName  = "%<structName>_type"
+    %endif
+
+    %%--- Add to tmp map if it's a new (must be instance specific then)
+    %%    struct name
+    %if !ISFIELD(tmpInstSpecStructs, structName)
+      %% NOTE: structName should be valid identifier, otherwise will error out when
+      %%       adding to tmp record here
+     %assign structCount = GETFIELD(tmpStructElementsCount,structName)
+
+      %% [Bose] Added an element to the tlc record: BoseMemorySectionIfDefName
+      %addtorecord tmpInstSpecStructs \
+        %<structName> { \
+          typetoken typeToken \
+          typetag typeTag \
+          typename typeName \
+          typedef "" \
+          initstr "" \
+          numElements structCount.NumElements  \  
+          useInitstr directStaticInit \
+          hasElementName "" \
+          IsStructAlwaysConditional TLC_TRUE \  
+          BoseMemorySectionIfDefName "" \ 
+        }
+      %% [/Bose]
+    %endif
+
+    %assign srec = GETFIELD(tmpInstSpecStructs, structName)
+    %assign vrec = GETFIELD(tmpStructHasConditionalElements, structName)
+    %%We cannot directly assign srec.IsStructAlwaysConditional to be vcRecord.hasConds, because vcRecord spans across multiple structures
+    %% srec is for a single structure. Hence, we determine conditionality for a given structure
+    %assign srec.IsStructAlwaysConditional = vrec.AllElementsConditional
+    %% Add the hasElementName to the structure record
+    %assign srec.hasElementName = ISFIELD(datarec,"HasStructCSCElement") ? datarec.HasStructCSCElement : ""
+
+    %% [Bose] Since sorting places elements in struct order, the special case below is eliminated
+    %% %% If the data resides in more than one structure, cache the structures'
+    %% %% typedefs and initializers using string concatenation
+    %% %if !isOneStruct
+    %% 
+    %%   %%--- Increment the typedef associated with this data's struct
+    %%   %assign srec.typedef = "%<srec.typedef>\n%<GetDataRecTypedef(datarec, bitpack)>"
+    %% 
+    %%   %%--- Increment the init string associated with this data's struct
+    %%   %if directStaticInit || directAutoInitMayHavePrm
+    %%     %assign elemIdx = vrec.ElementIdx
+    %%     %assign numElements = srec.numElements
+    %%     %% If it is the last element there is no comma
+    %%     %assign comma = (elemIdx == numElements) ? "" : ","
+    %%  %assign srec.initstr = ...
+    %%       "%<srec.initstr>%<GetDataRecInit(datarec, comma)>"
+    %% 
+    %% 
+    %%     %%-- If there is a parameter, set the flag to write initstr
+    %%     %if directAutoInitMayHavePrm && ...
+    %%         !srec.useInitstr && ...
+    %%         LibCustomStorageRecordIsModelParameter(datarec)
+    %%       %assign srec.useInitstr = 1
+    %%     %endif
+    %%   %endif
+    %% %endif
+    %% [/Bose]
+
+  %endforeach  %% of numData
+
+  %% [Bose] Recast construction of typedef and initializer taking into account
+  %% sort order is now by struct. Bulky loop mechanics, but faster than string concat.
+  %assign structNames = FIELDNAMES(tmpInstSpecStructs)
+  %assign numStructNames = SIZE(structNames, 1)
+
+  %% Setup ability to ensure size assumptions are valid for TOP structures
+  %% by tracking which inherent types are in use so we can check their size (below)
+  %if createIDsForTOPs && isDirectAddressing
+    %assign dtypeIdInUse = [0,0,0,0,0,0,0,0,0]
+  %endif
+  %% ... and pingpong xml
+  %if outputPingPongXml
+    %assign dtypeIdInUse = [0,0,0,0,0,0,0,0,0]
+  %endif
+
+  %% Setup XML file if emitting TOP ids
+  %if outputTopXml
+        %assign topXmlFileName = TopGetIdFileName() + ".xml"
+        %openfile topXmlFile = topXmlFileName
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  %endif
+  %% Setup XML file is emitting PingPongStruct
+  %if outputPingPongXml
+        %assign pingPongXmlFileName = ModelPrefix() + "PingPongStruct" + ".xml"
+        %openfile pingPongXmlFile = pingPongXmlFileName
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  %endif
+
+  %% First loop through all records and emit the typedef(s)
+  %% We will open and close file buffers as the struct changes.
+  %assign currentStructName = ""
+  %assign structChars = 0
+  %foreach idx = numData
+    %assign iData = tmpSortedDataList[idx]
+    %assign datarec = LibGetDataRecord(classrec, iData)
+    %assign structName = GetActualStructNameForData(cscDefn, datarec)
+    %assign sigName   = LibGetRecordIdentifier(datarec)
+    %assign srec = GETFIELD(tmpInstSpecStructs, structName)
+    %assign caProps = LibGetCustomStorageAttributes(datarec)
+    %if createIDsForTOPs
+        %% Ignore settings, TOPs always use the following name for ifdef
+        %assign memorySectionIfDefValue = "__SPECIFY_TOP_MEMORY_SECTION__"
+    %else 
+        %assign memorySectionIfDefValue  = LibGetInstanceSpecificProp(cscDefn, caProps, "MemorySectionIfDef")
+    %endif
+    %% If loop has encountered a new struct name, close off the previous one
+    %if structName != currentStructName
+      %% get the previous struct record, close off what we've got so far and drop it in
+      %if idx != 0
+          %assign prevsrec = GETFIELD(tmpInstSpecStructs, currentStructName)
+          %closefile typedefBuf
+          %assign prevsrec.typedef = typedefBuf
+          %closefile initBuf
+          %assign prevsrec.initstr = initBuf
+      %endif
+    
+      %% Handle PingPongXml struct elements
+      %if outputPingPongXml
+        %selectfile pingPongXmlFile
+        %if idx != 0
+          </Struct>
+        %endif
+          %<SPRINTF("<Struct id=\"%s\">",structName)>
+      %endif
+
+      %% Record the MemorySectionIfDef
+      %assign srec.BoseMemorySectionIfDefName = memorySectionIfDefValue
+
+      %% open a new buffer for the new current struct name
+      %assign currentStructName = structName
+      %assign structChars = 0
+      %openfile typedefBuf
+      %openfile initBuf
+    %endif
+    %if srec.BoseMemorySectionIfDefName != memorySectionIfDefValue
+      %warning "ifdef %<memorySectionIfDefValue> != %<srec.BoseMemorySectionIfDefName> for %<structName>.%<sigName>"
+    %endif
+    %% ----- emit a typedef
+    %selectfile typedefBuf
+    %<GetDataRecTypedef(datarec, bitpack)>
+    
+    %% ----- emit ann initializer
+    %if directStaticInit || directAutoInitMayHavePrm
+      %selectfile initBuf
+       %% If it is the last data, do not insert a comma. Else insert a comma
+       %assign comma = (idx == numData-1) ? "" : ","
+	  %<GetDataRecInit(datarec, comma)>\
+      %%-- If there is a parameter, set the flag to write initstr
+      %if directAutoInitMayHavePrm && ...
+        !srec.useInitstr && ...
+        LibCustomStorageRecordIsModelParameter(datarec)
+        %assign srec.useInitstr = 1
+      %endif
+    %endif
+    %% ----- emit TOP ASDID if appropriate (direct addressing mode via ::TOP_GROUP_BANK_IDS)
+    %if outputTopXml || outputPingPongXml
+        %assign idFileName = "%<TopGetIdFileName()>"
+        %assign dtId      = LibGetRecordDataTypeId(datarec)
+        %assign storageId = LibGetDataTypeStorageIdFromId(dtId)
+        %assign dtSize    = GetCharSizeForDataTypeId(storageId)
+        %assign dataCmplx = SLibGetRecordIsComplex(datarec)
+        %% Complex numbers double the data width as they have real and imaginary components for each element
+        %assign dataWidth = LibGetDataWidth(datarec) * (1 + dataCmplx)
+        %assign preOverlay = LibGetInstanceSpecificProp(cscDefn, caProps, "PreOverlay")
+        %assign postOverlay = LibGetInstanceSpecificProp(cscDefn, caProps, "PostOverlay")
+        %assign compatibilityString = LibGetInstanceSpecificProp(cscDefn, caProps, "CompatibilityString")
+        %if outputTopXml
+            %if isDirectAddressing
+                %% Direct Addressing mode tokens:
+                %if storageId < SIZE(dtypeIdInUse,1)
+                    %% Mark this datatype as being used. We'll verify size below
+                    %assign dtypeIdInUse[storageId] = 1
+                %endif
+                %assign ids = GETFIELD(::TOP_GROUP_BANK_IDS, structName)
+                %assign topPath   = SPRINTF("%s%s",ids.path,sigName)
+                %assign dtName    = GETFIELD(::TOP_DTYPE_NAMES,topPath)
+                %assign writeToken= SPRINTF("0x%01x%01x%01x%05x",ids.coreId, ids.groupId, ids.bankId,structChars)
+                %assign readToken = SPRINTF("0x%01x%01x%01x%05x",ids.coreId+8, ids.groupId, ids.bankId,structChars)
+            %else
+                %% Indirect Addressing mode tokens:
+                %assign structInfo= GETFIELD(::TOP_STRUCT_INFO,structName)
+                %assign topPath   = SPRINTF("%s%s",structInfo.GroupPath,sigName)
+                %assign dtName    = GETFIELD(::TOP_DTYPE_NAMES,topPath)
+                %assign tokenIndex= GETFIELD(::TOP_PATH_INDEX,topPath)
+                %assign writeToken= SPRINTF("0x%01x%01x%01x%05x",::ASDID_TYPE_TOP,structInfo.PartitionNumber, structInfo.GroupNumber, tokenIndex)
+                %assign readToken= SPRINTF("0x%01x%01x%01x%05x",::ASDID_TYPE_TOP + 8,structInfo.PartitionNumber, structInfo.GroupNumber, tokenIndex)
+            %endif
+            %% note that the following buffer output is dumped to file verbatim without formatting/indention help
+            %selectfile topXmlFile
+        %<SPRINTF("<TOP id=\"%s\" writeToken=\"%s\" readToken=\"%s\" dataType=\"%s\" width=\"%d\" isComplex=\"%d\" preOverlay=\"%s\" postOverlay=\"%s\" compatibilityString = \"%s\" coreTag=\"%s\" coreIndex=\"%s\"/>", \
+            topPath, writeToken, readToken, dtName, dataWidth, dataCmplx, preOverlay, postOverlay, compatibilityString, FeaturePathGetCoreTag(), FeaturePathGetCoreIndex())>
+            %selectfile NULL_FILE
+            %assign topIdWStr = SPRINTF("#define TOP_WRITE_%s (%sU)", topPath, writeToken)
+            %assign topIdRStr = SPRINTF("#define TOP_READ_%s (%sU)", topPath, readToken)
+            %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+            %openfile buffer
+                %<topIdWStr>
+                %<topIdRStr>
+            %closefile buffer
+            %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+        %endif
+        %if outputPingPongXml
+            %if storageId < SIZE(dtypeIdInUse,1)
+                %% Mark this datatype as being used. We'll verify size below
+                %assign dtypeIdInUse[storageId] = 1
+            %endif
+            %selectfile pingPongXmlFile
+              %assign rtwDtName = LibGetRecordCompositeDataTypeName(datarec)
+              %assign c99Name = FEVAL("RtwToC99",rtwDtName)
+    %<SPRINTF("<Field charOffset=\"%d\" dtypeNum=\"%d\" dtypeStr=\"%s\" id=\"%s\" width=\"%d\"/>", \
+                structChars, dtId, c99Name, sigName, dataWidth)>
+        %endif
+        %assign structChars = structChars + dtSize * CAST("Unsigned",dataWidth)
+    %endif 
+  %endforeach
+  %% FOR THE LAST STRUCT: get the struct record, close off what we've got so far and drop it in
+  %closefile typedefBuf
+  %assign srec.typedef = typedefBuf
+  %closefile initBuf
+  %assign srec.initstr = initBuf
+  %% close off the XML file
+  %if outputTopXml
+      %selectfile topXmlFile
+</root>
+      %closefile topXmlFile
+      %<SLibAddGeneratedFileToList(topXmlFileName,"data","other","")>
+  %endif
+  %if outputPingPongXml
+      %selectfile pingPongXmlFile
+        %if structChars != 0
+  </Struct>
+        %endif
+</root>
+      %closefile pingPongXmlFile
+      %<SLibAddGeneratedFileToList(pingPongXmlFileName,"data","other","")>
+  %endif
+  %if createIDsForTOPs && isDirectAddressing
+    %assign fileH = LibCreateSourceFile("Source","Custom",TopGetAccessFileName())
+    %openfile buffer
+        static void FailBuildOnMismatchedSize( void )
+        {
+            // Direct Addressing Mode Token Creation Check:
+            // This function is never called and does nothing at runtime.
+            // Instead, it is a compile-time check of the datatype sizes 
+            // in use by TOPs in this model. The datatype sizes assigned by
+            // the toolchain compiler must match the sizes used to generate
+            // TOP access tokens.
+            #undef COMPILEASSERT
+            #define COMPILEASSERT(condition) ((void)sizeof(signed char[1 - 2*(int)(!(condition))]))
+            %foreach dtIdx=SIZE(dtypeIdInUse,1)
+                %if dtypeIdInUse[dtIdx]
+                    COMPILEASSERT(%<GetCharSizeForDataTypeId(dtIdx)> == sizeof(%<LibGetDataTypeNameFromId(dtIdx)>));
+                %endif
+            %endforeach
+        }
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+  %endif
+  %if outputPingPongXml
+    %assign fileH = LibGetModelDotCFile()
+    %openfile buffer
+        static void FailBuildOnMismatchedPingPongSize( void )
+        {
+            // Ping Pong XML datatype char size check
+            // This function is never called and does nothing at runtime.
+            // Instead, it is a compile-time check of the datatype sizes 
+            // in use between the cores. The datatype sizes assigned by
+            // the toolchain compiler must match the sizes used to generate
+            // ping pong xml file.
+            #undef SIZECHECKCOMPILEASSERT
+            #define SIZECHECKCOMPILEASSERT(condition) ((void)sizeof(signed char[1 - 2*(int)(!(condition))]))
+            %foreach dtIdx=SIZE(dtypeIdInUse,1)
+                %if dtypeIdInUse[dtIdx]
+                    SIZECHECKCOMPILEASSERT(%<GetCharSizeForDataTypeId(dtIdx)> == sizeof(%<LibGetDataTypeNameFromId(dtIdx)>));
+                %endif
+            %endforeach
+        }
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+  %endif
+  %% [/Bose] (Recast construction of typedef and initializer)
+  
+
+  %%--------------------------------------------------------------------------
+  %% For each instance-specific struct name, complete its typedef and initstr,
+  %% and construct its decl / defn string
+
+  %assign pointer   = GetPointer(cscDefn, msDefn)
+  %assign qualifier = SLibGetQualifier(msDefn)
+
+  %assign rtnTypedefs = ""
+  %assign rtnDecls    = ""
+  %assign rtnDefns     = ""
+
+  %assign res = ["", "", "", [], []]
+
+  %foreach i = numStructNames
+    %assign structName = structNames[i]
+    %assign srec = GETFIELD(tmpInstSpecStructs, structName)
+    %assign dummyElementGuard = ""
+
+    %if srec.IsStructAlwaysConditional == TLC_TRUE && !ISEMPTY(srec.hasElementName)
+        %%assert !ISEMPTY(srec.hasElementName)
+        %assign dummyElementGuard = "#ifndef %<srec.hasElementName>" + "\n" + \
+        "unsigned char %<dummyElementName>;" + "\n" + \
+        "#endif"
+    %endif
+
+    %if (useCppStyleStructDef)
+        %assign srec.typedef = "struct " + srec.typetoken + " " + srec.typename + " {" + \
+            srec.typedef + "\n" + dummyElementGuard + "\n" + "\n};"
+    %else
+        %assign srec.typedef = (isTypeDef ? "typedef " : "" ) + \
+                    "struct " + srec.typetoken + " " + srec.typetag + " {" + \
+            srec.typedef + "\n" + dummyElementGuard + "\n" + (isTypeDef ? "\n} %<srec.typename>;" : "\n};")
+    %endif
+    
+    %% [Bose] Add preprocessor macro to signal that this struct exists in code
+    %% Remove this defined struct from the record created by the FeaturePaths
+    %% ... so we can mop up any undefined banks down below
+    %if preprocessorDefine && EXISTS(::TOP_GROUP_BANK_IDS)
+        %assign srec.typedef = srec.typedef + "\n" + \
+            "#define TOP_BANK_" + structName + " &" + structName + "\n" + \
+            "#define TOP_BANK_" + structName + "_SIZE sizeof(" + structName + "_type)"
+        %with TOP_GROUP_BANK_IDS
+        %undef %<structName>
+        %endwith
+    %endif
+    %% [/Bose]
+
+    %if srec.useInitstr && !ISEMPTY(srec.initstr)
+      %if srec.IsStructAlwaysConditional == TLC_TRUE && !ISEMPTY(srec.hasElementName)
+        %%assert !ISEMPTY(srec.hasElementName)
+        %assign dummyElementValue = "#ifndef %<srec.hasElementName>" + "\n" + \
+        "0" + "\n" + \
+        "#endif"
+      %else 
+        %assign dummyElementValue = ""
+      %endif
+      
+      %assign srec.initstr = "%<LibGetDataInitEqualSign()>{%<srec.initstr>\n" + dummyElementValue + "\n}"
+    %else
+      %assign srec.initstr = ""
+    %endif
+
+    %if (useCppStyleStructDef)
+        %assign structType = srec.typename
+    %else
+        %assign structType = (isTypeDef ? srec.typename : "struct %<srec.typetag>")
+    %endif
+
+    %assign decl = "extern " + ...
+                   qualifier + ...
+                   structType + ...
+                   " " + ...
+                   pointer + ...
+                   structName + ...
+                   ";"
+
+    %assign defn = qualifier + ...
+                   structType + ...
+                   " " + ...
+                   pointer + ...
+                   structName + ...
+                   srec.initstr + ...
+                   ";"
+
+    %% [Bose] Creating pragma definition and writing it to buffer for each struct
+    %if !ISEMPTY(srec.BoseMemorySectionIfDefName)
+        %assign memSecName = FEVAL("upper",structName)+ "_MEMORY_SECTION"
+        %assign rtnDefns = rtnDefns + "\n" + "#if defined " + srec.BoseMemorySectionIfDefName
+        %assign rtnDefns = rtnDefns + "\n" + "#pragma section(\"" + memSecName + "\")"
+        %assign rtnDefns = rtnDefns + "\n" + "#endif"
+    %endif
+    %% [/Bose]
+
+    %assign rtnTypedefs = rtnTypedefs + "\n" + srec.typedef + "\n"
+    %assign rtnDecls = rtnDecls + "\n" + decl
+    %assign rtnDefns = rtnDefns + "\n" + defn + "\n"
+    
+    %assign res[3] = res[3] + structType
+    %assign res[4] = res[4] + structName
+
+    %% [Bose] Redirect each TOP struct to its own source *.c file!
+    %if createIDsForTOPs
+        %assign topHeaderBaseName = ModelPrefix() + "TOP"
+        %assign topBankSourceBaseName = structName + "_TOP"
+        %% Use the normal "avowed" method of adding a source file
+        %assign fileH = LibCreateSourceFile("Source","Custom",topBankSourceBaseName)
+        %% ... but then CHANGE its group listing to "data"
+        %<SLibSetModelFileAttribute(fileH,"Group","data")>
+        %openfile buffer
+            #include "%<topHeaderBaseName>.h"
+            %<rtnDefns>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %% blank out the returned definition - we are redirecting it
+        %assign rtnDefns = ""
+    %endif
+    %% [/Bose] Redirected to separate source files
+
+  %endforeach
+
+  %% [Bose] Fill in any undefined TOP bank types with preprocessor
+  %if preprocessorDefine && EXISTS(::TOP_GROUP_BANK_IDS)
+    %assign unusedBanks = FIELDNAMES(TOP_GROUP_BANK_IDS)
+    %assign numUnusedBanks = SIZE(unusedBanks, 1)
+    %assign undefDefs = ""
+    %foreach i = numUnusedBanks
+      %assign undefDefs = undefDefs + \
+            "#define TOP_BANK_" + unusedBanks[i] + " NULL\n" + \
+            "#define TOP_BANK_" + unusedBanks[i] + "_SIZE 0\n"
+    %endforeach
+    %assign rtnTypedefs = rtnTypedefs + "\n// Unused banks\n// ------------\n" + undefDefs
+  %endif
+  %% [/Bose]
+
+    %% [Bose] Redirect TOP struct to own header *.h to include modelname
+    %if createIDsForTOPs
+        %assign topHeaderBaseName = ModelPrefix() + "TOP"
+        %% Use the normal "avowed" method of adding a header
+        %assign fileH = LibCreateSourceFile("Header","Custom",topHeaderBaseName)
+        %% ... but then CHANGE its group listing to "data"
+        %<SLibSetModelFileAttribute(fileH,"Group","data")>
+        %openfile buffer
+            #include "rtwtypes.h"
+            %<rtnTypedefs>
+            %<rtnDecls>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %% Since we've emit the code ourselves, blank out types & declarations
+        %assign rtnTypedefs = ""
+        %assign rtnDecls = ""
+        %% ... and add this self-created header to the model source file
+        %assign topHeaderFileName = topHeaderBaseName + ".h"
+        %<LibAddToCommonIncludes(topHeaderFileName)> 
+    %endif
+    %% [/Bose] Redirected to own header file
+
+  %assign res[0] = rtnTypedefs
+  %assign res[1] = rtnDecls
+  %assign res[2] = rtnDefns
+
+  %return res
+
+%endfunction  %% of GetGroupTypeDeclDefnFlatStructure
+
+
+%% Function: GetCSCTypeComment =================================================
+%function GetCSCTypeComment(cscDefn, msDefn, classrec) void
+  %assign rtnStr="/* Type definition for custom storage class: %<cscDefn.Name> */"
+
+  %return rtnStr
+%endfunction  %% of GetCSCTypeComment
+
+
+%% Function: GetCSCDeclComment =================================================
+%function GetCSCDeclComment(cscDefn, msDefn, classrec) void
+  %assign rtnStr ="/* Declaration for custom storage class: %<cscDefn.Name> */"
+
+  %return rtnStr
+%endfunction  %% of GetCSCDeclComment
+
+
+%% Function: GetCSCDefnComment =================================================
+%function GetCSCDefnComment(cscDefn, msDefn, classrec) void
+  %assign rtnStr = "/* Definition for custom storage class: %<cscDefn.Name> */"
+
+  %return rtnStr
+%endfunction  %% of GetCSCDefnComment
+
+%% Function: GetContentsFlatStructure =========================================
+%function GetContentsFlatStructure(cscDefn, msDefn,record, idx, reim) void
+  %assign pointer    = GetPointerForData(cscDefn, msDefn, record)
+  %assign structName = GetActualStructNameForData(cscDefn, record)
+  %assign id         = LibGetRecordIdentifier(record)
+
+  %if cscDefn.DataAccess == "Direct"
+    %assign delim = "."
+  %else
+    %assign delim = "->"
+  %endif
+
+  %% The data is accessed as <STRUCT_NAME><delim><DATA_NAME>
+  %return structName + delim + id + idx + reim
+%endfunction
+
+%% [Bose] Enable use of IMPORTED data scope-- but with declarations
+%% Function: EmitImportStructure =========================================
+%% Bose written routine to enable the use of "Imported" data scope with
+%% structures. Normally, the code in {MATLABroot}\rtw\c\tlc\mw\data_customdata.tlc
+%% checks for Exported classScope (near line 300) and refuses to emit even
+%% declaractions for the storage class. This routine picks up the slack
+%% premptively unpon being asked for definition we also emit it to file
+%% ourselves, which is perhaps a bit naughty.
+%function EmitImportStructure(cscDefn, groupTypeDeclDefn) void
+    %if (cscDefn.DataScope != "Imported")
+        %% Just exit if this CSC is not imported. This is about imported stuff.
+        %return
+    %endif
+    %if (cscDefn.Name == "StructStaticInit")
+        %% Emit everything for this special "imported" struct that's not
+        %assign cscFileName = ModelPrefix() + cscDefn.Name
+        %assign fileH = LibCreateSourceFile("Header","Custom",cscFileName)
+        %openfile buffer
+            #include "rtwtypes.h"
+            #include "%<LibGetMdlTypesHdrBaseName()>.h"
+        
+            /* %<cscDefn.Name> type definitions */
+            %<groupTypeDeclDefn[0]>
+            
+            /* %<cscDefn.Name> instance declarations */
+            %<groupTypeDeclDefn[1]>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+        %<LibAddToCommonIncludes(cscFileName + ".h")>
+        %assign fileH = LibCreateSourceFile("Source","Custom",cscFileName)
+        %openfile buffer
+            #include "%<cscFileName>.h"
+            
+            /* %<cscDefn.Name> instance definitions */
+            %<groupTypeDeclDefn[2]>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+        %% Add the structure definitions to the private model header
+        %openfile buffer
+        #include "%<cscFileName>.h" // from BoseFlatStructure.tlc
+        %closefile buffer
+        %<LibCacheDefine(buffer)>
+        %% and then bail out
+        %return
+    %endif
+    %if (cscDefn.Name != "PingPongStruct")
+        %% Just exit if this CSC is not our very special one
+        %return
+    %endif
+
+    %assign typedefHdrFileName = ModelPrefix() + "ping_pong_struct"
+    %assign fileH = LibCreateSourceFile("Header","Custom",typedefHdrFileName)
+    %openfile buffer
+
+        /* Ping Pong: buffer signal content definitions */
+        %<groupTypeDeclDefn[0]>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+    %openfile buffer
+
+        /* Ping Pong: active buffer pointer declarations */
+        %<groupTypeDeclDefn[1]>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %% Add include file to model's private header. The signal buffers will
+    %% will be declared there by Simulink, so we best supply their types.
+    %% PRETEND TO BE SIMULINK creating the file since that's who owns this one
+    %% (otherwise attempting to access the file will generate an error)
+    %assign fileH = LibCreateSourceFile("Header","Simulink",LibGetMdlPrvHdrBaseName())
+    %openfile buffer
+        #include "%<typedefHdrFileName>.h" // from BoseFlatStructure.tlc
+    %closefile buffer
+    %% Add to "defines" which should come after the includes
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% DO NOT EMIT THE POINTER DEFINITIONS - THIS CLASS IS AN "IMPORT" SCOPE
+    %% SO SOMEBODY ELSE DEFINES THESE. BTW, THERE'S A BLOCK TO DO THAT called "PingPongControl"
+    %% %assign fileH = LibCreateSourceFile("Source","Custom",typedefHdrFileShort)
+    %% %openfile buffer
+    %%     
+    %%     /* Ping Pong: active buffer definition */
+    %%     %<groupTypeDeclDefn[2]>
+    %% %closefile buffer
+    %% %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+%endfunction
+%% [/Bose]
+
+
+%% Function: DataAccess =========================================================
+%% Abstract:
+%%   DataAccess provides an API for requesting code fragments or other
+%%   information corresponding to data of a custom storage class.
+%%
+%function DataAccess(record, request, idx, reim) void
+
+  %assign cscDefn = SLibGetCSCDefForData(record)
+  %assign msDefn = SLibGetMemorySectionDefForData(record)
+  %assert cscDefn.IsGrouped
+
+  %switch request
+
+    %case "contents"
+      %return GetContentsFlatStructure(cscDefn, msDefn, record, idx, reim)
+      %%break
+
+    %case "address"
+      %if (cscDefn.DataInit == "Macro") || ...
+          (cscDefn.CSCTypeAttributes.BitPackBoolean)
+        %assign cscName = cscDefn.Name
+        %return "address not supported for %<cscName>"
+      %else
+        %assign rtn       = GetContentsFlatStructure(cscDefn, msDefn, record, idx, reim)
+        %assign dtypeId   = LibGetRecordDataTypeId(record)
+        %assign cmplx     = LibGetRecordIsComplex(record)
+        %assign cast      = LibGetNonVolatileCmplxPointerCast(msDefn, dtypeId, cmplx, idx)
+        
+        %assign rtn = cast + "&(%<rtn>)"
+        
+        %return rtn
+      %endif
+      %%break
+
+    %case "initialize"
+      %assert !LibCustomStorageRecordIsModelParameter(record)
+      %if (cscDefn.DataInit == "Dynamic") || (cscDefn.DataInit == "Auto")
+        %if !SLibRemoveZeroInitForDataDefault(record)
+          %assign gndValue = SLibGetDefaultInitialValue(record, tRealPart)
+          %return ...
+            "%<DataAccess(record, "contents", idx, reim)> = " + ...
+            "%<gndValue>;"
+        %endif
+      %endif
+      %return ""      
+      %%break
+
+    %case "layout"
+      %if (cscDefn.DataInit == "Macro") || ...
+          (cscDefn.CSCTypeAttributes.BitPackBoolean)
+        %return ["other"]
+      %else
+        %% LibDefaultCustomStorageLayout is the default layout function, and may
+        %% be used when the data is laid out in memory like built-in Simulink
+        %% data.  If the data is not laid out in memory like Simulink data,
+        %% return the vector ["other"].
+        %return LibDefaultCustomStorageLayout(record)
+      %endif
+      %%break
+
+    %default
+
+      %% You should invoke LibDefaultCustomStorageUnknownClassAccessType
+      %% for unrecognized requests.  It gracefully errors for unhandled
+      %% critical cases, and supplies safe defaults for unhandled
+      %% noncritical requests.
+      %return LibDefaultCustomStorageUnknownDataAccessType ...
+        (record, request, idx, reim)
+      %%break
+
+  %endswitch
+
+%endfunction
+
+
+%% Function: ClassAccess ========================================================
+%% Abstract:
+%%   ClassAccess provides an API for requesting information or actions
+%%   corresponding to a custom storage class.
+%%
+%% NOTE:
+%%   Expecting record of GlobalMemoryMap->CustomData,
+%%   not CompiledModel->CustomStorageClass.
+
+%function ClassAccess(record, request) void
+
+  %assign cscDefn = SLibGetCSCDefForCSC(record)
+  %assign msDefn = SLibGetMemorySectionDefForCSC(record)
+  %assert cscDefn.IsGrouped
+
+  %switch request
+
+    %case "setup"
+      %return ""
+      %%break
+
+    %case "comment"
+      %assign rtnStr = "/* Custom storage class: %<cscDefn.Name> */"
+
+      %return rtnStr
+      %%break
+
+    %case "typeComment"
+      %assert cscDefn.CommentSource == "Default"
+
+      %return GetCSCTypeComment(cscDefn, msDefn, record)
+      %%break
+
+    %case "declComment"
+      %assert cscDefn.CommentSource == "Default"
+
+      %return GetCSCDeclComment(cscDefn, msDefn, record)
+      %%break
+
+    %case "defnComment"
+      %assert cscDefn.CommentSource == "Default"
+
+      %return GetCSCDefnComment(cscDefn, msDefn, record)
+      %%break
+
+    %case "groupTypeDeclDefn"
+      %% [Bose] Add support for imports but with declarations
+      %assign groupTypeDeclDefn = GetGroupTypeDeclDefnFlatStructure(cscDefn, msDefn, record)
+      %<EmitImportStructure(cscDefn, groupTypeDeclDefn)>
+      %return groupTypeDeclDefn
+      %% [/Bose]
+      %%break
+
+    %default
+
+      %% You should invoke LibDefaultCustomStorageUnknownClassAccessType
+      %% for unrecognized requests.  It gracefully errors for unhandled
+      %% critical cases, and supplies safe defaults for unhandled
+      %% noncritical requests.
+      %return LibDefaultCustomStorageUnknownClassAccessType(record, request)
+      %%break
+
+  %endswitch
+
+%endfunction
+
+
+%% [EOF]

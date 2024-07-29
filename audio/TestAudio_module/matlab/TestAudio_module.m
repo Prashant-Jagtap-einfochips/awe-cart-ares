@@ -7,6 +7,8 @@ function M= TestAudio_module(NAME)
 %
 
 % AudioWeaverModule [This tag makes it appear under awe_help]
+CONTROL_MAX_PAYLOAD_SIZE = 256
+
 
 M=awe_module('TestAudio', 'Copies input wire to output wire');
 if (nargin == 0)
@@ -24,6 +26,20 @@ add_pin(M, 'output', 'out', 'Output signal', PT);
 % ----------------------------------------------------------------------
 % Add module variables
 % ----------------------------------------------------------------------
+
+add_array(M, 'CONTROL_REQUEST', 'uint', zeros(CONTROL_MAX_PAYLOAD_SIZE,1), 'parameter', 'Control Message Request');
+add_array(M, 'CONTROL_RESPONSE', 'uint', zeros(CONTROL_MAX_PAYLOAD_SIZE,1), 'parameter', 'Control Message Response');
+add_variable(M, 'STATE', 'int', 1, 'parameter', 'Toggles AudioPP Active/Bypass', 1);
+
+% Log Control
+add_variable(M, 'logCTRL', 'int', 1, 'parameter', 'Debug Start/Stop', 1);
+
+% BAF pointer
+add_pointer(M, 'pHandle', 'void *', 'state', 'Instance handle', 1);
+% valid CONTROL_RESPONSE
+add_variable(M, 'validCtrlRsp', 'int', 0, 'state', 'valid control response');
+% algorithm state
+add_variable(M, 'algoState', 'int', 0, 'state', 'algorithm state active/bypass');
 
 add_variable(M, 'gain', 'int', 1, 'parameter', 'Linear gain');
 M.gain.range=[0 10];
@@ -43,6 +59,21 @@ awe_addcodemarker(M, 'constructorFunction', 'Insert:\InnerTestAudio_Construct.c'
 
 awe_addcodemarker(M, 'discussion', {'Copies the input to the output. '});
 
+awe_addcodemarker(M, 'srcFileInclude', '#include "BAF.h"');
+awe_addcodemarker(M, 'srcFileInclude', '#include "BAF_Message_Id.h"');
+
+awe_addcodemarker(M, 'srcFileInclude', '#define CONTROL_RESPONSE_INVALID 0U');
+awe_addcodemarker(M, 'srcFileInclude', '#define CONTROL_RESPONSE_VALID   1U');
+awe_addcodemarker(M, 'srcFileInclude', '#define AUDIOPP_STATE_BYPASS     0U');
+awe_addcodemarker(M, 'srcFileInclude', '#define AUDIOPP_STATE_ACTIVE     1U');
+
+awe_addcodemarker(M, 'hFileDefine', strcat("#define NUM_CHANNELS_IN " + "2U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define NUM_CHANNELS_OUT " + "2U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define SAMPLERATE " + "48000U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define BLOCKSIZE " + "32U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define BASE_TASKID " + "0U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define EXT_SCHEDULER " + "1U"));
+awe_addcodemarker(M, 'hFileDefine', strcat("#define CONTROL_MAX_PAYLOAD_SIZE " + "256U"));
 % ----------------------------------------------------------------------
 % Add the inspector information
 % ----------------------------------------------------------------------

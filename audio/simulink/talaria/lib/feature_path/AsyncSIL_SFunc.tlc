@@ -1,0 +1,459 @@
+%implements AsyncSIL_SFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% Setup async console to support model references by using "root" objects
+    %if ::INCLUDE_ASYNC_CONSOLE == TLC_FALSE
+        %return
+    %endif
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetAsyncConsoleFilename())
+    %openfile buffer
+        // ------------------------------------------------
+        // Structure to access console metadata from each model
+        typedef struct AsyncConsoleRoot_tag
+        {
+            void* rtc_table;
+            int*  rtc_count;
+            void* top_table;
+            int*  top_count;
+            void* tsp_table;
+            int*  tsp_count;
+        }
+        AsyncConsoleRoot;
+
+        // Register console metadata root
+        void RegisterAsyncConsoleRoot(AsyncConsoleRoot* aRoot);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"IntrinsicTypes",buffer)>
+
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+    %openfile buffer
+        #include "%<FeaturePathGetAsyncConsoleFilename()>.h"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    %openfile buffer
+        %% For ALL models (reference or not)
+        %% Define our model's translation root and register it
+        #ifndef AC_RTC
+        #define AC_RTC 0, 0
+        #endif
+        #ifndef AC_TOP
+        #define AC_TOP 0, 0
+        #endif
+        #ifndef AC_TSP
+        #define AC_TSP 0, 0
+        #endif
+        AsyncConsoleRoot %<ModelPrefix()>AsyncConsoleRoot =
+        {
+            AC_RTC,AC_TOP,AC_TSP
+        };
+        void %<ModelPrefix()>InitializeAsyncConsoleRoot( void )
+        {
+            RegisterAsyncConsoleRoot(&%<ModelPrefix()>AsyncConsoleRoot);
+        }
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Hookup registration of our  root into model init
+    %assign fileH = LibGetModelDotCFile()
+    %openfile buffer
+        extern void %<ModelPrefix()>InitializeAsyncConsoleRoot( void );
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %openfile buffer
+        // Register AsyncConsole among the model console metadata roots
+        %<ModelPrefix()>InitializeAsyncConsoleRoot();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+
+
+    %% Handlers etc for the top model only (i.e. non model reference)
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %%---------------------------------------------------------------------
+        %% ----------- Async Console message table setup
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+        %openfile buffer
+            #include <stdio.h> // for printf, scanf
+            #include <string.h> // for strchr
+            #include <ctype.h>  // for tolower
+            %if ::INCLUDE_ASYNC_CONSOLE < ::ASYNC_CONSOLE_PLAYBACK
+                #include <conio.h>  // for getch, putch
+            %endif
+            #include "%<ModelPrefix()>ModelCount.h"
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %<FeaturePathSetupAsyncConsoleHandlerTable()>
+        %openfile buffer
+            // Local file-scope handler list aggregating block-type-specific handlers
+            static %<ModelPrefix()>AsyncConsoleHandler* currentHandler = 0;
+            static %<ModelPrefix()>AsyncConsoleHandler* asyncHandlerTable[] =
+            {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"HandlerTableTop",buffer)>
+        %openfile buffer
+            };
+            static const int AsyncConsoleHandlerTableCount = sizeof(asyncHandlerTable) / sizeof(asyncHandlerTable[0]);
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"HandlerTableBottom",buffer)>
+        %openfile buffer
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_AsyncConsole.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %%----- Async console header
+        %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetAsyncConsoleFilename())
+        %openfile buffer
+            #include "rtwtypes.h"
+            #include <stdio.h> // for FILE* stream
+            #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %openfile buffer
+            //-----------------------------------------------------------
+            // Iterator for use with console metadata
+            //-----------------------------------------------------------
+            typedef struct
+            {
+                int model;
+                int index;
+            } AsyncConsoleIterator;
+
+            extern AsyncConsoleIterator INVALID_ASYNC_CONSOLE_ITERATOR;
+            int IsValidAsyncConsoleIterator(AsyncConsoleIterator anIterator);
+
+            //-----------------------------------------------------------
+            // Async console roots for use with handler code
+            //-----------------------------------------------------------
+            extern AsyncConsoleRoot* asyncConsoleRoots[];
+            extern int numAsyncConsoleRoots;
+
+            //-----------------------------------------------------------
+            // Console handler class & shared worker methods
+            //-----------------------------------------------------------
+            typedef struct
+            {
+                const char* console_name;
+                const char* (*GetRecordName)(AsyncConsoleIterator iterator);
+                int (*PrintMessage)(int isRequest, void* msgBuffer, uint32_t bufferSize, FILE* streamOut);
+                int (*BlockingMessageInput)(void* messageBuffer, uint32_t bufferSize, FILE* streamOut);
+            } %<ModelPrefix()>AsyncConsoleHandler;
+
+            //-----------------------------------------------------------
+            // Methods shared by block-specific async consoles:
+            //-----------------------------------------------------------
+            int %<ModelPrefix()>GetDTypeSize(SimulinkDatatypeId dtypeId);
+            void %<ModelPrefix()>PrintTypedArray(SimulinkDatatypeId dTypeId, void* valPtr, uint32_t width, FILE* streamOut);
+            void %<ModelPrefix()>StringToNumericArrayElement(void* valPtr, uint32_t indexIn, SimulinkDatatypeId dTypeId, const char* stringIn);
+            char* %<ModelPrefix()>AcquireWordFromConsole(int getMsg);
+            const char* %<ModelPrefix()>GetDTypeStr(int dtypeId);
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %openfile buffer
+            //-----------------------------------------------------------
+            // Public Console API:
+            //-----------------------------------------------------------
+            // Iterate through handlers and find one that prints the buffer
+            void %<ModelPrefix()>ConsolePrintMessage(int isRequest, void* msgBuffer, uint32_t bufferSize, FILE* streamOut);
+
+            // interactive prompt for data and encodes/packs it into binary buffer
+            // Returning positive packed size or 0 if time to exit
+            int %<ModelPrefix()>ConsoleBlockingMessageInput(void* messageBuffer, uint32_t bufferSize, FILE* streamOut);
+
+            // Override console input to use this string instead
+            void %<ModelPrefix()>ConsoleSetStringIn(const char* stringIn);
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %% end of model reference exclusion
+    %endif
+
+
+
+    %% ---------------- SIL ---------------------
+    %% If the async console is enabled, dump the playback code into the model C file
+    %if ::INCLUDE_ASYNC_CONSOLE < ::ASYNC_CONSOLE_PLAYBACK
+        %return
+    %endif
+
+    %% Declare an "async player" for RTC blocks to call
+    %assign fileH = LibGetModelDotHFile()
+    %openfile buffer
+        /* Async SIL message player */
+        extern void PlayRtcSimRequests(uint32_t rtcId);
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %assign fileH = LibGetModelDotCFile()
+    %if ISEMPTY(ParamSettings.TimeArray)
+        %assign TimeArray = []
+    %else
+        %assign TimeArray = ParamSettings.TimeArray[0]
+    %endif
+    %assign RequestListStr = ParamSettings.RequestList
+    %assign RequestList = FEVAL("strsplit",RequestListStr,",")
+    %assign MsgNameListStr = ParamSettings.MsgNameList
+    %assign MsgNameList = FEVAL("strsplit",MsgNameListStr,",")
+
+    %assign RequestCount = SIZE(RequestList)[0] - 1
+    %assign MsgNameCount = SIZE(MsgNameList)[0] - 1
+    %assign TimeCount = SIZE(TimeArray)[1]
+
+    %if TimeCount && ((TimeCount != RequestCount) || (TimeCount != MsgNameCount))
+        %error TimeCount %<TimeCount> does not equal RequestCount %<RequestCount> or MsgNameCount %<MsgNameCount>
+    %endif
+
+    %% include the async console in the model source file since we're using it
+    %openfile buffer
+        #include "%<FeaturePathGetAsyncConsoleFilename()>.h" // for Async SIL player
+    %closefile buffer
+    %% (use "Defines" to avoid being the first include)
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    
+    %openfile buffer
+        /* Async SIL simulated requests '%<LibGetBlockName(block)>' */
+        typedef struct
+        {
+            uint32_t frameIndex;
+            uint32_t msgId;
+            const char* requestString;
+        } AsyncRequest;
+        static AsyncRequest asyncSilRequest[] = 
+        {
+            %foreach j = TimeCount
+                {%<TimeArray[j]>,RTCID_%<MsgNameList[j]>,"%<RequestList[j]>"},
+            %endforeach
+            { (uint32_T)-1, (uint32_T)-1, "" } // end sentinel
+        };
+        /* Async SIL variables */
+        static char asyncSilBuf[1024]; // communication buffer
+        static const int asyncSilbufSize = sizeof(asyncSilBuf);
+        static uint32_t asyncSilFrame = 0; // frame counter
+        static uint32_t asyncSilIndex = 0; // iterator through playback list
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %if ::INCLUDE_ASYNC_CONSOLE == ::ASYNC_CONSOLE_PLAYBACK
+        %% Definition of "async player" for RTC blocks themselves to call
+        %openfile buffer
+        // '%<LibGetBlockName(block)>'
+        // PlayRtcSimRequests will invoke the handlers for the SIL events built-in
+        // into this code. When called by an RTC block (done from audio rates)
+        // the passed in rtcId indicates which specific RTC block must match.
+        void PlayRtcSimRequests(uint32_t rtcId)
+        {
+            // Leave behind any past events- storm ahead:
+            while (asyncSilFrame > asyncSilRequest[asyncSilIndex].frameIndex)
+            {
+                asyncSilIndex++; /* Next message */
+            }
+    
+            // Use temporary copy of asyncSilIndex to enable "skipping over"
+            uint32_t evtIdx = asyncSilIndex;
+            // any events that are the correct frame, but *not* the right rtcId
+            /* send requests when their frame comes up '%<LibGetBlockName(block)>' */
+            while (asyncSilFrame == asyncSilRequest[evtIdx].frameIndex)
+            {
+                if (asyncSilRequest[evtIdx].msgId == rtcId)
+                {
+                    MODEL_FUNC(ConsoleSetStringIn)(asyncSilRequest[evtIdx].requestString);
+                    /* parse request with NO prompts (null streamOut) */
+                    int gotMsg = MODEL_FUNC(ConsoleBlockingMessageInput)(asyncSilBuf, asyncSilbufSize, 0);
+                    if (gotMsg)
+                    {
+                        fprintf(stdout,"@%u:\n",asyncSilFrame);
+                        MODEL_FUNC(ConsolePrintMessage)(true, asyncSilBuf, asyncSilbufSize, stdout);
+                        int rspSize = MODEL_FUNC(HandleAsdIdRequest)(asyncSilBuf, asyncSilbufSize, asyncSilBuf, asyncSilbufSize);
+                        if (rspSize)
+                        {
+                            fprintf(stdout,"@%u:\n",asyncSilFrame);
+                            MODEL_FUNC(ConsolePrintMessage)(false, asyncSilBuf, rspSize, stdout);
+                        }
+                    }
+                }
+                evtIdx++; /* Next message */
+            }
+        }
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %% Handle system-side event player maintenance for audio-rate SIL:
+        %openfile buffer
+            /* Next async SIL message processing frame */
+            asyncSilFrame++;
+            /* check for notifications */
+            int returnedNtfBytes = MODEL_FUNC(ServiceNotifications)(asyncSilBuf, asyncSilbufSize);
+            if (returnedNtfBytes)
+            {
+                fprintf(stdout,"@%u:\n",asyncSilFrame);
+                MODEL_FUNC(ConsolePrintMessage)(false, asyncSilBuf, returnedNtfBytes, stdout);
+            }
+        %closefile buffer
+        %% Output the playback code at the top of the step (or output) function)
+        %% This appears to match the normal simulation block order the best.
+        %<LibSystemOutputCustomCode(system,buffer,"trailer")>
+        
+    %elseif ::INCLUDE_ASYNC_CONSOLE == ::ASYNC_CONSOLE_PLAYBACK_IN_SRAT
+        %% Definition of "async player" from global subversive rogue asynchronous thread
+        %assign AsyncWakeMsec = ParamSettings.AsyncWakeMsec[0][0]
+        %openfile buffer
+        // PlayRtcSimRequestsSinceFrame will invoke the handlers for the SIL events built-in
+        // into this code. All the events from the last handled frame to the
+        // current frame will execute. Returns current 
+        int PlayRtcSimRequestsFromFrame(uint32_t asyncSilStartFrame)
+        {
+            // Capture the current audio rate frame which could be changing
+            // since this function is likely running on a non-audio thread.
+            uint32_t nowFrame = asyncSilFrame;
+    
+            // Use temporary copy of asyncSilIndex - but update at the end
+            uint32_t evtIdx = asyncSilIndex;
+            while (asyncSilRequest[evtIdx].frameIndex >= asyncSilStartFrame &&
+                   asyncSilRequest[evtIdx].frameIndex <= nowFrame)
+            {
+                MODEL_FUNC(ConsoleSetStringIn)(asyncSilRequest[evtIdx].requestString);
+                /* parse request with NO prompts (null streamOut) */
+                int gotMsg = MODEL_FUNC(ConsoleBlockingMessageInput)(asyncSilBuf, asyncSilbufSize, 0);
+                if (gotMsg)
+                {
+                    fprintf(stdout,"@%u(%u):\n",asyncSilRequest[evtIdx].frameIndex,nowFrame);
+                    MODEL_FUNC(ConsolePrintMessage)(true, asyncSilBuf, asyncSilbufSize, stdout);
+                    int rspSize = MODEL_FUNC(HandleAsdIdRequest)(asyncSilBuf, asyncSilbufSize, asyncSilBuf, asyncSilbufSize);
+                    if (rspSize)
+                    {
+                        fprintf(stdout,"@%u(%u):\n",asyncSilRequest[evtIdx].frameIndex,nowFrame);
+                        MODEL_FUNC(ConsolePrintMessage)(false, asyncSilBuf, rspSize, stdout);
+                    }
+                }
+                evtIdx++; /* Next message */
+            }
+            // Update the asyncSilIndex with the work just accomplished
+            asyncSilIndex = evtIdx;
+            // return the starting frame for the next playback
+            return (nowFrame + 1);
+        }
+
+        %% SRAT THREADING:
+        //---------------------- START SRAT THREADING
+                #include <Windows.h>
+    
+                // '%<LibGetBlockName(block)>'
+                HANDLE srat_thread_handle;
+                DWORD srat_pthread_id;
+                HANDLE srat_wait_event_handle;
+                HANDLE srat_timer_queue_handle;
+                HANDLE srat_timer_handle;
+                
+                VOID CALLBACK SratTimerCallback(
+                  _In_  PVOID lpParameter,
+                  _In_  BOOLEAN TimerOrWaitFired )
+                
+                {
+                   SetEvent(srat_wait_event_handle);
+                }
+                
+                unsigned long __stdcall srat_func(void* paramIn)
+                {
+                    uint32_t asyncSilStartFrame = 0; // base rate frame where playback starts
+                
+                    for(;;)
+                    {
+                        WaitForSingleObject(srat_wait_event_handle, INFINITE);
+                        
+                        asyncSilStartFrame = PlayRtcSimRequestsFromFrame(asyncSilStartFrame);
+
+                        /* check for notifications */
+                        int returnedNtfBytes = MODEL_FUNC(ServiceNotifications)(asyncSilBuf, asyncSilbufSize);
+                        if (returnedNtfBytes)
+                        {
+                            fprintf(stdout,"@%u:\n",asyncSilFrame);
+                            MODEL_FUNC(ConsolePrintMessage)(false, asyncSilBuf, returnedNtfBytes, stdout);
+                        }
+                    }
+                }
+                
+                // '%<LibGetBlockName(block)>'
+                void SratStartup()
+                {
+                    // Startup a Subversive Rogue Async Thread with its own timing source e.g. every 2 milliseconds
+                    // Create a timer queue, a timer-queue timer, an event, and thread
+                    srat_wait_event_handle = CreateEventA(
+                        NULL,   // attributes
+                        FALSE,  // manual reset
+                        FALSE,  // initial state
+                        NULL);  // name
+                        
+                    // Create timer queue and timer with callback setting the event
+                    srat_timer_queue_handle = CreateTimerQueue();
+                    CreateTimerQueueTimer(
+                        &srat_timer_handle,         // returned timer handle
+                        srat_timer_queue_handle,    // handle to previously made queue
+                        SratTimerCallback,          // function for timer to call
+                        0,                          // callback parameter
+                        0,                          // duetime (start delay)
+                        %<AsyncWakeMsec>,           // period in milliseconds
+                        0);                         // flags
+                   
+                    // Create a the thread that will wait on the event
+                    DWORD flags = THREAD_SUSPEND_RESUME | THREAD_TERMINATE | SYNCHRONIZE ;
+                    srat_thread_handle = CreateThread(
+                            NULL,                   // default security attributes
+                            0,                      // use default stack size
+                            srat_func,              // thread function name
+                            NULL,                   // argument to thread function
+                            flags,                  //  creation flags
+                            &srat_pthread_id);      // returns the thread identifier
+                }
+        //---------------------- END SRAT THREADING
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %openfile buffer
+            // Initialize the Subversion Rogue Asynchronous thread for SIL playback
+            // '%<LibGetBlockName(block)>'
+            SratStartup();
+        %closefile buffer
+        %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+
+        %% Handle system-side event player maintenance for SRAT
+        %openfile buffer
+            /* Next async SIL message processing frame */
+            asyncSilFrame++;
+        %closefile buffer
+        %% Output the playback code at the top of the step (or output) function)
+        %% This appears to match the normal simulation block order the best.
+        %<LibSystemOutputCustomCode(system,buffer,"trailer")>
+        
+    %endif %% end type-of-SIL playback differences
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+%endfunction
+
+%% Function: Outputs ===============================================
+%function Outputs(block, system) Output
+    %% If there is no async console, there is nothing to do here
+    %if ::INCLUDE_ASYNC_CONSOLE < ::ASYNC_CONSOLE_PLAYBACK
+        /* ASYNC SIL PLAYBACK IS DISABLED */
+        %return
+    %endif
+
+
+
+%endfunction

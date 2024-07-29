@@ -1,0 +1,40 @@
+// This snippet of code used by StateVarSFunc.tlc (same file found in top folder)
+
+            // Decode fixed point data types
+            typedef struct FixedInfo_tag
+            {
+                int unsupportedType;
+                int isSigned;
+                int intDTypeId;
+                int totalBits;
+                int fractionalBits;
+                double factor;
+            } FixedInfo;
+
+            static FixedInfo DecodeFixedTypeName(const char* typeName)
+            {
+                FixedInfo info;
+                char signedChar;
+                info.unsupportedType = 0;
+                info.factor = 0;
+                int numFound = sscanf(typeName, "%cfix%d_En%d", &signedChar, &info.totalBits, &info.fractionalBits);
+                if (numFound == 3)
+                {
+                    info.factor = 1.0/(1 << info.fractionalBits);
+                    info.isSigned = (signedChar == 's') ? 1 : 0;
+                    int bytesInInt = (info.totalBits + 7) / 8;
+                    switch (bytesInInt)
+                    {
+                    case 1: info.intDTypeId = (info.isSigned) ? TSS_INT8 : TSS_UINT8; break;
+                    case 2: info.intDTypeId = (info.isSigned) ? TSS_INT16 : TSS_UINT16; break;
+                    case 3: info.intDTypeId = (info.isSigned) ? TSS_INT32 : TSS_UINT32; break;
+                    case 4: info.intDTypeId = (info.isSigned) ? TSS_INT32 : TSS_UINT32; break;
+                    default: info.unsupportedType = 1; break;
+                    }
+                }
+                else
+                {
+                    info.unsupportedType = 1;
+                }
+                return info;
+            }

@@ -1,0 +1,72 @@
+import os
+import math
+
+Import('env')
+Import('target')
+Import('runtime')
+Import('platform')
+Import('jframework')
+Import('OptArch')
+Import('OptRTOS')
+Import('OptPlatform')
+Import('SOC_ID')
+Import('CORE_ID')
+Import('code_gen_folder')
+Import('talaria_model')
+Import('base_rate_period')
+Import('option')
+Import('modulePath')
+
+parent_env = env
+local_env = env.Clone()
+
+Platform = None
+
+if OptRTOS == None:
+   Platform = local_env.SConscript(
+      '#/'+local_env['APP_ROOT']+'/SConscript.NoOSPlatform',
+      src_dir= platform,
+      exports={'env': local_env ,
+         'target': target,
+         'runtime': runtime,
+         'platform': platform,
+         'modulePath': modulePath,
+         'OptArch': OptArch,
+         'OptPlatform': OptPlatform,
+         'SOC_ID': SOC_ID,
+         'CORE_ID': CORE_ID,
+         'code_gen_folder': code_gen_folder,
+         'talaria_model': talaria_model,
+         'base_rate_period': base_rate_period,
+         'option': option
+      },
+      variant_dir = local_env['variant_root']+'/'+OptArch+'/obj/Platform/'+jframework['Name']+'/'+OptPlatform,
+      duplicate=0)
+
+elif OptRTOS == 'FreeRTOS':
+   Platform = local_env.SConscript(
+      '#/'+local_env['APP_ROOT']+'/SConscript.FreeRTOSPlatform',
+      src_dir= platform,
+      exports={'env': local_env ,
+         'target': target,
+         'runtime': runtime,
+         'platform': platform,
+         'jframework': jframework,
+         'OptArch': OptArch,
+         'OptRTOS': OptRTOS,
+         'OptPlatform': OptPlatform,
+         'SOC_ID': SOC_ID,
+         'CORE_ID': CORE_ID,
+         'code_gen_folder': code_gen_folder,
+         'talaria_model': talaria_model,
+         'base_rate_period': base_rate_period,
+         'option': option
+      },
+      variant_dir = local_env['variant_root']+'/'+OptArch+'/obj/Platform/'+jframework['Name']+'/'+OptPlatform,
+      duplicate=0)
+
+if 'PlatformList' in local_env:
+    parent_env['PlatformList'] = local_env['PlatformList']
+
+Return("Platform")
+

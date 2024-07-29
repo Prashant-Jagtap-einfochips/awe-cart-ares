@@ -1,0 +1,22 @@
+%implements s105_b0_435hk_29_TLCInterface "C"
+
+%function getInputAddr_23_0_29_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 16, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInput_23_0_29_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 16, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInputAddr_23_0_29_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<16efaf*//*@>16efa3*/BasicAudio_Target_B./*@>16efb5*/In1_h"
+%endfunction
+
+%function getInput_23_0_29_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>16efc3*/BasicAudio_Target_B./*@>16efd6*/In1_h"
+%endfunction
+

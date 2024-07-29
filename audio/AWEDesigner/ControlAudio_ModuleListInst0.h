@@ -1,7 +1,7 @@
 /*******************************************************************************
 *
 ********************************************************************************
-*     ControlAudio_ModuleListInst0.h  Created on 21-Jun-2024 15:54:44
+*     ControlAudio_ModuleListInst0.h  Created on 29-Jul-2024 15:08:42
 ********************************************************************************
 *
 *     Description:  Module list for the target
@@ -13,8 +13,9 @@
 *******************************************************************************/
 #include "AWECore.h"
 
-#define TOTALNUMBEROFCLASSES 7
+#define TOTALNUMBEROFCLASSES 8
 
+extern const UINT32 awe_modControlClass;
 extern const UINT32 awe_modDCSourceIntClass;
 extern const UINT32 awe_modDeinterleaveClass;
 extern const UINT32 awe_modInterleaveClass;
@@ -25,6 +26,7 @@ extern const UINT32 awe_modTypeConversionClass;
 
 
 #define LISTOFCLASSOBJECTS \
+&awe_modControlClass, \
 &awe_modDCSourceIntClass, \
 &awe_modDeinterleaveClass, \
 &awe_modInterleaveClass, \

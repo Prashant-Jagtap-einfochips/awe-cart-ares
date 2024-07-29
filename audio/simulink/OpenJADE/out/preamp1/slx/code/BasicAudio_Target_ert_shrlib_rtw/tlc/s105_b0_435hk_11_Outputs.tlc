@@ -1,0 +1,94 @@
+%implements s105_b0_435hk_11_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign _modelSS = ""
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[8], "Output",0)
+/* S-Function (fcgen): '<S94>/Function-Call Generator' incorporates:
+ *  SubSystem: '<S94>/LockEnter'
+ */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_LockEnter",8,0)
+%<SLibCG_AccessArg(11 ,0, 0)>
+%endif
+
+%<SLibCG_DumpSSCode("/*@[14eadd*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_LockEnter", ["/*@>14ebcc*/%<::tSimStruct>"], 8, 4, 6, 0, 6, 61),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[8]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+/* S-Function (fcgen): '<S94>/Function-Call Generator' incorporates:
+ *  SubSystem: '<S94>/DsmWrite'
+ */
+%endif
+/* DataStoreWrite: '<S111>/Data Store Write' incorporates:
+ *  Constant: '<S111>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[14eafc*/",SLibCG_SetCSCDW(10, 1, "", -1, "", 0, "1U"),"/*@]*/")>\
+%assign   Outputs_open_FunctionCallGenerator_61_0 = ""
+%openfile Outputs_open_FunctionCallGenerator_61_0
+
+/* S-Function (fcgen): '<S94>/Function-Call Generator' incorporates:
+ *  SubSystem: '<S94>/LockExit'
+ */
+%closefile Outputs_open_FunctionCallGenerator_61_0
+
+%assign    Outputs_body_FunctionCallGenerator_61_0 = ""
+%openfile  Outputs_body_FunctionCallGenerator_61_0
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[10], "Output",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_LockExit",10,0)
+%<SLibCG_AccessArg(11 ,0, 0)>
+%endif
+
+%<SLibCG_DumpSSCode("/*@[14eade*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_LockExit", ["/*@>14ebfb*/%<::tSimStruct>"], 10, 4, 6, 0, 6, 61),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[10]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Outputs_body_FunctionCallGenerator_61_0
+
+%assign    Outputs_close_FunctionCallGenerator_61_0 = ""
+%openfile  Outputs_close_FunctionCallGenerator_61_0
+
+/* End of Outputs for S-Function (fcgen): '<S94>/Function-Call Generator' */
+%closefile Outputs_close_FunctionCallGenerator_61_0
+%<SLibCG_DumpSSCode(Outputs_open_FunctionCallGenerator_61_0, Outputs_body_FunctionCallGenerator_61_0, Outputs_close_FunctionCallGenerator_61_0)>
+
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[11].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(11, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(11, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(11, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_SetDsm_l(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(11, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_SetDsm_l", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(11, 0, fcnProtoType)>
+%endfunction

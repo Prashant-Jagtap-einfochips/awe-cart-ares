@@ -1,0 +1,9 @@
+BasicAudio_Target.obj
+BasicAudio_Target_BasicAudio0_TOP.obj
+BasicAudio_Target_RTC_NTF.obj
+BasicAudio_Target_RTC_REQ_RSP.obj
+BasicAudio_Target_SCH_API.obj
+BasicAudio_Target_StructStaticInit.obj
+BasicAudio_Target_TOP_Access.obj
+BasicAudio_Target_TalariaAPI.obj
+BasicAudio_Target_data.obj

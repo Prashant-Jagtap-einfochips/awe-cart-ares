@@ -1,0 +1,370 @@
+%% this file included by FeaturePath_SFunc.tlc
+
+%addincludepath "../rtc"
+%include "RTC_Common.tlc"
+
+%% Pull in the doxygen creation code
+%include "tlc_RTC_doxygen.tlc"
+
+%function EmitStaticCommandHandlerAPI(block,system) void
+
+    %assign CoreIndexNum = ParamSettings.CoreIndex[0][0]
+    %assign CoreIndex = SPRINTF("%01x",CoreIndexNum)
+    %% Tokens
+    %assign TokenGetTalariaVersion = SPRINTF("0x%s0f70000",CoreIndex)
+    %assign TokenGetTopCompatHash  = SPRINTF("0x%s0f70001",CoreIndex)
+    %assign TokenGetTspCompatHash  = SPRINTF("0x%s0f70002",CoreIndex)
+    %assign TokenGetRtcCompatHash  = SPRINTF("0x%s0f70003",CoreIndex)
+    %% FeaturePaths
+    %assign FPathGetTalariaVersion  = "GetTalariaVersion" + CoreIndex
+    %assign FPathGetTopCompatHash   = "GetTopCompatHash" + CoreIndex
+    %assign FPathGetTspCompatHash   = "GetTspCompatHash" + CoreIndex
+    %assign FPathGetRtcCompatHash   = "GetRtcCompatHash" + CoreIndex
+    %% Shared payload name piece
+    %assign SharedCompatHashTypeName = "GetCompatHash" + CoreIndex
+    %% Misc Variables (unique names for debug multicore builds)
+    %assign TalariaVersionVar       = "talariaVersion" + CoreIndex
+    %assign SchDispathTableVar      = "SchDispathTable" + CoreIndex
+
+    %% Ensure HASH header files are in place (so they can be replaced)
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+
+            ////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            // This file to be replaced by the Talaria partitioning tool
+            ////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Header","Simulink","TOP_COMPAT")
+        %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+        %assign fileH = LibCreateSourceFile("Header","Simulink","RTC_COMPAT")
+        %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+        %assign fileH = LibCreateSourceFile("Header","Simulink","TSP_COMPAT")
+        %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    %endif
+    
+
+    %%---------------------------------------------------------------------
+    %% ------------------- SCH id *.h file
+    %% Pretend to be Simulink in creating the file because the CompatHash
+    %% block has a Simulink.Parameter that also creates this file
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetSchFilename())
+    %openfile buffer
+        #include "%<FeaturePathGetAsdIdFileName()>.h"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% token API for non-referenced models
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            // ------------------------------------------------------------
+            // SCH MESSAGE IDS (Static Version Token)
+            // ------------------------------------------------------------
+            #define SCHID_GetTalariaVersion%<CoreIndex>     (%<TokenGetTalariaVersion>U) // REQ, RSP
+            #define SCHID_GetTopCompatHash%<CoreIndex>      (%<TokenGetTopCompatHash >U) // REQ, RSP
+            #define SCHID_GetTspCompatHash%<CoreIndex>      (%<TokenGetTspCompatHash >U) // REQ, RSP
+            #define SCHID_GetRtcCompatHash%<CoreIndex>      (%<TokenGetRtcCompatHash >U) // REQ, RSP
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    %endif
+
+    %% shared command handler code for any RTC table building
+    %openfile buffer
+            // ------------------------------------------------------------
+            // DATATYPES FOR COMMAND HANDLER DISPATCH TABLES
+            // ------------------------------------------------------------
+            // Function pointer to request/response handler
+            typedef void (*RTC_REQ_RSP_Handler)(void* pReqBuf, void* pRspBuf);
+            
+            // Struct for dispatch tables
+            typedef struct RTC_REQ_RSP_Table_tag
+            {
+                RTC_REQ_RSP_Handler request_response_func;
+                uint32_t request_payload_bytes;
+                uint32_t response_payload_bytes;
+            }
+            %<RtcGetReqRspFileName()>_type;
+    
+    %closefile buffer
+
+    %% Amazingly, "Types" is not working. Try Definitions
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %% token API payload definitions for non-referenced models
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %<RtcDoxygenBlockTypeSetup()>
+        %<RtcDoxygenBlockInstanceSetup(FPathGetTalariaVersion,TokenGetTalariaVersion,"Get Talaria Version String e.g. V2100AE",1,0)>
+        %<RtcDoxygenBlockInstanceSetup(FPathGetTopCompatHash,TokenGetTopCompatHash,"Get TOP compatibility hash based on module name hash",1,0)>
+        %<RtcDoxygenBlockInstanceSetup(FPathGetTspCompatHash,TokenGetTspCompatHash,"Get TSP compatibility hash based on module name hash",1,0)>
+        %<RtcDoxygenBlockInstanceSetup(FPathGetRtcCompatHash,TokenGetRtcCompatHash,"Get RTC compatibility hash based on module name hash",1,0)>
+
+        %openfile buffer
+            // ------------------------------------------------------------
+            // SCH REQUEST PAYLOAD DEFINITIONS
+            // ------------------------------------------------------------
+            %<RtcDoxygenEmitPayloadComment(FPathGetTalariaVersion,"Request","REQ",TLC_FALSE)>
+                typedef struct
+                {
+                    uint32_t msgId;         // always SCHID_%<FPathGetTalariaVersion>
+                    uint32_t caller_handle;
+                }
+                %<FPathGetTalariaVersion>_REQ_T;
+            
+                //--------------------------------------
+                // payload structure shared by all core %<CoreIndex> COMPAT_HASH requests
+                typedef struct
+                {
+                    uint32_t msgId;         //SCHID_Get...CompatHash
+                    uint32_t caller_handle;
+                    uint32_t name_hash;
+                }
+                %<SharedCompatHashTypeName>_REQ_T;
+
+                %<RtcDoxygenEmitPayloadComment(FPathGetTopCompatHash ,"Request","REQ",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_REQ_T %<FPathGetTopCompatHash>_REQ_T;
+                %<RtcDoxygenEmitPayloadComment(FPathGetTspCompatHash ,"Request","REQ",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_REQ_T %<FPathGetTspCompatHash>_REQ_T;
+                %<RtcDoxygenEmitPayloadComment(FPathGetRtcCompatHash ,"Request","REQ",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_REQ_T %<FPathGetRtcCompatHash>_REQ_T;
+           
+            // ------------------------------------------------------------
+            // SCH RESPONSE PAYLOAD DEFINITIONS
+            // ------------------------------------------------------------
+            %<RtcDoxygenEmitPayloadComment(FPathGetTalariaVersion,"Response","RSP",TLC_FALSE)>
+                typedef struct
+                {
+                    uint32_t msgId;         // always SCHID_%<FPathGetTalariaVersion>
+                    uint32_t caller_handle;
+                    ASDSTATUS status_code;
+                    uint8_t version_string[8]; // e.g. "V2100AE"
+                }
+                %<FPathGetTalariaVersion>_RSP_T;
+                
+                typedef struct
+                {
+                    uint32_t msgId;         //SCHID_Get...CompatHash
+                    uint32_t caller_handle;
+                    ASDSTATUS status_code;
+                    uint32_t name_hash;
+                    uint32_t compat_hash;
+                    
+                }
+                %<SharedCompatHashTypeName>_RSP_T;
+
+                %<RtcDoxygenEmitPayloadComment(FPathGetTopCompatHash ,"Response","RSP",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_RSP_T %<FPathGetTopCompatHash>_RSP_T;
+                %<RtcDoxygenEmitPayloadComment(FPathGetTspCompatHash ,"Response","RSP",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_RSP_T %<FPathGetTspCompatHash>_RSP_T;
+                %<RtcDoxygenEmitPayloadComment(FPathGetRtcCompatHash ,"Response","RSP",TLC_FALSE)>
+                typedef %<SharedCompatHashTypeName>_RSP_T %<FPathGetRtcCompatHash>_RSP_T;
+            
+            // ------------------------------------------------------------
+            // SCH NOTIFICATION PAYLOAD DEFINITIONS
+            // ------------------------------------------------------------
+            %<RtcDoxygenEmitPayloadComment(FPathGetTalariaVersion,"Notification","NTF",TLC_TRUE)>
+            %<RtcDoxygenEmitPayloadComment(FPathGetTopCompatHash ,"Notification","NTF",TLC_TRUE)>
+            %<RtcDoxygenEmitPayloadComment(FPathGetTspCompatHash ,"Notification","NTF",TLC_TRUE)>
+            %<RtcDoxygenEmitPayloadComment(FPathGetRtcCompatHash ,"Notification","NTF",TLC_TRUE)>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+        %openfile buffer
+            // ------------------------------------------------------------
+            // SCH ASYNCHRONOUS C-LANGUAGE FUNCTION API
+            // ------------------------------------------------------------
+            // Handle inbound request. Returns number of bytes in response
+            // or negative value upon error (See %<FeaturePathGetAsdIdFileName()>.h for returned ASDSTATUS codes.)
+            int %<ModelPrefix()>HandleSchRequest(void* pReqBuf, uint32_t reqBufSize,
+                                 void* pRspBuf, uint32_t rspBufSize);
+
+            int %<ModelPrefix()>UseDispatchTable(void* pReqBuf, uint32_t reqBufSize,
+                                 void* pRspBuf, uint32_t rspBufSize,
+                                 %<RtcGetReqRspFileName()>_type* table, uint32_t tableElements);
+        
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %%---------------------------------------------------------------------
+        %% ------------------- SCH id *.h file
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetSchFilename())
+        %openfile buffer
+            #include "%<FeaturePathGetSchFilename()>.h"
+            #include "TOP_COMPAT.h"
+            #include "TSP_COMPAT.h"
+            #include "RTC_COMPAT.h"
+            #include <string.h> // for memcpy
+
+            %assign TalariaVersion = FEVAL("talariaVersion")
+            const char* %<TalariaVersionVar> = "%<TalariaVersion>";
+
+            // ------------------------------------------------------------
+            // SCH message handlers
+            // ------------------------------------------------------------
+            extern void SchReqRsp_%<FPathGetTalariaVersion>(void*, void*);
+            extern void SchReqRsp_%<FPathGetTopCompatHash >(void*, void*);
+            extern void SchReqRsp_%<FPathGetTspCompatHash >(void*, void*);
+            extern void SchReqRsp_%<FPathGetRtcCompatHash >(void*, void*);
+            static void SharedGetHash(void* pREQBuf, void* pRSPBuf, uint32_t* nameArray, uint32_t* hashArray, uint32_t numElements);
+
+            // ----- Struct for dispatch tables
+            %<RtcGetReqRspFileName()>_type %<SchDispathTableVar>[] = 
+            {
+                {&SchReqRsp_%<FPathGetTalariaVersion>,
+                 sizeof(%<FPathGetTalariaVersion>_REQ_T),
+                 sizeof(%<FPathGetTalariaVersion>_RSP_T)
+                },
+                {&SchReqRsp_%<FPathGetTopCompatHash>,
+                 sizeof(%<FPathGetTopCompatHash>_REQ_T),
+                 sizeof(%<FPathGetTopCompatHash>_RSP_T)
+                },
+                {&SchReqRsp_%<FPathGetTspCompatHash>,
+                 sizeof(%<FPathGetTspCompatHash>_REQ_T),
+                 sizeof(%<FPathGetTspCompatHash>_RSP_T)
+                },
+                {&SchReqRsp_%<FPathGetRtcCompatHash>,
+                 sizeof(%<FPathGetRtcCompatHash>_REQ_T),
+                 sizeof(%<FPathGetRtcCompatHash>_RSP_T)
+                }
+            };
+
+            // ----- Handler functions
+            void SchReqRsp_%<FPathGetTalariaVersion>(void* pREQBuf, void* pRSPBuf)
+            {
+                %<FPathGetTalariaVersion>_REQ_T* payloadREQ = (%<FPathGetTalariaVersion>_REQ_T*)pREQBuf;
+                uint32_t callerHandle = payloadREQ->caller_handle;
+                ASDSTATUS statusCode = 0;
+                int i;
+                
+                %<FPathGetTalariaVersion>_RSP_T* payloadRSP = (%<FPathGetTalariaVersion>_RSP_T*)pRSPBuf;
+                payloadRSP->caller_handle = callerHandle;
+                payloadRSP->status_code = statusCode;
+
+                // copy in the talaria version string, padding with zeros
+                const char* src = %<TalariaVersionVar>;
+                for (i=0; i < sizeof(payloadRSP->version_string); i++)
+                {
+                    payloadRSP->version_string[i] = (*src) ? *src++ : 0;
+                }
+            }
+            #define COMPATARRAYSIZE(x) (sizeof(x)/sizeof((x)[0]))
+            void SchReqRsp_%<FPathGetTopCompatHash >(void* pREQBuf, void* pRSPBuf)
+            {
+#ifndef TOP_COMPAT
+                // Compatibility values are not available
+                SharedGetHash(pREQBuf,pRSPBuf,0,0,0);
+#else
+                static uint32_t nameArray[] = TOP_COMPAT_NAME_HASH;
+                static uint32_t hashArray[] = TOP_COMPAT;
+                FAIL_BUILD_IF_FALSE(COMPATARRAYSIZE(nameArray) == COMPATARRAYSIZE(hashArray));
+        
+                uint32_t numElements = sizeof(nameArray)/sizeof(nameArray[0]);
+                SharedGetHash(pREQBuf,pRSPBuf,&(nameArray[0]),&(hashArray[0]),numElements);
+#endif
+            }
+            void SchReqRsp_%<FPathGetTspCompatHash >(void* pREQBuf, void* pRSPBuf)
+            {
+#ifndef TOP_COMPAT
+                // Compatibility values are not available
+                SharedGetHash(pREQBuf,pRSPBuf,0,0,0);
+#else
+                static uint32_t nameArray[] = TSP_COMPAT_NAME_HASH;
+                static uint32_t hashArray[] = TSP_COMPAT;
+                FAIL_BUILD_IF_FALSE(COMPATARRAYSIZE(nameArray) == COMPATARRAYSIZE(hashArray));
+        
+                uint32_t numElements = sizeof(nameArray)/sizeof(nameArray[0]);
+                SharedGetHash(pREQBuf,pRSPBuf,&(nameArray[0]),&(hashArray[0]),numElements);
+#endif
+            }
+            void SchReqRsp_%<FPathGetRtcCompatHash >(void* pREQBuf, void* pRSPBuf)
+            {
+#ifndef TOP_COMPAT
+                // Compatibility values are not available
+                SharedGetHash(pREQBuf,pRSPBuf,0,0,0);
+#else
+                static uint32_t nameArray[] = RTC_COMPAT_NAME_HASH;
+                static uint32_t hashArray[] = RTC_COMPAT;
+                FAIL_BUILD_IF_FALSE(COMPATARRAYSIZE(nameArray) == COMPATARRAYSIZE(hashArray));
+
+                uint32_t numElements = sizeof(nameArray)/sizeof(nameArray[0]);
+                SharedGetHash(pREQBuf,pRSPBuf,&(nameArray[0]),&(hashArray[0]),numElements);
+#endif
+            }
+            static void SharedGetHash(void* pREQBuf, void* pRSPBuf, uint32_t* nameArray, uint32_t* hashArray, uint32_t numElements)
+            {
+                %<SharedCompatHashTypeName>_REQ_T* payloadREQ = (%<SharedCompatHashTypeName>_REQ_T*)pREQBuf;
+                uint32_t callerHandle = payloadREQ->caller_handle;
+                uint32_t reqNameHash = payloadREQ->name_hash;
+                uint32_t compatHash = 0;
+                // Assume the worst
+                ASDSTATUS statusCode = ASDSTATUS_NO_COMPAT_CODES;
+                
+                if (nameArray && hashArray)
+                {
+                    // The codes are available, so upgrade the worse case:
+                    uint32_t i;
+                    statusCode = ASDSTATUS_VALUE_NOT_AVAILABLE;
+                    for (i=0; i < numElements; i++)
+                    {
+                        if (reqNameHash == nameArray[i])
+                        {
+                            compatHash = hashArray[i];
+                            statusCode = ASDSTATUS_OK;
+                            break;
+                        }
+                    }
+                }
+            
+                %<SharedCompatHashTypeName>_RSP_T* payloadRSP = (%<SharedCompatHashTypeName>_RSP_T*)pRSPBuf;
+                payloadRSP->caller_handle = callerHandle;
+                payloadRSP->status_code = statusCode;
+                payloadRSP->name_hash = reqNameHash;
+                payloadRSP->compat_hash = compatHash;
+            }
+
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_RTC_Handler.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+            int %<ModelPrefix()>HandleSchRequest(void* pReqBuf, uint32_t reqBufSize,
+                                 void* pRspBuf, uint32_t rspBufSize)
+            {
+                // Gain access to the appropriate command table
+                %<RtcGetReqRspFileName()>_type* theTable = %<SchDispathTableVar>;
+                uint32_t tableSize = sizeof(%<SchDispathTableVar>)/sizeof(%<SchDispathTableVar>[0]);
+                return %<ModelPrefix()>UseDispatchTable(pReqBuf,reqBufSize,pRspBuf,rspBufSize,theTable,tableSize);
+            }
+        
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        
+        %% Output an "RTC" payloads xml file
+        %assign SchPayloadsFileName = ModelPrefix() + "SCH_Payloads.xml"
+        %openfile buffer = SchPayloadsFileName
+        %include "tlc_SCH_Payloads.xml"
+        %closefile buffer
+        %<SLibAddGeneratedFileToList(SchPayloadsFileName,"data","other","")>
+
+    %endif
+
+    %% Do not emit asynchronous API functions for referenced models - they 
+    %% hookup their assets to the top model's methods.
+    %%---------------------------------------------------------------------
+    %% [SHARED_HANDLER] ASDID HANDLER FUNCTION INTEGRATION
+    %% ... but only for top-level model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile includeBuffer
+            #include "%<FeaturePathGetSchFilename()>.h" // for SCH msg handler
+        %closefile includeBuffer
+        %openfile handlerBuffer
+            if (ASDID_IS_SCH(asdId))
+            {
+                retVal = %<ModelPrefix()>HandleSchRequest(pReqBuf,reqBufSize,pRspBuf,rspBufSize);
+            }
+        %closefile handlerBuffer
+        %<FeaturePathAddAsdIdHandler(includeBuffer,handlerBuffer)>
+    %endif
+        
+%endfunction

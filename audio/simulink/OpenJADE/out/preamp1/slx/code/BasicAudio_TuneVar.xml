@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+   <OverlayGroup id="BasicAudio">
+      <TuneVar id="BasicAudioBalanceBoostDisable">
+         <Name>BoostDisable</Name>
+         <SubPath>Balance</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(0)</MATLABValue>
+         <DefaultValue>0</DefaultValue>
+         <Tunability>2</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceChanRampMap">
+         <Name>ChanRampMap</Name>
+         <SubPath>Balance</SubPath>
+         <Description>Specifies the ramper to which each channel is mapped. Replace the channel number with:
+'1' - 'Right'; '2' - 'Left'; '3' - 'Center'. Currently, the 'Center' group is assigned a linear gain of 1.</Description>
+         <Dimensions>[1  2]</Dimensions>
+         <MATLABValue>double([1 2])</MATLABValue>
+         <DefaultValue>1 2</DefaultValue>
+         <Tunability>2</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceOffset">
+         <Name>Offset</Name>
+         <SubPath>Balance</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(127)</MATLABValue>
+         <DefaultValue>127</DefaultValue>
+         <Tunability>3</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceRampTime">
+         <Name>RampTime</Name>
+         <SubPath>Balance</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(30)</MATLABValue>
+         <DefaultValue>30</DefaultValue>
+         <Tunability>2</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceSleepingBeautyMutesBass">
+         <Name>SleepingBeautyMutesBass</Name>
+         <SubPath>Balance</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(1)</MATLABValue>
+         <DefaultValue>1</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceEnableSilentExtreme">
+         <Name>EnableSilentExtreme</Name>
+         <SubPath>Balance</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(0)</MATLABValue>
+         <DefaultValue>0</DefaultValue>
+         <Tunability>2</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBalanceTable">
+         <Name>Table</Name>
+         <SubPath>Balance</SubPath>
+         <Description>Define the balance curve using a table, with the first column being the list of indices and the second column being the corresponding balance gains in dB. Gain values for indices in between the elements in the table are linearly interpolated.</Description>
+         <Dimensions>[30   2]</Dimensions>
+         <MATLABValue>double([0 -30;10 -27;31 -14;52 -7;74 -5;95 -3;116 -1;128 0;138 -1;159 -3;180 -5;202 -7;223 -14;244 -27;255 -30])</MATLABValue>
+         <DefaultValue>0 -30 10 -27 31 -14 52 -7 74 -5 95 -3 116 -1 128 0 138 -1 159 -3 180 -5 202 -7 223 -14 244 -27 255 -30</DefaultValue>
+         <Tunability>3</Tunability>
+         <MinValue>0</MinValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassBoostFrequencyHz">
+         <Name>BoostFrequencyHz</Name>
+         <SubPath>Bass</SubPath>
+         <Description>Indicates the 'corner frequency' of the target frequency band for the 'Boost' filter.</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(200)</MATLABValue>
+         <DefaultValue>200</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassBoostMaximum_dB">
+         <Name>BoostMaximum_dB</Name>
+         <SubPath>Bass</SubPath>
+         <Description>Indicates the maximum impact in dB for the tone boost. This value must be positive. A negative boost impact would imply a gain cut instead!</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(20)</MATLABValue>
+         <DefaultValue>20</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>0</MinValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassCutFrequencyHz">
+         <Name>CutFrequencyHz</Name>
+         <SubPath>Bass</SubPath>
+         <Description>Indicates the 'corner frequency' of the target frequency band for the 'Cut' filter.</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(200)</MATLABValue>
+         <DefaultValue>200</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassCutMaximum_dB">
+         <Name>CutMaximum_dB</Name>
+         <SubPath>Bass</SubPath>
+         <Description>Indicates the maximum impact in dB for the tone cut. This value must be positive. A negative cut impact would imply a gain boost instead!</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(20)</MATLABValue>
+         <DefaultValue>20</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>0</MinValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassOffset">
+         <Name>Offset</Name>
+         <SubPath>Bass</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(128)</MATLABValue>
+         <DefaultValue>128</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassramptime">
+         <Name>ramptime</Name>
+         <SubPath>Bass</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(30)</MATLABValue>
+         <DefaultValue>30</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>1</MinValue>
+         <MaxValue>100000</MaxValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioBassScale">
+         <Name>Scale</Name>
+         <SubPath>Bass</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(127)</MATLABValue>
+         <DefaultValue>127</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioMuteRampTime">
+         <Name>RampTime</Name>
+         <SubPath>Mute</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(100)</MATLABValue>
+         <DefaultValue>100</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>1</MinValue>
+         <MaxValue>100000</MaxValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleBoostFrequencyHz">
+         <Name>BoostFrequencyHz</Name>
+         <SubPath>Treble</SubPath>
+         <Description>Indicates the 'corner frequency' of the target frequency band for the 'Boost' filter.</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(200)</MATLABValue>
+         <DefaultValue>200</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleBoostMaximum_dB">
+         <Name>BoostMaximum_dB</Name>
+         <SubPath>Treble</SubPath>
+         <Description>Indicates the maximum impact in dB for the tone boost. This value must be positive. A negative boost impact would imply a gain cut instead!</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(20)</MATLABValue>
+         <DefaultValue>20</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>0</MinValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleCutFrequencyHz">
+         <Name>CutFrequencyHz</Name>
+         <SubPath>Treble</SubPath>
+         <Description>Indicates the 'corner frequency' of the target frequency band for the 'Cut' filter.</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(200)</MATLABValue>
+         <DefaultValue>200</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleCutMaximum_dB">
+         <Name>CutMaximum_dB</Name>
+         <SubPath>Treble</SubPath>
+         <Description>Indicates the maximum impact in dB for the tone cut. This value must be positive. A negative cut impact would imply a gain boost instead!</Description>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(20)</MATLABValue>
+         <DefaultValue>20</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>0</MinValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleOffset">
+         <Name>Offset</Name>
+         <SubPath>Treble</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(128)</MATLABValue>
+         <DefaultValue>128</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleramptime">
+         <Name>ramptime</Name>
+         <SubPath>Treble</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(30)</MATLABValue>
+         <DefaultValue>30</DefaultValue>
+         <Tunability>1</Tunability>
+         <MinValue>1</MinValue>
+         <MaxValue>100000</MaxValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioTrebleScale">
+         <Name>Scale</Name>
+         <SubPath>Treble</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(127)</MATLABValue>
+         <DefaultValue>127</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioVolumemaxgain">
+         <Name>maxgain</Name>
+         <SubPath>Volume</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(0)</MATLABValue>
+         <DefaultValue>0</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioVolumeTable">
+         <Name>Table</Name>
+         <SubPath>Volume</SubPath>
+         <Description>&lt;HTML&gt;Gain table maps index to gain.
+The index values are &lt;FONT color="red"&gt;normalized&lt;/Font&gt; floats between 0 and 1 while the gains are in dB (i.e. 0 implies no attenuation).
+&lt;/html&gt;</Description>
+         <Dimensions>[8  2]</Dimensions>
+         <MATLABValue>double([0 -100;0.5 -30;1 0])</MATLABValue>
+         <DefaultValue>0 -100 0.5 -30 1 0</DefaultValue>
+         <Tunability>2</Tunability>
+         <MinValue>[0;-100]</MinValue>
+         <MaxValue>[1;0]</MaxValue>
+         <StringParse>0</StringParse>
+      </TuneVar>
+      <TuneVar id="BasicAudioVolumeRampTime">
+         <Name>RampTime</Name>
+         <SubPath>Volume</SubPath>
+         <Description/>
+         <Dimensions>[1  1]</Dimensions>
+         <MATLABValue>double(100)</MATLABValue>
+         <DefaultValue>100</DefaultValue>
+         <Tunability>1</Tunability>
+         <StringParse>0</StringParse>
+      </TuneVar>
+   </OverlayGroup>
+</root>

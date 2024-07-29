@@ -1,0 +1,110 @@
+%implements TuneVarMEX "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+%include "TuneVarCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %<TuneVarTypeSetup()>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%%function BlockInstanceSetup(block, system) void
+%%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+    %% File Names  (without the LibGetModelName())
+    %assign dispTableFileName = ModelPrefix() + "TuneVar"
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+
+    %% S Function RTW Data Variables
+    %assign TunePath = SFcnParamSettings.TunePath
+    %assign Triggers = SFcnParamSettings.Triggers
+    %assign TriggerList = FEVAL("strsplit",Triggers,",")
+    %assign TriggerCount = SIZE(TriggerList)[1]
+    %assign DTypeId = SFcnParamSettings.DTypeId
+    %assign DTypeName = LibGetDataTypeNameFromId(DTypeId)
+    %assign MaxSize = SFcnParamSettings.MaxSize
+    %assign NumDims = SIZE(MaxSize)[1]
+    %assign Width  = SFcnParamSettings.Width
+    %assign VariableDim = SFcnParamSettings.VariableDim
+    %assign StringParse = SFcnParamSettings.StringParse
+    %assign MAX_TUNEVAR_DIM = CAST("Unsigned",FEVAL("TuneVarMask.MaxDim"))
+
+    %% Perform rediculous string manipulations to remove [] characters
+    %assign DefaultValueStr = "%<DefaultValue>"
+    %assign DefaultValueStr[0] = " "
+    %assign DefaultValueStr[SIZE(DefaultValueStr)[1]-1] = " "
+    %assign DefaultWidth = SFcnParamSettings.DefaultWidth
+
+    %% Declare the TuneVar number for use by the translation as a source
+    %openfile buffer
+        ID_TuneVar_%<TunePath>, /* '%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+    %<LibSetSourceFileCustomSection(fileH,"TuneVarEnumEntries",buffer)>
+
+    %% Define the dependent translations for this tune variable
+    %openfile buffer
+            static enum TranslationNumber %<TunePath>_Dependencies[] =  /* '%<LibGetBlockName(block)>' */
+            {
+            %foreach j = TriggerCount
+                ID_%<TriggerList[j]>,
+            %endforeach
+            };
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %<LibSetSourceFileCustomSection(fileH,"Dependencies",buffer)>
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        static %<DTypeName> DefValue_%<TunePath>[] = {%<DefaultValueStr>};
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %if (Width > 1)
+        %assign ValuePtrCode = "%<LibBlockOutputSignal(0, "", "", 0)>.Value"
+    %else
+        %assign ValuePtrCode = "%<LibBlockOutputSignalAddr(0, "", "", 0)>.Value"
+    %endif
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        {  /* '%<LibGetBlockName(block)>' */ ...
+            "%<TunePath>", 0, ...
+            %<DTypeConstName[DTypeId]>, ...
+            %<StringParse>, ...
+            sizeof(%<DTypeName>), ...
+            %<Width>, ...
+            {
+                %foreach j = MAX_TUNEVAR_DIM
+                    %if j < NumDims
+                        %<MaxSize[j]>,
+                    %else
+                        1,
+                    %endif
+                %endforeach
+            },
+            %<VariableDim - 1>, ...
+            %<NumDims>, ...
+            0, ...
+            DefValue_%<TunePath>, ...
+            %<DefaultWidth>, ...
+            %<LibBlockOutputSignal(0, "", "", 0)>.Size, ...
+            %<ValuePtrCode>, ...
+            %<TriggerCount>, ...
+            %<TunePath>_Dependencies
+        },
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+%endfunction

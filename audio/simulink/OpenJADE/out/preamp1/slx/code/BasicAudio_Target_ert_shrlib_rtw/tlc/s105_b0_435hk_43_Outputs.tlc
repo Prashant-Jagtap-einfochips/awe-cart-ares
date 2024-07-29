@@ -1,0 +1,136 @@
+%implements s105_b0_435hk_43_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign _modelSS = ""
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[25], "Output",0)
+/* MATLAB Function: '<S92>/index to linear' */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'RTC/REQ': '<S108>:1' */
+/* '<S108>:1:3' go(); */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_indextolinear",25,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[1763d8*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_indextolinear", ["%<_modelSS>", "%<SLibCG_DumpSSCode("/*@[1766c5*/",(SLibCG_BOCSC(33, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[1766d7*/",(SLibCG_BOCSC(34, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[1766e9*/",(SLibCG_BOCSC(7, 1, "", -1, "", 0)),"/*@]*/")>", "&/*@>1766fd*/BasicAudio_Target_B./*@>1766fc*/sf_indextolinear_ee"], 25, 1, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[25]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+%endif
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[26], "Output",0)
+
+/* MATLAB Function: '<S92>/ramp parameters' */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_rampparameters",26,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[1763d9*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_rampparameters", ["%<_modelSS>", "%<SLibCG_DumpSSCode("/*@[176753*/",(SLibCG_BOCSC(32, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[176765*/",(SLibCG_BOCSC(9, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[176777*/",(SLibCG_BOCSC(8, 1, "", -1, "", 0)),"/*@]*/")>", "/*@>17678a*/BasicAudio_Target_ConstP./*@>176789*/pooled2", "/*@>176796*/BasicAudio_Target_ConstP./*@>176795*/pooled1", "&/*@>1767a3*/BasicAudio_Target_B./*@>1767a2*/sf_rampparameters_ho"], 26, 1, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[26]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%assign   Outputs_open_SetDsm_l_65_11 = ""
+%openfile Outputs_open_SetDsm_l_65_11
+
+/* Outputs for Function Call SubSystem: '<S92>/SetDsm' */
+%closefile Outputs_open_SetDsm_l_65_11
+
+%assign    Outputs_body_SetDsm_l_65_11 = ""
+%openfile  Outputs_body_SetDsm_l_65_11
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[61], "Output",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm_l",61,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[1763da*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm_l", ["%<_modelSS>"], 61, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[61]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Outputs_body_SetDsm_l_65_11
+
+%assign    Outputs_close_SetDsm_l_65_11 = ""
+%openfile  Outputs_close_SetDsm_l_65_11
+
+/* End of Outputs for SubSystem: '<S92>/SetDsm' */
+%closefile Outputs_close_SetDsm_l_65_11
+%<SLibCG_DumpSSCode(Outputs_open_SetDsm_l_65_11, Outputs_body_SetDsm_l_65_11, Outputs_close_SetDsm_l_65_11)>
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[62], "Output",0)
+
+/* MATLAB Function: '<S92>/tone control' */
+/* MATLAB Function: '<S92>/tone control' incorporates:
+ *  S-Function (AudioStats_MEX): '<S92>/Audio Stats'
+ */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_tonecontrol_o",62,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[1763db*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_tonecontrol_o", ["%<_modelSS>", "%<SLibCG_DumpSSCode("/*@[17682c*/",(SLibCG_BOCSC(30, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[17683e*/",(SLibCG_BOCSC(31, 1, "", -1, "", 0)),"/*@]*/")>", "/*@>176852*/BasicAudio_Target_B./*@>176851*/sf_indextolinear_ee./*@>176850*/linearGain", "/*@>176860*/BasicAudio_Target_B./*@>17685f*/sf_rampparameters_ho./*@>17685e*/rampRate", "/*@>17686e*/BasicAudio_Target_B./*@>17686d*/sf_rampparameters_ho./*@>17686c*/ramptime", "%<SLibCG_DumpSSCode("/*@[17687a*/",(SLibCG_Expr(68, 2, 0, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[17688e*/",(SLibCG_Expr(68, 2, 1, 1, "", -1, "", 0)),"/*@]*/")>"], 62, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[62]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%assign   Outputs_open_SetDsm1_f_65_13 = ""
+%openfile Outputs_open_SetDsm1_f_65_13
+
+/* Outputs for Function Call SubSystem: '<S92>/SetDsm1' */
+%closefile Outputs_open_SetDsm1_f_65_13
+
+%assign    Outputs_body_SetDsm1_f_65_13 = ""
+%openfile  Outputs_body_SetDsm1_f_65_13
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[64], "Output",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm1_f",64,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[1763dc*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm1_f", ["%<_modelSS>"], 64, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[64]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Outputs_body_SetDsm1_f_65_13
+
+%assign    Outputs_close_SetDsm1_f_65_13 = ""
+%openfile  Outputs_close_SetDsm1_f_65_13
+
+/* End of Outputs for SubSystem: '<S92>/SetDsm1' */
+%closefile Outputs_close_SetDsm1_f_65_13
+%<SLibCG_DumpSSCode(Outputs_open_SetDsm1_f_65_13, Outputs_body_SetDsm1_f_65_13, Outputs_close_SetDsm1_f_65_13)>
+
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void HandleReqBasicAudioTrebleSet(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(43, 0, fcnProtoType)>
+%endfunction

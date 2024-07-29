@@ -1,0 +1,141 @@
+%% Common defines and tools for TSP code generation
+
+%%   Copyright 2018 Bose Corporation
+%include "TSP_Capture.tlc"
+%include "TSP_Interpret.tlc"
+
+%% Function: ==============================================================
+%function TSP_CaptureGetConfig() void
+    %createrecord config { }
+    %addtorecord config CaptureFileName ModelPrefix() + "TSP_Capture"
+    %addtorecord config IdsFileName     ModelPrefix() + "TSP_IDs"
+    %addtorecord config ConsoleFileName ModelPrefix() + "TSP_AsyncConsole"
+    %addtorecord config TSP_LIST_ADD    8
+    %addtorecord config TSP_LIST_SUB    9
+    %addtorecord config TSP_RETRIEVE    10
+    %addtorecord config TSP_BLIND_READ  11
+    %addtorecord config TSP_LIST_CLEAR  12
+    %addtorecord config TSP_CAPTURE     13
+    %return config
+%endfunction
+
+%% Function: ==============================================================
+%function TSP_GetToken(IsWrite,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,Command,Index)
+    %if IsWrite
+        %assign WriteBit = 8
+    %else
+        %assign WriteBit = 0
+    %endif
+    %if IsIndirect
+        %assign theToken = SPRINTF("0x%01x%01x%01x%01x%04x",WriteBit | ::ASDID_TYPE_TSP,PartitionNumber,GroupNumber,Command,Index)
+    %else
+        %assign theToken = SPRINTF("0x%01x0f%01x%04x",WriteBit | CoreIndex,Command,Index)
+    %endif
+    %return theToken
+%endfunction
+
+%% Function: ==============================================================
+%function TspGetAdditionalCaptureCodeCheck(block)
+    %assign IfdefMacro = ParamSettings.IfdefMacro + ""
+    %if ISEMPTY(IfdefMacro)
+        %assign theExpression = ""
+    %else
+        %assign theExpression = " && defined(%<IfdefMacro>)"
+    %endif
+    %return theExpression
+%endfunction
+
+%%---------------------------------------------------------------------------
+%% Indirect addressing lookup array
+%function TspSetupTable(fileH,IsIndirect,GroupNumber,PartitionNumber) void
+
+    %% Get our configuration settings
+    %assign config=TSP_CaptureGetConfig()
+
+    %% Figure out the table name for this TSP
+    %if IsIndirect
+        %assign decl = ""
+    %else
+        %assign decl = "static "
+        %assign GroupNumber = 0
+        %assign PartitionNumber = 0
+    %endif
+    %% TableName must manually match tlc_TSP_Capture.c
+    %assign NonPrefixedTableName = FEVAL("TspManager.GetDispatchTableName",GroupNumber,PartitionNumber)
+    %assign TableName = ModelPrefix() + NonPrefixedTableName
+
+    %% if this table has not been initialized yet, initialize it's entry count,
+    %% setup its custom file sections, and hookup its indirection index if necessary
+    %if TLC_FALSE == ISFIELD(::TSP_REC,TableName + "DONE")
+        %<SETFIELD(::TSP_REC,TableName + "DONE",0)>
+
+        %% Create a table where each entry is individually specified
+        %assign tableSize = GETFIELD(::TSP_REC,NonPrefixedTableName)
+        %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>Top")>
+        %foreach j=tableSize
+            %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>%<j>")>
+        %endforeach
+        %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>Bottom")>
+
+        %openfile buffer
+
+            // ----- %<TableName> -----:
+            %<decl>%<config.CaptureFileName>_type actual_%<TableName>[] = {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"%<TableName>Top",buffer)>
+        %openfile buffer
+            };
+            uint32_t %<TableName>Count = sizeof(actual_%<TableName>)/sizeof(actual_%<TableName>[0]);
+            // create pointer for use by the StepCapture routines in the step functions
+            void* %<TableName> = actual_%<TableName>;
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"%<TableName>Bottom",buffer)>
+
+        %% Check again for indirection - hookup to partition root
+        %if IsIndirect
+            %% Announce this table to the partition root code
+            %assign partitionFileH = LibCreateSourceFile("Source","Custom",FeaturePathGetPartitionFilename())
+            %openfile buffer
+                extern void* %<TableName>[];
+                extern uint32_t %<TableName>Count;
+                %assign TspRootName = SPRINTF("TSPROOT_G%dP%d",GroupNumber,PartitionNumber)
+                #ifdef %<TspRootName>
+                #undef %<TspRootName>
+                #endif
+                #define %<TspRootName> &%<TableName>, &%<TableName>Count
+            %closefile buffer
+            %<LibSetSourceFileSection(partitionFileH,"Declarations",buffer)>
+        %endif
+
+        %% Let the capture code know about the table as well
+        %% (this adds externs to the private model header)
+        %openfile buffer
+            extern void* %<TableName>;
+        %closefile buffer
+        %<LibCacheExtern(buffer)>
+        
+    %endif
+    %% Caller needs to know the table name
+    %return TableName
+%endfunction
+%%---------------------------------------------------------------------------
+
+%function TspTypeSetup(block,In,Out,CoreIndex,IsIndirect) void
+
+    %if EXISTS(::TSP_REC)
+        %return
+    %endif
+
+    %% Create global TSP control table index
+    %assign blockPath = "%<LibGetBlockPath(block)>"
+    %assign ::TSP_REC = FEVAL("TspManager.AcquireFeaturePathTokenIndexes",blockPath)
+
+    %if In
+        %<TSP_CaptureBlockTypeSetup(block,CoreIndex,IsIndirect)>
+    %endif
+
+    %if Out
+        %<TSP_InterpretBlockTypeSetup()>
+    %endif
+
+%endfunction

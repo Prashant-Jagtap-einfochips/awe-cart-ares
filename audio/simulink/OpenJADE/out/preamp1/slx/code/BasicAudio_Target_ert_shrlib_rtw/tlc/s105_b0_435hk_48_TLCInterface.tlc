@@ -1,0 +1,62 @@
+%implements s105_b0_435hk_48_TLCInterface "C"
+
+%function getOutputAddr_74_0_48_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_74_0_48_0_0_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 2, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 2, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_74_0_48_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 3, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 3, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_74_0_48_0_0_3_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 4, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_3_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 4, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_74_0_48_0_0_4_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 53, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_4_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 53, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_74_0_48_0_0_5_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 5, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_74_0_48_0_0_5_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 5, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+

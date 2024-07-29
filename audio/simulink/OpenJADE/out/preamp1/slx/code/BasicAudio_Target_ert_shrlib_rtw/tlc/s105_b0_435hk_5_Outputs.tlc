@@ -1,0 +1,73 @@
+%implements s105_b0_435hk_5_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+/*  The midrange curve is configured as a piecewise linear plot, with */
+/*  configurable values of the maximum boost ('maxB') and maximum cut ('maxC') */
+/*  in dB.  */
+/*     dB ^ */
+/*        | */
+/*  maxB  ----------/ */
+/*        |        / */
+/*        |       / */
+/*   0    ------|---|----> index */
+/*        |   /128  255 */
+/*        |  / */
+/*  maxC  --/ */
+/*        | */
+/*  Hence, for any given index, the gain is calculated as a value in  */
+/*  between 0 and 1 for boost and 0 and -1 for cut. This will later be */
+/*  multiplied with the maxB or maxC to get the actual gain value.  */
+/*  (y - y1) / (x - x1) = (y1 - y2) / (x1 - x2) */
+/*  (y - 0) / (x - 128) = (0 - 1) / (128 - 255) */
+/*                    y = (x - 128)/127 */
+/*  'offset' represents the center point between boost and cut (i.e. 128) and */
+/*  'scale' represents how many intervals are available for boost/cut (i.e. 127) */
+/* MATLAB Function 'BasicAudio/Bass/Tone/InnerLink/index to linear': '<S49>:1' */
+/*  Apply the tuning calibration */
+/* '<S49>:1:27' floatIndex = single(index); */
+/* '<S49>:1:28' linearGain = single((floatIndex - offset) / scale); */
+/*@>13efdf*/localB->/*@>13f118*/linearGain/*@>12e7f8*/ = (/*@>12e81f*/(real32_T)/*@>13eb75*/rtu_index/*@>12e81c*/ - /*@>13eb77*/rtu_offset)/*@>12e7f7*/ / /*@>13eb79*/rtu_scale;
+/*  Ensure the result is between -1 and 1 */
+/* '<S49>:1:31' linearGain = min(linearGain, 1); */
+/*@>13efe6*/localB->/*@>13f11b*/linearGain/*@>12e810*/ = /*@>13eeee*/fminf(/*@>13efed*/localB->/*@>13f11e*/linearGain, /*@>13eb71*/1.0F);
+/* '<S49>:1:32' linearGain = max(linearGain, -1); */
+/*@>13eff4*/localB->/*@>13f121*/linearGain/*@>12e813*/ = /*@>13eef0*/fmaxf(/*@>13effb*/localB->/*@>13f124*/linearGain, /*@>13eb72*/-1.0F);
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[5].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(5, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(5, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(5, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_indextolinear(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(5, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_indextolinear", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%<comma>real32_T rtu_scale\
+%assign comma = ", "
+%<comma>real32_T rtu_offset\
+%assign comma = ", "
+%<comma>uint32_T rtu_index\
+%assign comma = ", "
+%<comma>B_indextolinear_BasicAudio_Target_T *localB\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(5, 0, fcnProtoType)>
+%endfunction

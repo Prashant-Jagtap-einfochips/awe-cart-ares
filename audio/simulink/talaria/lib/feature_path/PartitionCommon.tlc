@@ -1,0 +1,118 @@
+
+%%   Copyright 2020 Bose Corporation
+
+
+%function PartitionTypeSetup() void
+
+    %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+    %if TLC_FALSE == IsIndirect
+        %% We're not supposed to generate code here. Bail.
+        %return
+    %endif
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetPartitionFilename())
+    %% Setup PartitionRoot type
+    %openfile buffer
+        #include <stdint.h>
+
+        // Each partition has one of these to gain access to async components
+        typedef struct PartitionRoot_tag
+        {
+            void*      rtcTable;
+            uint32_t*  rtcCount;
+            void*      topTable;
+            uint32_t*  topSize;
+            uint32_t   topCount;
+            void*      tspTable;
+            uint32_t*  tspCount;
+        } PartitionRoot_type;
+
+        %% Only emit partition root definitions for top-model generation
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            // Partition root access for RTC, TOP, TSP handlers
+            PartitionRoot_type* GetPartitionRoot(int groupNumber, int partitionNumber);
+            // Partition root access for TSP scans by partitionindex
+            PartitionRoot_type* GetPartitionRootByIndex(int partitionIndex);
+
+        %endif
+
+        // Partition routing table initialization called by model init
+        void %<ModelPrefix()>InitPartitions( void );
+
+        // top-level model registration of partitions
+        void RegisterPartition(int groupNumber, int partitionNumber, PartitionRoot_type* partitionRootIn);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+
+    %% Setup the partition source file to hold the "root" objects for each partition
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetPartitionFilename())
+
+    %% Includes :
+    %openfile buffer
+        #include "%<FeaturePathGetPartitionFilename()>.h"
+        #include "%<FeaturePathGetApiFileName()>.h"    // for global async routing table
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Only emit partition root definitions for top-model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %% Create worker function to register each partition root
+        %openfile buffer
+            // ------------------------------------------------------------
+            // TOP-LEVEL MODEL: GLOBAL ASYNCHRONOUS ROUTING TABLE
+            // ------------------------------------------------------------
+            void* TalariaAsyncRoutingTable[256] = {0};
+
+            void RegisterPartition(int groupNumber, int partitionNumber, PartitionRoot_type* partitionRootIn)
+            {
+                // add to global async routing table
+                int index = (groupNumber * 16U) + partitionNumber;
+                TalariaAsyncRoutingTable[index] = partitionRootIn;
+            }
+
+            PartitionRoot_type* GetPartitionRoot(int groupNumber, int partitionNumber)
+            {
+                int index = (groupNumber * 16U) + partitionNumber;
+                PartitionRoot_type* theRoot = (PartitionRoot_type*)(TalariaAsyncRoutingTable[index]);
+                return theRoot;
+            }
+            PartitionRoot_type* GetPartitionRootByIndex(int partitionIndex)
+            {
+                PartitionRoot_type* theRoot = (PartitionRoot_type*)(TalariaAsyncRoutingTable[partitionIndex&0xff]);
+                return theRoot;
+            }
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %endif
+
+    %% Setup initialization function to add paritions roots to routing table
+    %<FeaturePathAddTable(fileH,"Functions","InitFunc")>
+    %openfile buffer
+
+        // ----- Register partitions with routing table-----:
+        void %<ModelPrefix()>InitPartitions()
+        {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InitFuncTop",buffer)>
+    %openfile buffer
+        }
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InitFuncBottom",buffer)>
+    %% And call the init function from model init
+    %openfile buffer
+    #include "%<FeaturePathGetPartitionFilename()>.h" // from PartitionSFunc.tlc
+    %closefile buffer
+    %<LibCacheDefine(buffer)>
+    %%%<LibAddToCommonIncludes(partitionApiInclude)>
+    %openfile buffer
+        // Hook up partition roots into global async routing table
+        %<ModelPrefix()>InitPartitions();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+
+%endfunction
+
+

@@ -1,0 +1,329 @@
+{
+    "version": "R2021b",
+    "entries": [
+        {
+            "type": "Action",
+            "id": "talariaVersionAction",
+            "text": "V2200BK",
+            "icon": "talariaVersionIcon",
+            "command": "talariaVersion",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "autoBlockHeightAction",
+            "text": "Auto Height",
+            "icon": "autoBlockHeightIcon"
+        },
+        {
+            "type": "Action",
+            "id": "autoHeight40Action",
+            "text": "Spacing 40",
+            "description": "Set intra-port spacing to 40",
+            "command": "MaskUtil.SetBlockHeight([],40)",
+            "commandType": "Script"
+        },        
+        {
+            "type": "Action",
+            "id": "autoHeight60Action",
+            "text": "Spacing 60",
+            "description": "Set intra-port spacing to 60",
+            "command": "MaskUtil.SetBlockHeight([],60)",
+            "commandType": "Script"
+        },        
+        {
+            "type": "Action",
+            "id": "autoHeight80Action",
+            "text": "Spacing 80",
+            "description": "Set intra-port spacing to 80",
+            "command": "MaskUtil.SetBlockHeight([],80)",
+            "commandType": "Script"
+        },        
+        {
+            "type": "Action",
+            "id": "openTalariaWikiAction",
+            "text": "Wiki",
+            "description": "Open the Talaria wiki",
+            "icon": "openTalariaWikiIcon",
+            "command": "openTalariaWiki",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "openTalariaJiraAction",
+            "text": "JIRA",
+            "description": "Open Jira project",
+            "icon": "openTalariaJiraIcon",
+            "command": "openTalariaJira",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "openModuleNotesAction",
+            "text": "Notes",
+            "description": "Open module notes",
+            "icon": "openModuleNotesIcon",
+            "command": "openModuleNotes",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "printLastErrorAction",
+            "text": "Print\nlasterror",
+            "description": "Open module notes",
+            "icon": "bugIcon",
+            "command": "MaskUtil.PrintLastError()",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "resetBlockSizeAction",
+            "text": "Reset Size",
+            "description": "Reset block size to match library",
+            "icon": "resetBlockSizeIcon",
+            "command": "MaskUtil.ResetSizeByLibraryLink",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "resetBlockColorAction",
+            "text": "Reset Color",
+            "description": "Reset block color to default",
+            "icon": "resetBlockColorIcon",
+            "command": "MaskUtil.SetBlockColor",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "removeHighlightsAction",
+            "text": "No highlights",
+            "description": "Same action as Ctrl-Shift-H",
+            "icon": "removeHighlightsIcon",
+            "command": "SLStudio.Utils.RemoveHighlighting(get_param(bdroot,'handle'))",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "automateBtcAction",
+            "text": "Automate\nBtc Class",
+            "description": "Automate block and model-level Btc classes",
+            "icon": "configIcon"
+        },
+        {
+            "type": "Action",
+            "id": "automateBlockBtcAction",
+            "text": "Block Btc Mask",
+            "description": "Setup Btc classdef for block",
+            "icon": "configIcon",
+            "command": "BTConfig.AutomateCreateMaskParameter(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "addBreedSupportToBlockBtcAction",
+            "text": "Block Btc Mask with Breeds",
+            "description": "Add breed configuration support to block Btc",
+            "icon": "breedConfigSupportIcon",
+            "command": "BTConfig.AutomateCreateMaskParameterWithBreeds(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "automateModelBtcAction",
+            "text": "Model-level Btc",
+            "description": "Add Btc class for the model itself",
+            "icon": "modelBtcIcon",
+            "command": "BTConfig.AutomateCreateModelConfig(bdroot)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "removeDotCommentsAction",
+            "text": "Remove '%.' comments",
+            "description": "Delete lines beginning with %. in current editor file",
+            "icon": "removeDotCommentsIcon",
+            "command": "HandyTextFileMask.RemoveDotCommentsInCurrentEditor()",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "addChickChildAction",
+            "text": "Add\nChild Block",
+            "description": "Add BTC for selected child block to parent",
+            "icon": "chickIcon",
+            "command": "BTConfig.AddChildBlockConfig(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "addTuneVarsAction",
+            "text": "Add all\nTuneVars",
+            "icon": "addTuneVarsIcon"
+        },
+        {
+            "type": "Action",
+            "id": "addTuneVarsMainClassAction",
+            "text": "Add all TuneVars to Config",
+            "description": "Add block's internal TuneVars\nto the main block BTC classdef",
+            "command": "BTConfig.AddAllTuneVars(gcb,false)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "addTuneVarsSeparateClassAction",
+            "text": "Add all TuneVars to TuneConfig",
+            "description": "Add block's internal TuneVars\nto a separate TuneConfig classdef",
+            "command": "BTConfig.AddAllTuneVars(gcb,true)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "renameClassdefProperties",
+            "text": "Rename\nproperties",
+            "description": "Rename properties of associated BTC classdef",
+            "icon": "oldNewIcon",
+            "command": "AutomateMask.RenamePropertiesOfClassdef(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "seeBtcVar",
+            "text": "Display\nBTC Variable",
+            "description": "Discover variable providing BTC for block",
+            "icon": "seeBtcVarIcon",
+            "command": "BTConfig.PrintDiscoveredBtc(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "dataMfbAction",
+            "text": "MFB Datastores",
+            "description": "Register DataStoreMemory scope for globals",
+            "icon": "mathworksIcon",
+            "command": "registerMfbDsms(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "paramMfbAction",
+            "text": "MFB Parameters",
+            "description": "Manage parameter mask",
+            "icon": "mathworksIcon",
+            "command": "AutomateMask.ManageMfbParameterMask(gcb,true)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "addTriggerMfbAction",
+            "text": "MFB Add trigger",
+            "description": "Add a function trigger",
+            "icon": "mathworksIcon",
+            "command": "addMfbFuncTrigger(gcb)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Action",
+            "id": "automateRenameLibBlock",
+            "text": "Rename\nLib Block",
+            "description": "Rename library block",
+            "icon": "oldNewIcon",
+            "command": "AutomateMask.RenameLibraryBlock(MaskUtil.SelectedBlockHandles)",
+            "commandType": "Script"
+        },
+        {
+            "type": "Icon",
+            "id": "openTalariaJiraIcon",
+            "icon16": "jira_16.png",
+            "icon24": "jira_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "openTalariaWikiIcon",
+            "icon16": "talaria_wiki_16.png",
+            "icon24": "talaria_wiki_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "openModuleNotesIcon",
+            "icon16": "module_notes_16.png",
+            "icon24": "module_notes_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "bugIcon",
+            "icon24": "bug_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "resetBlockSizeIcon",
+            "icon16": "reset_block_size_16.png"
+        },
+        {
+            "type": "Icon",
+            "id": "autoBlockHeightIcon",
+            "icon24": "auto_block_height_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "resetBlockColorIcon",
+            "icon16": "reset_block_color_16.png",
+            "icon24": "reset_block_color_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "removeHighlightsIcon",
+            "icon16": "remove_highlights_16.png"
+        },
+        {
+            "type": "Icon",
+            "id": "talariaVersionIcon",
+            "icon16": "white_right_arrow_16.png"
+        },
+        {
+            "type": "Icon",
+            "id": "configIcon",
+            "icon24": "config_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "breedConfigSupportIcon",
+            "icon24": "var_config_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "modelBtcIcon",
+            "icon24": "model_btc_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "removeDotCommentsIcon",
+            "icon24": "remove_dot_comments.png"
+        },
+        {
+            "type": "Icon",
+            "id": "chickIcon",
+            "icon24": "chick_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "addTuneVarsIcon",
+            "icon24": "add_tunevars_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "oldNewIcon",
+            "icon24": "oldNew_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "seeBtcVarIcon",
+            "icon24": "see_btc_var_24.png"
+        },
+        {
+            "type": "Icon",
+            "id": "mathworksIcon",
+            "icon16": "mathworks_16.png",
+            "icon24": "mathworks_24.png"
+        }
+    ]
+}

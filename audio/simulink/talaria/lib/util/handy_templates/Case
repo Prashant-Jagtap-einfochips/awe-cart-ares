@@ -1,0 +1,49 @@
+classdef $(PREFIX)$(SUFFIX) < TalariaTest
+% $(FILENAME): Test cases for the $(PREFIX) model
+
+%   Copyright 2023 Bose Corporation
+
+properties
+    ModelSettings $(PREFIX)Config
+end
+
+methods (Static)
+    function Run()
+        % Run runs just this one test
+        import matlab.unittest.TestSuite
+        import matlab.unittest.TestRunner
+        testCase = $(PREFIX)$(SUFFIX);
+        result = run(testCase);
+        disp(table(result));
+    end
+end
+methods(TestClassSetup)
+    function ClassInit(self)
+        % Setup run once and shared among all tests:
+
+        % Set the model name so the test runner knows what model to run
+        self.setModelName('$(PREFIX)');
+        
+        % Store location of the project path
+        [current_path, ~] = fileparts(mfilename('fullpath'));
+        self.projectPath = current_path;
+    end
+end
+methods(TestMethodSetup)
+    function init(self)
+        % Setup that runs before each test method:
+        % Reset and acquire model-level-build-time-settings object
+        self.ModelSettings = BTConfig.GetModelSettings('$(PREFIX)',true);
+    end
+end % methods(TestMethodSetup)
+
+methods (Test, TestTags={'System'})
+
+    %. << Test case functions go here. Change model settings via self.ModelSettings >>
+%.   function ExampleTest(self)
+%.       self.ModelSettings.SomeVariable = 4;
+%.       self.simulateModel();
+%.   end
+
+end % methods
+end % classdef

@@ -1,0 +1,439 @@
+%% Copyright 1994-2022 The MathWorks, Inc.
+
+%% Modifications by [Bose]. This file produces custom storage class code
+%% output for storage classes that are *not* a struct: i.e. each data element
+%% works on its own and is not grouped together. Original Bose modifications
+%% were made to Simulink's Unstructured.tlc to support TalariaAPI header 
+%% declarations of imports/exports for Bose.ApiBuffer custom storage class.
+
+%% Target language is C
+%implements * "C"
+
+
+%%=============================================================================
+%function GetTypeAndName(cscDefn, msDefn, datarec)
+
+    %assign id        = LibGetRecordIdentifier(datarec)
+    %assign useStdContainerName = TLC_FALSE
+    %if SLibIsContainerCGTypeND(datarec) || SLibIsNdIndexingFeatureOn()
+        %assign dims = LibGetRecordVectorDims(datarec)
+    %else
+        %assign width = LibGetDataSymbolicWidth(datarec)
+        %assign dims  = (width == "1") ? "" : "[%<width>]"
+        %if !ISEMPTY(dims) && SLibIsContainerCGTypeStdContainer(datarec)
+            %assign dims = ""
+            %assign useStdContainerName = TLC_TRUE
+        %endif
+    %endif
+    %assign isPointer = (SLibGetDataAccess(cscDefn, datarec) == "Pointer")
+
+    %assign type      = LibGetRecordCompositeOptStdDataTypeName(datarec, useStdContainerName)
+
+    %if SLibAutosarCompilerAbstractionRequired()
+        %% CONST is part of compiler abstraction macro
+        %assign qualifier   = SLibGetQualifierWithoutConst(msDefn)
+        %assign abstraction = SLibAutosarCompilerAbstractionForDataDecl(msDefn.IsConst, type, isPointer, TLC_FALSE, id, "DataGlobal")
+
+        %return qualifier + abstraction + dims
+    %else
+        %assign qualifier = SLibGetQualifier(msDefn)
+
+        %if isPointer
+            %assert (SLibGetDataScope(cscDefn, datarec) == "Imported")
+            %return qualifier + type + " " + "*" + id
+        %else
+            %% Direct access
+            %return qualifier + type + " " + id + dims
+        %endif
+    %endif
+%endfunction
+
+
+%%=============================================================================
+%function GetDeclCommentForData(cscDefn, msDefn, datarec) void
+    %% The data's DataScope shall not be "File" if getting here
+    %% The data's DataInit shall not be "Macro" if getting here
+
+    %% Put Description field of SDO in comments if the option is on
+    %assign desc = SLibGetDescriptionForData(datarec)
+    %assign desc = ISEMPTY(desc) ? "" : "/* %<desc> */"
+
+    %return ["", "%<desc>", ""]
+
+%endfunction
+
+
+%%=============================================================================
+%function GetDeclUnstructured(cscDefn, msDefn, datarec) void
+    %% The data's DataScope shall not be "File" if getting here
+
+    %assign id = LibGetRecordIdentifier(datarec)
+
+    %% Special case for compiler flag (imported macro without header file)
+    %if ((SLibGetDataInitForData(cscDefn, datarec) == "Macro") && ...
+        (SLibGetDataScope(cscDefn, datarec) == "Imported") && ...
+        (WHITE_SPACE(SLibGetHeaderFile(cscDefn, datarec))))
+        %return ""
+    %endif
+
+    %assign typeAndName = GetTypeAndName(cscDefn, msDefn, datarec)
+    %return "extern " + typeAndName + ";"
+
+%endfunction
+
+
+%%=============================================================================
+%function GetDefnCommentForData(cscDefn, msDefn, datarec) void
+    %% The data's DataScope shall not be "Imported" when getting here,
+    %% because Imported should not be defined by us.
+
+    %return GetDeclCommentForData(cscDefn, msDefn, datarec)
+%endfunction
+
+
+%%=============================================================================
+%function GetDefnUnstructuredPerChoice(cscDefn, msDefn, datarec, mdlPrmIdx, choiceIdx) void
+    %% The data's DataScope shall not be "Imported" when getting here,
+    %% because Imported should not be defined by us.
+
+    %assign id = LibGetRecordIdentifier(datarec)
+    %assign dataInit = SLibGetDataInitForData(cscDefn, datarec)
+
+    %if dataInit == "Macro"
+        %<LibCustomStorageVerifyRecordIsScalar(datarec)>
+        %<LibCustomStorageVerifyRecordIsNonComplex(datarec)>
+        %<LibCustomStorageVerifyRecordIsNonStruct(datarec)>
+        %assign typeAndName = "#define " + id
+        %assign initStr     = " " + LibParameterInstanceInitStrPerChoice(mdlPrmIdx, choiceIdx)
+        %assign terminator  = ""
+
+    %else
+        %assign dataAccess  = SLibGetDataAccess(cscDefn, datarec)
+        %assign typeAndName = GetTypeAndName(cscDefn, msDefn, datarec)
+        %assign initStr     = ""
+
+        %% If data is accessed by pointer it should always be imported (do not generate definition)
+        %assert (SLibGetDataScope(cscDefn, datarec) != "Imported")
+        %assert (dataAccess == "Direct")
+
+        %if (dataInit == "Auto" || dataInit == "Static") && (dataAccess == "Direct")
+            %if LibCustomStorageRecordIsModelParameter(datarec)
+                %% For parameters with "Auto" or "Static" initialization
+                %%
+                %assign initStr = LibParameterInstanceInitStrPerChoice(mdlPrmIdx, choiceIdx)
+                %assign initStr = " = %<initStr>"
+
+            %elseif dataInit == "Static"
+                %% For signals or dworks with "Static" initialization
+                %%
+
+                %% it is impossible to generate static initialization for symbolic dims.
+                %% CSC front end will check this.
+                %assert !LibRecordHasSymbolicWidth(datarec)
+                %% thus from now on, %<width> is an integer.
+
+                %assign cmplx = SLibGetRecordIsComplex(datarec)
+                %assign dtIdx = LibGetRecordDataTypeId(datarec)
+                %assign width = LibGetDataSymbolicWidth(datarec)
+
+                %% For signal/dwork CSC static init, use InitialValue if suitable
+                %if ISEMPTY(datarec.InitialValue)
+                    %assign ground  = LibGetGroundInitFromId(dtIdx)
+                    %assign initStr = SLibExpandGroundForStaticInit(width, TLC_FALSE, cmplx, ground)
+                %elseif CheckCSCCondition(datarec)
+                    %assign initStr = SLibExpandInitialValueForStaticInitAllowCSCs(width, ...
+                        cmplx, dtIdx, datarec.InitialValue, datarec)
+                %elseif SLibIsContainerCGTypeND(datarec)
+                    %assign initStr = SLibExpandInitialValueForStaticInitND(dtIdx, ...
+                     LibGetRecordDimensions(datarec), datarec.InitialValue, cmplx)
+                %else
+                    %assign initStr = SLibExpandInitialValueForStaticInit(width, TLC_FALSE, ...
+                        cmplx, dtIdx, datarec.InitialValue)
+                %endif
+                %assign initStr  = " = %<initStr>"
+            %endif
+        %endif
+        %assign terminator = ";"
+    %endif
+
+    %assign verScope = FcnVerifyDataScope(datarec, cscDefn.DataScope)
+    %assign dataScope = verScope[0]
+    %assign fileScope = (dataScope == "File")
+
+    %assign definition = ""
+    %if ::GenCPP && msDefn.IsConst && EXISTS(qualifier) && ...
+        ISEMPTY(FEVAL("strfind", qualifier, "extern")) && ...
+        !fileScope
+        %assign definition = "extern " + typeAndName + ...
+            initStr + ...
+            terminator
+    %else
+        %assign definition = typeAndName + ...
+            initStr + ...
+            terminator
+    %endif
+    %if dataInit != "Macro"
+        %assign definition = LibGetCppBracedInitStr(definition)
+    %endif
+    %return definition
+%endfunction %% GetDefnUnstructuredPerChoice
+
+%%=============================================================================
+%function GetDefnUnstructured(cscDefn, msDefn, datarec) void
+    %assign mdlPrmIdx = SLibGetModelParameterIndex(datarec)
+    %assign definition = ""
+
+    %if ISFIELD(datarec, "StaticKey")
+        %assign staticKey = datarec.StaticKey
+    %endif
+
+    %% For variant parameters, get all choices and wrap them in ppIf
+    %assign numelVarChoices = CGMODEL_ACCESS("CGModel.GetNumberOfVariantChoices", mdlPrmIdx)
+    %assign generateChoices = CGMODEL_ACCESS("CGModel.GenerateParameterChoices")
+    %if (numelVarChoices > 0) && (generateChoices) && !(SLibModelHasVParamWithFeatureFlag())
+        %% generate variant parameter choices with code compile time
+        %foreach choiceIdx = numelVarChoices
+            %assign choiceCondition = CGMODEL_ACCESS("CGModel.GetParameterChoiceCondition", mdlPrmIdx, choiceIdx)
+            %assign choicedefinition = staticKey + GetDefnUnstructuredPerChoice(cscDefn, msDefn, datarec, mdlPrmIdx, choiceIdx)
+            %assign definition = definition + SLibWrapVariantVariableCondition(choicedefinition, choiceCondition, choiceIdx, numelVarChoices)
+        %endforeach
+    %else
+        %% for grouping of variant parameters, do not generate all choices and add static key
+        %if SLibIsVariantParameter(datarec)
+            %assign definition = staticKey + GetDefnUnstructuredPerChoice(cscDefn, msDefn, datarec, mdlPrmIdx, ::VariantParamCurrChoiceIdx)
+        %else
+            %% for non-variant parameters, generate for a single choice with no static key
+            %assign definition = GetDefnUnstructuredPerChoice(cscDefn, msDefn, datarec, mdlPrmIdx, ::VariantParamCurrChoiceIdx)
+        %endif
+    %endif
+    %return definition
+%endfunction
+
+
+%% Function: GetCSCTypeComment =====================================================================
+%function GetCSCTypeComment(cscDefn, msDefn, classrec) void
+    %assign rtnStr="/* Type definition for custom storage class: %<cscDefn.Name> */"
+
+    %return rtnStr
+%endfunction  %% of GetCSCTypeComment
+
+
+%% Function: GetCSCDeclComment =====================================================================
+%function GetCSCDeclComment(cscDefn, msDefn, classrec) void
+    %assign rtnStr ="/* Declaration for custom storage class: %<cscDefn.Name> */"
+
+    %return rtnStr
+%endfunction  %% of GetCSCDeclComment
+
+
+%% Function: GetCSCDefnComment =====================================================================
+%function GetCSCDefnComment(cscDefn, msDefn, classrec) void
+    %assign rtnStr = "/* Definition for custom storage class: %<cscDefn.Name> */"
+
+    %return rtnStr
+%endfunction  %% of GetCSCDefnComment
+
+
+%% [Bose] Enable use of IMPORTED data scope-- but with declarations
+%% Function: EmitSpecialDecl =========================================
+%% Bose written routine to enable the use of "Imported" data scope but still
+%% include a declaration of the imported symbol in the specified header file.
+%% This allows the header file to serve as an interface specification.
+%% Ultimately, ALL declarations are handled through here.
+%function EmitSpecialDecl(cscDefn, theDecl, datarec) void
+
+    %if (cscDefn.Name != "ApiBuffer")
+        %% Just exit with the declaration if this CSC is not the special ApiBuffer
+        %return theDecl
+    %endif
+
+    %assign caProps   = LibGetCustomStorageAttributes(datarec)
+    %assign dataScope = LibGetInstanceSpecificProp(cscDefn, caProps, "DataScope")
+    %assign dataAccess = LibGetInstanceSpecificProp(cscDefn, caProps, "DataAccess")
+    %assign secretExport = LibGetInstanceSpecificProp(cscDefn, caProps, "SecretExport")
+
+    %% Use our own special filename. Any presence of model references prohibit
+    %% the use of headerfiles in exported CSCs (presumably to support multi-
+    %% instancing, which is currently not a possibility for Talaria.
+    %assign typedefHdrFileShort = LibGetModelName() + "_TalariaAPI"
+    %% Also replace standard rtwtype names with their C99 counterparts:
+    %assign newDec = FEVAL("RtwToC99",theDecl)
+    %% Check for SecretExport where we tell Simulink the variable is imported
+    %% ... but then secretly define/allocate it ourselves (e.g. just the ptr)
+    %% Ensure that Simulink thinks it's imported as otherwise we'll have
+    %%  multiple definitions of the same variable.
+    %if secretExport && dataScope=="Imported"
+        %assign dataScope = "Exported"
+        %openfile buffer
+            /* Secert Export API Buffer %<dataAccess> */
+            %<FEVAL("strrep",newDec,"extern ","")>
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Source","Custom",typedefHdrFileShort)
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %endif
+    %% Declare the variable in the API header file
+    %openfile buffer
+        /* API Buffer (%<dataScope> with %<dataAccess> access )*/
+        %<newDec>
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Header","Custom",typedefHdrFileShort)
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %% Since we already dumped out the declaration ourselves, return nothing
+    %return ""
+%endfunction
+%% [/Bose]
+
+
+
+%% Function: DataAccess ============================================================================
+%% Abstract:
+%%   DataAccess provides an API for requesting code fragments or other
+%%   information corresponding to data of a custom storage class.
+%%
+%function DataAccess(record, request, idx, reim) void
+
+    %assign cscDefn = SLibGetCSCDefForData(record)
+    %assign msDefn = SLibGetMemorySectionDefForData(record)
+    %assert !cscDefn.IsGrouped
+
+    %switch request
+
+      %case "declComment"
+        %return GetDeclCommentForData(cscDefn, msDefn, record)
+        %%break
+
+      %case "declare"
+        %assign theDecl = GetDeclUnstructured(cscDefn, msDefn, record)
+        %% [Bose] declare even imported symbols
+        %return EmitSpecialDecl(cscDefn,theDecl, record)
+        %% [/Bose]
+        %%break
+
+      %case "defnComment"
+        %return GetDefnCommentForData(cscDefn, msDefn, record)
+        %%break
+
+      %case "define"
+        %return GetDefnUnstructured(cscDefn, msDefn, record)
+        %%break
+
+      %case "contents"
+        %return LibDefaultCustomStorageContents(record, idx, reim)
+        %%break
+
+      %case "address"
+        %assign dataInit = SLibGetDataInitForData(cscDefn, record)
+
+        %if dataInit == "Macro"
+            %assign cscName = cscDefn.Name
+            %return "address not supported for %<cscName>"
+        %endif
+
+        %return LibDefaultCustomStorageAddress(record, idx, reim)
+        %%break
+
+      %case "initialize"
+        %assert !LibCustomStorageRecordIsModelParameter(record)
+        %assign dataInit = SLibGetDataInitForData(cscDefn, record)
+        %if (dataInit == "Dynamic") || (dataInit == "Auto")
+            %if !SLibRemoveZeroInitForDataDefault(record)
+                %assign gndValue = SLibGetDefaultInitialValue(record, tRealPart)
+                %return ...
+                    "%<DataAccess(record, "contents", idx, reim)> = " + ...
+                    "%<gndValue>;"
+            %endif
+        %endif
+        %return ""
+        %%break
+
+      %case "layout"
+        %assign dataInit = SLibGetDataInitForData(cscDefn, record)
+
+        %if dataInit == "Macro"
+            %return ["other"]
+        %else
+            %% LibDefaultCustomStorageLayout is the default layout function, and may
+            %% be used when the data is laid out in memory like built-in Simulink
+            %% data.  If the data is not laid out in memory like Simulink data,
+            %% return the vector ["other"].
+            %return LibDefaultCustomStorageLayout(record)
+        %endif
+        %%break
+
+      %default
+
+        %% You should invoke LibDefaultCustomStorageUnknownClassAccessType
+        %% for unrecognized requests.  It gracefully errors for unhandled
+        %% critical cases, and supplies safe defaults for unhandled
+        %% noncritical requests.
+        %return LibDefaultCustomStorageUnknownDataAccessType ...
+            (record, request, idx, reim)
+        %%break
+
+    %endswitch
+
+%endfunction
+
+
+%% Function: ClassAccess ===========================================================================
+%% Abstract:
+%%   ClassAccess provides an API for requesting information or actions
+%%   corresponding to a custom storage class.
+%%
+%% NOTE:
+%%   Expecting record of GlobalMemoryMap->CustomData,
+%%   not CompiledModel->CustomStorageClass.
+
+%function ClassAccess(record, request) void
+
+    %assign cscDefn = SLibGetCSCDefForCSC(record)
+    %assign msDefn = SLibGetMemorySectionDefForCSC(record)
+    %assert !cscDefn.IsGrouped
+
+    %switch request
+
+      %case "setup"
+        %<SLibCheckForUndefinedImportedMacros(record)>
+        %return ""
+        %%break
+
+      %case "comment"
+        %assign rtnStr = "/* Custom storage class: %<cscDefn.Name> */"
+
+        %return rtnStr
+        %%break
+
+      %case "typeComment"
+        %assert cscDefn.CommentSource == "Default"
+
+        %return GetCSCTypeComment(cscDefn, msDefn, record)
+        %%break
+
+      %case "declComment"
+        %assert cscDefn.CommentSource == "Default"
+
+        %return GetCSCDeclComment(cscDefn, msDefn, record)
+        %%break
+
+      %case "defnComment"
+        %assert cscDefn.CommentSource == "Default"
+
+        %return GetCSCDefnComment(cscDefn, msDefn, record)
+        %%break
+
+      %default
+
+        %% You should invoke LibDefaultCustomStorageUnknownClassAccessType
+        %% for unrecognized requests.  It gracefully errors for unhandled
+        %% critical cases, and supplies safe defaults for unhandled
+        %% noncritical requests.
+        %return LibDefaultCustomStorageUnknownClassAccessType(record, request)
+        %%break
+
+    %endswitch
+
+%endfunction
+
+
+%% [EOF]

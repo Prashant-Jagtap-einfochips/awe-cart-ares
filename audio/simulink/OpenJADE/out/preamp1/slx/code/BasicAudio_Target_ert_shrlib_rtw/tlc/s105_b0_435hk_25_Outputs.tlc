@@ -1,0 +1,232 @@
+%implements s105_b0_435hk_25_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+real32_T targetGains[4];
+real32_T boost_linear;
+real32_T cut_linear;
+real32_T left;
+uint8_T j;
+boolean_T exitg1;
+%closefile localVarDecl
+%assign _modelSS = ""
+
+/* {S!d97}MATLAB Function: '<S11>/calculate_balance_gain' */
+/* {S!d110}MATLAB Function: '<S11>/calculate_balance_gain' */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'RTC/REQ': '<S30>:1' */
+/* '<S30>:1:3' go(); */
+/*  Computes the balance gains for the 'left' and 'right' channel groups.  */
+/*  Based on the position of the balance index in 'balanceTableIdx', the  */
+/*  corresponding 'cut' gain is computed from the 'balanceTableDb'. If the  */
+/*  index lies between two entries in the table, the gain is computed by  */
+/*  linear interpolation between the corresponding gain table entries.  */
+/*  The 'boost' gain is computed based from the 'cut' gain depending on the */
+/*  value of the tune variable, 'boostDisable'. If set to '1', boost is 0 dB  */
+/*  and if '0', in order to preserve energy, the boost is computed based on */
+/*  the following equation: Boost^2 + Cut^2 = 2.  */
+/*  If 'silent extreme' is enabled and the index at either extreme is */
+/*  requested, channels belonging to the group which receives a gain 'cut' */
+/*  are muted. */
+/* MATLAB Function 'BasicAudio/Balance/balance/InnerLink/calculate_balance_gain': '<S23>:1' */
+/* '<S23>:1:18' j = uint8(1); */
+/*@>16a6ff*/j/*@>12f416*/ = /*@>16dbfc*/1U;
+/* '<S23>:1:19' cut_linear = single(0.0); */
+/*@>16a701*/cut_linear/*@>12f417*/ = /*@>16a767*/0.0F;
+/* '<S23>:1:21' targetGains = coder.nullcopy(ones(1,MaskNumRampers,'single')); */
+/* '<S23>:1:22' balanceIndex = single(balanceIndex); */
+/*  random comment */
+/*  Find the left and the right gains */
+/*  Based on the balance table, the dB value of the index is calculated */
+/* '<S23>:1:28' while (j <= numel(balanceTableIdx)) */
+exitg1 = false;
+while/*@<12f45a*/ ((!exitg1) && (/*@>16a705*/j/*@>12f43a*/ <= /*@>16a768*/30)) {
+    /* '<S23>:1:29' if (balanceIndex <= balanceTableIdx(j)) */
+    /*@>16b744*/boost_linear/*@>16b746*/ = %<SLibCG_DumpSSCode("/*@[16d9c2*/",(SLibCG_SE(SLibCG_BOCSC(47, 30, "", -1, "/*@>16d01a*/j/*@>16d017*/ - /*@>16d01b*/1", 0))),"/*@]*/")>;
+    /*@>12f45b*/if (%<SLibCG_DumpSSCode("/*@[16d721*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f43d*/ <= /*@>16b748*/boost_linear) {
+        /* '<S23>:1:30' if (j <= 1) */
+        /*@>12f45c*/if (/*@>16a707*/j/*@>12f43e*/ <= /*@>16a709*/1) {
+            /*  first indexed value is linearly interpolated to zero */
+            /* '<S23>:1:31' if (balanceTableIdx(j)) */
+            /*@>12f45e*/if (%<SLibCG_DumpSSCode("/*@[16d73e*/",(SLibCG_SE(SLibCG_BOCSC(47, 30, "", -1, "", 0))),"/*@]*/")>/*@>12f43f*/ != /*@>16a710*/0.0F) {
+                /* '<S23>:1:32' percent = balanceIndex / balanceTableIdx(j); */
+                /*@>16a73d*/cut_linear/*@>12f4ea*/ = /*@>12f518*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d91c*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f4e9*/ / %<SLibCG_DumpSSCode("/*@[16d900*/",(SLibCG_SE(SLibCG_BOCSC(47, 30, "", -1, "", 0))),"/*@]*/")>;
+            } else {
+                /* '<S23>:1:33' else */
+                /* '<S23>:1:34' percent = single(1); */
+                /*@>16a713*/cut_linear/*@>12f41c*/ = /*@>16a76b*/1.0F;
+            }
+            /* '<S23>:1:36' cut_linear = percent * 10 ^ (balanceTableDb(j) / 20); */
+            /*@>16a718*/cut_linear/*@>16dc25*/ *= /*@>16c94d*/powf(/*@>16b0c5*/10.0F, %<SLibCG_DumpSSCode("/*@[16d8e3*/",(SLibCG_SE(SLibCG_BOCSC(46, 30, "", -1, "", 0))),"/*@]*/")>/*@>16b187*/ / /*@>16b18c*/20.0F);
+        } else {
+            /* '<S23>:1:37' else */
+            /*  other values are interpolated in db space */
+            /* '<S23>:1:38' lastIdx = single(balanceTableIdx(j-1)); */
+            /* '<S23>:1:39' percent = (balanceIndex - lastIdx) / (balanceTableIdx(j) - lastIdx); */
+            /* '<S23>:1:40' cut_linear = 10 ^ (((percent * (balanceTableDb(j) - balanceTableDb(j-1))) + balanceTableDb(j-1)) / 20); */
+            /*@>16b754*/cut_linear/*@>16b756*/ = %<SLibCG_DumpSSCode("/*@[16d9dd*/",(SLibCG_SE(SLibCG_BOCSC(47, 30, "", -1, "/*@>16d02d*/j/*@>16d02a*/ - /*@>16d02e*/2", 0))),"/*@]*/")>;
+            /*@>16b77c*/left/*@>16b77e*/ = %<SLibCG_DumpSSCode("/*@[16d9f8*/",(SLibCG_SE(SLibCG_BOCSC(46, 30, "", -1, "/*@>16d036*/j/*@>16d033*/ - /*@>16d037*/2", 0))),"/*@]*/")>;
+            /*@>16acc2*/cut_linear/*@>16acbd*/ = /*@>16c94b*/powf(/*@>16ad30*/10.0F, ((/*@>16b085*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d9a7*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>16b084*/ - /*@>16b758*/cut_linear)/*@>16b083*/ / (boost_linear/*@>16b090*/ - cut_linear)/*@>16b082*/ * (%<SLibCG_DumpSSCode("/*@[16d98b*/",(SLibCG_SE(SLibCG_BOCSC(46, 30, "", -1, "/*@>16d03f*/j/*@>16d03c*/ - /*@>16d040*/1", 0))),"/*@]*/")>/*@>16b0a1*/ - /*@>16b780*/left)/*@>16b081*/ + left)/*@>16b080*/ / /*@>16b0ba*/20.0F);
+        }
+        exitg1 = true;
+    } else {
+        /* '<S23>:1:43' else */
+        /* '<S23>:1:44' j = j + 1; */
+        /*@>16a70d*/j/*@>16dc26*/++;
+    }
+}
+/*  Boost of > 0 dB is dependant on tuning. If the tune variable is SET (1), */
+/*  boost of 0 dB is applied (i.e. linear value of 1). If the tune variable */
+/*  is RESET (0), a boost of 3 dB is applied */
+/* '<S23>:1:51' if boostDisable == 0 */
+/*@>12f467*/if (%<SLibCG_DumpSSCode("/*@[16d75a*/",(SLibCG_SE(SLibCG_BOCSC(49, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f442*/ == /*@>16a70f*/0.0F) {
+    /* '<S23>:1:52' boost_linear = sqrt(2.0 - cut_linear^2); */
+    /*@>16a73f*/boost_linear/*@>12f4f9*/ = /*@>16c94f*/sqrtf(/*@>16a769*/2.0F/*@>12f520*/ - /*@>16a75b*/cut_linear/*@>16a7fe*/ * /*@>16a75d*/cut_linear);
+} else {
+    /* '<S23>:1:53' else */
+    /* '<S23>:1:54' boost_linear = single(1); */
+    /*@>16a711*/boost_linear/*@>12f421*/ = /*@>16a76a*/1.0F;
+}
+/*  %<"\% if silent extreme is enabled and we\'re extreme, make the cut complete"> */
+/*  %<"\% (Sleeping Beauty)"> */
+/* '<S23>:1:59' if (EnableSilentExtreme && abs(balanceIndex - indexOffset) >= (indexOffset-1)) */
+/*@>12f46c*/if ((%<SLibCG_DumpSSCode("/*@[16d776*/",(SLibCG_SE(SLibCG_BOCSC(50, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f443*/ != /*@>16a715*/0.0F)/*@>16da96*/ && (/*@>16c951*/fabsf(/*@>12f535*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d7ca*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f534*/ - %<SLibCG_DumpSSCode("/*@[16d7ae*/",(SLibCG_SE(SLibCG_BOCSC(48, 1, "", -1, "", 0))),"/*@]*/")>)/*@>12f445*/ >= %<SLibCG_DumpSSCode("/*@[16d792*/",(SLibCG_SE(SLibCG_BOCSC(48, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f444*/ - /*@>16a71a*/1.0F)) {
+    /* '<S23>:1:60' cut_linear = single(0); */
+    /*@>16a71b*/cut_linear/*@>12f422*/ = /*@>16a770*/0.0F;
+}
+/*  Assign left and right Gain Values */
+/* '<S23>:1:64' if (balanceIndex - indexOffset) > 0 */
+/*@>12f470*/if (/*@>12f521*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d802*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f446*/ - %<SLibCG_DumpSSCode("/*@[16d7e6*/",(SLibCG_SE(SLibCG_BOCSC(48, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f447*/ > /*@>16a71d*/0.0F) {
+    /*  Left speakers attenuated */
+    /* '<S23>:1:65' left = single(cut_linear); */
+    /*@>16a724*/left/*@>12f424*/ = /*@>16a722*/cut_linear;
+    /* '<S23>:1:66' right = single(boost_linear); */
+    /*@>16a728*/cut_linear/*@>12f426*/ = /*@>16a726*/boost_linear;
+} else {
+    /* '<S23>:1:67' else */
+    /* '<S23>:1:68' left = single(boost_linear); */
+    /*@>16a720*/left/*@>12f428*/ = /*@>16a71e*/boost_linear;
+    /* '<S23>:1:69' right = single(cut_linear); */
+}
+/*  Assign remaining gain values  */
+/* '<S23>:1:73' center = (left + right) * 0.5; */
+/*@>16a73b*/boost_linear/*@>12f4e5*/ = (/*@>16a757*/left/*@>12f524*/ + /*@>16a759*/cut_linear)/*@>16a7fa*/ * /*@>16a771*/0.5F;
+/* '<S23>:1:74' mono = center; */
+/*  Number to Content Key */
+/* '<S23>:1:77' targetGains(1) = left; */
+/*@>16a7a6*/targetGains/*@>12f42b*/[/*@>16a72a*/0]/*@>12f42d*/ = /*@>16a72b*/left;
+/* '<S23>:1:78' targetGains(2) = right; */
+/*@>16a7a8*/targetGains/*@>12f42e*/[/*@>16a72d*/1]/*@>12f430*/ = /*@>16a72e*/cut_linear;
+/* '<S23>:1:79' targetGains(3) = center; */
+/*@>16a7aa*/targetGains/*@>12f431*/[/*@>16a730*/2]/*@>12f433*/ = /*@>16a731*/boost_linear;
+/* '<S23>:1:80' targetGains(4) = mono; */
+/*@>16a7ac*/targetGains/*@>12f434*/[/*@>16a733*/3]/*@>12f435*/ = /*@>16a734*/boost_linear;
+/*  (Sleeping Beauty) */
+/*  if silent extreme is enabled and we're extreme, cut center freqs */
+/* '<S23>:1:84' if (EnableSilentExtreme && abs(balanceIndex - indexOffset) >= (indexOffset-1)) */
+/*@>12f47f*/if ((%<SLibCG_DumpSSCode("/*@[16d81e*/",(SLibCG_SE(SLibCG_BOCSC(50, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f448*/ != /*@>16a736*/0.0F)/*@>16da97*/ && (/*@>16c953*/fabsf(/*@>12f53b*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d872*/",(SLibCG_SE(SLibCG_BOCSC(22, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f53a*/ - %<SLibCG_DumpSSCode("/*@[16d856*/",(SLibCG_SE(SLibCG_BOCSC(48, 1, "", -1, "", 0))),"/*@]*/")>)/*@>12f44a*/ >= %<SLibCG_DumpSSCode("/*@[16d83a*/",(SLibCG_SE(SLibCG_BOCSC(48, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f449*/ - /*@>16a737*/1.0F)) {
+    /* '<S23>:1:85' targetGains(3) = 0; */
+    /*@>16a7ae*/targetGains/*@>12f436*/[/*@>16a738*/2]/*@>12f437*/ = /*@>16a772*/0.0F;
+    /* '<S23>:1:86' if (SleepingBeautyMutesBass) */
+    /*@>12f482*/if (%<SLibCG_DumpSSCode("/*@[16d88e*/",(SLibCG_SE(SLibCG_BOCSC(51, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f44b*/ != /*@>16a739*/0.0F) {
+        /* '<S23>:1:87' targetGains(4) = 0; */
+        /*@>16a7b0*/targetGains/*@>12f438*/[/*@>16a73a*/3]/*@>12f439*/ = /*@>16a773*/0.0F;
+    }
+}
+/* {E!d110}End of MATLAB Function: '<S11>/calculate_balance_gain' */
+
+/* {S!d99}MATLAB Function: '<S11>/calculate_ramp_parameters' */
+/* {S!d112}MATLAB Function: '<S11>/calculate_ramp_parameters' */
+/*@>16a784*/cut_linear/*@>12f5ae*/ = %<SLibCG_DumpSSCode("/*@[16d938*/",(SLibCG_SE(SLibCG_BOCSC(45, 1, "", -1, "", 0))),"/*@]*/")>;
+/*  %<"\% inputs"> */
+/*  parameters */
+/* MATLAB Function 'BasicAudio/Balance/balance/InnerLink/calculate_ramp_parameters': '<S24>:1' */
+/*  Ramp time and rate are provided to the block through RTC messages. However  */
+/*  in case neither of them are provided, the block will use the default ramp  */
+/*  time given in the tune variables. */
+/* '<S24>:1:9' ramptime = single(rampTimeTune); */
+/* '<S24>:1:10' rampRate = single(0); */
+/*@>16a780*/left/*@>12f5b0*/ = /*@>16a78e*/0.0F;
+/* '<S24>:1:12' if (rampRateRTC) */
+/*@>12f5b9*/if (%<SLibCG_DumpSSCode("/*@[16d8aa*/",(SLibCG_SE(SLibCG_BOCSC(23, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f5b2*/ != /*@>16a77c*/0U) {
+    /* '<S24>:1:13' rampRate = single(rampRateRTC); */
+    /* '<S24>:1:14' rampRate = max(rampRateBounds(1), rampRate); */
+    /* '<S24>:1:15' rampRate = min(rampRateBounds(2), rampRate); */
+    /*@>16a77e*/left/*@>12f5cd*/ = /*@>16c957*/fminf(/*@>16a790*/50000.0F, /*@>16c955*/fmaxf(/*@>16a78f*/5.0F, /*@>12f5de*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d970*/",(SLibCG_BOCSC(23, 1, "", -1, "", 0)),"/*@]*/")>));
+}
+/* '<S24>:1:17' if (rampTimeRTC) */
+/*@>12f5bb*/if (%<SLibCG_DumpSSCode("/*@[16d8c6*/",(SLibCG_SE(SLibCG_BOCSC(24, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f5b3*/ != /*@>16a77d*/0U) {
+    /* '<S24>:1:18' ramptime = single(rampTimeRTC); */
+    /*@>16a782*/cut_linear/*@>12f5b1*/ = /*@>12f5b4*/(real32_T)%<SLibCG_DumpSSCode("/*@[16d954*/",(SLibCG_SE(SLibCG_BOCSC(24, 1, "", -1, "", 0))),"/*@]*/")>;
+}
+/* {S!d101}Outputs for Function Call SubSystem: '<S11>/SetDsm' */
+/* '<S24>:1:20' ramptime = max(rampTimeBounds(1), ramptime); */
+/* '<S24>:1:21' ramptime = min(rampTimeBounds(2), ramptime); */
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[11], "Output",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm",11,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[16d704*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm", ["%<_modelSS>"], 11, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[11]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+/* {E!d101}End of Outputs for SubSystem: '<S11>/SetDsm' */
+
+%endif
+/* {S!d103}MATLAB Function: '<S11>/control' */
+/* {S!d104}MATLAB Function: '<S11>/calculate_ramp_parameters' */
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[12], "Output",0)
+/* {S!d114}MATLAB Function: '<S11>/control' incorporates:
+ *  MATLAB Function: '<S11>/calculate_ramp_parameters'
+ *  S-Function (AudioStats_MEX): '<S11>/Audio Stats1'
+ */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_control",12,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[16d705*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_control", ["%<_modelSS>", "/*@>16dd85*/targetGains", "/*@>16dd8f*/left", "/*@>16dd9a*/fminf(/*@>16dd9b*/3000.0F, /*@>16dd9d*/fmaxf(/*@>16dd9e*/1.0F, /*@>16dd9f*/cut_linear))", "%<SLibCG_DumpSSCode("/*@[16dda9*/",(SLibCG_Expr(18, 0, 0, 1, "", -1, "", 0)),"/*@]*/")>", "%<SLibCG_DumpSSCode("/*@[16ddbd*/",(SLibCG_Expr(18, 0, 1, 1, "", -1, "", 0)),"/*@]*/")>"], 12, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[12]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+%endif
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[14], "Output",0)
+
+/* {S!d107}Outputs for Function Call SubSystem: '<S11>/SetDsm1' */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm1",14,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[16d706*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm1", ["%<_modelSS>"], 14, 0, 6, 0, 6, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[14]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+/* {E!d107}End of Outputs for SubSystem: '<S11>/SetDsm1' */
+%endif
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void HandleReqBasicAudioBalanceSet(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(25, 0, fcnProtoType)>
+%endfunction

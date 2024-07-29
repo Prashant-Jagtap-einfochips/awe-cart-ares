@@ -1,0 +1,145 @@
+%implements TOP_MEX "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+%include "TOP_Common.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names
+    %assign dispTableFileName = ModelPrefix() + "TOP_RcvTrans"
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+
+    %assign IsIndirect = SFcnParamSettings.IsIndirect
+    %assign HaveInputPort = (LibBlockNumInputPorts(block) > 0)
+    %assign HaveOutputPort = (LibBlockNumOutputPorts(block) > 0)
+
+    %<TopTypeSetup(IsIndirect,HaveInputPort,HaveOutputPort)>
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %% File Names
+    %assign dispTableFileName = ModelPrefix() + "TOP_RcvTrans"
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+    %assign DTypeConstCount = SIZE(DTypeConstName)[1]
+
+    %% S Function RTW Data Parameters
+    %assign TopPath = SFcnParamSettings.TopPath
+    %assign OutDataTypeId = SFcnParamSettings.OutDataTypeId
+    %assign HaveInputPort = (LibBlockNumInputPorts(block) > 0)
+    %assign HaveOutputPort = (LibBlockNumOutputPorts(block) > 0)
+    %assign OutDTypeName = SFcnParamSettings.OutDTypeName
+    %assign InDTypeName = SFcnParamSettings.InDTypeName
+    %assign IsIndirect = SFcnParamSettings.IsIndirect
+
+    %% Handle overlay memory external access- Just need someone to set up
+    %% the TOP access for this overlay group to collaborate with custom storage class
+    %if HaveOutputPort
+        %if IsIndirect
+            %% Indirect addressing mode uses Partition blocks to generate
+            %% TOP access code. The TOP blocks themselves do not gen code
+        %else
+            %% Direct addressing mode generates TOP access code:
+            %<TopSetupSingleDirect(block)>
+        %endif
+
+        %assign added = SETFIELD(::TOP_DTYPE_NAMES,TopPath,OutDTypeName)
+    %endif
+
+    %% Handle translation engine inputs
+    %if HaveInputPort
+        %% Translation Engine code (TOP_RcvTrans)
+        %openfile buffer
+            ID_TOP_RcvTrans_%<TopPath>, /* '%<LibGetBlockName(block)>' */
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+        %<LibSetSourceFileCustomSection(fileH,"TopRcvEnumEntries",buffer)>
+
+        %% Figure out the output datatype
+        %assign InDataTypeId = LibBlockInputSignalDataTypeId(0)
+        %if OutDataTypeId < 0
+            %% Invalid data type specified - inherit from input port
+            %assign OutDataTypeId = InDataTypeId
+        %endif
+        %if (InDataTypeId < DTypeConstCount)
+            %assign inDT = DTypeConstName[InDataTypeId]
+        %else
+            %assign inDT = InDataTypeId
+        %endif
+        %if (OutDataTypeId < DTypeConstCount)
+            %assign outDT = DTypeConstName[OutDataTypeId]
+        %else
+            %assign outDT = OutDataTypeId
+        %endif
+
+        %% Define an entry in the dispatch table
+        %openfile buffer
+            { /* '%<LibGetBlockName(block)>' */
+                "%<TopPath>", 0, 
+                %<inDT>, ...
+                %<outDT>, ...
+                "%<InDTypeName>", ...
+                "%<OutDTypeName>", ...
+                %<LibBlockInputSignalIsComplex(0)>, ...
+                %<LibBlockInputSignalWidth(0)>, ...
+                %<LibBlockInputSignalAddr(0, "", "", 0)>,
+            %if HaveOutputPort
+                %<LibBlockOutputSignalAddr(0, "", "", 0)>
+            %else
+                0
+            %endif
+            },
+
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+        %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+    %endif
+
+    %%---------------------------------------------------------------------
+    %% ---------- TOP Console Block-specific Code
+    %if ::INCLUDE_ASYNC_CONSOLE && HaveOutputPort
+        %assign fileH = LibCreateSourceFile("Source","Custom",TopGetConsoleFileName())
+        %% ----------- TOP Console table entry
+        %openfile buffer
+            { // '%<LibGetBlockName(block)>'
+                "%<TopPath>", TOP_WRITE_%<TopPath>, TOP_READ_%<TopPath>, 
+                %<LibBlockOutputSignalDataTypeId(0)>, %%aka OutDataTypeId,
+                %<LibBlockOutputSignalWidth(0)>
+            },
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+    %% end top console block specific code
+    %endif
+
+%endfunction
+
+
+
+%% Function: BlockOutputSignal =================================================
+%% Abstract:
+%%      Return the appropriate reference to the parameter.  This function *may*
+%%      be used by Simulink when optimizing the Block IO data structure.
+%%NOTE: THIS FUNCTION MAY NOT BE INVOKED BY SIMULINK UNLESS BUILDING A SOURCE MODEL?
+%function BlockOutputSignal(block,system,portIdx,ucv,lcv,idx,retType) void
+    %switch retType
+        %case "Signal"
+            %assign retVal = LibBlockInputSignal(0,ucv,lcv,idx)
+            %break
+        %case "SignalAddr"
+            %assign retVal = LibBlockInputSignalAddr(0,ucv,lcv,idx)
+            %break
+        %%START_ASSERT
+        %default
+            %assign errTxt = "(in CapturedTuneConst.tlc) Unsupported return type: %<retType>"
+            %<LibBlockReportError(block,errTxt)>
+        %%END_ASSERT
+    %endswitch
+    %assign retVal = "(" + retVal + "/* '%<LibGetBlockName(block)>' */ )"
+    %return retVal
+%endfunction 

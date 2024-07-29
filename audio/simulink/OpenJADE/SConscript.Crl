@@ -1,0 +1,116 @@
+import os
+
+Import('env')
+Import('target')
+Import('crl_folder')
+Import('drivers_folder')
+Import('crl_target_folder')
+Import('crl_files')
+Import('misc_root')
+Import('option')
+
+parent_env = env
+
+def add_custom_build_options(tgt_folder, file_element, env):
+    build_options = None
+    if isinstance(file_element, list):
+        file_name = file_element[0]
+        if len(file_element) > 1:
+            if isinstance(file_element[1], list):
+                build_options = file_element[1]
+            else:
+                build_options = [file_element[1]]
+        else:
+            build_options = None
+
+    elif isinstance(file_element, dict):
+        file_name = file_element['file_name']
+        if 'build_options' in file_element:
+            if isinstance(file_element['build_options'], list):
+                build_options = file_element['build_options']
+            else:
+                build_options = [file_element['build_options']]
+        else:
+            build_options = None
+    else:
+        file_name = file_element
+        build_options = None
+
+    if tgt_folder != None:
+        file_name = tgt_folder + '/' + file_name
+
+    if (build_options == None) or ('build_options' not in env):
+        return file_name
+    else:
+        obj_env = env.Clone()
+        cppflags= obj_env['build_options']['Base']['cppflags']
+        for build_option in build_options:
+            if build_option in obj_env['build_options']:
+                cppflags.extend(obj_env['build_options'][build_option]['cppflags'])
+            else:
+                cppflags.extend([build_option])
+        obj_env.Replace(CPPFLAGS = cppflags)
+        return obj_env.Object(source=file_name)
+
+local_env = env.Clone()
+
+OptArch = local_env['PROCESSOR']
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+source_list = []
+
+if crl_folder != None:
+    local_env.VariantDir(crl_target_folder, crl_folder)
+    crl_inc_folder = Dir('#').rel_path(Dir(crl_folder+'/inc'))
+    local_env.Append(CPPPATH = [crl_folder+'/inc'])
+    local_env.Append(ASFLAGS = ['-I', crl_inc_folder])
+
+if drivers_folder != None:
+    local_env.Append(CPPPATH = [drivers_folder])
+
+if misc_root != None:
+    local_env.Append(CPPPATH = [misc_root])
+
+if crl_folder != None:
+    for suffix in crl_files:
+        source_list.append( add_custom_build_options( tgt_folder=crl_target_folder, file_element=suffix, env=local_env ))
+
+def my_lib_emitter(target, source, env):
+    lst = []
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+            lst.append(x)
+    parent_env['CrlList'] = lst
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+if not source_list:
+    JCrlLib = None
+else:
+    JCrlLib = local_env.Library(target = target, source = source_list)
+
+Return("JCrlLib")

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <TOP datatype="single" dimensions="[1 2]" group_path="BasicAudio" id="BasicAudioBalanceChanRampMap" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([1 2])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBalanceBoostDisable" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(0)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBalanceOffset" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(127)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBalanceRampTime" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(30)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBalanceSleepingBeautyMutesBass" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(1)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBalanceEnableSilentExtreme" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(0)" />
+  <TOP datatype="single" dimensions="[1 30]" group_path="BasicAudio" id="BasicAudioBalanceTableDb" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([-30 -27 -14 -7 -5 -3 -1 0 -1 -3 -5 -7 -14 -27 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30 -30])" />
+  <TOP datatype="single" dimensions="[1 30]" group_path="BasicAudio" id="BasicAudioBalanceTableIdx" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([0 10 31 52 74 95 116 128 138 159 180 202 223 244 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255 255])" />
+  <TOP datatype="single" dimensions="[1 3]" group_path="BasicAudio" id="BasicAudioBassBoostCoeffs" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([0.0129215717315674 0.0129215717315674 0.974156856536865])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBassBoostMaximum_dB" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(20)" />
+  <TOP datatype="single" dimensions="[1 3]" group_path="BasicAudio" id="BasicAudioBassCutCoeffs" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([0.0129215717315674 0.0129215717315674 0.974156856536865])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBassCutMaximum_dB" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(20)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBassOffset" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(128)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBassramptime" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(30)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioBassScale" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(127)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioMuteRampTime" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(100)" />
+  <TOP datatype="single" dimensions="[1 3]" group_path="BasicAudio" id="BasicAudioTrebleBoostCoeffs" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([0.987078428268433 -0.987078428268433 0.974156856536865])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioTrebleBoostMaximum_dB" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(20)" />
+  <TOP datatype="single" dimensions="[1 3]" group_path="BasicAudio" id="BasicAudioTrebleCutCoeffs" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([0.987078428268433 -0.987078428268433 0.974156856536865])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioTrebleCutMaximum_dB" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(20)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioTrebleOffset" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(128)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioTrebleramptime" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(30)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioTrebleScale" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(127)" />
+  <TOP datatype="single" dimensions="[1 8]" group_path="BasicAudio" id="BasicAudioVolumeTable_dB" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single([-100 -30 0 0 0 0 0 0])" />
+  <TOP datatype="uint32" dimensions="[1 8]" group_path="BasicAudio" id="BasicAudioVolumeTable_Idx" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="uint32([0 128 255 255 255 255 255 255])" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioVolumemaxgain" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(0)" />
+  <TOP datatype="single" dimensions="[1 1]" group_path="BasicAudio" id="BasicAudioVolumeRampTime" real="true" struct_src="BasicAudio_TAGGED_BasicAudio0" value="single(100)" />
+</root>

@@ -1,0 +1,105 @@
+%% Generate srcThread.h
+    %assign fileH = LibCreateSourceFile("Header","Custom","srcThread")
+
+    %<LibSetSourceFileSection(fileH,"Defines","#ifdef MULTITHREAD \n")> 
+    %<LibSetSourceFileSection(fileH,"Includes","#include \"qurt.h\" \n")>
+    %<LibSetSourceFileSection(fileH,"Includes","#include \"qurt_sem.h\" \n")>
+
+    %<LibSetSourceFileSection(fileH,"Defines","#ifndef MAX_THREAD_NUM \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#define MAX_THREAD_NUM 4 \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#endif \n")>
+
+    %<LibSetSourceFileSection(fileH,"Defines","#if (MAX_THREAD_NUM != 4) && (MAX_THREAD_NUM != 6) \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#error \"Support only 4 or 6 threads! \" \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#endif //MAX_THREAD_NUM == 4,6 \n")>
+
+    %<LibSetSourceFileSection(fileH,"Defines","#ifndef STACK_SIZE \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#define STACK_SIZE 1024 \n")>
+    %<LibSetSourceFileSection(fileH,"Defines","#endif \n")>
+
+    %<LibSetSourceFileSection(fileH,"Definitions","typedef struct \n { \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float** pInputRead; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float* out; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float* pFilterCurr; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int* pAdvanceEnd; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float* pFilterEnd; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float* pFilter; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int* pAdvance; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int* pAdvanceCurr; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float** pInputWrite; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float** pInputBufferEnd; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","float** pInputBuffer; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","unsigned int numChannels; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","unsigned int startChannel; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int nBuffer; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int nFilterBlocks; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int nFrameOut; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","int outOffset; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","qurt_sem_t semaWork; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","qurt_sem_t semaDone; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","} SRC_thread_args; \n")>
+
+    %<LibSetSourceFileSection(fileH,"Definitions","typedef struct Src_t \n { \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","unsigned int numThreadsToRun; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","qurt_thread_t threads[MAX_THREAD_NUM]; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","qurt_thread_attr_t attr[MAX_THREAD_NUM]; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","SRC_thread_args thread_arg[MAX_THREAD_NUM]; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","void* thread_stack_addr[MAX_THREAD_NUM]; \n")>
+    %<LibSetSourceFileSection(fileH,"Definitions","} Src_t; \n")>
+
+    %<LibSetSourceFileSection(fileH,"Definitions"," void src_thread( void *arg );  \n")>
+	%<LibSetSourceFileSection(fileH,"Defines","#endif \n")>
+   
+%% Generate srcThread.c
+    %assign fileC = LibCreateSourceFile("Source","Custom","srcThread")
+    %<LibSetSourceFileSection(fileC,"Includes","#include \"srcThread.h\" \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","void src_thread( void *arg ) { \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","int samp, idx, ch, nCh; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","SRC_thread_args *src_args_local = (SRC_thread_args*) arg; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","do{ \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","qurt_sem_down(&src_args_local->semaWork); \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","nCh = src_args_local->numChannels; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","int nFrameOut = src_args_local->nFrameOut; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","for (idx = 0; idx < nFrameOut; idx++) { \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float *pOut = src_args_local->out + idx + src_args_local->outOffset; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float *pFiltBase = src_args_local->pFilterCurr; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","ch = src_args_local->startChannel; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","if (nCh - ((nCh >> 1) << 1)) {\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float *pIn = src_args_local->pInputRead[ch]; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float outval = 0.0; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pFilterCurr = pFiltBase; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","for (samp = 0; samp < src_args_local->nFilterBlocks; samp++) {\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","outval += *(src_args_local->pFilterCurr++) * *(pIn++); \n")>              
+    %<LibSetSourceFileSection(fileC,"Functions","if (pIn > src_args_local->pInputBufferEnd[ch] - 1) { \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","pIn -= src_args_local->nBuffer; } \n } \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","*pOut = outval; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","pOut += nFrameOut; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","ch++; } \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","for (; ch < src_args_local->startChannel + src_args_local->numChannels; ch += 2){ \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float *pIn1 = src_args_local->pInputRead[ch]; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float *pIn2 = src_args_local->pInputRead[ch+1]; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float outval1 = 0.0; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","float outval2 = 0.0; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pFilterCurr = pFiltBase; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","for (samp = 0; samp < src_args_local->nFilterBlocks; samp++) {\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","outval1 += *(src_args_local->pFilterCurr) * *(pIn1++);\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","outval2 += *(src_args_local->pFilterCurr++) * *(pIn2++);\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","if (pIn1 > src_args_local->pInputBufferEnd[ch] - 1) {\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","pIn1 -= src_args_local->nBuffer;\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","pIn2 -= src_args_local->nBuffer; }\n }")>
+    %<LibSetSourceFileSection(fileC,"Functions","*pOut = outval1;\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","pOut += nFrameOut;\n")>              
+    %<LibSetSourceFileSection(fileC,"Functions","*pOut = outval2;\n")>            
+    %<LibSetSourceFileSection(fileC,"Functions","pOut += nFrameOut; }\n")>             
+    %<LibSetSourceFileSection(fileC,"Functions","if (src_args_local->pFilterCurr >= src_args_local->pFilterEnd) {\n")>            
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pFilterCurr = src_args_local->pFilter;}\n")>  
+    %<LibSetSourceFileSection(fileC,"Functions","for (ch = src_args_local->startChannel; ch < src_args_local->startChannel + src_args_local->numChannels; ch++) { \n")> 
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pInputRead[ch] += *src_args_local->pAdvanceCurr;\n")>         
+    %<LibSetSourceFileSection(fileC,"Functions","if (src_args_local->pInputRead[ch] >= src_args_local->pInputBufferEnd[ch]) {\n")>
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pInputRead[ch] -= src_args_local->nBuffer;}\n } \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pAdvanceCurr++; \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","if (src_args_local->pAdvanceCurr >= src_args_local->pAdvanceEnd){ \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","src_args_local->pAdvanceCurr = src_args_local->pAdvance; }\n } \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","qurt_sem_up(&src_args_local->semaDone); \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","} while(1); \n")>
+    %<LibSetSourceFileSection(fileC,"Functions","} \n")>

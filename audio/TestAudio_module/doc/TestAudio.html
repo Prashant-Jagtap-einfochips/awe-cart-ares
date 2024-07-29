@@ -118,8 +118,15 @@ ul
 <p class=CodeIndent>typedef struct _ModuleTestAudio</p>
 <p class=CodeIndent>{</p>
 <p class=CodeIndent>&nbsp&nbsp&nbsp&nbspModuleInstanceDescriptor instance;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Common Audio Weaver module instance structure</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspINT32 validCtrlRsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // valid control response</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspINT32 algoState;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // algorithm state active/bypass</p>
 <p class=CodeIndent>&nbsp&nbsp&nbsp&nbspINT32 gain;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Linear gain</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspINT32 STATE;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Toggles AudioPP Active/Bypass</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspINT32 logCTRL;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Debug Start/Stop</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspUINT32* CONTROL_REQUEST;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Control Message Request</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspUINT32* CONTROL_RESPONSE;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Control Message Response</p>
 <p class=CodeIndent>&nbsp&nbsp&nbsp&nbspFLOAT32* coeff;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Coefficent Data</p>
+<p class=CodeIndent>&nbsp&nbsp&nbsp&nbspvoid * pHandle;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // Instance handle</p>
 <p class=CodeIndent>} ModuleTestAudioClass;</p>
 
 
@@ -148,6 +155,66 @@ ul
   </td>
   <td width="9%%" valign=top style='width:9.78%%;padding:0in 5.4pt 0in 5.4pt'>
   <p class=MsoNormal align=center style='text-align:center'><b>Units</b></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>validCtrlRsp</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>int</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>state</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>algoState</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>int</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>state</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
   </td>
  </tr>
  <tr>
@@ -183,6 +250,126 @@ ul
  <tr>
   <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>STATE</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>int</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>logCTRL</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>int</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>CONTROL_REQUEST</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>uint*</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>[256 x 1]</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>CONTROL_RESPONSE</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>uint*</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>parameter</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>0</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>[256 x 1]</span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
   style='font-family:"Courier New"'>coeff</span></p>
   </td>
  <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
@@ -208,6 +395,36 @@ ul
  <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
   <p class=MsoNormal align=center style='text-align:center'><span
   style='font-family:"Courier New"'>linear</span></p>
+  </td>
+ </tr>
+ <tr>
+  <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>pHandle</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>void *</span></p>
+  </td>
+ <td width="14%" valign=top style='width:14.8%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>state</span></p>
+  </td>
+ <td width="12%" valign=top style='width:12.24%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>1</span></p>
+  </td>
+ <td width="16%" valign=top style='width:16.42%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
+  </td>
+ <td width="18%" valign=top style='width:18.48%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'>Unrestricted</span></p>
+  </td>
+ <td width="9%" valign=top style='width:9.78%;padding:0in 5.4pt 0in 5.4pt'>
+  <p class=MsoNormal align=center style='text-align:center'><span
+  style='font-family:"Courier New"'></span></p>
   </td>
  </tr>
 </table>

@@ -1,0 +1,297 @@
+%implements s55_b0_c75hk_25_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+real_T b_b_data[8];
+real_T x;
+int32_T idx_data[8];
+int32_T iwork_data[8];
+int32_T c_i;
+int32_T f_j;
+int32_T i;
+int32_T i2;
+int32_T kEnd;
+int32_T pEnd;
+int32_T qEnd;
+char_T h_data[77];
+char_T f_data[74];
+char_T g_data[6];
+static const char_T r[74] = %<(TLC_STR_CTX(3))>;
+static const char_T t[77] = %<(TLC_STR_CTX(4))>;
+static const char_T s[6] = %<(TLC_STR_CTX(5))>;
+boolean_T exitg1;
+%closefile localVarDecl
+/* {S!d551}MATLAB Function: '<S110>/table translation' */
+/* {S!d554}MATLAB Function: '<S110>/table translation' incorporates:
+ *  S-Function (TuneVarMEX): '<S110>/TuneVar_Table'
+ *
+ * Block description for '<S110>/TuneVar_Table':
+ *  <HTML>Gain table maps index to gain.
+ *  The index values are <FONT color="red">normalized</Font> floats between 0 and 1 while the gains are in dB (i.e. 0 implies no attenuation).
+ *  </html>
+ */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'TranslateTrigger/tfunc': '<S115>:1' */
+/* '<S115>:1:3' f(); */
+/*  */
+/*  Demux table matrix into one dimesional value and index vectors */
+/*  */
+/*  Set up the size and datatype of our TOP outputs: */
+/* MATLAB Function 'BasicAudio/Volume/volume/InnerLink/Index2DbTable/table translation': '<S114>:1' */
+/* '<S114>:1:8' maxTableSize = numel(Table.Value) / 2; */
+/* '<S114>:1:9' idxType = 'uint8'; */
+/* '<S114>:1:10' idxStorageType = 'uint32'; */
+/* '<S114>:1:11' dbType = 'single'; */
+/* '<S114>:1:12' Table_Idx = zeros(1,maxTableSize,idxStorageType); */
+/* '<S114>:1:13' Table_dB = zeros(1,maxTableSize,dbType); */
+/*@>dccba*/for (/*@>e7f6b*/i = /*@>e7f6a*/0; /*@>e7f75*/i < /*@>e7f73*/8; /*@>e7f71*/i/*@>e7f79*/++) {
+    /*@>e7325*/BasicAudio_TranslationEngine64_B./*@>e832a*/Table_Idx/*@>dccb2*/[/*@>e08ce*/i]/*@>dccb1*/ = /*@>e08d0*/0U;
+    /*@>e732b*/BasicAudio_TranslationEngine64_B./*@>e832d*/Table_dB/*@>dccc9*/[/*@>e08d6*/i]/*@>dccc8*/ = /*@>e08d8*/0.0F;
+}
+/*  separate the pairs into their index and value components */
+/* '<S114>:1:16' givenPairs = Table.Size(1); */
+/* '<S114>:1:17' indexes = Table.Value(1:givenPairs,1); */
+/*@>e28d5*/if (/*@>e7331*/BasicAudio_TranslationEngine64_B./*@>e8330*/Table_i./*@>e830f*/Size/*@>e6f84*/[/*@>e6f7d*/0]/*@>bf97c*/ < /*@>e087a*/1.0) {
+    /*@>e28d9*/i/*@>e28d8*/ = /*@>e7e96*/0;
+} else {
+    /*@>e0aa4*/i/*@>dfdc5*/ = /*@>e0b3b*/(int32_T)/*@>e7337*/BasicAudio_TranslationEngine64_B./*@>e8333*/Table_i./*@>e8312*/Size/*@>e6f8d*/[/*@>e6f86*/0];
+}
+/* '<S114>:1:18' values = Table.Value(1:givenPairs,2); */
+/*  then sort and ignore duplicates */
+/* '<S114>:1:21' [cleanIdx,map] = unique(indexes); */
+if (/*@>e5ad9*/i/*@>e5ad7*/ - /*@>e5ada*/1 >= /*@>e5ad6*/0) {
+    /*@>e6314*/memset(&/*@>e5ac1*/idx_data/*@>e5ac2*/[/*@>e5ac0*/0], /*@>e7e99*/0, /*@>e5abe*/(uint32_T)/*@>e5abd*/i/*@>e5ac8*/ * /*@>e5ac7*/sizeof(int32_T));
+}
+/*@>bf6e0*/if (/*@>e0882*/i/*@>e4679*/ != /*@>e07b1*/0) {
+/*@>bf7a3*/    for (/*@>e7f59*/c_i = /*@>e7f58*/1; /*@>e7f66*/c_i <= /*@>e7f63*/i/*@>e7f61*/ - /*@>e7f64*/1; /*@>e7f5f*/c_i += /*@>e7f5b*/2) {
+        /*@>bf7a5*/if ((/*@>e733d*/BasicAudio_TranslationEngine64_B./*@>e8336*/Table_i./*@>e8315*/Value/*@>e6f99*/[/*@>e6f91*/c_i/*@>e6f8f*/ - /*@>e6f92*/1]/*@>db296*/ <= /*@>e7343*/BasicAudio_TranslationEngine64_B./*@>e8339*/Table_i./*@>e8318*/Value/*@>e6fa3*/[/*@>e6f9c*/c_i]) || /*@>e5fdb*/rtIsNaN(/*@>e7349*/BasicAudio_TranslationEngine64_B./*@>e833c*/Table_i./*@>e831b*/Value/*@>e6fad*/[/*@>e6fa6*/c_i])) {
+            /*@>e4aeb*/idx_data/*@>bf72e*/[/*@>e07dd*/c_i/*@>bf786*/ - /*@>e07df*/1]/*@>bf72f*/ = /*@>e07e0*/c_i;
+            /*@>e4af9*/idx_data/*@>bf730*/[/*@>e07e9*/c_i]/*@>bf731*/ = /*@>e07eb*/c_i/*@>bf787*/ + /*@>e07ed*/1;
+        } else {
+            /*@>e4ae5*/idx_data/*@>bf732*/[/*@>e07d7*/c_i/*@>bf789*/ - /*@>e07d9*/1]/*@>bf733*/ = /*@>e07da*/c_i/*@>bf788*/ + /*@>e07dc*/1;
+            /*@>e4af3*/idx_data/*@>bf734*/[/*@>e07e5*/c_i]/*@>bf735*/ = /*@>e07e7*/c_i;
+        }
+    }
+    /*@>bf7ab*/if ((/*@>e1a44*/(uint32_T)/*@>e0884*/i/*@>e1a47*/ & /*@>e1a46*/1U)/*@>bf78b*/ != /*@>e1a49*/0U) {
+        /*@>e4adf*/idx_data/*@>bf736*/[/*@>e0886*/i/*@>bf78c*/ - /*@>e07d6*/1]/*@>bf737*/ = /*@>e0888*/i;
+    }
+    /*@>e07e2*/c_i/*@>bf738*/ = /*@>e7e9f*/2;
+    while/*@<bf7b0*/ (/*@>e07ee*/c_i/*@>bf78d*/ < /*@>e08ad*/i) {
+        /*@>e0862*/i2/*@>bf84d*/ = /*@>e0864*/c_i/*@>e0b36*/ << /*@>e2036*/1;
+        /*@>e07f0*/f_j/*@>bf73a*/ = /*@>e7ea2*/1;
+        /*@>e07f6*/pEnd/*@>bf73c*/ = /*@>e07f3*/c_i/*@>bf78e*/ + /*@>e07f5*/1;
+        while/*@<bf7b4*/ (/*@>e07f8*/pEnd/*@>bf78f*/ < /*@>e08af*/i/*@>bfa11*/ + /*@>e08b1*/1) {
+            int32_T f_k;
+            int32_T p;
+            int32_T q;
+            /*@>e0800*/p/*@>bf73f*/ = /*@>e07fe*/f_j;
+            /*@>e0804*/q/*@>bf741*/ = /*@>e0802*/pEnd/*@>bf9c0*/ - /*@>e0897*/1;
+            /*@>e080a*/qEnd/*@>bf744*/ = /*@>e0806*/f_j/*@>bf790*/ + /*@>e0808*/i2;
+            /*@>bf7b8*/if (/*@>e080c*/qEnd/*@>bf791*/ > /*@>e08b2*/i/*@>bfa15*/ + /*@>e08b4*/1) {
+                /*@>e080e*/qEnd/*@>bf746*/ = /*@>e08b5*/i/*@>bfa19*/ + /*@>e08b7*/1;
+            }
+            /*@>e0810*/f_k/*@>bf747*/ = /*@>e7ea8*/0;
+            /*@>e0817*/kEnd/*@>bf74a*/ = /*@>e0813*/qEnd/*@>bf792*/ - /*@>e0815*/f_j;
+            while/*@<bf7be*/ (/*@>e0819*/f_k/*@>bf9c6*/ + /*@>e089a*/1/*@>bf793*/ <= /*@>e081b*/kEnd) {
+                int32_T b_b_tmp_tmp;
+                /*@>e3975*/x/*@>e3977*/ = /*@>e7355*/BasicAudio_TranslationEngine64_B./*@>e8342*/Table_i./*@>e8321*/Value/*@>e6ff3*/[/*@>e6fe9*/idx_data/*@>e6fe8*/[/*@>e6feb*/q]/*@>e6fe6*/ - /*@>e6fec*/1];
+                /*@>e4ef9*/b_b_tmp_tmp/*@>e4efb*/ = /*@>e6ff9*/idx_data/*@>e6ffb*/[/*@>e6ff7*/p/*@>e6ff5*/ - /*@>e6ff8*/1];
+                /*@>bf7bf*/if ((/*@>e735b*/BasicAudio_TranslationEngine64_B./*@>e8345*/Table_i./*@>e8324*/Value/*@>e700d*/[/*@>e7005*/b_b_tmp_tmp/*@>e7003*/ - /*@>e7006*/1]/*@>db2ed*/ <= /*@>e3979*/x) || /*@>e5fef*/rtIsNaN(x)) {
+                    /*@>e4b9c*/iwork_data/*@>dde72*/[/*@>e096a*/f_k]/*@>bf752*/ = /*@>e503c*/b_b_tmp_tmp;
+                    /*@>e082c*/p/*@>e7f7b*/++;
+                    /*@>bf7c2*/if (/*@>e0836*/p/*@>bf795*/ == /*@>e0838*/pEnd) {
+                        while/*@<bf7c4*/ (/*@>e0844*/q/*@>bf9c2*/ + /*@>e0898*/1/*@>bf796*/ < /*@>e0846*/qEnd) {
+                            /*@>e0855*/f_k/*@>e7f7c*/++;
+                            /*@>e4bfc*/iwork_data/*@>de013*/[/*@>e0999*/f_k]/*@>bf760*/ = /*@>e7037*/idx_data/*@>e7039*/[/*@>e7036*/q];
+                            /*@>e085f*/q/*@>e7f7d*/++;
+                        }
+                    }
+                } else {
+                    /*@>e4b93*/iwork_data/*@>dde2c*/[/*@>e0962*/f_k]/*@>bf768*/ = /*@>e7017*/idx_data/*@>e7019*/[/*@>e7016*/q];
+                    /*@>e0827*/q/*@>e7f7f*/++;
+                    /*@>bf7ca*/if (/*@>e0832*/q/*@>bf9c4*/ + /*@>e0899*/1/*@>bf79a*/ == /*@>e0834*/qEnd) {
+                        while/*@<bf7cc*/ (/*@>e0840*/p/*@>bf79b*/ < /*@>e0842*/pEnd) {
+                            /*@>e0850*/f_k/*@>e7f80*/++;
+                            /*@>e4bf3*/iwork_data/*@>ddfcd*/[/*@>e0991*/f_k]/*@>bf776*/ = /*@>e7031*/idx_data/*@>e7033*/[/*@>e702f*/p/*@>e702d*/ - /*@>e7030*/1];
+                            /*@>e085a*/p/*@>e7f81*/++;
+                        }
+                    }
+                }
+                /*@>e084b*/f_k/*@>e7f7e*/++;
+            }
+/*@>bf7d1*/            for (/*@>e7f46*/pEnd = /*@>e7f45*/0; /*@>e7f53*/pEnd < /*@>e7f50*/kEnd; /*@>e7f4c*/pEnd/*@>e7f82*/++) {
+                /*@>e4b7b*/idx_data/*@>ddeb9*/[(/*@>e0972*/f_j/*@>ddebf*/ + /*@>e0974*/pEnd)/*@>ddebe*/ - /*@>e0976*/1]/*@>bf77f*/ = /*@>e6fff*/iwork_data/*@>e7001*/[/*@>e6ffe*/pEnd];
+            }
+            /*@>e0830*/f_j/*@>bf781*/ = /*@>e082e*/qEnd;
+            /*@>e083e*/pEnd/*@>bf783*/ = /*@>e083a*/qEnd/*@>bf7a1*/ + /*@>e083c*/c_i;
+        }
+        /*@>e07fc*/c_i/*@>bf785*/ = /*@>e07fa*/i2;
+    }
+}
+/*@>e0765*/c_i/*@>bf634*/ = /*@>e0b26*/(uint8_T)/*@>e088a*/i;
+/*@>bf64d*/for (/*@>e7f33*/i2 = /*@>e7f32*/0; /*@>e7f40*/i2 < /*@>e7f3d*/c_i; /*@>e7f39*/i2/*@>e7f83*/++) {
+    /*@>e4b01*/b_b_data/*@>ddb6c*/[/*@>e0934*/i2]/*@>bf5ff*/ = /*@>e734f*/BasicAudio_TranslationEngine64_B./*@>e833f*/Table_i./*@>e831e*/Value/*@>e6fc2*/[/*@>e6fb8*/idx_data/*@>e6fb7*/[/*@>e6fba*/i2]/*@>e6fb5*/ - /*@>e6fbb*/1];
+}
+/*@>e07b2*/f_j/*@>bf6e9*/ = /*@>e7e9c*/0;
+while/*@<bf6fa*/ ((/*@>e07b5*/f_j/*@>bf9b8*/ + /*@>e0896*/1/*@>bf6f2*/ <= /*@>e088c*/i)/*@>e7d37*/ && /*@>e5fdd*/rtIsInf(/*@>e6fc6*/b_b_data/*@>e6fc8*/[/*@>e6fc5*/f_j])/*@>e7d38*/ && (/*@>e6fcc*/b_b_data/*@>e6fce*/[/*@>e6fcb*/f_j]/*@>bf6f3*/ < /*@>e07b7*/0.0)) {
+    /*@>e07c4*/f_j/*@>e7f84*/++;
+}
+/*@>e07c1*/c_i/*@>bf713*/ = /*@>e0866*/f_j;
+/*@>e07b8*/f_j/*@>bf6ed*/ = /*@>e088e*/i;
+while/*@<bf6ff*/ ((/*@>e07ba*/f_j/*@>bf6f4*/ >= /*@>e07bc*/1)/*@>e7d39*/ && /*@>e5fdf*/rtIsNaN(/*@>e6fd4*/b_b_data/*@>e6fd6*/[/*@>e6fd2*/f_j/*@>e6fd0*/ - /*@>e6fd3*/1])) {
+    /*@>e07c9*/f_j/*@>e7f85*/--;
+}
+/*@>e07c6*/i2/*@>bf71b*/ = /*@>e0890*/i/*@>bf71c*/ - /*@>e0868*/f_j;
+exitg1 = false;
+while/*@<bf703*/ ((!exitg1) && (/*@>e07bd*/f_j/*@>bf6f5*/ >= /*@>e07bf*/1)) {
+    /*@>e3965*/x/*@>e3967*/ = /*@>e6fdc*/b_b_data/*@>e6fde*/[/*@>e6fda*/f_j/*@>e6fd8*/ - /*@>e6fdb*/1];
+    /*@>bf704*/if (/*@>e5fe1*/rtIsInf(/*@>e3969*/x)/*@>e7d3a*/ && (x/*@>bf6f7*/ > /*@>e07c0*/0.0)) {
+        /*@>e07ce*/f_j/*@>e7f87*/--;
+    } else {
+        exitg1 = true;
+    }
+}
+/*@>e07cb*/qEnd/*@>bf724*/ = (/*@>e0892*/i/*@>bf8af*/ - /*@>e087c*/f_j)/*@>bf725*/ - /*@>e086a*/i2;
+/*@>e076d*/i/*@>bf600*/ = /*@>e7ea5*/-1;
+/*@>bf651*/if (/*@>e0770*/c_i/*@>bf63a*/ > /*@>e0772*/0) {
+    /*@>e0773*/i/*@>bf601*/ = /*@>e7eab*/0;
+}
+while/*@<bf655*/ (/*@>e0776*/c_i/*@>bf9d0*/ + /*@>e089c*/1/*@>bf63b*/ <= /*@>e08a7*/f_j) {
+    /*@>e077b*/x/*@>bf606*/ = /*@>e7011*/b_b_data/*@>e7013*/[/*@>e7010*/c_i];
+    /*@>e077f*/kEnd/*@>bf608*/ = /*@>e077d*/c_i;
+    do/*@<bf659*/ {
+        /*@>e07ac*/c_i/*@>e7f88*/++;
+    } while (!((/*@>e0788*/c_i/*@>bf9ce*/ + /*@>e089b*/1/*@>bf63c*/ > /*@>e08ab*/f_j)/*@>e7d3b*/ || (/*@>e7029*/b_b_data/*@>e702b*/[/*@>e7028*/c_i]/*@>bf63d*/ != /*@>e078f*/x)));
+    /*@>e07af*/i/*@>e7f89*/++;
+    /*@>e4c13*/b_b_data/*@>bf60f*/[/*@>e0796*/i]/*@>bf611*/ = /*@>e0798*/x;
+    /*@>e4c28*/idx_data/*@>de145*/[/*@>e09b8*/i]/*@>bf617*/ = /*@>e7049*/idx_data/*@>e704b*/[/*@>e7048*/kEnd];
+}
+/*@>bf65e*/if (/*@>e0778*/qEnd/*@>bf63e*/ > /*@>e077a*/0) {
+    /*@>e07a7*/i/*@>e7f8a*/++;
+    /*@>e4bb2*/b_b_data/*@>ddf3a*/[/*@>e0981*/i]/*@>bf61c*/ = /*@>e701d*/b_b_data/*@>e701f*/[/*@>e701c*/f_j];
+    /*@>e4bc1*/idx_data/*@>ddf86*/[/*@>e0989*/i]/*@>bf621*/ = /*@>e7023*/idx_data/*@>e7025*/[/*@>e7022*/f_j];
+}
+/*@>e07a9*/c_i/*@>bf6c5*/ = (/*@>e08a9*/f_j/*@>bf6c6*/ + /*@>e086e*/qEnd)/*@>bf9d2*/ - /*@>e089d*/1;
+/*@>bf662*/for (/*@>e7f20*/f_j = /*@>e7f1f*/0; /*@>e7f2d*/f_j < /*@>e7f2a*/i2; /*@>e7f26*/f_j/*@>e7f8b*/++) {
+    /*@>e399d*/qEnd/*@>e399f*/ = (/*@>e21c1*/f_j/*@>e389d*/ + /*@>e09a4*/c_i)/*@>e389e*/ + /*@>e21c2*/1;
+    pEnd = (/*@>e0a8d*/i + /*@>e0a8a*/f_j) + /*@>e0a8c*/1;
+    /*@>e4c0a*/b_b_data/*@>de0b4*/[pEnd]/*@>bf627*/ = /*@>e703d*/b_b_data/*@>e703f*/[/*@>e703c*/qEnd];
+    /*@>e4c1f*/idx_data/*@>de0ff*/[pEnd]/*@>bf62c*/ = /*@>e7043*/idx_data/*@>e7045*/[qEnd];
+}
+i = (/*@>e0a92*/i2/*@>de934*/ - /*@>e0a94*/1 < /*@>e0a91*/0 ? i : i + /*@>e0a97*/i2)/*@>de9f0*/ + /*@>e0aa0*/1;
+/*@>e28da*/if (/*@>e087f*/i/*@>bf99c*/ < /*@>e087e*/1) {
+    /*@>e28de*/c_i/*@>e28dd*/ = /*@>e7eae*/-1;
+} else {
+    /*@>e0aa8*/c_i/*@>dfdcf*/ = /*@>e0791*/i/*@>de9f3*/ - /*@>e0aa1*/1;
+}
+pEnd/*@>bf649*/ = /*@>e08ba*/i;
+/*@>e079e*/i/*@>bf645*/ = /*@>e0b22*/(uint8_T)/*@>e079c*/i;
+if (/*@>e5776*/i/*@>e5774*/ - /*@>e5777*/1 >= /*@>e5773*/0) {
+    /*@>e6321*/memcpy(&/*@>e5755*/iwork_data/*@>e5756*/[/*@>e5745*/0], &/*@>e575d*/idx_data/*@>e575e*/[/*@>e5754*/0], /*@>e5743*/(uint32_T)/*@>e5742*/i/*@>e5761*/ * /*@>e5760*/sizeof(int32_T));
+}
+/*  Validate input sizes */
+/* '<S114>:1:24' numPairs = numel(map); */
+/* '<S114>:1:25' argName='Table'; */
+/*  Validate: enough data? */
+/* '<S114>:1:28' if (numPairs < 2) */
+/*@>bf54a*/if (pEnd/*@>bf52a*/ < /*@>e074d*/2) {
+    /* '<S114>:1:29' TranslateError('%<"\%s must have at least 2 index pairs. Encounted value with only \%f pairs\\n\', argName, numPairs);"> */
+    /* TRANSLATEERROR (For use in Functions triggered by TranslationTrigger blocks.) */
+    /* Print error message during tune data translation. */
+    /*   Do not include a final newline as this behavior is already built in. */
+    /*   Note that escape sequences such as '\n' will not work here. To emit */
+    /*   special characters, pass them in as arguments to %<"\%c or \%s format"> */
+    /*   specifiers. */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /* 'TranslateError:10' coder.extrinsic('gcb') */
+    /* 'TranslateError:11' coder.extrinsic('warning') */
+    /* 'TranslateError:12' coder.allowpcode('plain'); */
+    /*  enable code generation from p-file */
+    /* 'TranslateError:14' if (coder.target('MATLAB')) */
+    /* 'TranslateError:19' if (coder.target('Sfun')) */
+    /* 'TranslateError:22' else */
+    /*  Generated C-language code */
+    /* 'TranslateError:24' count = numel(varargin); */
+    /* 'TranslateError:25' fixedArgs = varargin; */
+    /* 'TranslateError:26' for i=1:count */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:31' coder.ceval('TranslateError',fixedArgs{:}); */
+    /*@>e6323*/memcpy(&/*@>e56ef*/f_data[/*@>e56df*/0], &/*@>e56f7*/r/*@>e56f8*/[/*@>e56ec*/0], /*@>e56ee*/74U/*@>e56fb*/ * /*@>e56fa*/sizeof(char_T));
+/*@>de67c*/    for (/*@>e7f0f*/qEnd = /*@>e7f0e*/0; /*@>e7f19*/qEnd < /*@>e7f17*/6; /*@>e7f15*/qEnd/*@>e7f8c*/++) {
+        /*@>e4dbd*/g_data[/*@>e0a3e*/qEnd]/*@>de66f*/ = /*@>e7080*/s/*@>e7082*/[/*@>e707f*/qEnd];
+    }
+    /*@>e5fe7*/TranslateError(&/*@>e4d8a*/f_data/*@>e4d9d*/[/*@>e0a4d*/0], &/*@>e4da0*/g_data/*@>e4db3*/[/*@>e0a51*/0], /*@>e1967*/(real_T)pEnd);
+}
+/*  Validate: Highest index still below 1.0? */
+/* '<S114>:1:33' if (cleanIdx(end) > 1) */
+/*@>bf54d*/if (/*@>e704f*/b_b_data/*@>e7051*/[/*@>e704e*/c_i]/*@>bf52b*/ > /*@>e074e*/1.0) {
+    /* '<S114>:1:34' TranslateError('%<"\%s out of range table index \%f encountered. Index must be between 0 and 1.\\n\',argName,cleanIdx(end));"> */
+    /* TRANSLATEERROR (For use in Functions triggered by TranslationTrigger blocks.) */
+    /* Print error message during tune data translation. */
+    /*   Do not include a final newline as this behavior is already built in. */
+    /*   Note that escape sequences such as '\n' will not work here. To emit */
+    /*   special characters, pass them in as arguments to %<"\%c or \%s format"> */
+    /*   specifiers. */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /* 'TranslateError:10' coder.extrinsic('gcb') */
+    /* 'TranslateError:11' coder.extrinsic('warning') */
+    /* 'TranslateError:12' coder.allowpcode('plain'); */
+    /*  enable code generation from p-file */
+    /* 'TranslateError:14' if (coder.target('MATLAB')) */
+    /* 'TranslateError:19' if (coder.target('Sfun')) */
+    /* 'TranslateError:22' else */
+    /*  Generated C-language code */
+    /* 'TranslateError:24' count = numel(varargin); */
+    /* 'TranslateError:25' fixedArgs = varargin; */
+    /* 'TranslateError:26' for i=1:count */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:28' fixedArgs{i} = [varargin{i} char(0)]; */
+    /* 'TranslateError:27' if (ischar(varargin{i})) */
+    /* 'TranslateError:31' coder.ceval('TranslateError',fixedArgs{:}); */
+    /*@>e6325*/memcpy(&/*@>e565a*/h_data[/*@>e564a*/0], &/*@>e5662*/t/*@>e5663*/[/*@>e5657*/0], /*@>e5659*/77U/*@>e5666*/ * /*@>e5665*/sizeof(char_T));
+/*@>de792*/    for (/*@>e7efe*/qEnd = /*@>e7efd*/0; /*@>e7f08*/qEnd < /*@>e7f06*/6; /*@>e7f04*/qEnd/*@>e7f8d*/++) {
+        /*@>e4e16*/g_data[/*@>e0a60*/qEnd]/*@>de785*/ = /*@>e708c*/s/*@>e708e*/[/*@>e708b*/qEnd];
+    }
+    /*@>e5feb*/TranslateError(&/*@>e4de5*/h_data/*@>e4df8*/[/*@>e0a6c*/0], &/*@>e4dfb*/g_data/*@>e4e0e*/[/*@>e0a70*/0], /*@>e7086*/b_b_data/*@>e7088*/[/*@>e7085*/c_i]);
+}
+/*  fill in the table buffer with provided pairs */
+/* '<S114>:1:38' for i=1:numPairs */
+/*@>bf551*/for (/*@>e7eeb*/i2 = /*@>e7eea*/0; /*@>e7ef8*/i2 < pEnd; /*@>e7ef1*/i2/*@>e7f8e*/++) {
+    /* '<S114>:1:39' Table_Idx(i) = intmax(idxType) * cleanIdx(i); */
+    /*@>e7361*/BasicAudio_TranslationEngine64_B./*@>e8348*/Table_Idx/*@>de28e*/[/*@>e09d5*/i2]/*@>bf50e*/ = /*@>e0b42*/(uint8_T)%<SLibCG_DumpSSCode("/*@[e7e50*/",(SLibCGCallSubFcn("rt_roundd_snf", ["/*@>e83e9*/255.0/*@>e83e8*/ * /*@>e83eb*/b_b_data/*@>e83ea*/[/*@>e83ec*/i2]"], 25, 1, 0)),"/*@]*/")>;
+    /* '<S114>:1:40' Table_dB(i) = values(map(i)); */
+    /*@>e7367*/BasicAudio_TranslationEngine64_B./*@>e834b*/Table_dB/*@>de358*/[/*@>e09e1*/i2]/*@>bf513*/ = /*@>bf537*/(real32_T)/*@>e736d*/BasicAudio_TranslationEngine64_B./*@>e834e*/Table_i./*@>e8327*/Value/*@>e706c*/[/*@>e7062*/iwork_data/*@>e7061*/[/*@>e7064*/i2]/*@>e705f*/ + /*@>e7065*/7];
+}
+/*  fill the rest of the table buffer with the last entry */
+/* '<S114>:1:43' for j=numel(map)+1:maxTableSize */
+/*@>e0757*/f_j/*@>bf52f*/ = /*@>e089f*/7/*@>bf9da*/ - pEnd;
+/*@>bf557*/for (/*@>e7edb*/c_i = /*@>e7eda*/0; /*@>e7ee6*/c_i <= /*@>e7ee4*/f_j; /*@>e7ee1*/c_i/*@>e7f8f*/++) {
+    /*@>e0761*/i2/*@>bf532*/ = pEnd/*@>bf9b0*/ + /*@>e075f*/c_i;
+    /* '<S114>:1:44' Table_Idx(j) = Table_Idx(numPairs); */
+    /*@>e7373*/BasicAudio_TranslationEngine64_B./*@>e8351*/Table_Idx/*@>de3bd*/[/*@>e09ec*/i2]/*@>bf51a*/ = /*@>e7379*/BasicAudio_TranslationEngine64_B./*@>e8354*/Table_Idx/*@>e7074*/[pEnd/*@>e706e*/ - /*@>e7071*/1];
+    /* '<S114>:1:45' Table_dB(j) =  Table_dB(numPairs); */
+    /*@>e737f*/BasicAudio_TranslationEngine64_B./*@>e8357*/Table_dB/*@>de3f1*/[/*@>e09f4*/i2]/*@>bf520*/ = /*@>e7385*/BasicAudio_TranslationEngine64_B./*@>e835a*/Table_dB/*@>e707c*/[pEnd/*@>e7076*/ - /*@>e7079*/1];
+}
+/* {E!d554}End of MATLAB Function: '<S110>/table translation' */
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void FuncTranslation_BasicAudio_2349_263_280(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(25, 1, fcnProtoType)>
+%endfunction

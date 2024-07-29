@@ -1,0 +1,95 @@
+%%
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Dump into the TalariaAPI files
+%function ModelSyncApiFilename() void
+    %return ModelPrefix() + "SyncApiXmlEmbed"
+%endfunction
+
+%% Function: EmitSyncApiBeginXml ==========================================
+%% This setup function is called only by the CoreIndexBlock which knows the
+%% task id (TID) of the system base rate, or fastest task with actual DSP
+%function EmitSyncApiXmlBegin(block, system, base_tid) void
+
+    %% Setup the custom sections
+    %<SetupSyncApi(block, system)>
+
+    %% Fill in the XMLBEGIN section
+    %assign fileH = LibCreateSourceFile("Header","Custom",ModelSyncApiFilename())
+    %assign RootSection = "Definitions"
+    %<LibAddSourceFileCustomSection(fileH,RootSection,"XMLBEGIN")>
+    %assign TalariaVersion = FEVAL("talariaVersion")
+    %% Note use LibNumDiscreteSampleTimes instead of LibGetNumSyncPeriodicTasks
+    %% to support single-tasking model setup [TALARIA-605]. This file talks about
+    %% "tasks" instead of "rates" but the terminology is still useful.
+    %assign NumDiscreteRates = LibNumDiscreteSampleTimes()
+    %openfile buffer
+        // ------------------------------------------------------------
+        // EMBEDDED XML FILE OF Sync API
+        // ------------------------------------------------------------
+        /* [XMLBEGIN]<?xml version="1.0" encoding="utf-8"?>
+        <root syncapi_version="1.0" talaria_version="%<TalariaVersion>">
+        <Partition id="%<LibGetModelName()>" NumTasks="%<NumDiscreteRates>" base_task_id="%<base_tid>">
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"XMLBEGIN",buffer)>
+%endfunction
+
+%% Function: BlockTypeSetup ===============================================
+%% This setup function is called by several blocks - a race to see which gets it done
+%% Some example blocks: FeaturePath_SFunc, PingPongXmlSFunc, ModelSyncApiSFunc
+%function SetupSyncApi(block, system) void
+
+    %% Keep track of whether this setup has happened
+    %if EXISTS(::SYNCAPI_TYPE_SETUP)
+        %return
+    %endif
+    %assign ::SYNCAPI_TYPE_SETUP = 1
+
+    %% Regardless of which type(s) of external port blocks we have, always
+    %% manifest the API for both input and output buffers.
+
+    %% ----- XMLBEGIN ---------------------
+    %assign fileH = LibCreateSourceFile("Header","Custom",ModelSyncApiFilename())
+    %assign RootSection = "Definitions"
+    %<LibAddSourceFileCustomSection(fileH,RootSection,"XMLBEGIN")>
+
+    %% ----- Tasks ------------------------
+    %assign NumDiscreteRates = LibNumDiscreteSampleTimes()
+    %foreach j=NumDiscreteRates
+        %% Setup tasks start
+        %assign Tidstr = SPRINTF("%d",j)
+        %assign RateFactor = SPRINTF("%.0f",LibGetClockTickStepSize(j)/LibGetClockTickStepSize(0))
+        %assign RateInSec = LibGetSampleTimePeriodAndOffset(j, 0)
+        %assign TaskStart = SPRINTF("Task%dStart",j)
+        %assign InportSection = SPRINTF("Inports%d",j)
+        %assign TaskMiddle = SPRINTF("Task%dMiddle",j)
+        %assign OutportSection = SPRINTF("Outports%d",j)
+        %assign TaskEnd = SPRINTF("Task%dEnd",j)
+
+        %<LibAddSourceFileCustomSection(fileH,RootSection,TaskStart)>
+        %<LibAddSourceFileCustomSection(fileH,RootSection,InportSection)>
+        %<LibAddSourceFileCustomSection(fileH,RootSection,OutportSection)>
+        %<LibAddSourceFileCustomSection(fileH,RootSection,TaskEnd)>
+
+        %openfile buffer
+        <Task id="%<Tidstr>" rate_factor="%<RateFactor>" rate_in_sec="%<RateInSec>">
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,TaskStart,buffer)>
+        
+        %openfile buffer
+        </Task>
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,TaskEnd,buffer)>
+    %endforeach
+
+    %% ----- XMLEND -----------------------
+    %<LibAddSourceFileCustomSection(fileH,RootSection,"End")>
+    %openfile buffer
+    </Partition>
+    </root>
+    [XMLEND] */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"End",buffer)>
+%endfunction

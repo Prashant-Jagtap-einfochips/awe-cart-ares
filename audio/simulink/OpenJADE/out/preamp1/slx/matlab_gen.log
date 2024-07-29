@@ -1,0 +1,265 @@
+Starting: Simulink
+--- Setting CCES 2.9.1 environment variable ---
+--- Setting Xtensa environment variable ---
+--- Setting VDSP environment variable ---
+--- Setting CCES 2.6.0 environment variable ---
+--- Setting CCES 2.10.0 environment variable ---
+--- Adding SharcPlus processor ---
+--- Adding GUL processor ---
+--- Adding GLXP processor ---
+Updating *.p file timestamps in folder C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria...
+Refreshing Simulink customizations
+Deleting any existing project in [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx]...
+Closing project [Dev].
+--- Removing SharcPlus processor ---
+--- Removing GUL processor ---
+--- Removing GLXP processor ---
+Refreshing Simulink customizations
+Tried to delete existing project, but The location C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx is not a project.
+Creating new project in [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx]...
+Adding reference to [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink]...
+--- Setting CCES 2.9.1 environment variable ---
+--- Setting VDSP environment variable ---
+--- Setting CCES 2.6.0 environment variable ---
+--- Setting CCES 2.10.0 environment variable ---
+--- Adding SharcPlus processor ---
+--- Adding GUL processor ---
+--- Adding GLXP processor ---
+Updating *.p file timestamps in folder C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria...
+Refreshing Simulink customizations
+Eliminated SVN add of C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx
+Eliminated SVN add of C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1
+Eliminated SVN add of C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out
+Done!
+Info: Assume options string - -i32 -t32
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\gul\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-2156x v1.0 | gmake makefile (64-bit Windows)"
+has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom
+registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\hifi4_rt685\toolchain\registry\rtwTargetInfo.m": "Toolchain "Xtensa Toolchain RI-2020.5-win32 (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc\toolchain\registry\rtwTargetInfo.m": "Toolchain "VisualDSP 5.0 | gmake makefile (64-bit Windows)"
+has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom
+registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc_plus\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-SC58x v2.3 | gmake makefile (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc_plus_glxp\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-SC59x v1.0 | gmake makefile (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\x86\toolchain\registry\rtwTargetInfo.m": "Toolchain "MinGW64 | gmake (32-bit Windows)" has already been
+registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom registration is not
+loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In ConfigSetx86 (line 312)
+In build_model_cmdlineOJT (line 117)] 
+----- Build Options -----
+Parallel = 0
+CleanBuild = 0
+CrossChipFrameDelay = 2
+CrossCoreFrameDelay = 2
+TranslateEngine32Bit = Nothing
+InterpretEngine32Bit = Nothing
+TranslateEngine64Bit = BothModelAndCode
+InterpretEngine64Bit = BothModelAndCode
+SingleCoreIndex = 1
+ModelAction[default] = BothModelAndCode
+ConfigSet[default] = ConfigSet[ConfigSetx86]
+-------------------------
+Talaria Version: V2200BK
+-------------------------
+Not using parallel processing
+Performing partition separation on [BasicAudio]
+Model Checksum Map does not exist
+File Checksum Map does not exist
+Assigning partition tags for [BasicAudio]...
+Single core model [BasicAudio]: skipping core partitioning
+Calculating default TOP values for [BasicAudio]
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TuneVar.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TuneVar.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_StateVar.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_StateVar.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TSP.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TSP.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_ModuleFeaturePath.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_ModuleFeaturePath.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_AllFeaturePath.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_AllFeaturePath.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_BtcDefs.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_BtcDefs.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TuneVarDefaults.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TuneVarDefaults.xml</a>"
+ Writing to file "<a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TopExternalIntegration.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TopExternalIntegration.xml</a>"
+[Warning: **********************************
+ExtractToolApiBtc failed with Class [BasicAudioConfig] is not found] 
+[> In ExtractModelBtcToolsExport (line 43)
+In createTheXML
+In partitionModel
+In partition_and_generate (line 99)
+In build_model_cmdlineOJT (line 129)] 
+Creating sub models for [BasicAudio] (single-core) ...
+ Creating model 'BasicAudio_Target'...
+ Done creating target sub-models for [BasicAudio]!
+Generating code with root folder C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code
+ Building C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\parts\BasicAudio_Target.slx ...
+[Warning: Environment Controller block will be removed in a future release. Replace Environment Controller block 'BasicAudio_Target/Input/Environment Controller' with
+Variant Source block with the Variant control mode parameter set to 'sim codegen switching'. Use <a href="matlab: internallinktoadvisor.launchAdvisor(bdroot);">Model
+Advisor</a> to do this automatically.] 
+
+Build Summary
+
+Top model targets built:
+
+Model              Action  Rebuild Reason                                    
+=============================================================================
+BasicAudio_Target  Failed  Code generation information file does not exist.  
+
+0 of 1 models built (0 models already up to date)
+Build duration: 0h 0m 10.394s
+Detected potential "disappearing DSM problem". Attempting workaround...
+[Warning: Environment Controller block will be removed in a future release. Replace Environment Controller block 'BasicAudio_Target/Input/Environment Controller' with
+Variant Source block with the Variant control mode parameter set to 'sim codegen switching'. Use <a href="matlab: internallinktoadvisor.launchAdvisor(bdroot);">Model
+Advisor</a> to do this automatically.] 
+
+Build Summary
+
+Top model targets built:
+
+Model              Action           Rebuild Reason                                    
+======================================================================================
+BasicAudio_Target  Code generated.  Code generation information file does not exist.  
+
+1 of 1 models built (0 models already up to date)
+Build duration: 0h 2m 2.9855s
+Combining TOP token xml files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_TOP_IDs.xml ...
+ Including referenced model TOP token xml files...
+ Writing aggregated file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TOP_Tokens.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TOP_Tokens.xml</a> ...
+ Calculating TOP compatibility hash for OverlayGroup [BasicAudio] ...
+ Updating compat hashes in aggregated file C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TOP_Tokens.xml ...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TOP_COMPAT.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TOP_COMPAT.h</a> ...
+ Replacing [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\TOP_COMPAT.h] with [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TOP_COMPAT.h]
+Combining TSP token xml files...
+ No TSP token xml file was created for model BasicAudio_Target
+ Including referenced model TSP token xml files...
+ Writing aggregated file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TSP_Tokens.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TSP_Tokens.xml</a> ...
+ Calculating TSP compatibility hash for OverlayGroup [BasicAudio] ...
+ Updating compat hashes in aggregated file C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_TSP_Tokens.xml ...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TSP_COMPAT.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TSP_COMPAT.h</a> ...
+ Replacing [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\TSP_COMPAT.h] with [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TSP_COMPAT.h]
+Combining RTC token xml files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_RTC_XmlEmbed.h ...
+ Including referenced model RTC token xml files...
+ Writing aggregated file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_RTC_Payloads.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_RTC_Payloads.xml</a> ...
+ Calculating RTC compatibility hash for OverlayGroup [BasicAudio] ...
+ Updating compat hashes in aggregated file C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_RTC_Payloads.xml ...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_RTC_COMPAT.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_RTC_COMPAT.h</a> ...
+ Replacing [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\RTC_COMPAT.h] with [C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_RTC_COMPAT.h]
+Combining SCH Payload XML files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_SCH_Payloads.xml ...
+ Writing xml file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_SCH_Payloads.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_SCH_Payloads.xml</a> ...
+Combining RTC ID header files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_RTC_IDs.h ...
+ Including referenced model RTC ID header files...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_RTC_IDs.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_RTC_IDs.h</a> ...
+Combining TOP ID header files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_TOP_IDs.h ...
+ Including referenced model TOP ID header files...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TOP_IDs.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TOP_IDs.h</a> ...
+Combining TSP ID header files...
+ No TSP ID header file was created for model BasicAudio_Target
+ Including referenced model TSP ID header files...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TSP_IDs.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_TSP_IDs.h</a> ...
+Combining SCH API header files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_SCH_API.h ...
+ Including referenced model SCH API header files...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_SCH_IDs.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_SCH_IDs.h</a> ...
+Combining AudioStats header files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_AudioStats.h ...
+ Including referenced model AudioStats header files...
+ Writing header file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_AudioStats.h">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Control\BasicAudio_AudioStats.h</a> ...
+Combining Sync API xml files...
+ Reading C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_Target_ert_shrlib_rtw\BasicAudio_Target_SyncApiXmlEmbed.h ...
+ Including referenced model Sync API xml files...
+ Writing aggregated file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_SyncApi.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_SyncApi.xml</a> ...
+ Updating aggregated file C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_SyncApi.xml ...
+Combining PingPong Struct xml files...
+ No PingPong Struct xml file was created for model BasicAudio_Target
+ Writing aggregated file <a href="matlab:edit C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_PingPongStruct.xml">C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\OpenJADE\out\preamp1\slx\code\BasicAudio_PingPongStruct.xml</a> ...
+Creating engine DLLs...
+ Skip 32 bit translation engine creation - disabled in options
+ Skip 32 bit interpretation engine creation - disabled in options
+ Creating model for [BasicAudio] Translation Engine (64 bit)...
+ Building BasicAudio_TranslationEngine64 ...
+
+Build Summary
+
+Top model targets built:
+
+Model                           Action                        Rebuild Reason                                    
+================================================================================================================
+BasicAudio_TranslationEngine64  Code generated and compiled.  Code generation information file does not exist.  
+
+1 of 1 models built (0 models already up to date)
+Build duration: 0h 0m 52.667s
+ Creating model for [BasicAudio] Interpretation Engine (64 bit)...
+ Building BasicAudio_InterpretationEngine64 ...
+
+Build Summary
+
+Top model targets built:
+
+Model                              Action                        Rebuild Reason                                    
+===================================================================================================================
+BasicAudio_InterpretationEngine64  Code generated and compiled.  Code generation information file does not exist.  
+
+1 of 1 models built (0 models already up to date)
+Build duration: 0h 0m 15.997s
+ Done generating code!
+ Writing checksums to file
+ Done writing checksums!
+** Partitioning Complete **

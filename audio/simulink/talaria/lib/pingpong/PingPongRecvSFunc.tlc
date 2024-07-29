@@ -1,0 +1,12 @@
+%implements PingPongRecvSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: Outputs ===============================================
+%% %function Outputs(block, system) Output
+%% 
+%%     /* PingPongRecvSFunc '%<LibGetBlockName(block)>' */
+%%     /* The content of %<LibBlockOutputSignalAddr(0, "", "", 0)> has been 
+%%        previously loaded by ping pong control operations (e.g. DMA) */
+%%     
+%% %endfunction

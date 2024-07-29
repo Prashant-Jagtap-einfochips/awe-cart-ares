@@ -1,0 +1,46 @@
+{
+    "_comment": "This is For Schema Configuration, defined in JSON Format",
+    "JFRAMEWORK": 
+    {
+        "_comment_BafCallBack": "Two prototype of BAF Callback function is controlled by the following, enable/disable context argument",
+        "BAF_CALLBACK_CONTEXT": "enable"
+    },
+    "FeatureLib":
+    {
+        "FeatureLib":
+        {
+            "Common Header File": ["#include <stdlib.h>", "#include <string.h>", 
+                                   "#include <stdint.h>", "#include <stddef.h>"]
+        },
+        "Feature":
+        {
+            "Common Header File": ["#include <stdlib.h>", "#include <string.h>", 
+                                   "#include <stdint.h>", "#include <stddef.h>"]
+        },
+        "Bamproxy":
+        {
+            "Initialize Function":
+            {
+                "Context": "Disable",
+                "Comment": ""
+            },
+            "Common Header File": ["#include <stdlib.h>", "#include <string.h>", 
+                                   "#include <stdint.h>", "#include <stddef.h>",
+                                   "#include \"OJPAL.h\""]
+        },
+        "_comment_alias": "When generating code, key is replaced with value to generate file name, class name, function name, etc",
+        "Alias_Name":
+        {
+            "Feature":
+            {
+                "Ann1_": "Announcement",
+                "Channel1_": "Channel"
+            }
+        }
+    }
+}
+
+
+
+
+

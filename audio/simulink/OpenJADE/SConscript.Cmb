@@ -1,0 +1,154 @@
+import os
+
+"""
+Build a (static and shared) library of CMB and Adaptors. And some test applications to verify the libraries built.
+"""
+
+Import('env')
+Import('cart')
+Import('target_path')
+Import('arch')
+Import('btf_path')
+Import('brf_path')
+Import('cmb_path')
+
+cmb_test_path = cmb_path + 'test/'
+
+local_env = env.Clone(
+    CPPPATH=[ cart+'/Runtime', 
+              btf_path+'include',
+              brf_path+'include',
+              cart+'/Runtime/CMB',
+              cart+'/Runtime/CART',
+              cart+'/Runtime/Audio_Graph',
+              cart+'/Adaptor/common_inc', 
+              cart+'/Adaptor/BRF',
+              cart+'/Adaptor/BTF'])
+
+source = []
+source.extend( Glob(cart+'/Runtime/CMB.c' ))
+source.extend( Glob(cart+'/Adaptor/BTF/*.c' ))
+source.extend( Glob(cart+'/Adaptor/BRF/*.c' ))
+
+if arch in ['qnx_nto_aarch64', 'x64']:
+    local_env.Append(
+        CPPPATH = [   
+        cart+'/Adaptor/Control_Application',
+        cart+'/Adaptor/ACS',
+        cart+'/Adaptor/io-audio', 
+        cart+'/Adaptor/CSD2', 
+        cart+'/Adaptor/Tuning_Application'])
+
+    local_env.Append(LIBPATH = [cart+'/Adaptor/CSD2/'])
+    local_env.Append(CPPFLAGS = ['-Werror=return-type'])    
+    source.extend( Glob(cart+'/Adaptor/CSD2/*.c' ))
+    source.extend( Glob(cart+'/Adaptor/io-audio/*.c' ))
+    source.extend( Glob(cart+'/Adaptor/ACS/*.c' ))
+
+    if arch in ['x64']:
+        source.extend( Glob(cart+'/Adaptor/CSD2/test/CMB_CSD2_Stub.c' ))
+        source.extend( Glob(cart+'/Adaptor/io-audio/test/CMB_IO-AUDIO_Stub.c' ))
+        source.extend( Glob(cart+'/Adaptor/Common/CMB_Message_helper.c' ))
+        local_env.Append(CPPFLAGS='-DSTUB_DRIVER')
+        # Uncomment below to add the path to the database on x86.
+        # local_env.Append(CPPFLAGS='-DRNDB_PATH=\\"C:/conan/p/b/rndba5a2f90c1e90b/p/RNDB/hera/RNDB.bin\\"')
+    elif arch in ['qnx_nto_aarch64']:
+        source.extend( Glob(cart+'/Adaptor/Common/*.c' ))
+        source.extend( Glob(cart+'/Adaptor/Control_Application/*.c' ))
+        source.extend( Glob(cart+'/Adaptor/Tuning_Application/*.c' ))
+        local_env.Append(LINKFLAGS = ['-lsocket', '-lasound', '-lcsd2IpcClient'])
+    
+Cmb_lib = local_env.Library(target = [target_path + '/Cmb'], source = source)
+target_list = ['Cmb_lib']
+
+"""
+Build CMB Framework (CMBF) library. And a test application for the CMBF.
+"""
+if arch in ['qnx_nto_aarch64', 'x64']:
+    cmbf_env = env.Clone(
+        CPPPATH=[ cart+'/Runtime', 
+                btf_path+'include',
+                brf_path+'include',
+                cart+'/Runtime/CMB',
+                cmb_path + '/include',
+                cmb_path + '/private',
+                cart+'/Runtime/CART',
+                cart+'/Adaptor/BRF',
+                cart+'/Adaptor/BTF'])
+
+    cmbf_env.Append(
+        CPPPATH = [   
+        cart+'/Adaptor/Control_Application',
+        cart+'/Adaptor/ACS',
+        cart+'/Adaptor/common_inc',
+        cart+'/Adaptor/io-audio', 
+        cart+'/Adaptor/CSD2', 
+        cart+'/Adaptor/Tuning_Application'])
+
+    if arch in ['qnx_nto_aarch64']:
+        cmbf_env.Append(LINKFLAGS = ['-lsocket', '-lasound', '-lcsd2IpcClient'])
+        cmbf_env.Append(LIBPATH = [cart+'/Adaptor/CSD2/'])
+    elif arch in ['x64']:
+        cmbf_env.Append(CPPFLAGS='-DSTUB_DRIVER')
+        # cmbf_env.Append(CPPFLAGS='-DRNDB_PATH=\\"C:/conan/p/b/rndba5a2f90c1e90b/p/RNDB/hera/RNDB.bin\\"')
+        """ Application can receive commands from a text file for testing and diagnostics. 
+            Define the path to the file as needed. This is not expected to  be used for production release."""
+        cmbf_env.Append(CPPFLAGS='-DINPUT_CMD_FILE_PATH=\\"C:/work/cmd-input.txt\\"')
+    else:
+        cmbf_env.Append(CPPFLAGS='-DSTUB_DRIVER')
+
+    cmbf_src = []
+    cmbf_src.extend( Glob(cmb_path + 'source' + '/*.c' ))
+    cmbf_src += [Cmb_lib]
+    Cmbf_lib = cmbf_env.Library(target = [target_path + '/Cmbf'], source = cmbf_src)
+
+    target_list += ['Cmbf_lib']
+
+    if arch in ['qnx_nto_aarch64']:
+        cmbf_env.Append(CPPFLAGS = ['-Werror=return-type'])
+        cmbf_test_src = []
+        cmbf_test_src.extend( Glob(cmb_path + '/test/source/main.c' ))
+        cmbf_test_src += [Cmbf_lib]
+        cmbf_test_src += [Cmb_lib]
+        cmbf_test_src += [btf_path + '/lib/' + env['LIBPREFIX'] + 'Btf' + env['LIBSUFFIX']]
+        cmbf_test_src += [brf_path + '/lib/' + env['LIBPREFIX'] + 'Brf' + env['LIBSUFFIX']] 
+        AcsExample = cmbf_env.Program(target =  ['Cmb_ip4_test'], source = cmbf_test_src)    
+        target_list += ['AcsExample']
+
+"""
+More platform specific test cases are built here.
+"""
+
+test_source = [] 
+Cmb_dll = []
+
+if arch in ['qnx_nto_aarch64', 'x64']:
+    local_env.Append(CPPPATH = [cart+'/Runtime/Audio_Graph']) 
+
+    if arch in ['qnx_nto_aarch64']:
+        Cmb_dll = local_env.SharedLibrary(target = ['Cmb_dll'], source = source)
+    test_source.extend( Glob(cmb_test_path + arch + '/src/main.c' ))
+    test_source += [Cmb_lib]
+    test_source += [btf_path + '/lib/' + env['LIBPREFIX'] + 'Btf' + env['LIBSUFFIX']] 
+    CmbTest = local_env.Program(target =  ['Cmb_test'], source = test_source)
+
+    target_list += ['Cmb_dll', 'CmbTest'] 
+
+# More tests for QNX as the adaptors are valid for QNX only.
+if arch in ['qnx_nto_aarch64']:
+    test_folder = Dir('.').srcnode().abspath + '\\..\\CMB\\test\\' + arch
+    test_list = os.listdir(test_folder) if os.path.exists(test_folder) else None
+    if test_list is not None:
+        for test in test_list:
+            # src was already built in common build for x64 and QNX.
+            if test != 'src':
+                test_source = []
+                test_source.extend( Glob(cmb_test_path + arch + '/' + test + '/main.c' ))
+                test_source += [Cmb_lib]  
+                test_source += [brf_path + '/lib/' + env['LIBPREFIX'] + 'Brf' + env['LIBSUFFIX']]
+                test_source += [btf_path + '/lib/' + env['LIBPREFIX'] + 'Btf' + env['LIBSUFFIX']]
+                target_name = test + '_test'                
+                test_target = local_env.Program(target = target_name, source = test_source)
+                target_list += ['test_target']
+
+Return(target_list)

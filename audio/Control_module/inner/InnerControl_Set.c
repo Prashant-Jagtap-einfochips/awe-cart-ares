@@ -10,6 +10,7 @@ else
 	awe_modTestAudioInstance* pAudio = (awe_modTestAudioInstance*)S->modPtr;
     for (i = 0; i < 11; i++) {
     	pAudio->coeff[i] = S->coeff[i];
+		pAudio->CONTROL_REQUEST[i] = S->CONTROL_REQUEST[i];
     }
     
     AWE_CLASSMODULE_SETALL(pAudio);

@@ -1,0 +1,43 @@
+%implements InsertLockCodeSfunc "C"
+
+%%   Copyright 2023 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% Add the preprocessor macro about locks
+    %assign fileH = LibGetModelDotHFile()
+    %openfile buffer
+        // Macro used to insert locking directives '%<LibGetBlockName(block)>'
+        #ifndef TALARIA_LOCK_ENTER
+        #define TALARIA_LOCK_ENTER(x)
+        #endif
+        #ifndef TALARIA_LOCK_EXIT
+        #define TALARIA_LOCK_EXIT(x)
+        #endif
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    
+%endfunction
+
+
+
+%% Function: Update =======================================================
+%%function Update (block, system) Output
+%%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+    %assign IsEnter = ParamSettings.IsEnter[0][0]
+    %assign LockTid = ParamSettings.LockTid[0][0]
+    %if IsEnter
+        TALARIA_LOCK_ENTER(%<LockTid>);
+    %else
+        TALARIA_LOCK_EXIT(%<LockTid>);
+    %endif
+
+%endfunction

@@ -1,0 +1,69 @@
+classdef $(PREFIX)$(SUFFIX) < BtcBaseClass
+% $(FILENAME) Build-time configuration class for the $(PREFIX) block
+% Usage:
+%    aConfig = $(PREFIX)$(SUFFIX)
+%
+
+%   Copyright 2023 Bose Corporation
+
+  properties (GetObservable,SetObservable)
+    %.Properties use this syntax:
+    %.   PropertyName size class {validation functions} = DefaultValue
+    %.About Build-Time Configuration: https://wiki.bose.com/x/dqPoB
+
+    %.Delete these examples:
+    %.  Gain = 0.5
+    %.  MyDoubleArray (1,7) double {mustBeFinite} = [1 2 3 4 5 6 7]
+    %.  LeftConfig (1,1) SubBlockConfig
+    %.  NOTE: component objects like LeftConfig must be assigned in the 
+    %.  constructor- not here! Property defaults are only evaluated once!
+
+    %[Properties:Component]
+    %.Child properties auto-insert after special functional comment above
+
+    %[Properties:TuneVar]
+    %.TuneVar properties auto-insert after special functional comment above
+
+    %[Properties:General]
+    %.Insert general properties after above special functional comment
+  end
+  methods
+    %----------------------------------------------------------------------
+    function this = $(PREFIX)$(SUFFIX)()
+        % $(PREFIX)$(SUFFIX) constructor: assign component property objects
+        % and adjust component property defaults and/or lock values
+
+        %.Delete these examples:
+        %.  this.LeftConfig = SubBlockConfig;
+        %.  this.UpdatePropertyDefault('ComponentProperty.SubProp', value);
+        %.  this.LockPropertyValue('InheritedProperty', forcedValue);
+        %.  this.LockPropertyAsAlias('Comp.FrameSize', 'FrameSize');
+    end
+    %----------------------------------------------------------------------
+    function Validate(this)
+        % Validate called from mask initialization to check settings ok
+
+        %.If there are no cross-property interactions, then this entire
+        %.method can be deleted!
+
+        %.End with a call to our base class to continue validation checks
+        %.including any violations of property locking.
+        Validate@BtcBaseClass(this);
+    end
+    %----------------------------------------------------------------------
+    function DoMaskInit(this,blockHandle)
+        % DoMaskInit called from mask initialization to perform automation
+        % of code generation settings and other canvas interactions.
+
+        %.If there are no CscUtil code generation settings or other canvas
+        %.interactions, this entire method can be deleted!
+        %.Avoid making design-time changes - find another way if possible.
+        %.(e.g. avoid calling: set_param, add_block, replace_block).
+        %.If there's an error, just call the error function!
+
+        %.Call base class in case it has any work to perform:
+        DoMaskInit@BtcBaseClass(this,blockHandle);
+    end
+
+  end
+end

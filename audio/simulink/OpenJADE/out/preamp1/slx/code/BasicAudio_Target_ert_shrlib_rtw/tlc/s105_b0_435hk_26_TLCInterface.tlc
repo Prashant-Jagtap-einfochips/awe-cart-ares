@@ -1,0 +1,22 @@
+%implements s105_b0_435hk_26_TLCInterface "C"
+
+%function getInputAddr_16_0_26_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 21, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInput_16_0_26_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 21, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInputAddr_16_0_26_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 22, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInput_16_0_26_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 22, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+

@@ -1,0 +1,9 @@
+        EXPORTS
+        BasicAudio_Target_M
+    BasicAudio_Target_initialize
+            BasicAudio_Target_step
+        BasicAudio_Target_terminate
+
+
+        
+

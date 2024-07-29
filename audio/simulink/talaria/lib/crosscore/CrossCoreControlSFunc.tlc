@@ -1,0 +1,759 @@
+%implements CrossCoreControlSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+
+%% Submitted MathWorks case #02747792 for the inability to pass empty matrix values.
+%% As a workaround, we instead pass an empty string which has size [1 0].
+%% Happily our normal matrix values have a second dimention of "2" (not "0").
+%% So -this EmptyWorkaroundCount will recognize empty strings and return 0.
+%function EmptyWorkaroundCount(value)
+    %assign theCount = 0
+    %if (SIZE(value)[1] > 0)
+        %assign theCount = SIZE(value)[0]
+    %endif
+    %return theCount
+%endfunction
+
+%function EmptyWorkaroundVector(value)
+    %if (SIZE(value)[1] == 0)
+        %return ""
+    %else
+        %return value[0]
+    %endif
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %% File Names (note pingPongFilename should match BoseFlatStructure.tlc)
+    %assign pingPongFileName = ModelPrefix() + "ping_pong_struct"
+    %assign crossCoreBaseName = "TalariaCrossCore"
+    %assign crossCoreAPIFileName = ModelPrefix() + crossCoreBaseName
+
+    %% S Function RTW Data Parameters "ParamSettings" ?
+    %assign CoreTag = ParamSettings.CoreTag
+    %assign Names   = ParamSettings.NameList
+    %assign Numbers = EmptyWorkaroundVector(ParamSettings.Numbers)
+    %assign Factors = EmptyWorkaroundVector(ParamSettings.Factors)
+    %assign PingPongBufferCount = ParamSettings.PingPongBufferCount[0][0]
+    %assign GlobalTransferCount = ParamSettings.GlobalTransferCount[0][0]
+    %assign LocalSrc = ParamSettings.LocalSrc
+    %assign LocalDst = ParamSettings.LocalDst
+    %assign RemoteSrc = ParamSettings.RemoteSrc
+    %assign RemoteDst = ParamSettings.RemoteDst
+    %assign IsLocallyPresent = EmptyWorkaroundVector(ParamSettings.IsLocallyPresent)
+    %assign MyCoreSpec = ParamSettings.MyCoreSpec[0]
+    %assign CrossChipIsPresent = ParamSettings.CrossChipIsPresent[0][0]
+    %assign ChipAwareness = ParamSettings.ChipAwareness[0][0]
+
+    %% Cross-SOC transfers (e.g. Link Port):
+    %% Must have CrossChipIsPresent
+    %% Assume core2 controls transfer and core1 shares its buffer timing
+    %assign ManagerCore = 2
+    %assign LazyCore = 1
+    %assign IsCrossChipLazySister = CrossChipIsPresent && (MyCoreSpec[1] == LazyCore)
+    %assign IsCrossChipManager = CrossChipIsPresent && (MyCoreSpec[1] == ManagerCore)
+
+    %assign LocalSrcCount  = EmptyWorkaroundCount(LocalSrc ) + IsCrossChipLazySister
+    %assign LocalDstCount  = EmptyWorkaroundCount(LocalDst ) + IsCrossChipManager
+    %assign RemoteSrcCount = EmptyWorkaroundCount(RemoteSrc)
+    %assign RemoteDstCount = EmptyWorkaroundCount(RemoteDst)
+
+    %% create a list of buffer names
+    %assign NameList = FEVAL("strsplit",Names,",")
+    %assign NamesCount = SIZE(NameList)[1]
+
+    %% --------------------------------------------------------------------
+    %% pingPongFileName source --------------------------------- 
+    %assign fileH = LibCreateSourceFile("Source","Custom",pingPongFileName)
+
+    %% Includes :
+    %openfile buffer
+        #include <string.h> // for memcpy
+        #include <stdint.h>
+        #include "%<pingPongFileName>.h"
+        #include "%<crossCoreAPIFileName>.h"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %openfile buffer
+        #define NUM_PING_PONG_BUFFERS %<SPRINTF("%d",PingPongBufferCount)>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+        // ------------------------------------------------------------
+        // Local data types: ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        // Ping Pong Control Table Record Type
+        typedef struct pp_specification_tag
+        {
+            uint32_t    buffer_size;            // constant byte size of a buffer (the entire size of either ping or pong)
+            uint32_t    transfer_size;          // constant byte size of how many bytes to transfer per base rate step (i.e. buffer_size / swap_factor)
+            uint32_t    swap_factor;            // constant that determines ping-pong rate based on the model base rate (step0)
+            void**      model_ptr;              // (constant pointer) to the pointer used by the model for buffer access
+            void*       transfer_address;       // address of current frame's transfer buffer
+        } pp_specification_type;
+
+        // Dynamic counters that update every frame and constant buffer pointers to avoid extra address math (and to share with cross chip manager)
+        typedef struct pp_control_tag
+        {
+            uint16_t    swap_count;             // counts up how many base rate periods have elapsed since the last swap
+            uint16_t    transfer_index;         // index into which buffer is accessed for transfers (i.e. *not* the active buffer for model)
+            void*       buffers[2];             // constant pointers to ping and pong storage on this core
+        } pp_control_type;
+
+        // Internal buffer transfer list type
+        typedef struct internal_transfer_list_tag
+        {
+            uint8_t     buffer_number;          // constant global buffer number associated with this transfer
+            uint8_t     chip_number;            // constant chip number
+            uint8_t     core_number;            // constant core number relative to chip
+        } internal_transfer_list_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %openfile buffer
+
+        // ------------------------------------------------------------
+        // Ping Pong Buffer Memory ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        // These allocated buffers contain the actual ping and pong storage
+        %foreach j = NamesCount
+            %if IsLocallyPresent[j]
+                #if defined __SPECIFY_CROSS_CORE_MEMORY_SECTION__
+                #pragma section("CROSS_CORE_AUDIO_MEMORY_SECTION")
+                #endif
+            
+                static %<NameList[j]>_type %<NameList[j]>_buffers%<CoreTag>[2];
+            %else
+                // %<NameList[j]> does not require memory buffers on this core
+            %endif
+        %endforeach
+
+        // ------------------------------------------------------------
+        // Model Access Pointers ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        // The pointers defined below are used directly by generated model
+        // code to access buffer storage. We redirect the pointer as desired
+        // in a rate group swap function (further below).
+        // (These definitions resolve the "extern" declarations made by the
+        // ping pong custom storage class in BoseFlatStructure.tlc)
+        %foreach j = NamesCount
+            %if IsLocallyPresent[j]
+                %<NameList[j]>_type* %<NameList[j]>;
+            %else
+                ; // %<NameList[j]> does not require memory buffers on this core
+            %endif
+        %endforeach
+
+        // ------------------------------------------------------------
+        // Ping Pong Buffer Control Structures ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        // The tables below hold information for each ping pong buffer.
+        // All buffers systemwide (all cores) are represented to allow for
+        // quick array-based access by buffer number.
+        %%----- Schedule sharing (to enable one core to coordinate all cross chip transfer)
+        %if IsCrossChipManager
+            // This core continuously receives the pingpong state of our lazy sister core (on this same chip).
+            // The sisterControl pingpong buffer below holds a copy of our lazy sister's control table.
+            // To access the correct sisterControl pingpong, we use the sisterActive pointer.
+            static pp_control_type sisterControl[2][NUM_PING_PONG_BUFFERS];
+            static pp_control_type* sisterActive = 0;
+        %endif
+        %%----- Local scheduling
+        // Table to hold dynamic ping pong control data and constant buffer pointers
+        static pp_control_type pp_control[NUM_PING_PONG_BUFFERS+%<CrossChipIsPresent>] = 
+        {
+        %assign j = 0
+        %foreach n = PingPongBufferCount
+            %% Output a buffer tracking record if the buffer number is present on this core
+            %if (j < NamesCount && Numbers[j] == (n))
+                // Control for buffer#%<SPRINTF("%d",Numbers[j])>: %<NameList[j]>
+                {
+                (%<SPRINTF("%d",Factors[j])>/PING_PONG_STEP_TASK_FACTOR)-1, 0, // swap_count, transfer_index
+            %if IsLocallyPresent[j]
+                    {&(%<NameList[j]>_buffers%<CoreTag>[0]),    // buffers[0]
+                     &(%<NameList[j]>_buffers%<CoreTag>[1])     // buffers[1]
+                    }
+                },
+                %else
+                    {NULL,NULL                              // buffer not present on this core
+                    }
+                },
+                %endif
+            %else
+                %% Otherwise (buffer not present) output an empty record
+                {0,0,{0,0}}, // No information about this buffer
+            %endif
+
+            %assign j = j + 1
+        %endforeach
+            %if IsCrossChipLazySister
+            // Control record to send our own SISTERCORE control table over to our cross-chip communication manager
+            { 0,0,
+                {&(pp_control[0]),         // Send our own control table to our SISTERCORE
+                 &(pp_control[0])          // (source is always the same - no ping pong on this end)
+                }
+            }
+            %elseif IsCrossChipManager
+            // Control record to receive our SISTERCORE's control data so we can coordinate cross-chip transfers
+            { 0,0,
+                {&(sisterControl[0][0]),      // Receive the control table from our SISTERCORE
+                 &(sisterControl[1][0])       // (must ping pong because timing of sistercore on chip TX is uncertain)
+                }
+            }
+            %endif
+        }; // end of control table
+
+        // Specification table for buffer sizes, call rates, model access pointer, and transfer address
+        static pp_specification_type pp_specification[NUM_PING_PONG_BUFFERS+%<CrossChipIsPresent>] =
+        {
+        %assign j = 0
+        %foreach n = PingPongBufferCount
+            %% Output a buffer tracking record if the buffer number is present on this core
+            %if (j < NamesCount && Numbers[j] == (n))
+                // Specification for buffer#%<SPRINTF("%d",Numbers[j])>: %<NameList[j]>
+                {
+                sizeof(%<NameList[j]>_type),                // buffer_size
+                sizeof(%<NameList[j]>_type)/(%<Factors[j]>/PING_PONG_STEP_TASK_FACTOR),  // transfer_size
+                %<SPRINTF("%d",Factors[j])>/PING_PONG_STEP_TASK_FACTOR,                // swap_factor
+                %if IsLocallyPresent[j]
+                    (void**)&(%<NameList[j]>),              // model_ptr
+                %else
+                    NULL,                                   // no model_ptr: buffer not present on this core
+                %endif
+                    NULL                                    // transfer address (not initialized yet)
+                },
+                %assign j = j + 1
+            %else
+                %% Otherwise (buffer not present) output an empty record
+                {0,0,0,NULL,NULL}, // No information about this buffer
+            %endif
+        %endforeach
+            %if IsCrossChipLazySister
+            // Specification for our control table sent to our cross-chip manager sister
+            {sizeof(pp_control_type)*NUM_PING_PONG_BUFFERS,  // buffer_size
+             sizeof(pp_control_type)*NUM_PING_PONG_BUFFERS,  // transfer_size
+             1,                                              // swap_factor
+             NULL,                                           // model_ptr (no need to access from this end)
+             &(pp_control[0])                                // transfer address (never changes - send our control)
+            }
+            %elseif IsCrossChipManager
+            // Specification for our lazy sister's control table so we can manage cross-chip transfer
+            {sizeof(pp_control_type)*NUM_PING_PONG_BUFFERS,  // buffer_size
+             sizeof(pp_control_type)*NUM_PING_PONG_BUFFERS,  // transfer_size
+             1,                                              // swap_factor
+             (void**)&sisterActive,                          // model_ptr (points to the active sister control)
+             NULL                                            // transfer address (not initialized yet)
+            }
+            %endif
+        }; // end of specification table
+
+
+        %%----- LocalChip lists (e.g. MDMA or other "within SOC" transfer)
+        // ------------------------------------------------------------
+        // Transfer List for Local Sourced Buffers ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        %if (LocalSrcCount > 0)
+            // These buffers are filled locally and transfered to another core
+            static internal_transfer_list_type LocalSrcList[%<LocalSrcCount>] = {
+            %foreach j = (LocalSrcCount - IsCrossChipLazySister)
+                %assign bufNum = LocalSrc[j][0]
+                %assign chipNum = LocalSrc[j][1]
+                %assign coreNum = LocalSrc[j][2]
+                {%<bufNum>, // send %<NameList[bufNum]>
+                %<chipNum>, // to chip %<chipNum>
+                %<coreNum>, // ... core %<coreNum>
+                },
+            %endforeach
+            %if IsCrossChipLazySister
+                // send the final record (special) to our sister who is cross chip manager
+                {NUM_PING_PONG_BUFFERS,%<MyCoreSpec[0]>,%<ManagerCore>}
+            %endif
+            };
+        %else
+            // This core has no buffers to send to our sibling core
+        %endif
+
+        // ------------------------------------------------------------
+        // Transfer List for Local Received Buffers ('%<LibGetBlockName(block)>')
+        // ------------------------------------------------------------
+        %if (LocalDstCount > 0)
+            // These buffers are filled by another core and transfered here
+            static internal_transfer_list_type LocalDstList[%<LocalDstCount>] = {
+            %foreach j = (LocalDstCount - IsCrossChipManager)
+                %assign bufNum = LocalDst[j][0]
+                %assign chipNum = LocalDst[j][1]
+                %assign coreNum = LocalDst[j][2]
+                {%<bufNum>, // receive %<NameList[bufNum]>
+                %<chipNum>, // from chip %<chipNum>
+                %<coreNum>, // ... core %<coreNum>
+                },
+            %endforeach
+            %if IsCrossChipManager
+                // receive the final record (special) from our lazy sister so we can manage cross-chip transfers
+                {NUM_PING_PONG_BUFFERS,%<MyCoreSpec[0]>,%<LazyCore>}
+            %endif
+            };
+        %else
+            // This core has no buffers received from our sibling core
+        %endif
+
+        %%----- CrossChip lists (e.g. LinkPort)
+        %if IsCrossChipManager
+            // ------------------------------------------------------------
+            // Transfer List for Cross-Chip Sourced Buffers ('%<LibGetBlockName(block)>')
+            // ------------------------------------------------------------
+            %if (RemoteSrcCount > 0)
+                // These buffers are filled on the local chip (from any core) and transfered to another chip
+                static internal_transfer_list_type RemoteSrcList[%<RemoteSrcCount>] = {
+                %foreach j = RemoteSrcCount
+                    %assign bufNum = RemoteSrc[j][0]
+                    %assign chipNum = RemoteSrc[j][1]
+                    %assign coreNum = RemoteSrc[j][2]
+                    {%<bufNum>, // send %<NameList[bufNum]>
+                    %<chipNum>, // to chip %<chipNum>
+                    %<coreNum>, // ... core %<coreNum>
+                    },
+                %endforeach
+                };
+            %else
+                // This chip has no buffers to send to the other chip
+            %endif
+
+            // ------------------------------------------------------------
+            // Transfer List for Cross-Chip Received Buffers ('%<LibGetBlockName(block)>')
+            // ------------------------------------------------------------
+            %if (RemoteDstCount > 0)
+                // These buffers are filled on another chip and transfered to our chip (to any core)
+                static internal_transfer_list_type RemoteDstList[%<RemoteDstCount>] = {
+                %foreach j = RemoteDstCount
+                    %assign bufNum = RemoteDst[j][0]
+                    %assign chipNum = RemoteDst[j][1]
+                    %assign coreNum = RemoteDst[j][2]
+                    {%<bufNum>, // receive %<NameList[bufNum]>
+                    %<chipNum>, // from chip %<chipNum>
+                    %<coreNum>, // ... core %<coreNum>
+                    },
+                %endforeach
+                };
+            %else
+                // This chip receives no buffers from the other chip
+            %endif
+        %%----- end of CrossChip lists
+        %endif
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %% FUNCTIONS
+    %openfile buffer
+        // ------------------------------------------------------------
+        // Functions
+        // ------------------------------------------------------------
+
+        // GetTransferBufferPointer is a local-use function to calculate the transfer buffer
+        // address given a control and specification record.
+        static inline void* GetTransferBufferPointer(pp_control_type* control, pp_specification_type* specification)
+        {
+            void* theTransferBuffer;
+            uint8_t* transBase = ((uint8_t*)control->buffers[control->transfer_index]);
+            if (transBase)
+            {
+                theTransferBuffer = transBase + (control->swap_count * specification->transfer_size);
+            }
+            else
+            {
+                theTransferBuffer = 0;
+            }
+            return theTransferBuffer;
+        }
+
+        // Initialize active ping pong model access pointers ('%<LibGetBlockName(block)>')
+        void %<ModelPrefix()>InitializePingPongControl( void )
+        {
+            // Reset all swap counts to perch them one step away from arriving at a swap
+            %foreach j = NamesCount
+                pp_control[%<SPRINTF("%d",Numbers[j])>].swap_count = (%<SPRINTF("%d",Factors[j])>/PING_PONG_STEP_TASK_FACTOR) - 1;
+            %endforeach
+
+            // Reset all ping pong transfer index values 0, ready to swap to 1 after one step
+            %foreach j = NamesCount
+                pp_control[%<SPRINTF("%d",Numbers[j])>].transfer_index = 0;
+            %endforeach
+
+            %if IsCrossChipManager
+                // Clear local buffer to receive sister core buffer control information
+                memset(&sisterControl[0][0], 0, sizeof(sisterControl));
+            %endif
+        }
+
+        /// StepPingPongs sets up the model_ptr and transfer_address for this frame.
+        /// After capturing these values, the counters are stepped forward to
+        /// prepare for the next frame and allow for "early access" to next frame's
+        /// pointers when needed (e.g. for for prelaunch of local-chip-RX)
+        void %<ModelPrefix()>StepPingPongs( void )
+        {
+            int i;
+            %if IsCrossChipManager
+            for (i = 0; i < NUM_PING_PONG_BUFFERS+1; i++) // swap all buffers INCLUDING SISTERCONTROL
+            %else
+            for (i = 0; i < NUM_PING_PONG_BUFFERS; i++) // swap all normal buffers
+            %endif
+            {
+                // Harvest buffer addresses and pointers for use in the current frame.
+                // The ping pong counters are already set up for us
+                pp_control_type* control = &pp_control[i];
+                pp_specification_type* specification = &pp_specification[i];
+                
+                // transfer address: either a source or destination for a data transfer among cores
+                specification->transfer_address = GetTransferBufferPointer(control,specification);
+
+                // model pointer: update the pointer that the generated model source code uses during processing
+                if (specification->model_ptr)
+                {
+                    *specification->model_ptr = control->buffers[control->transfer_index^1];
+                }
+
+                // Now update the counters for use in the next frame
+                control->swap_count++;
+                if (control->swap_count >= specification->swap_factor)
+                {
+                    // swap the buffers to their other storage locations
+                    control->transfer_index = control->transfer_index ^ 1;
+
+                    // reset the swap count
+                    control->swap_count = 0;
+                }
+            }
+        }
+
+        // Internal use routine to fill out a buffer transfer specification
+        static void FillOutTransferSpec(
+            transfer_spec_type* specInOut,                  // fill this out
+            const internal_transfer_list_type* transferList,// from this list
+            const int listCountIn,                          // which has this many buffers
+            const int indexIn)                              // and we want this one
+        {
+            // if requesting a non-existent buffer, just bail out
+            if (indexIn >= listCountIn) return;
+
+            const internal_transfer_list_type* bufferInfo = &transferList[indexIn];
+            uint8_t bufferNumber = bufferInfo->buffer_number;
+            pp_specification_type* specification = &pp_specification[bufferNumber];
+            specInOut->byte_size = specification->transfer_size;
+            specInOut->chip_number = bufferInfo->chip_number;
+            specInOut->core_number = bufferInfo->core_number;
+            specInOut->global_number = bufferNumber;
+        }
+
+        // Internal use routine to retrieve a pointer to a buffer
+        static void* GetBufferPointer(
+            const internal_transfer_list_type* transferList,// from this list
+            const int listCountIn,                          // which has this many buffers
+            const int indexIn,                              // and we want this one
+            const bool nextFrameIn)                         // for this/next frame
+        {
+            void* returnBuffer = 0;
+            // if requesting a non-existent buffer, just bail out
+            if (indexIn >= listCountIn) return returnBuffer;
+
+            const internal_transfer_list_type* bufferInfo = &transferList[indexIn];
+            uint8_t bufferNumber = bufferInfo->buffer_number;
+            pp_specification_type* specification = &pp_specification[bufferNumber];
+        
+            // StepPingPongs has already calculated the transfer buffer for THIS frame
+            // and stored it before setting up the indexes and counters for NEXT frame.
+            // So... if we want the NEXT frame's pointer,
+            if (nextFrameIn)
+            {
+                // ... then just calculate it now from the counters ourselves:
+                pp_control_type* control = &pp_control[bufferNumber];
+                returnBuffer = GetTransferBufferPointer(control,specification);
+            }
+            else
+            {
+                // ... otherwise, use the ready-to-go pointer for this frame:
+                returnBuffer = specification->transfer_address;
+            }
+            return returnBuffer;
+        }
+
+        // ----------------------------------------------------------------
+        // Retrieve Source Buffer Information
+        // ----------------------------------------------------------------
+        /// %<ModelPrefix()>GetLocalSrcBufferSpec retrieves buffer information for transfers
+        /// originating on this core and received by another core
+        /// @param[in] srcBufferIndex The index of the buffer between 0 and PING_PONG_NUM_LOCAL_SRC - 1
+        /// @return buffer transfer information for the specified buffer
+        transfer_spec_type %<ModelPrefix()>GetLocalSrcBufferSpec(uint32_t srcBufferIndex)
+        {
+            transfer_spec_type retVal = {0};
+        %if (LocalSrcCount > 0)
+            FillOutTransferSpec( &retVal, LocalSrcList, PING_PONG_NUM_LOCAL_SRC, srcBufferIndex);
+        %else
+            // no buffers of this type
+        %endif
+            return retVal;  // shallow copy of the transfer spec struct
+        }
+        /// %<ModelPrefix()>GetLocalSrcBuffer retrieves a buffer pointer for transfers
+        /// originating on this core and received by another core
+        /// @param[in] srcBufferIndex The index of the buffer between 0 and PING_PONG_NUM_LOCAL_SRC - 1
+        /// @param[in] forNextFrame true to receive next frame's buffer, false to get this frame's
+        /// @return pointer to the requested buffer (or 0 on error)
+        void* %<ModelPrefix()>GetLocalSrcBuffer(uint32_t srcBufferIndex, bool forNextFrame)
+        {
+        %if (LocalSrcCount > 0)
+            return GetBufferPointer( LocalSrcList, PING_PONG_NUM_LOCAL_SRC, srcBufferIndex, forNextFrame);
+        %else
+            return 0; // no buffers of this type
+        %endif
+        }
+
+        // ----------------------------------------------------------------
+        // Retrieve Destination Buffer Information
+        // ----------------------------------------------------------------
+        /// %<ModelPrefix()>GetLocalDstBufferSpec retrieves buffer information for transfers
+        /// originating on another core and received by this core
+        /// @param[in] dstBufferIndex The index of the buffer between 0 and PING_PONG_NUM_LOCAL_DST - 1
+        /// @return buffer transfer information for the specified buffer
+        transfer_spec_type %<ModelPrefix()>GetLocalDstBufferSpec(uint32_t dstBufferIndex)
+        {
+            transfer_spec_type retVal = {0};
+        %if (LocalDstCount > 0)
+            FillOutTransferSpec( &retVal, LocalDstList, PING_PONG_NUM_LOCAL_DST, dstBufferIndex);
+        %else
+            // no buffers of this type
+        %endif
+            return retVal;  // shallow copy of the transfer spec struct
+        }
+        /// %<ModelPrefix()>GetLocalDstBuffer retrieves a buffer pointer for transfers
+        /// originating on another core and received by this core
+        /// @param[in] dstBufferIndex The index of the buffer between 0 and PING_PONG_NUM_LOCAL_DST - 1
+        /// @param[in] forNextFrame true to receive next frame's buffer, false to get this frame's
+        /// @return pointer to the requested buffer (or 0 on error)
+        void* %<ModelPrefix()>GetLocalDstBuffer(uint32_t dstBufferIndex, bool forNextFrame)
+        {
+        %if (LocalDstCount > 0)
+            return GetBufferPointer( LocalDsttList, PING_PONG_NUM_LOCAL_DST, dstBufferIndex, forNextFrame);
+        %else
+            return 0; // no buffers of this type
+        %endif
+
+        }
+
+        %% CrossChip buffer retrieval (e.g. Link Port)
+        %if IsCrossChipManager
+            // ----------------------------------------------------------------
+            // Cross Chip
+            // ----------------------------------------------------------------
+
+            /// GetCrossChipTransferSpecification does the work for both
+            /// GetCrossSrcBuffer and GetCrossDstBuffer based on a provided internal_transfer_list_type 
+            static transfer_spec_type GetCrossChipTransferSpecification(internal_transfer_list_type* offChipSpec)
+            {
+                transfer_spec_type retVal = {0};
+                uint8_t bufferNumber = offChipSpec->buffer_number;
+                pp_specification_type* specification = &pp_specification[bufferNumber];
+                retVal.byte_size = specification->transfer_size;
+                retVal.core_number = offChipSpec->core_number;
+
+                // Does this transfer involve our local core?
+                if (offChipSpec->core_number == MY_CORE_NUMBER)
+                {
+                    // yes: the transfer address has already been prepared!
+                    retVal.buffer = specification->transfer_address;
+                }
+                else if (sisterActive)
+                {
+                    // no: try calculating from our SISTERCORE control data
+                    pp_control_type* control = &sisterActive[bufferNumber];
+
+                    retVal.buffer = GetTransferBufferPointer(control,specification);
+                }
+                return retVal;
+            }
+
+            /// %<ModelPrefix()>GetCrossSrcBuffer retrieves buffer information for transfers
+            /// originating on this chip (on any core) and received by any core on a different chip
+            /// @param[in] index The index of the buffer between 0 and PING_PONG_NUM_CROSS_SRC - 1
+            /// @return address, size, and core of the specified buffer
+            transfer_spec_type %<ModelPrefix()>GetCrossSrcBuffer(uint32_t index)
+            {
+                transfer_spec_type retVal = {0};
+            %if (RemoteSrcCount > 0)
+                if (index < PING_PONG_NUM_CROSS_SRC)
+                {
+                    internal_transfer_list_type* offChipSpec = &RemoteSrcList[index];
+                    return GetCrossChipTransferSpecification(offChipSpec);
+                }
+            %else
+                // no buffers of this type
+            %endif
+                return retVal;  // shallow copy of the transfer spec struct
+            }
+            /// %<ModelPrefix()>GetCrossDstBuffer retrieves buffer information for transfers
+            /// received by this chip (on any core) and originating from any core on a different chip
+            /// @param[in] index The index of the buffer between 0 and PING_PONG_NUM_CROSS_DST - 1
+            /// @return address, size, and core of the specified buffer
+            transfer_spec_type %<ModelPrefix()>GetCrossDstBuffer(uint32_t index)
+            {
+                transfer_spec_type retVal = {0};
+            %if (RemoteDstCount > 0)
+                if (index < PING_PONG_NUM_CROSS_DST)
+                {
+                    internal_transfer_list_type* offChipSpec = &RemoteDstList[index];
+                    return GetCrossChipTransferSpecification(offChipSpec);
+                }
+            %else
+                // no buffers of this type
+            %endif
+                return retVal;  // shallow copy of the transfer spec struct
+            }
+        %% End of CrossChip buffer retrieval
+        %endif
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% --------------------------------------------------------------------
+    %% crossCore API header --------------------------------- 
+    %% First, create a generic header that directs to the one for this model
+    %assign genericHeaderName = crossCoreBaseName
+    %assign fileH = LibCreateSourceFile("Header","Custom",genericHeaderName)
+    %if crossCoreAPIFileName != genericHeaderName
+        %openfile buffer
+            #include "%<crossCoreAPIFileName>.h"
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    %endif
+    %% whew... ok, now continue with the real header file:
+    %assign fileH = LibCreateSourceFile("Header","Custom",crossCoreAPIFileName)
+
+    %% Includes :
+    %openfile buffer
+        #include <stdint.h>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %openfile buffer
+        // ------------------------------------------------------------
+        // PING PONG TRANSFER LIST SIZES
+        // ------------------------------------------------------------
+        #define PING_PONG_GLOBAL_TRANSFER_COUNT %<SPRINTF("%d",GlobalTransferCount)>
+        %if ChipAwareness
+            #define PING_PONG_NUM_CROSS_SRC %<RemoteSrcCount>  // Count of buffers from this chip (any core) to another chip
+            #define PING_PONG_NUM_CROSS_DST %<RemoteDstCount>  // Count of buffers from another chip to this chip (any core)
+            %assign ChipAwareComment = " on this same chip"
+        %else
+            %assign ChipAwareComment = ""
+        %endif
+        #define PING_PONG_NUM_LOCAL_SRC %<LocalSrcCount>   // Count of buffers from this core to another core%<ChipAwareComment>
+        #define PING_PONG_NUM_LOCAL_DST %<LocalDstCount>   // Count of buffers from another core%<ChipAwareComment> to this core
+
+        // ------------------------------------------------------------
+        // MODEL SYSTEM CONTEXT
+        // ------------------------------------------------------------
+        #define MY_CHIP_NUMBER %<SPRINTF("%d",MyCoreSpec[0])>
+        #define MY_CORE_NUMBER %<SPRINTF("%d",MyCoreSpec[1])>
+        #define MY_CORE_TAG %<CoreTag>
+
+        // ------------------------------------------------------------
+        // PLATFORM INTEGRATION REQUIREMENTS
+        // ------------------------------------------------------------
+        // The design of the cross-core pingpong mechanism assumes underlying
+        // platform code wishes to invoke buffer transfers as infrequently as
+        // possible. The following step task ID *must* be used to determine
+        // when to call StepPingPongs and initiate transfer peripherals.
+        // (because all the timing and counters assume it!)
+        #define PING_PONG_STEP_TASK_TID         %<SPRINTF("%d",ParamSettings.StepTask[0][0])>
+        // The maximum step task's factor is the multiple of the base rate associated
+        // with the above step task whose timing could perform cross-core transfers:
+        #define PING_PONG_STEP_TASK_FACTOR      %<SPRINTF("%d",ParamSettings.StepTaskFactor[0][0])>
+        %if IsCrossChipManager
+        // The cross-chip-manager define means that this core is expected to
+        // manage cross-chip transfers among SOCs
+        #define PING_PONG_CROSS_CHIP_MANAGER
+        %endif
+        %if TLC_FALSE == ISEMPTY(ParamSettings.MinCommonFactor)
+            %if ParamSettings.MinCommonFactor[0][0] != ParamSettings.StepTaskFactor[0][0]
+
+                // By the way, an even more efficient timing factor for ping pong operation
+                // would be a factor of %<SPRINTF("%d",ParamSettings.MinCommonFactor[0][0])>.
+                // However, the model does not have any processing content at this rate
+                // so there is no step task run flag to leverage and the code is not
+                // designed to run at this rate.
+            %endif
+        %endif
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %openfile buffer
+        // Datatype returned from transfer buffer list access methods
+        typedef struct transfer_spec_tag
+        {
+            uint32_t byte_size;     // size in bytes of the buffer to be transferred
+            uint32_t chip_number;   // far end chip number
+            uint32_t core_number;   // far end core number
+            uint32_t global_number; // global buffer number (for ordering)
+        } transfer_spec_type;
+    %closefile buffer
+    %% THIS CRASHES!!! %<LibSetSourceFileSection(fileH,"Types",buffer)>
+    %<LibSetSourceFileSection(fileH,"IntrinsicTypes",buffer)>
+
+    %% Add entry points to interface with ping pong buffers
+    %openfile buffer
+        // ------------------------------------------------------------
+        // ACCESS ROUTINES FOR BUFFER CONTROL AND TRANSFER
+        // ------------------------------------------------------------
+        void %<ModelPrefix()>StepPingPongs( void ); // see PING_PONG_STEP_TASK macros above
+
+        // Source buffers (transmit from this core to another core)
+        transfer_spec_type GetLocalSrcBufferSpec(uint32_t srcBufferIndex);
+        void* %<ModelPrefix()>GetLocalSrcBuffer(uint32_t srcBufferIndex, bool forNextFrame);
+
+        // Destination buffers (received from another core to this core)
+        transfer_spec_type GetLocalDstBufferSpec(uint32_t dstBufferIndex);
+        void* %<ModelPrefix()>GetLocalDstBuffer(uint32_t dstBufferIndex, bool forNextFrame);
+
+        %if IsCrossChipManager
+        transfer_spec_type %<ModelPrefix()>GetCrossSrcBuffer(uint32_t index);
+        transfer_spec_type %<ModelPrefix()>GetCrossDstBuffer(uint32_t index);
+        %endif
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+
+
+    %% --------------------------------------------------------------------
+    %% pingpong header --------------------------------- 
+    %assign fileH = LibCreateSourceFile("Header","Custom",pingPongFileName)
+    %openfile buffer
+        //For more exotic types: #include "%<LibGetMdlTypesHdrBaseName()>.h"
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    %openfile buffer
+        // Initialization routine called by model initialize
+        void %<ModelPrefix()>InitializePingPongControl( void ); // call at startup
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+
+    %% Add a call to initialize ping pongs in the model initialize function
+    %openfile buffer
+        // Initialize ping pong buffer operations
+        %<ModelPrefix()>InitializePingPongControl();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+
+
+%endfunction
+

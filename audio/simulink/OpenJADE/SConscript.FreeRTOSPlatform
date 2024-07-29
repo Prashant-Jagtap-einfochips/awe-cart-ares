@@ -1,0 +1,259 @@
+import os
+import math
+
+Import('env')
+Import('target')
+Import('runtime')
+Import('platform')
+Import('jframework')
+Import('OptArch')
+Import('OptRTOS')
+Import('OptPlatform')
+Import('SOC_ID')
+Import('CORE_ID')
+Import('code_gen_folder')
+Import('talaria_model')
+Import('base_rate_period')
+Import('option')
+
+parent_env = env
+
+local_env = env.Clone(
+    CPPPATH=['.','#',runtime,runtime+'/BAF'])
+
+nanoprintf_env = env.Clone()
+
+base_frame_cycles = None
+if base_rate_period:
+    core_frequency = None
+    if OptArch in ['gxp','gul']:
+        core_frequency = 1000000000
+    elif OptArch == 'sharc':
+        core_frequency = 500000000
+    if core_frequency:
+        base_frame_cycles = int(math.ceil(float(base_rate_period) * core_frequency))
+
+if 'option' in globals() and option:
+    if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+        if isinstance(option['PIL_InterFrameDelay'], int):
+            inter_frame_delay = option['PIL_InterFrameDelay']
+        if isinstance(option['PIL_InterFrameDelay'], str) and (option['PIL_InterFrameDelay'] == 'auto'):
+            if base_rate_period and (OptArch in ['gxp','gul','sharc']):
+                inter_frame_delay = base_frame_cycles
+
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+nanoprintf_path = '#/'+local_env['APP_ROOT']+'/PlatformFreeRTOS/nanoprintf'
+
+freeRTOS_srcpath = '#/'+local_env['APP_ROOT']+'/PlatformFreeRTOS/FreeRTOSv10.0.0/FreeRTOS/Source'
+freeRTOS_sources = [
+    'portable/MemMang/heap_1.c',
+    'list.c',
+    'queue.c',
+    'tasks.c',
+    'timers.c'
+]
+
+freeRTOS_includes = [
+    'include'
+]
+
+if OptArch in ['gul','gxp']:
+    freeRTOS_sources += [
+        'portable/CCES/osal/adi_osal_freertos.c',
+        'portable/CCES/osal/adi_osal_freertos_critical.c',
+        'portable/CCES/osal/adi_osal_freertos_init.c',
+        'portable/CCES/osal/adi_osal_freertos_message.c',
+        'portable/CCES/osal/adi_osal_freertos_mutex.c',
+        'portable/CCES/osal/adi_osal_freertos_rtl_lock.c',
+        'portable/CCES/osal/adi_osal_freertos_sem.c',
+        'portable/CCES/osal/adi_osal_freertos_thread.c',
+        'portable/CCES/osal/adi_osal_freertos_timing.c',
+        'portable/CCES/osal/adi_osal_freertos_tls.c',
+        'portable/CCES/SHARC_215xx/osal/adi_osal_arch_c.c',
+        'portable/CCES/SHARC_215xx/osal/adi_osal_arch_int_table.c',
+        'portable/CCES/SHARC_215xx/osal/adi_osal_freertos_arch_c.c',
+        'portable/CCES/SHARC_215xx/port.c',
+        'portable/CCES/SHARC_215xx/portASM.asm'
+    ]
+
+    freeRTOS_includes += [
+        'portable/CCES/osal',
+        'portable/CCES/SHARC_215xx',
+        'portable/CCES/SHARC_215xx/osal'
+    ]
+
+def compile_target(target, source, env, for_signature):
+    return '$CCCOM'
+
+local_env['BUILDERS']['Compile'] = local_env.Builder(generator = compile_target, suffix='$OBJSUFFIX', src_suffix='.c')
+
+if OptArch in ['gul','gxp']:
+    local_env.Append(CPPFLAGS='-D_ADI_THREADS')
+    local_env.Append(CPPFLAGS='-D__ADI_FREERTOS')
+    for freeRTOS_inc in freeRTOS_includes:
+        local_env.Append(CPPPATH = [freeRTOS_srcpath+'/'+freeRTOS_inc])
+
+freeRTOS_env = local_env.Clone()
+
+if option and ('BaseThreadLevel' in option) and option['BaseThreadLevel']:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=%d' % (option['BaseThreadLevel']))
+else:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=0')
+
+Platform = None
+
+def my_lib_emitter(target, source, env):
+    lst = []
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+            lst.append(x)
+    parent_env['PlatformList'] = lst
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+if OptArch in ['gul','gxp']:
+    freeRTOS_objs = []
+    for freeRTOS_src in freeRTOS_sources:
+        if freeRTOS_src.endswith('.c'):
+            freeRTOS_obj = freeRTOS_src.replace('.c', env['OBJSUFFIX'] )
+        elif freeRTOS_src.endswith('.asm'):
+            freeRTOS_obj = freeRTOS_src.replace('.asm', env['OBJSUFFIX'] )
+        else:
+            freeRTOS_obj = None
+        freeRTOS_objs.append( freeRTOS_env.Object(target = freeRTOS_obj, source=freeRTOS_srcpath+'/'+freeRTOS_src) )
+
+nanoprintf_obj = nanoprintf_env.Object(target = 'nanoprintf'+env['OBJSUFFIX'], source=nanoprintf_path+'/nanoprintf.c')
+
+if OptArch in ['gul','gxp']:
+    if OptPlatform in ['PIL','HIL','RTA','SOMPIL','SOMHIL','SOMRTA','DPIL','DHIL','DRTA']:
+        if 'option' in globals() and option:
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+
+    if OptPlatform in ['PIL','SOMPIL','DPIL']:
+        if 'option' in globals() and option:
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            elif (OptPlatform == 'DPIL') and base_frame_cycles:
+                # DPIL always needs a inter frame delay for it work properly
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(base_frame_cycles))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+
+    if OptPlatform in ['HIL','SOMHIL','DHIL']:
+        if 'option' in globals() and option:
+            if 'FreeRunning' in option and option['FreeRunning']:
+                local_env.Append(CPPFLAGS='-DHIL_FREERUNNING')
+
+if OptArch == 'gxp':
+    if OptPlatform in ['DPIL','DHIL','DRTA']:
+        if 'CORE_ID' in globals() and CORE_ID:
+            if CORE_ID == '1':
+                local_env.Append(CPPFLAGS='-DSPC1')
+            elif CORE_ID == '2':
+                local_env.Append(CPPFLAGS='-DSPC2')
+
+        optionMDMA = False
+        if 'option' in globals() and option:
+            if ('InterCoreXfer' in option):
+                optionMDMA = (option['InterCoreXfer'] == 'MDMA')
+        oj_platform_env = local_env.Clone()
+        codegen_folder_prefix = code_gen_folder +'/' + talaria_model['Name'] + '_'+ SOC_ID + '_'+ CORE_ID + '_ert_shrlib_rtw/'
+        oj_platform_env.Append(CPPPATH = [codegen_folder_prefix])
+        if optionMDMA:
+            oj_platform_env.Append(CPPFLAGS='-DINTERCORE_XFER_MDMA')
+
+if OptArch in ['gul', 'gxp']:
+    drivers_objs = []
+    drivers_objs.append( local_env.Compile(target = 'adi_twi.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/twi/adi_twi.c')  )
+    drivers_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+    services_objs = []
+    services_objs.append(  local_env.Compile(target = 'adi_pwr.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pwr/adi_pwr.c') )
+    services_objs.append(  local_env.Compile(target = 'adi_sec.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/int/adi_sec.c') )
+    services_objs.append(  local_env.Compile(target = 'adi_int.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/int/adi_int.c') )
+    services_objs.append(  local_env.Compile(target = 'adi_spu.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/spu/adi_spu.c') )
+    services_objs.append(  local_env.Compile(target = 'adi_pdma_2156x.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pdma/adi_pdma_2156x.c') )
+
+if OptArch == 'gxp':
+    if OptPlatform in ['PIL']:
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs)
+
+    elif OptPlatform in ['HIL']:
+        source_list = ['gxp_ezkit.c', 'oj_platform.c', 'SoftConfig_21593W.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c', 'output_stats.c', 'ram_file.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+    elif OptPlatform in ['RTA']:
+        source_list = ['gxp_ezkit.c', 'oj_platform.c', 'SoftConfig_21593W.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+    elif OptPlatform in ['DPIL']:
+        source_list = ['heapstack_usage.c', 'output_stats.c', 'ram_file.c']
+        if optionMDMA:
+            source_list += [ oj_platform_env.Object(source='MDMA_Intercore.c') ]
+        source_list += [ oj_platform_env.Object(source='oj_platform.c') ]
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs)
+
+    elif OptPlatform in ['DHIL']:
+        source_list = [oj_platform_env.Object(source='gxp_ezkit.c')]
+        if optionMDMA:
+            source_list += [ oj_platform_env.Object(source='MDMA_Intercore.c') ]
+        source_list += [ oj_platform_env.Object(source='oj_platform.c') ]
+        source_list += ['SoftConfig_21593W.c', 'pinmux_config.c', 'heapstack_usage.c', 'output_stats.c', 'ram_file.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+    elif OptPlatform in ['DRTA']:
+        source_list = [oj_platform_env.Object(source='gxp_ezkit.c')]
+        if optionMDMA:
+            source_list += [ oj_platform_env.Object(source='MDMA_Intercore.c') ]
+        source_list += [ oj_platform_env.Object(source='oj_platform.c') ]
+        source_list += ['SoftConfig_21593W.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+elif OptArch == 'gul':
+    if OptPlatform in ['PIL','SOMPIL']:
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs)
+
+    elif OptPlatform in ['HIL','SOMHIL']:
+        source_list = ['gul_ezkit.c', 'oj_platform.c', 'SoftConfig_21569.c',  'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c', 'ram_file.c', 'output_stats.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+    elif OptPlatform in ['RTA','SOMRTA']:
+        source_list = ['gul_ezkit.c', 'oj_platform.c', 'SoftConfig_21569.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c']
+        Platform = local_env.Library(target = target, source = source_list + freeRTOS_objs + services_objs + drivers_objs)
+
+if Platform == None:
+    print ('Error: unsupported arch-%s, platform-%s, rtos-%s' % (OptArch, OptPlatform, OptRTOS))
+
+Return("Platform")
+

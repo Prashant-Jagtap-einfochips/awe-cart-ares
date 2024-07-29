@@ -1,0 +1,52 @@
+%implements s105_b0_435hk_24_TLCInterface "C"
+
+%function getOutputAddr_5_0_24_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 21, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_5_0_24_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 21, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_5_0_24_0_0_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 22, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_5_0_24_0_0_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 22, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_5_0_24_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 23, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_5_0_24_0_0_2_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 23, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_5_0_24_0_0_3_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 24, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_5_0_24_0_0_3_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 24, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutputAddr_5_0_24_0_0_4_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSCAddr(block, 25, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getOutput_5_0_24_0_0_4_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_BOCSC(block, 25, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+

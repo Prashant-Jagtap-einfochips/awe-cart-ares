@@ -1,0 +1,118 @@
+%% Common defines and tools for RTC code generation
+
+%%   Copyright 2018 Bose Corporation
+
+%% Could add "LibGetModelName() +" to the filenames, but then there would be
+%% no good way to write generic inclusion code. Difficult to perform marco
+%% expansion in a #include macro 
+
+%%---------------------------------------------------------------------------
+%function RtcGetIdFileName() void
+    %return ModelPrefix() + "RTC_IDs"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcGetReqRspFileName() void
+    %return ModelPrefix() + "RTC_REQ_RSP"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcGetNtfFileName() void
+    %return ModelPrefix() + "RTC_NTF"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcGetConsoleFileName() void
+    %return ModelPrefix() + "RTC_Console"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcGetDoxygenFileName() void
+    %return ModelPrefix() + "RTC_doxygen"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcGetXmlFileName() void
+    %return ModelPrefix() + "RTC_XmlEmbed"
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcSetupXmlSections() void
+    %assign fileH = LibCreateSourceFile("Header","Custom",RtcGetXmlFileName())
+    %<FeaturePathAddTable(fileH,"UserBottom","XML")>
+    %return fileH
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcAddCoreTagToString(inString) void
+    %% For referenced models, the model name is the "core tag" in this case
+    %if LibIsModelReferenceTarget()
+        %return "%<ModelPrefix()>%<inString>"
+    %endif
+
+    %% The partitioning tool scripts add CoreTag to the model's rtw file via TLCOptions
+    %if TLC_FALSE == EXISTS(::CoreTag)
+        %return "%<inString>"
+    %else
+        %return "%<inString>_%<::CoreTag>"
+    %endif
+%endfunction
+
+%%---------------------------------------------------------------------------
+%function RtcSetupTable(fileH,IsIndirect,GroupNumber,PartitionNumber) void
+    %% Figure out the table name for this RTC service
+    %if IsIndirect
+        %assign decl = ""
+    %else
+        %% Direct Addressing
+        %assign decl = "static "
+        %assign GroupNumber = 0
+        %assign PartitionNumber = 0
+    %endif
+    %assign TableName = FEVAL("RtcManager.GetDispatchTableName",GroupNumber,PartitionNumber)
+
+    %% if this table has not been initialized yet, initialize it's entry count,
+    %% setup its custom file sections, and hookup its indirection index if necessary
+    %if TLC_FALSE == ISFIELD(::RTC_REC,TableName + "DONE")
+        %<SETFIELD(::RTC_REC,TableName + "DONE",0)>
+
+        %% Create a table where each entry is individually specified
+        %assign tableSize = GETFIELD(::RTC_REC,TableName)
+        %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>Top")>
+        %foreach j=tableSize
+            %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>%<j>")>
+        %endforeach
+        %<LibAddSourceFileCustomSection(fileH, "Declarations", "%<TableName>Bottom")>
+
+        %openfile buffer
+
+            // ----- %<TableName> DISPATCH TABLE -----:
+            %<decl>%<RtcGetReqRspFileName()>_type %<TableName>[] = {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"%<TableName>Top",buffer)>
+        %openfile buffer
+            };
+            %<decl> uint32_t %<TableName>Count = sizeof(%<TableName>)/sizeof(%<TableName>[0]);
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"%<TableName>Bottom",buffer)>
+
+        %% Check again for indirection - hookup to partition root
+        %if IsIndirect
+            %% Announce this table to the partition root code
+            %assign partitionFileH = LibCreateSourceFile("Source","Custom",FeaturePathGetPartitionFilename())
+            %openfile buffer
+                extern struct %<RtcGetReqRspFileName()>_tag* %<TableName>;
+                extern uint32_t %<TableName>Count;
+                %assign RtcRootName = SPRINTF("RTCROOT_G%dP%d",GroupNumber,PartitionNumber)
+                #ifdef %<RtcRootName>
+                #undef %<RtcRootName>
+                #endif
+                #define %<RtcRootName> &%<TableName>, &%<TableName>Count
+            %closefile buffer
+            %<LibSetSourceFileSection(partitionFileH,"Definitions",buffer)>
+        %endif
+    %endif
+    %% Caller needs to know the table name
+    %return TableName
+%endfunction
+%%---------------------------------------------------------------------------

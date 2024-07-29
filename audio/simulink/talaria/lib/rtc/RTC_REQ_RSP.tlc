@@ -1,0 +1,366 @@
+%implements RTC_REQ_RSP "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% FeaturePath / ASDID utilities and defines
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+
+%% Retrieve common RTC methods
+%include "RTC_Common.tlc"
+
+%% Pull in the doxygen creation code
+%include "tlc_RTC_doxygen.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign idFileName = RtcGetIdFileName()
+
+    %% Use this type-triggering block's SFcn parameters to determine addressing
+    %assign IsIndirect = SFcnParamSettings.IsIndirect
+    %assign CoreIndex = (SFcnParamSettings.CoreIndex & 7)
+
+    %% Acquire the RTC dispatch table index values
+    %assign blockPath = "%<LibGetBlockPath(block)>"
+    %assign ::RTC_REC = FEVAL("RtcManager.AcquireFeaturePathTokenIndexes",blockPath)
+
+    %%---------------------------------------------------------------------
+    %% ------------------- dispatch table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetReqRspFileName())
+    %% Direct addressing sets up a shared table for all
+    %if TLC_FALSE == IsIndirect
+        %<RtcSetupTable(fileH,IsIndirect,0,0)>
+    %endif
+    
+    %% Includes :
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include "%<idFileName>.h"
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            #include "%<RtcGetReqRspFileName()>.h"
+        %endif
+        #include "%<FeaturePathGetAsdIdFileName()>.h"    // for AsdIdStatus_type and other defines
+        #include "%<FeaturePathGetSchFilename()>.h"
+        %if IsIndirect
+        #include "%<FeaturePathGetPartitionFilename()>.h" // for partition root
+        %endif
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Prototypes")>
+    %openfile buffer
+        // ----- Function handler prototypes:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %% Add framework entry point to use the request dispatch table
+    %% ... but only for top-level model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            /** Handle Run Time Control request (RTC) and generate response payload (if any).
+             * NOTE: This function integrates with HandleAsdIdRequest. It is not intended
+             * to be called directly if @ref HandleAsdIdRequest is more convenient.
+             *  @param pReqBuf Request buffer containing RTC request...
+             *  @param reqBufSize number of bytes used in the request buffer
+             *  @param pRspBuf Response buffer to receive response of AsdIdStatus_type...
+             *  @param rspBufSize Size of available bytes provided for the response to fill
+             *  @return Returns the toal number of bytes utilized in the response buffer, or
+             *          ASDSTATUS_RSP_BUFFER_SMALL if the response buffer is too small to
+             *          contain a AsdIdStatus_type payload. If the returned value is positive,
+             *          the caller must check the AsdIdStatus_type's statusCode. If the
+             *          status code is less than zero, then any further reponse "data" as
+             *          defined by the RTC service will not be present (i.e. there probably
+             *          was not space for it anyway).
+             *         
+             * @ingroup rtc
+             */
+            int %<ModelPrefix()>HandleRtcRequest(void* pReqBuf, uint32_t reqBufSize,
+                                 void* pRspBuf, uint32_t rspBufSize)
+            {
+                // Gain access to the appropriate command table
+                uint32_t msgId = ((uint32_t*)pReqBuf)[0];
+                %<RtcGetReqRspFileName()>_type* theTable = 0;
+                uint32_t tableSize = 0;
+                %if IsIndirect
+                    uint32_t rtcPartition = ASDID_PARTITION(msgId);
+                    uint32_t rtcGroup = ASDID_GROUP(msgId);
+                    PartitionRoot_type* partitionRoot = GetPartitionRoot(rtcGroup,rtcPartition);
+                    if (partitionRoot && partitionRoot->rtcTable && partitionRoot->rtcCount)
+                    {
+                        theTable = (%<RtcGetReqRspFileName()>_type*)partitionRoot->rtcTable;
+                        tableSize = *partitionRoot->rtcCount;
+                    }
+                %else
+                    %assign TableName = FEVAL("RtcManager.GetDispatchTableName",0,0)                    
+                    theTable = %<TableName>;
+                    tableSize = sizeof(%<TableName>) / sizeof(%<RtcGetReqRspFileName()>_type);
+                %endif
+                return %<ModelPrefix()>UseDispatchTable(pReqBuf,reqBufSize,pRspBuf,rspBufSize,theTable,tableSize);
+            }
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %%---------------------------------------------------------------------
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",RtcGetReqRspFileName())
+    %% Add framework entry point to use the request dispatch table
+    %% ... but only for top-level model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            // ------------------------------------------------------------
+            // ACCESS ROUTINE TO HANDLE RTC REQUEST/RESPONSE
+            // ------------------------------------------------------------
+            // Handle inbound request. Returns number of bytes in response
+            // or negative value upon error (See %<FeaturePathGetAsdIdFileName()>.h for returned ASDSTATUS codes.)
+            int %<ModelPrefix()>HandleRtcRequest(void* pReqBuf, uint32_t reqBufSize,
+                                 void* pRspBuf, uint32_t rspBufSize);
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %if IsIndirect
+        %% Share out datatype with the partition root file
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetPartitionFilename())
+        %openfile buffer
+            
+            // Datatype for RTC tables
+            struct %<RtcGetReqRspFileName()>_tag;
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+    %endif
+
+
+    %%---------------------------------------------------------------------
+    %% ------------------- message id *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+    %openfile buffer
+
+        // ------------------------------------------------------------
+        // RTC MESSAGE IDS
+        // ------------------------------------------------------------
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% Do not emit asynchronous API functions for referenced models - they 
+    %% hookup their assets to the top model's methods.
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %%---------------------------------------------------------------------
+        %% [SHARED_HANDLER] ASDID HANDLER FUNCTION INTEGRATION
+        %% ... but only for top-level model generation
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            %openfile includeBuffer
+                #include "%<RtcGetReqRspFileName()>.h" // for RTC msg handler
+            %closefile includeBuffer
+            %openfile handlerBuffer
+                if (ASDID_IS_RTC(asdId))
+                {
+                    retVal = %<ModelPrefix()>HandleRtcRequest(pReqBuf,reqBufSize,pRspBuf,rspBufSize);
+                }
+            %closefile handlerBuffer
+            %<FeaturePathAddAsdIdHandler(includeBuffer,handlerBuffer)>
+        %endif
+    %endif
+    
+    %%---------------------------------------------------------------------
+    %% ----------- separate doxygen table file
+    %<RtcDoxygenBlockTypeSetup()>
+
+    %%---------------------------------------------------------------------
+    %% Write XML in comment of the "xml" file
+    %assign fileH = RtcSetupXmlSections()
+    %openfile buffer
+        // ------------------------------------------------------------
+        // EMBEDDED XML FILE OF RTC TOKEN VALUES
+        // ------------------------------------------------------------
+    /* [XMLBEGIN]<?xml version="1.0" encoding="utf-8"?>
+       <root version="1.0">
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"XMLTop",buffer)>
+    %openfile buffer
+    </root>
+    [XMLEND] */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"XMLBottom",buffer)>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign idFileName = "%<RtcGetIdFileName()>"
+
+    %% S Function RTW Data Parameters
+    %assign MessagePath = SFcnParamSettings.MessagePath
+    %assign REQ_Bytes = SFcnParamSettings.REQ_Bytes
+    %assign RSP_Bytes = SFcnParamSettings.RSP_Bytes
+    %assign NTF_Bytes = SFcnParamSettings.NTF_Bytes
+    %assign CoreIndex = (SFcnParamSettings.CoreIndex & 7)
+    %assign REQ_Priority = (SFcnParamSettings.REQ_Priority & 1)
+    %assign Description = SFcnParamSettings.Description
+    %assign GroupNumber = SFcnParamSettings.GroupNumber
+    %assign PartitionNumber = SFcnParamSettings.PartitionNumber
+    %assign IsIndirect = SFcnParamSettings.IsIndirect
+    %assign RequestAtInit = SFcnParamSettings.RequestAtInit
+    %assign PayloadMetaHash = SFcnParamSettings.PayloadMetaHash
+    %assign MyIndex = GETFIELD(::RTC_REC,MessagePath)
+
+    %% Bail out if this is the "placeholder" block
+    %if ISEQUAL("Runtime Control", MessagePath)
+        %return
+    %endif
+
+    %% Declare the message handler function (IN TWO PLACES!)
+    %% Place 1 : Model's private function prototypes
+    %openfile buffer
+        void RtcReqRsp_%<MessagePath>(void* pReqBuf, void* pRspBuf);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %% Place 2 : prototypes to enable use in RTC's REQ RSP table
+    %openfile buffer
+        extern void RtcReqRsp_%<MessagePath>(void* pReqBuf, void* pRspBuf);
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetReqRspFileName())
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %% Define an entry in the request/response dispatch table
+    %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetReqRspFileName())
+    %% Ensure the dispatch table is setup to receive us and retrieve table name
+    %assign TableName = RtcSetupTable(fileH,IsIndirect,GroupNumber,PartitionNumber)
+    %openfile buffer
+        // "%<MessagePath>" request-response handler '%<LibGetBlockName(block)>':
+        
+        { /*Index %<TableName>.%<MyIndex>*/
+          &RtcReqRsp_%<MessagePath>,
+          sizeof(%<MessagePath>_REQ_T), /*%<REQ_Bytes> char*/
+          %if RSP_Bytes > 0
+            sizeof(%<MessagePath>_RSP_T)\
+          %else
+            0\
+          %endif
+          /*%<RSP_Bytes> char*/ },
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"%<TableName>%<MyIndex>",buffer)>
+
+    %% Update the ID header file
+    %% Calculate the "info nibble" for the RTCID that indicates RSP and NTF support
+    %% (2 = req only, 1 = req/rsp, 0 = req/rsp/ntf)
+    %assign ID_Info = (2 - (RSP_Bytes > 0) - (NTF_Bytes > 0)) & 7
+    %assign PayloadsComment = "REQ"
+    %if (RSP_Bytes > 0)
+        %assign PayloadsComment = PayloadsComment + ", RSP"
+        %if (NTF_Bytes > 0)
+            %assign PayloadsComment = PayloadsComment + ", NTF"
+        %endif
+    %else
+        %assign PayloadsComment = PayloadsComment + " *only*"
+    %endif
+
+    %% The following ID must be formatted to match the "PARSING" macros defined in ASDID
+    %if IsIndirect
+        %% bank partition group info index
+        %addtorecord block MY_RTC_INDEX SPRINTF("0x%01x%01x%01x%01x%04x",::ASDID_TYPE_RTC + (REQ_Priority*4),PartitionNumber,GroupNumber,ID_Info,MyIndex)
+    %else
+        %addtorecord block MY_RTC_INDEX SPRINTF("0x%01x0%01x%01x%04x",CoreIndex,REQ_Priority,ID_Info,MyIndex)
+    %endif
+    %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+    %openfile buffer
+        #define RTCID_%<MessagePath> (%<block.MY_RTC_INDEX>U) // %<PayloadsComment> '%<LibGetBlockName(block)>'
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %%---------------------------------------------------------------------
+    %% ----------- separate doxygen table file
+    %<RtcDoxygenBlockInstanceSetup(MessagePath,block.MY_RTC_INDEX,Description,RSP_Bytes,NTF_Bytes)>
+
+    %%---------------------------------------------------------------------
+    %% Write XML in comment of the "xml" file
+    %assign fileH = RtcSetupXmlSections()
+    %openfile buffer
+        <RTC id="%<MessagePath>" msgId="%<block.MY_RTC_INDEX>" payloadMetaHash="%<PayloadMetaHash>" coreIndex="%<FeaturePathGetCoreIndex()>" coreTag="%<FeaturePathGetCoreTag()>">
+        <Description>%<FEVAL("MaskUtil.EscapeTextForXml",Description)></Description>
+        <PayloadSizes REQ="%<REQ_Bytes>" RSP="%<RSP_Bytes>" NTF="%<NTF_Bytes>"/>
+        </RTC>
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"XMLEntries",buffer)>
+
+    %%---------------------------------------------------------------------
+    %% Include request handler invocation during initialization if specified
+    %if RequestAtInit
+        %assign funcName = FEVAL("RTC_Mask.GetReqFuncName",MessagePath)
+        %openfile buffer
+            // Trigger RTC request handler at init for '%<LibGetBlockName(block)>'
+            %<funcName>();
+        %closefile buffer
+        %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+    %endif
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+    %assign MessagePath = SFcnParamSettings.MessagePath
+    %assign RequestAtInit = SFcnParamSettings.RequestAtInit
+
+    %% Bail out if this is the "placeholder" block
+    %if ISEQUAL("Runtime Control", MessagePath)
+        %return
+    %endif
+
+    %% Gather code that calls the downstream f-c subsystem - it can inline
+    %openfile bufferTrigs
+        %<LibBlockExecuteFcnCall(block, 0)>\
+        %<LibBlockExecuteFcnCall(block, 1)>\
+        %<LibBlockExecuteFcnCall(block, 2)>\
+    %closefile bufferTrigs
+
+    %% Emit code for the message handler function
+    %openfile funcbuf
+    // %<MessagePath> RTC Request-Response Handler (RTC ID %<block.MY_RTC_INDEX>) '%<LibGetBlockName(block)>' ---------------------------
+    void RtcReqRsp_%<MessagePath>(void* pREQBuf, void* pRSPBuf)
+    {
+        %if WHITE_SPACE(bufferTrigs)
+            {
+                ; // There is nothing to do for this message!
+            }
+        %else
+            %<bufferTrigs>\
+        %endif
+    }
+    %closefile funcbuf
+    %assign srcFile = LibGetModelDotCFile()
+    %<LibSetSourceFileSection(srcFile, "Functions", funcbuf)>
+
+    %% Ensure that the handler function exists (in case it has been optimized out)
+    %if RequestAtInit
+        %assign theFunction = LibBlockExecuteFcnCall(block, 1)
+        %if WHITE_SPACE(theFunction)
+            %assign funcName = FEVAL("RTC_Mask.GetReqFuncName",MessagePath)
+            %openfile buffer
+                /* InitTriggerControl '%<LibGetBlockName(block)>' */
+                void %<funcName>( void )
+                {
+                    // Nothing to see here as this function was optimized out!
+                }
+            %closefile buffer
+            %assign srcFile = LibGetModelDotCFile()
+            %<LibSetSourceFileSection(srcFile, "Functions", buffer)> 
+        %endif
+    %endif
+
+    %% If the async SIL playback is enabled, actually emit output code
+    %% where this block is intended e.g. in a step function
+    %if ::INCLUDE_ASYNC_CONSOLE == ::ASYNC_CONSOLE_PLAYBACK
+        %<LibAddToCommonIncludes(RtcGetIdFileName() + ".h")> %% for RTCIDs
+        PlayRtcSimRequests(RTCID_%<MessagePath>); //  '%<LibGetBlockName(block)>'
+    %endif
+
+
+%endfunction

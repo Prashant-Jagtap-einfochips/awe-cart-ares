@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root syncapi_version="1.0" talaria_version="V2200BK">
+   <Partition NumTasks="1" base_task_id="0" id="BasicAudio_Target">
+      <Task id="0" rate_factor="1" rate_in_sec="0.00066666666666666664">
+         <InPort access_type="ImportedPointer" cross_core="0" data_type="float"
+                 dimensions="[32, 2]"
+                 id="UnitTest_Target_AudioIn"/>
+         <OutPort access_type="ImportedPointer" cross_core="0" data_type="float"
+                  dimensions="[32, 2]"
+                  id="UnitTest_Target_AudioOut"/>
+      </Task>
+   </Partition>
+   </root>

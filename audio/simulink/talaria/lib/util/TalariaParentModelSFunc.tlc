@@ -1,0 +1,55 @@
+%implements TalariaParentModelSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%addincludepath "../top" 
+%addincludepath "../tsp" 
+%addincludepath "../tune" 
+%addincludepath "../state" 
+%include "FeaturePathCommon.tlc"
+%include "TOP_Common.tlc"
+%include "TSP_Common.tlc"
+%include "TuneVarCommon.tlc"
+%include "StateVarCommon.tlc"
+%include "PartitionCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %assign CoreIndex   = (ParamSettings.CoreIndex[0][0] & 7)
+    %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+    %assign TOPIn = ParamSettings.TOPIn[0][0]
+    %assign TOPOut = ParamSettings.TOPOut[0][0]
+    %assign TSPIn = ParamSettings.TSPIn[0][0]
+    %assign TSPOut = ParamSettings.TSPOut[0][0]
+
+    %% ----- TOP
+    %if TOPIn || TOPOut
+        %<TopTypeSetup(IsIndirect,TOPIn,TOPOut)>
+    %endif
+
+    %% ----- TSP
+    %if TSPIn || TSPOut
+        %<TspTypeSetup(TSPIn,TSPOut,CoreIndex,IsIndirect)>
+    %endif
+
+    %% ----- TuneVar - needed anytime TOPs have inputs
+    %if TOPIn
+        %<TuneVarTypeSetup()>
+    %endif
+
+    %% ----- StateVar - needed anytime TSPs have outputs
+    %if TSPOut
+        %<StateVarTypeSetup()>
+    %endif
+
+    %% ----- Partitions - for indirect addressing mode on a source or target model
+    %if IsIndirect && (TOPIn || TOPOut || TSPIn || TSPOut)
+        %<PartitionTypeSetup()>
+    %endif
+
+    %% Note that RTCs, TranslationTriggers, and InterpretationTriggers 
+    %% were easy to just include "dummy" blocks instead.
+
+%endfunction

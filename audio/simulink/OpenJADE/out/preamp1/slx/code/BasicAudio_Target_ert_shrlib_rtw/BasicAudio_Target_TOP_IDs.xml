@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="BasicAudioBalanceBoostDisable" writeToken="0x11000000" readToken="0x91000000" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceChanRampMap" writeToken="0x11000004" readToken="0x91000004" dataType="single" width="2" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceEnableSilentExtreme" writeToken="0x1100000c" readToken="0x9100000c" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceOffset" writeToken="0x11000010" readToken="0x91000010" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceRampTime" writeToken="0x11000014" readToken="0x91000014" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceSleepingBeautyMutesBass" writeToken="0x11000018" readToken="0x91000018" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceTableDb" writeToken="0x1100001c" readToken="0x9100001c" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBalanceTableIdx" writeToken="0x11000094" readToken="0x91000094" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassBoostCoeffs" writeToken="0x1100010c" readToken="0x9100010c" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassBoostMaximum_dB" writeToken="0x11000118" readToken="0x91000118" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassCutCoeffs" writeToken="0x1100011c" readToken="0x9100011c" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassCutMaximum_dB" writeToken="0x11000128" readToken="0x91000128" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassOffset" writeToken="0x1100012c" readToken="0x9100012c" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassScale" writeToken="0x11000130" readToken="0x91000130" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioBassramptime" writeToken="0x11000134" readToken="0x91000134" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioMuteRampTime" writeToken="0x11000138" readToken="0x91000138" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleBoostCoeffs" writeToken="0x1100013c" readToken="0x9100013c" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleBoostMaximum_dB" writeToken="0x11000148" readToken="0x91000148" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleCutCoeffs" writeToken="0x1100014c" readToken="0x9100014c" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleCutMaximum_dB" writeToken="0x11000158" readToken="0x91000158" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleOffset" writeToken="0x1100015c" readToken="0x9100015c" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleScale" writeToken="0x11000160" readToken="0x91000160" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioTrebleramptime" writeToken="0x11000164" readToken="0x91000164" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioVolumeRampTime" writeToken="0x11000168" readToken="0x91000168" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioVolumeTable_dB" writeToken="0x1100016c" readToken="0x9100016c" dataType="single" width="8" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioVolumemaxgain" writeToken="0x1100018c" readToken="0x9100018c" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+        <TOP id="BasicAudioVolumeTable_Idx" writeToken="0x11000190" readToken="0x91000190" dataType="uint32" width="8" isComplex="0" preOverlay="false" postOverlay="false" compatibilityString = "" coreTag="" coreIndex="0"/>
+</root>

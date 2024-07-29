@@ -1,0 +1,84 @@
+%implements s105_b0_435hk_43_Disable "C"
+
+%function Disable(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign _modelSS = ""
+
+%assign   Disable_open_SetDsm_l_65_11 = ""
+%openfile Disable_open_SetDsm_l_65_11
+
+/* Disable for Function Call SubSystem: '<S92>/SetDsm' */
+%closefile Disable_open_SetDsm_l_65_11
+
+%assign    Disable_body_SetDsm_l_65_11 = ""
+%openfile  Disable_body_SetDsm_l_65_11
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[61], "Disable",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm_i_Disable",61,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[176553*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm_i_Disable", ["%<_modelSS>"], 61, 0, 14, 0, 14, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[61]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Disable_body_SetDsm_l_65_11
+
+%assign    Disable_close_SetDsm_l_65_11 = ""
+%openfile  Disable_close_SetDsm_l_65_11
+
+/* End of Disable for SubSystem: '<S92>/SetDsm' */
+%closefile Disable_close_SetDsm_l_65_11
+%<SLibCG_DumpSSCode(Disable_open_SetDsm_l_65_11, Disable_body_SetDsm_l_65_11, Disable_close_SetDsm_l_65_11)>
+
+
+%assign   Disable_open_SetDsm1_f_65_13 = ""
+%openfile Disable_open_SetDsm1_f_65_13
+
+/* Disable for Function Call SubSystem: '<S92>/SetDsm1' */
+%closefile Disable_open_SetDsm1_f_65_13
+
+%assign    Disable_body_SetDsm1_f_65_13 = ""
+%openfile  Disable_body_SetDsm1_f_65_13
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[64], "Disable",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_SetDsm1_p_Disable",64,0)
+%assign _modelSS = RTMGetModelSSFromIR()
+%endif
+
+%<SLibCG_DumpSSCode("/*@[176554*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_SetDsm1_p_Disable", ["%<_modelSS>"], 64, 0, 14, 0, 14, 89),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[64]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Disable_body_SetDsm1_f_65_13
+
+%assign    Disable_close_SetDsm1_f_65_13 = ""
+%openfile  Disable_close_SetDsm1_f_65_13
+
+/* End of Disable for SubSystem: '<S92>/SetDsm1' */
+%closefile Disable_close_SetDsm1_f_65_13
+%<SLibCG_DumpSSCode(Disable_open_SetDsm1_f_65_13, Disable_body_SetDsm1_f_65_13, Disable_close_SetDsm1_f_65_13)>
+
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function DisableFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void HandleReqBasicAudioTrebleSet_Disable(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(43, 1, fcnProtoType)>
+%endfunction

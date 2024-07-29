@@ -1,0 +1,10 @@
+BasicAudio_TranslationEngine64.obj
+BasicAudio_TranslationEngine64_TOP_RcvTrans.obj
+BasicAudio_TranslationEngine64_TalariaAPI.obj
+BasicAudio_TranslationEngine64_TranslateTrigger.obj
+BasicAudio_TranslationEngine64_TuneVar.obj
+BasicAudio_TranslationEngine64_data.obj
+rtGetInf.obj
+rtGetNaN.obj
+rt_nonfinite.obj
+translate_dll.obj

@@ -1,0 +1,1 @@
+python C:\Chirayu\ASD_OpenJADE\Tools\graph_gen_scripts\1.0\ojcu.py %*

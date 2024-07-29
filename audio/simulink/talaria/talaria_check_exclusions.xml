@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MF0 version="1.1" packageUris="http://schema.mathworks.com/mf0/advisor_filter/R2020b http://schema.mathworks.com/mf0/advisor_filter_base/R2021a http://schema.mathworks.com/mf0/advisor_filter_sl/R2021a">
+  <advisor.filter.AdvisorFilterManager type="advisor.filter.AdvisorFilterManager" uuid="12d5dc24-2175-4a86-bcde-5d3a1ac88e4c">
+    <modelName>TuneVar</modelName>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="e28cda81-874d-4e66-aeb1-d000c34a60e3">
+      <checks>mathworks.maab.jc_0111</checks>
+      <checks>bose.designtime.library_block_names</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="dd31bd7f-70df-4a7a-888e-2a7e22f64698">
+        <ID>Talaria Initialization Trigger Control</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="87f24c61-b04d-43d8-8d41-322f62602919">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="b0e1487e-eaa4-449d-b278-d203a0f64320">
+      <checks>mathworks.maab.jc_0111</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="ff539816-2db7-4978-b6b9-9c858c4d61fd">
+        <ID>Talaria Interpret Trigger</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="0cec85e7-7086-4422-a51f-6fd8df1dfdcc">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="796d9f0b-803e-4cf6-93cc-d7ca6e87ff4e">
+      <checks>bose.designtime.library_block_names</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="3fa98774-8742-4f83-afb6-845f32abff1f">
+        <ID>Talaria RTC Receive</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="55d79a88-ea23-4c96-bb55-d7a01ff7159e">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="e35db071-b372-4341-8b1e-87f44f7a1a1a">
+      <checks>bose.designtime.library_block_names</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="de437c08-4054-4a8e-89da-0a6afef27cb9">
+        <ID>Talaria Target Overlay Parameter</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="9eb5189e-6efe-4467-9809-bcedb3053069">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="4c0e8bc2-f976-4a0f-a4c9-9a9c22c06d57">
+      <checks>bose.designtime.library_block_names</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="87341185-7c19-440a-8878-046269c5e7d3">
+        <ID>Talaria Target State Probe</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="b255fb43-bb80-468f-aaa6-d675c67fecd2">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="56632ba3-894c-4ee6-9841-1b026e6cfb65">
+      <checks>mathworks.maab.jc_0111</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="ab91e8a4-3111-46a5-b536-8568133e05c1">
+        <ID>Talaria Translate Trigger</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="954bbd14-4368-40bf-b43e-b514ebe11b89">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+    <filters type="advisor.filter.AdvisorFilterSpecification" uuid="ba648600-7152-4b4f-9b5f-dea6d0045cdc">
+      <checks>bose.designtime.library_block_names</checks>
+      <mode>Exclude</mode>
+      <filteredItem type="advisor.filter.MaskTypeFilter" uuid="f3fc605c-18bb-4c54-9728-7a7edd84f9ca">
+        <ID>Talaria Trivial Tune TOP</ID>
+      </filteredItem>
+      <metadata type="advisor.filter.Metadata" uuid="a53e756a-7305-4a98-a885-70813c80d927">
+        <summary>Talaria Legacy Exemption</summary>
+        <timeStamp>2021-10-19T12:19:49</timeStamp>
+        <user>kl13806</user>
+      </metadata>
+    </filters>
+  </advisor.filter.AdvisorFilterManager>
+</MF0>

@@ -1,0 +1,195 @@
+import os
+
+Import('env')
+Import('target')
+Import('talaria_model')
+Import('talaria_model_path')
+Import('codegen_folder_prefix')
+Import('code_gen_folder')
+Import('code_gen_files')
+Import('code_gen_incs')
+Import('crl_folder')
+Import('drivers_folder')
+Import('runtime')
+Import('misc_root')
+Import('jmodule')
+Import('jframework')
+Import('jautogenProbePlatform')
+
+def compile_target(target, source, env, for_signature):
+    return '$CCCOM'
+
+def sharc_library_builder(target, source, env, for_signature):
+    if env['PROCESSOR'] in ['sharc','gul','gxp']:
+        return ['$CC -build-lib -o $TARGET @$SOURCE']
+
+def add_custom_build_options(tgt_folder, file_element, env):
+    build_options = None
+    if isinstance(file_element, list):
+        file_name = file_element[0]
+        if len(file_element) > 1:
+            if isinstance(file_element[1], list):
+                build_options = file_element[1]
+            else:
+                build_options = [file_element[1]]
+        else:
+            build_options = None
+
+    elif isinstance(file_element, dict):
+        file_name = file_element['file_name']
+        if 'build_options' in file_element:
+            if isinstance(file_element['build_options'], list):
+                build_options = file_element['build_options']
+            else:
+                build_options = [file_element['build_options']]
+        else:
+            build_options = None
+    else:
+        file_name = file_element
+        build_options = None
+
+    if tgt_folder != None:
+        file_name = tgt_folder + '/' + file_name
+
+    if (build_options == None) or ('build_options' not in env):
+        return file_name
+    else:
+        obj_env = env.Clone()
+        cppflags= obj_env['build_options']['Base']['cppflags']
+        for build_option in build_options:
+            if build_option in obj_env['build_options']:
+                cppflags.extend(obj_env['build_options'][build_option]['cppflags'])
+            else:
+                cppflags.extend([build_option])
+        obj_env.Replace(CPPFLAGS = cppflags)
+        return obj_env.Object(source=file_name)
+
+local_env = env.Clone()
+
+option = jmodule
+OptArch = local_env['PROCESSOR']
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+source_list = []
+
+if talaria_model_path == None:
+    sources_dir = 'src/'+local_env['PROCESSOR']
+    local_env.Append(CPPPATH = [sources_dir])
+    source_list.extend( Glob( sources_dir+'/*.c' ) )
+    source_list.extend( Glob( sources_dir+'/*.asm' ) )
+else:
+    model_dir = talaria_model_path
+    for inc_path in code_gen_incs:
+        local_env.Append(CPPPATH = [inc_path])
+
+    local_env.Append(CPPPATH = [code_gen_folder])
+    local_env.Append(CPPPATH = [model_dir])
+
+    if crl_folder != None:
+        local_env.Append(CPPPATH = [crl_folder+'/inc'])
+    if drivers_folder != None:
+        local_env.Append(CPPPATH = [drivers_folder])
+    if misc_root != None:
+        local_env.Append(CPPPATH = [misc_root])
+
+    for suffix in code_gen_files:
+        source_list.append( add_custom_build_options( tgt_folder=None, file_element=suffix, env=local_env ))
+
+    if local_env['PROCESSOR'] in ['sharc', 'gul','gxp']:
+        local_env.Append(CPPFLAGS = ['-include', 'adi_missing_math_functions.h'])
+    if local_env['PROCESSOR'] in ['c66']:
+        local_env.Append(CPPFLAGS = ['--preinclude=ti_missing_math_functions.h'])
+
+def my_lib_emitter(target, source, env):
+    lsttarget = target[0].get_abspath()
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+
+# Compile objects separately
+objs = local_env.Object(source_list)
+
+if 'Option' in jframework and 'Lite' in jframework['Option'] and jframework['Option']['Lite']:
+    baf_lite_env = local_env.Clone()
+    baf_lite_hdr = baf_lite_env.JAutogenBafLite(
+        source =  codegen_folder_prefix+'/../'+talaria_model['Name']+'_SyncApi.xml',
+        target = codegen_folder_prefix+'/BAF_Lite.h',
+        JFramework = jframework,
+        CodeGenPath = codegen_folder_prefix.replace('#','.'),
+        ModelName = talaria_model['Name']+'_'+jframework['SOC_ID'] +'_'+jframework['CORE_ID'] if 'SOC_ID' in jframework else talaria_model['Name']+'_Target',
+        SyncApi = codegen_folder_prefix.replace('#','.')+'/../'+talaria_model['Name']+'_SyncApi.xml',
+    )
+
+    baf_lite_env['BUILDERS']['Compile'] = baf_lite_env.Builder(generator = compile_target, suffix='$OBJSUFFIX', src_suffix='.c')
+
+    baf_lite_env.Append(CPPFLAGS='-DBAF_LITE')
+    baf_lite_env.Append(CPPPATH = [runtime+'/BAF'])
+
+    baf_lite_src= File(runtime+'/BAF_Lite.c')
+    baf_lite_obj = baf_lite_env.Compile(target = codegen_folder_prefix+'/BAF_Lite', source = baf_lite_src)
+    baf_lite_env.Depends(baf_lite_obj, baf_lite_hdr)
+    objs += baf_lite_obj
+
+if 'JAutogenProbe' in jframework:
+    JAutogenProbe = local_env.JAutogenProbe(
+        source =  '#/'+talaria_model['Path']+'/JAutogenProbeConfig.json',
+        target = codegen_folder_prefix+'/JAutogenProbe.json',
+        JFramework = jframework,
+        CodeGenPath = codegen_folder_prefix.replace('#','.'),
+        ModelName = talaria_model['Name']+'_'+jframework['SOC_ID'] +'_'+jframework['CORE_ID'] if 'SOC_ID' in jframework else talaria_model['Name']+'_Target',
+        SyncApi = codegen_folder_prefix.replace('#','.')+'/../'+talaria_model['Name']+'_SyncApi.xml',
+        Platform = jautogenProbePlatform
+    )
+    env['JAutogenProbe'][jframework['Name']] = str(JAutogenProbe[0])
+
+    profile_cfg = jframework['JAutogenProbe']
+    ja_objs = []
+    for p in profile_cfg['Profile'].keys():
+         for jao in profile_cfg['Profile'][p]:
+              ja_objs.append(jao)
+
+
+    # Add explicit dependencies
+    for o in objs:
+        for jao in ja_objs:
+            if jao.replace('.c', '.') in str(o):
+                local_env.Depends(o, codegen_folder_prefix+'/JAutogenProbe.json')
+
+lsttarget = f"{target}_{local_env['LIBSUFFIX'].replace('.','')}.lst"
+local_env['BUILDERS']['LibEmitter'] = local_env.Builder(action = my_lib_emitter, suffix='.lst')
+JModuleLst = local_env.LibEmitter(target = lsttarget, source = objs)
+
+if local_env['PROCESSOR'] in ['sharc','gul','gxp']:
+    local_env['BUILDERS']['SharcLibraryBuilder'] = env.Builder(generator = sharc_library_builder)
+    JModule = local_env.SharcLibraryBuilder(
+      target = target+local_env['LIBSUFFIX'],
+      source = lsttarget,
+      PROCESSOR = local_env['PROCESSOR'])
+else:
+    JModule = local_env.Library(target = target, source = objs)
+
+local_env.Depends(JModule, JModuleLst)
+
+env['ModelList'][jmodule['Name']] = [str(x) for x in source_list]
+
+Return("JModule")

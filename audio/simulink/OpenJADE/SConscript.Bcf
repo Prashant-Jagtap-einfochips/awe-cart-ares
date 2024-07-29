@@ -1,0 +1,67 @@
+import os
+import json
+
+Import('env')
+Import('cart')
+Import('target')
+Import('arch')
+Import('namespace')
+
+local_env = env.Clone(
+    CPPPATH=[
+    '.', 
+    'inc',
+    'FeatureLib/inc',
+    'FeatureLib/Features/inc',
+    'FeatureLib/Bamfs/inc',
+    'FeatureLib/Bam_Proxys/inc', 
+    'BACR/inc', 
+    'APIHandlers', 
+    cart+'/Runtime/CART',
+    cart+'/Runtime/BCF',
+    cart+'/Runtime',
+    cart+'/Module/dll_bcf', 
+    'FeatureLibAuto/inc',
+    'FeatureLibAuto/Features/inc',
+    'FeatureLibAuto/Bam_Proxys/inc'],
+   )
+
+cpp_flags = ['-D','BAFS=BCFS'] if namespace is None else ['-D','BAFS='+namespace,'-D','BCFS='+namespace] 
+local_env.Append(CPPFLAGS=cpp_flags)
+
+
+source = []
+source_feature_lib = []
+bamproxy_exclude = []
+bamf_exclude = []
+bdp_exclude = [
+    'a2b_debug.c',
+    'extended_debug.c',
+    'misc_debug.c',
+    'serial.c',
+    'mfg_cmds.c',
+]
+source.extend( Glob(cart+'/Runtime/BCF.c' ))
+source.extend( Glob('APIHandlers/*.c' ))
+source.extend( Glob('FeatureLib/src/*.cpp'))
+source.extend( Glob('FeatureLib/Features/src/*.cpp'))
+source.extend( Glob('FeatureLib/Bamfs/src/*.cpp', 
+                    exclude=['FeatureLib/Bamfs/src/'+file for file in bamf_exclude] ))
+source.extend( Glob('FeatureLib/Bam_Proxys/src/*.cpp', 
+                    exclude=['FeatureLib/Bam_Proxys/src/'+file for file in bamproxy_exclude] ))
+source.extend( Glob('BACR/src/*.cpp' ))
+
+source.extend( Glob('FeatureLibAuto/src/OJ*.cpp' ))
+source.extend( Glob('FeatureLibAuto/Features/src/OJ*.cpp' ))
+source.extend( Glob('FeatureLibAuto/Bam_Proxys/src/OJ*.cpp' ))
+
+Bcf = local_env.Library(target = [target+'/Bcf'], source = source)
+
+
+if arch in ['x64', 'qnx_nto_aarch64', 'amd64']: 
+    source.extend( Glob(cart+'/Module/dll_bcf/*.c' ))
+    Bcf_dll = local_env.SharedLibrary(target = ['Bcf_dll'], source = source)
+    Bcf_test = local_env.Program(target =  ['Bcf_test'], source = ['test/main.c', Bcf])
+    Return(['Bcf', 'Bcf_dll', 'Bcf_test'])
+
+Return(['Bcf'])

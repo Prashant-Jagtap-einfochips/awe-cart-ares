@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceBoostDisable" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000000" width="1" writeToken="0x11000000" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceChanRampMap" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000004" width="2" writeToken="0x11000004" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceEnableSilentExtreme" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100000c" width="1" writeToken="0x1100000c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceOffset" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000010" width="1" writeToken="0x11000010" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceRampTime" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000014" width="1" writeToken="0x11000014" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceSleepingBeautyMutesBass" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000018" width="1" writeToken="0x11000018" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceTableDb" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100001c" width="30" writeToken="0x1100001c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBalanceTableIdx" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000094" width="30" writeToken="0x11000094" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassBoostCoeffs" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100010c" width="3" writeToken="0x1100010c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassBoostMaximum_dB" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000118" width="1" writeToken="0x11000118" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassCutCoeffs" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100011c" width="3" writeToken="0x1100011c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassCutMaximum_dB" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000128" width="1" writeToken="0x11000128" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassOffset" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100012c" width="1" writeToken="0x1100012c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassScale" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000130" width="1" writeToken="0x11000130" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioBassramptime" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000134" width="1" writeToken="0x11000134" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioMuteRampTime" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000138" width="1" writeToken="0x11000138" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleBoostCoeffs" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100013c" width="3" writeToken="0x1100013c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleBoostMaximum_dB" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000148" width="1" writeToken="0x11000148" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleCutCoeffs" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100014c" width="3" writeToken="0x1100014c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleCutMaximum_dB" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000158" width="1" writeToken="0x11000158" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleOffset" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100015c" width="1" writeToken="0x1100015c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleScale" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000160" width="1" writeToken="0x11000160" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioTrebleramptime" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000164" width="1" writeToken="0x11000164" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioVolumeRampTime" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000168" width="1" writeToken="0x11000168" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioVolumeTable_dB" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100016c" width="8" writeToken="0x1100016c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="single" id="BasicAudioVolumemaxgain" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x9100018c" width="1" writeToken="0x1100018c" />
+  <TOP compatibilityString="" coreIndex="0" coreTag="" dataType="uint32" id="BasicAudioVolumeTable_Idx" isComplex="0" postOverlay="false" preOverlay="false" readToken="0x91000190" width="8" writeToken="0x11000190" />
+  <COMPAT compat_hash="0x6E521A79" id="BasicAudio" name_hash="0x9FD22631" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x6E521A79" id="BasicAudio" name_hash="0x9FD22631" />
+</root>

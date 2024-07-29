@@ -1,0 +1,145 @@
+%% This TLC file included by RTC_REQ_RSP.tlc and tlc_SchTokenAPI.tlc
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: RtcOxygenBlockTypeSetup ===============================================
+%function RtcDoxygenBlockTypeSetup() void
+
+    %% Ensure this setup only happens once. Hard to say which block will do it
+    %if EXISTS(::RTC_DOXYGEN_REC)
+        %% Yep - already done. We can leave.
+        %return
+    %endif
+
+    %% (ELSE)
+
+    %createrecord ::RTC_DOXYGEN_REC{ IsSetup 1 }
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",RtcGetDoxygenFileName())
+    %openfile buffer
+
+        // ------------------------------------------------------------
+        // RUNTIME CONTROL MESSAGING SUMMARY
+        // ------------------------------------------------------------
+        /** @defgroup rtc Runtime Control (RTC)
+         * The Runtime Control mechanism (RTC) supports communication with DSP algorithms.
+         * For a list of the RTC messages, see the @ref rtc_messages.
+         * Algorithm developers can define three types of payloads for each message as
+         * described below.
+         * Requests     (Control >>> DSP):
+         * ---------
+         *  RTC communication always begins with a request sent to the DSP algorithm
+         *  code. RTC requests include a message ID and an accompanying data values
+         *  (if any) as defined by the DSP algorithmic code.
+         *  Request messages signal one of the following actions:
+         *  - Initiate an action to take (e.g. mute the audio)
+         *  - Update a state value (e.g. engine speed is now "0")
+         *
+         * Responses     (DSP >>> Control):
+         * ---------
+         *  Each RTC message definition has the option to include responses or not.
+         *  If responses are defined for a message, then EVERY request receives a response.
+         *  Note the following characteristics about response payloads:
+         *  - They are generated immediately upon receipt of request
+         *  - They contain the same RTCID as their matching request along with any
+         *    additional information (if any) as defined for the message.
+         *  - If a notification payload is also defined, the response will also
+         *    contain a sequence tracking number to be referenced by the notification.
+         *
+         * Notifications (DSP >>> Control):
+         * -------------
+         *  Notification definitions are optional and only available if a response
+         *  is also defined. A notification usually indicates that a request has finally
+         *  been satisfied.
+         *  Note the following characteristics about notification payloads:
+         *  - They are generated at some time later after request is received
+         *  - They reference the same RTCID as their matching request and response
+         *  - They also reference the sequence number previously reported by
+         *    an earlier response.
+         *  - If a second request comes in before the first request generates a
+         *    the first request may never generate a notification. In other words,
+         *    only the "last request" is guaranteed to receive a notification.
+         */
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% Define a table of doxygen help text for RTC message payload definitions
+    %% The doxygen references in the entries of the table are resolved by
+    %% code emitted by BytePack tlc code.
+    %<LibAddSourceFileCustomSection(fileH, "Enums", "DoxygenTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Enums", "DoxygenEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Enums", "DoxygenBottom")>
+    %openfile buffer
+        /** Setup for Doxygen RTC Service Table
+        @defgroup rtc_messages RTC Message Index
+        @ingroup rtc
+        | Message | Message ID | Request | Response| Notification |
+        |---------|------------|---------|---------|--------------|
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"DoxygenTop",buffer)>
+    %openfile buffer
+        */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"DoxygenBottom",buffer)>
+
+%endfunction
+
+%% Function: RtcDoxygenBlockInstanceSetup ===============================================
+%function RtcDoxygenBlockInstanceSetup(MessagePath,RtcId,Description,HasRSP,HasNTF) void
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",RtcGetDoxygenFileName())
+
+    %% Response and Notification payloads are optional. Create appropriate references:
+    %if HasRSP
+        %assign RspText = "@ref %<MessagePath>_RSP"
+    %else
+        %assign RspText = "<CENTER><EM>n/a</CENTER></EM>"
+    %endif
+    %if HasNTF
+        %assign NtfText = "@ref %<MessagePath>_NTF"
+    %else
+        %assign NtfText = "<CENTER><EM>n/a</CENTER></EM>"
+    %endif
+
+    %% Add a line to the doxygen table
+    %openfile buffer
+        %% doxygen table entry:
+        %% | Message | Message ID | Request | Response| Notification |
+        | @ref %<MessagePath> | %<RtcId> | @ref %<MessagePath>_REQ | %<RspText> | %<NtfText> |
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"DoxygenEntries",buffer)>
+
+	%% Add a group for the message
+    %openfile buffer
+		/** 
+		@defgroup %<MessagePath>
+		@ingroup rtc_messages
+        %if ISEMPTY(Description)
+		No further description of %<MessagePath> has been defined yet.
+        %else
+        %<MessagePath>
+        ==============
+        %<Description>
+        %endif
+		*/
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+%endfunction
+
+%% Function: RtcDoxygenEmitPayloadComment ===============================================
+%function RtcDoxygenEmitPayloadComment(MessagePath,PAYLOAD,SECTION,isNA) Output
+
+	%if isNA
+		// %<MessagePath> does not define a %<PAYLOAD> payload.
+	%else
+		/// %<PAYLOAD> Payload Definition for %<MessagePath> 
+		/// ----------------------------
+		/// @ingroup %<MessagePath>
+        /// This page describes the payload format for %<PAYLOAD> messages
+        /// used by the %<MessagePath> RTC mechanism. For a more general 
+        /// description of how this message works, see @ref %<MessagePath>.
+	%endif
+
+%endfunction

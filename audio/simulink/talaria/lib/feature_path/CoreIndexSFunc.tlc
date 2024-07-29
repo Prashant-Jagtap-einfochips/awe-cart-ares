@@ -1,0 +1,38 @@
+%implements CoreIndexSFunc "C"
+
+%%   Copyright 2019 Bose Corporation
+
+%addincludepath "../util" 
+%include "SyncApiTypeSetup.tlc"
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+    %assign BaseRateTID         = ParamSettings.BaseRateTID
+    %assign BaseRateFactor      = ParamSettings.BaseRateFactor
+    %assign BaseRatePeriod      = ParamSettings.BaseRatePeriod
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetApiFileName())
+    %openfile buffer
+        %if LibIsModelReferenceTarget()
+            %assign PRE = ModelPrefix()
+        %else
+            %assign PRE = ""
+        %endif
+        // ------------------------------------------------------------
+        // SYSTEM-WIDE BASE RATE (In context of this model's call rates)
+        // ------------------------------------------------------------
+        #define %<PRE>SYSTEM_BASE_RATE_TID       %<BaseRateTID>
+        #define %<PRE>SYSTEM_BASE_RATE_FACTOR    %<BaseRateFactor>
+        #define %<PRE>SYSTEM_BASE_RATE_PERIOD    %<BaseRatePeriod>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% Setup the SyncApi xml file (if it's not done already) and emit XMLBEGIN
+    %<EmitSyncApiXmlBegin(block, system, BaseRateTID)>
+
+%endfunction
+

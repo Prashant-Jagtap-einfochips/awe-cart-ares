@@ -1,0 +1,186 @@
+{
+    "version": "R2021b",
+    "entries": [
+        {
+            "type": "Tab",
+            "id": "TalariaTab",
+            "title": "TALARIA",
+            "children": [
+                {
+                    "type": "Section",
+                    "title": "Info",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "openTalariaWikiAction"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "openTalariaJiraAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "openModuleNotesAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "talariaVersionAction"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "findInModelAction"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "printLastErrorAction"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "Formatting",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "DropDownButton",
+                                    "action": "autoBlockHeightAction",
+                                    "popupName": "autoBlockHeightList"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "resetBlockSizeAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "resetBlockColorAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "removeHighlightsAction"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "Build-time Configuration",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "DropDownButton",
+                                    "action": "automateBtcAction",
+                                    "popupName": "automateBtcList"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "addChickChildAction"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "DropDownButton",
+                                    "action": "addTuneVarsAction",
+                                    "popupName": "addAllTuneVarsList"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "renameClassdefProperties"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "seeBtcVar"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "MATLAB Function Blocks",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "paramMfbAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "dataMfbAction"
+                                },
+                                {
+                                    "type": "PushButton",
+                                    "action": "addTriggerMfbAction"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "Section",
+                    "title": "Design-Time",
+                    "children": [
+                        {
+                            "type": "Column",
+                            "children": [
+                                {
+                                    "type": "PushButton",
+                                    "action": "automateRenameLibBlock"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+%implements CapturedConst "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: BlockOutputSignal =================================================
+%% Abstract:
+%%      Return the appropriate reference to the parameter.  This function *may*
+%%      be used by Simulink when optimizing the Block IO data structure.
+%function BlockOutputSignal(block,system,portIdx,ucv,lcv,idx,retType) void
+    %error The captured constant block should not need to invoke TLC: %<block>
+%endfunction
+%% 
+%% [EOF] constant.tlc

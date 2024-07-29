@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\source\BAF_callbacks.c" />
     <ClCompile Include="..\..\..\Source\ModTestAudio.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -153,7 +154,7 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../../Include;../../../Include/Targets;./;;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../simulink/OpenJADE/Runtime/BAF;../../../Include;../../../Include/Targets;./;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>
@@ -178,7 +179,7 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../../Include;../../../Include/Targets;./;;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../../simulink/OpenJADE/Runtime/BAF;../../../Include;../../../Include/Targets;./;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>

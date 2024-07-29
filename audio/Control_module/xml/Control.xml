@@ -18,6 +18,8 @@
         <property propsheet = 'Variables' name='modPtr' description='Points to the module to set' type='int'  isRangeEditable='0' value='' format='%g' hide='1' isComplex='0'/>
         <property propsheet = 'Variables' name='varPtr' description='Points to the variable to set within the module instance structure' type='int'  isRangeEditable='0' value='' format='%g' hide='1' isComplex='0'/>
         <property propsheet = 'Array: coeff' name='coeff' description='Coefficent Data' dim1='11' type='float' min='0' max='1' step='' isRangeEditable='1' format='%g' hide='0' isComplex='0'/>
+        <property propsheet = 'Array: CONTROL_REQUEST' name='CONTROL_REQUEST' description='Control Message Request' dim1='256' type='uint'  isRangeEditable='0' format='%.10g' hide='0' isComplex='0'/>
+        <property propsheet = 'Array: CONTROL_RESPONSE' name='CONTROL_RESPONSE' description='Control Message Response' dim1='256' type='uint'  isRangeEditable='0' format='%.10g' hide='0' isComplex='0'/>
         <property propsheet = 'Arguments' name='module' description='Module to Control' type='string'  value='Mod' />
         
         Copies input wire to output wire

@@ -1,0 +1,186 @@
+--------------------------------------------------------------------
+Module Name:
+------------
+    blocklib
+
+Description:
+-------------------
+    Simulink block library of component audio processing blocks such as filters
+    and gain adjustments often found in a preamp or other basic audio processing.
+    These blocks are Bose IP, but they are *not* considered highly confidential
+    information. Many of these blocks make use of the Talaria custom block set
+    for audio control and tuning- hence the requirement to load the Talaria
+    module when using blocklib.
+
+Current Module Externals
+-------------------------------
+    +-------------------------------+
+    |                               |
+    |** BLOCKLIB=tags/V220021       |
+    |   TALARIA =tags/V2200AQ       |
+    |                               |
+    +-------------------------------+
+    
+    /asd/AdvancedDevelopment/blocklib/${BLOCKLIB}/module   blocklib
+    /asd2/talaria/${TALARIA}/module   talaria
+
+Required Simulink Project References
+-------------------------------
+    Blocklib.prj
+    Talaria.prj
+
+Source control development URL: (this is where changes are made and tagged)
+-------------------------------
+    https://svn.bose.com/asd/AdvancedDevelopment/blocklib/branches/21xxxx
+
+
+============ 22.00.32 =========================== (not released yet)
+[SAMPLERATE-1527] - MuteBtc FeaturePath not promoted down to MuteRamper
+
+============ 22.00.21 =========================== 2023-07-25
+[NOJIRA] remove strange forwarding table from PoolIir
+============ 22.00.20 =========================== 2023-07-25
+[MEDUSAHGRM-691] (add on) Correct PoolIir use in MultiSourceEqBtc
+
+============ 22.00.13 =========================== 2023-05-31
+[SAMPLERATE-1498] Add forwarding to block-diagrams that reference old FIREven/FIR Even
+[MEDUSAHGRM-656] Merging CR-ASD-19388 - Updating SharcPlus variants with proper memory section for FFT CRL.
+
+
+....................................................................
+TAG:                    V220012
+AUTHORS:                kl13806
+DATE:                   2023-05-26
+DESCRIPTION OF CHANGES: 
+                        [SAMPLERATE-1497] Upgrade blocklib to TalariaV2200AN BTC dynamic defaults for unspecified properties
+                        [SAMPLERATE-1497] Upgrade blocklib to TalariaV2200AN BTC observers for Locks
+TALARIA DEPENDENCY:     tags/V2200AO
+
+....................................................................
+TAG:                    V220001
+AUTHORS:                DB1045444
+DATE:                   2023-04-04
+DESCRIPTION OF CHANGES: 
+						- [SAMPLERATE-1493] Fix MuteRamper Block to Promote Feature Path
+TALARIA DEPENDENCY:     tags/V2200AC
+
+....................................................................
+TAG:                    V210000
+AUTHORS:                kl13806
+DATE:                   2022-07-18
+DESCRIPTION OF CHANGES: SAMPLERATE-1477 Upgrade blocklib to use BTC classes (build-time configuration) and 2021b
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V2100AE
+NOTE: tagged off the "trunk" for MATLAB 2021b-based development:
+https://svn.bose.com/asd/AdvancedDevelopment/blocklib/branches/21xxxx
+
+----------------------------------------------------------------------------
+**************************** Upgrading to 2021b **************************** 
+Library diagrams no longer support code generation settings. Use CscUtil.
+See short discussion videos here: https://wiki.bose.com/x/-cIuC 
+----------------------------------------------------------------------------
+
+
+....................................................................
+TAG:                    V0000210
+AUTHORS:                sc48041
+DESCRIPTION OF CHANGES: SAMPLERATE-1432 Set pre-overlay and/or post-overlay flags on TOP memory blocks when required
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V1900BC  
+
+-------------------
+Release Log:
+-------------------
+TAG:                    V000080
+AUTHORS:                sk1042978
+DESCRIPTION OF CHANGES: Update to the Level Detector block (SAMPLERATE-754)
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V1900AH  
+
+-------------------
+Release Log:
+-------------------
+TAG:                    V000056
+AUTHORS:                ud1041536
+DESCRIPTION OF CHANGES: Upgrade to Matlab 2019b
+						Last 2018b compatible tag is V000055.
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V1900AF
+
+-------------------
+Release Log:
+-------------------
+TAG:                    V000030
+AUTHORS:                sk1042978
+DESCRIPTION OF CHANGES: Updates to test/LevelDetector
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AN
+
+--------------------------------------------------------------------
+TAG:                    V000018
+AUTHORS:                bs50651, jc1024984, ud1041536
+DESCRIPTION OF CHANGES: Upgrade to 01.07.AM 
+                        Merge changes from Bernstein_48K_Dev branch
+                        Fixes to annASDRouter, FIREven, and FIRGeneric
+                        ** Note: FIRGeneric block uses ITC which is
+                        only available from Talaria 01.07.AL
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AM
+--------------------------------------------------------------------
+TAG:                    V000015
+AUTHORS:                bs50651, ud1041536, pk47312,sk1042978, js51533, ms51507, sd49596, yb1028680, kl1043656, sc51423, ri1024932, db1045444, kl13806
+DESCRIPTION OF CHANGES: Catching up on changes, including the addition of Midrange block, Level Detector block, and Fade block. 
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AK
+--------------------------------------------------------------------
+TAG:                    V000004
+AUTHORS:                kl13806,ud1041536,jb10849
+DESCRIPTION OF CHANGES: Upgrade to 01.07.AF
+                        Fixes to FIREven
+                        Used branches/upgrade_to_0107AF
+                        ** Note significant behavior change of TuneVars
+                        to be row-major instead of column-major in terms
+                        of variable length parsing for matrix dimensions.
+                        This change represents a compatibility barrier.
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AF
+--------------------------------------------------------------------
+TAG:                    V000003
+AUTHORS:                kl13806
+DESCRIPTION OF CHANGES: Upgrade to 1.7.AC
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AC
+--------------------------------------------------------------------
+TAG:                    V000002
+AUTHORS:                kl13806
+DESCRIPTION OF CHANGES: Upgrade to 1.7.AB
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AB
+--------------------------------------------------------------------
+TAG:                    V000001
+AUTHORS:                kl13806
+DESCRIPTION OF CHANGES: Initial release a standalone module
+DEPENDENCY TABLE
+    MODULE              VERSION
+    - - - - - - - - - - - - - - - - -
+    TALARIA             tags/V0107AA

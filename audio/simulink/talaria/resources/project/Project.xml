@@ -1,0 +1,4403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project MetadataType="monolithic">
+    <Categories Location="Root">
+        <Category Location="FileClassCategory">
+            <Label Location="other">
+                <Info Name="Other" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Label Location="artifact">
+                <Info Name="Artifact" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Label Location="none">
+                <Info Name="None" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Label Location="test">
+                <Info Name="Test" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Label Location="convenience">
+                <Info Name="Convenience" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Label Location="design">
+                <Info Name="Design" ReadOnly="READ_ONLY"/>
+            </Label>
+            <Info DataType="None" Name="Classification" ReadOnly="1" SingleValued="1"/>
+            <Label Location="derived">
+                <Info Name="Derived" ReadOnly="READ_ONLY"/>
+            </Label>
+        </Category>
+    </Categories>
+    <Info Location="ProjectData">
+        <Info Name="Talaria"/>
+    </Info>
+    <ProjectData Location="Root"/>
+    <Extensions Location="Root"/>
+    <EntryPoints Location="Root">
+        <EntryPoint Location="410f3a87-fa7a-4f7c-8acb-f2322d0e7af5">
+            <Info File="util/shortcuts/open_parent_project.m"
+                Icon="iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACP0lEQVR42oWSS2gTURiFR4orURShWiOShdi8TE0bE21tYm36snn1kY3EnYh7BTe6EQRXUsWlmAoWVwNuXIq4MyZt0rybMRV0XHRvQLTheGbuHdoo2IHDDJc557vn51eQUVJYVn5R6NJL8/1e2evhj+V/zJZeUc+Vkf8HZJQWXvDHzF8yzt4cBtZ8WygGdawP6yiHdFTHdNQiOhrT39CYvavg7dGvyLuBvGtHqx6g4KMGgeJ56gJQHqHCQPUKUJ8EGjNAM9pWkO3v4JMDpopOvqkcA1bPkT7EswBIp3mU5jEqQvMUNQtocSimMedAdtmOmeEDpBq3OWtcnd9+mkkvXWJASNInBH0jxoCkCPjx4Qx6evbBGMn9G700D9As6SXSSwb9sqDXSd8gvRkHPs9B6Xx0wN633zRbWnlop9kvupd2da9Z9CgDkgxYkBU0N65NHTLN+M6hVWkuGPSLNPP6FdJr45J+leaYSUdrUQasOZEIHxQBTb/oXgwKeoXdK7J7fdqYPJUw6WilZEDBieioDNB4gzLpFXavsnud9Aa7N0nX2L1F85d5k74TkHPhwa1jZsDC+BGsPDoN9XE/1CUX5YH6xAv1qQ/qsyEqgNdLAWw3uwLc+J31dg1yL/2sWxVyXJy8WJytdwO4d9OG67FepKOGjiMd66NOIB23USeRTpxCcsIGbKZkQN7TRt7LQcq1XbcmH5aTn9w1+aToLs1U2wi4w8XpiMUJyrUNibWtRcTkzcXh8LR5y2iog83F238AhlGJPRWtsDAAAAAASUVORK5CYII="
+                Name="Open Parent Project" Type="Basic" Visible="1"/>
+        </EntryPoint>
+        <EntryPoint Location="e2ebe41f-82a7-41dd-a010-60e96be53bbd">
+            <Info File="util/shortcuts/set_up_project.m" Icon=""
+                Name="set_up_project" Type="StartUp" Visible="0"/>
+        </EntryPoint>
+        <EntryPoint Location="617490d4-556f-41b4-83c1-b706f6bdd886">
+            <Info File="util/shortcuts/clean_up_project.m" Icon=""
+                Name="clean_up_project" Type="Shutdown" Visible="0"/>
+        </EntryPoint>
+    </EntryPoints>
+    <Files Location="Root">
+        <File Location="util">
+            <File Location="build">
+                <File Location="BuildGeneratedPartsModelCode.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createTestModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="memory_breakdown.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="profile_model.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="generate_top_info_file.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaTemplate.sltx">
+                    <Info/>
+                </File>
+                <File Location="bose_ert_code_template.cgt">
+                    <Info/>
+                </File>
+                <File Location="EntryBuildHook.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="default_sys_defs.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="find_parameterized_links.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="rebuild_all_mex.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelAction.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="installToolchains.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="NameCheck.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="translation_engine.py">
+                    <Info/>
+                </File>
+                <File Location="find_disabled_links.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="top_parser.py">
+                    <Info/>
+                </File>
+                <File Location="seprtwbuild.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="interpretation_engine.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FixMfbVectorOutputs.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="translation_engine.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="top_parser.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ConfigSetTestModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BuildHook.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="parseXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="sharcPlusConfiguration.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PartitionGenerateOptions.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="sharcPlusERTConfiguration.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="top.py">
+                    <Info/>
+                </File>
+                <File Location="ELFParser.py">
+                    <Info/>
+                </File>
+                <File Location="tsp_parser.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="payload_parser.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="rtc_parser.py">
+                    <Info/>
+                </File>
+                <File Location="FixHandyTextBlockOrientation.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="partition_and_generate.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ert_shrlib_make_rtw_hook.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RtwToC99.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ext_port_model.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="VerifyModelConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="interpretation_engine.py">
+                    <Info/>
+                </File>
+                <File Location="createTuneFile.pl">
+                    <Info/>
+                </File>
+                <File Location="payload_parser.py">
+                    <Info/>
+                </File>
+                <File Location="symbol_table.py">
+                    <Info/>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="rtc_parser.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CreateBuildProject.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="generate_token_table.py">
+                    <Info/>
+                </File>
+                <File Location="tsp_parser.py">
+                    <Info/>
+                </File>
+                <File Location="sharcConfiguration.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="config_model_io.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="LockObfuscatingLibraries.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GenPartsModelCode.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CleanMyPathPlease.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="jsvn">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                    <File Location="jsvn.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="license.txt">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="dostat.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FindRogueTalariaBlocks.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="natsort">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                    <File Location="natsort.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="license.txt">
+                        <Info/>
+                    </File>
+                </File>
+            </File>
+            <Info/>
+            <DIR_SIGNIFIER Location="1">
+                <Info/>
+            </DIR_SIGNIFIER>
+            <File Location="config">
+                <File Location="BtcVariantEnum.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelDataXmlWriter.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ExtractModelBTC.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GenerateBtcMfileFromXml.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcBaseClass.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcGet.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="BtcTreeView">
+                    <Info/>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="IconProp24.png">
+                        <Info/>
+                    </File>
+                    <File Location="IconBtc24.png">
+                        <Info/>
+                    </File>
+                    <File Location="BtcTreeView.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="IconLock24.png">
+                        <Info/>
+                    </File>
+                    <File Location="IconObj24.png">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="replace_pq4paramVector_with_TOP_blocks.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="build_mex.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="extractHelp.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SaveTOP_Values.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="BtcLockAndDefaultClass.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneConfigClass.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PropertyEntry.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcUpgradeObservers.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="build_bdsp_system.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcBaseClassWithVariants.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="mex_bdsp_system.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="add_trivial_tune_to_TOP_blocks.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FindTuneVarBTC.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcVariant.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="xml-tidy.cfg">
+                    <Info/>
+                </File>
+                <File Location="ExportToTools.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ExtractModelBtcToolsExport.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcBreedBaseClass.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="Variant2BreedConversionHelper.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BtcBaseClassWithBreeds.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+            </File>
+            <File Location="mask">
+                <File Location="crc32MEX.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="MaskUtil.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DataMapHelper.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="MacroDefineHelper.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="copysignf.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="BTConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="Success.png">
+                    <Info/>
+                </File>
+                <File Location="CreateBTConfigWrap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RenameLibraryMaskParameters.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="db20.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AutomateMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="bose_asd_fit_image_to_mask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="crc32MEX.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DataMapUtil.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="Exclaim.png">
+                    <Info/>
+                </File>
+                <File Location="Warning.png">
+                    <Info/>
+                </File>
+                <File Location="UpdateOnlyStruct.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="crc32.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="undb20.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="IndirectAddressingHelper.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="LineTrace.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CscUtil.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RenameBaseWorkspaceParameters.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="HTML_to_Icon.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GlobalDataMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ProcessUnitMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AddOnlyStruct.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="LineTrace.p">
+                    <Info/>
+                </File>
+                <File Location="MaskUtil.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="partition">
+                <File Location="GetNextXmlElementNode.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateSyncApi.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="generateErrorsForDisabledLinks.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SetupOutputBuffers.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateAudioStatsHeaders.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SaveInactiveBlockPaths.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="assignAtomics.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateTspHeaders.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GetTopAtomic.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FinalizeTagModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EmptyInterpretationEngine.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="Workaround633.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BuildToSubDir.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="validateName.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CheckTranslationTriggers.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="getAtomicList.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateTopTokens.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createFileChecksums.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ColorModelCanvas.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AggregateTokens.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="addDoNotEdit.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateTopHeaders.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="compareChecksumsForBaseModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AddToFileChecksumMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="keepAndPrepare.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GetSourceModelUrls.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GetBuildDir.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SimPause.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="peerCodeFolder.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelFullName.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="synchCrossCoreBuffers.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelRootName.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EmptyTranslationEngine.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="deleteAndStub.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CreateTextFile.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateTspTokens.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PausedSimulationEnter.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SetupControlFolder.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="IndirectMapData.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregatePingPongBuffers.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="compareChecksumsForDerivedModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CreateIndirectAddressingMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateRtcHeaders.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateRtcTokens.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RedirectModelReferences.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="partitionModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="LoadPartsModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="getSubsystemPartitionInfo.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="GetModelChecksumMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="aggregateSchTokens.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createTheXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PausedSimulationExit.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createTranslationEngine.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="OpenPartsModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DoNotEdit.svg">
+                    <Info/>
+                </File>
+                <File Location="copyModel.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="getRateFactorMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AggregateText.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createSubModels.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="assertCoreIndexRole.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RemoveSubpaths.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ReplaceGeneratedCodeFile.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="readChecksumMaps.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="createInterpretationEngine.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="aggregateSchHeaders.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BaseWorkspaceLoad.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="BaseWorkspaceSave.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AddToFileChecksumMap.p">
+                    <Info/>
+                </File>
+                <File Location="AggregateText.p">
+                    <Info/>
+                </File>
+                <File Location="AggregateTokens.p">
+                    <Info/>
+                </File>
+                <File Location="BaseWorkspaceLoad.p">
+                    <Info/>
+                </File>
+                <File Location="BaseWorkspaceSave.p">
+                    <Info/>
+                </File>
+                <File Location="BuildToSubDir.p">
+                    <Info/>
+                </File>
+                <File Location="CheckTranslationTriggers.p">
+                    <Info/>
+                </File>
+                <File Location="ColorModelCanvas.p">
+                    <Info/>
+                </File>
+                <File Location="CreateIndirectAddressingMap.p">
+                    <Info/>
+                </File>
+                <File Location="CreateTextFile.p">
+                    <Info/>
+                </File>
+                <File Location="FinalizeTagModel.p">
+                    <Info/>
+                </File>
+                <File Location="GetBuildDir.p">
+                    <Info/>
+                </File>
+                <File Location="GetFileChecksumMap.p">
+                    <Info/>
+                </File>
+                <File Location="GetModelChecksumMap.p">
+                    <Info/>
+                </File>
+                <File Location="GetNextXmlElementNode.p">
+                    <Info/>
+                </File>
+                <File Location="GetSourceModelUrls.p">
+                    <Info/>
+                </File>
+                <File Location="GetTopAtomic.p">
+                    <Info/>
+                </File>
+                <File Location="IndirectMapData.p">
+                    <Info/>
+                </File>
+                <File Location="LoadPartsModel.p">
+                    <Info/>
+                </File>
+                <File Location="ModelFullName.p">
+                    <Info/>
+                </File>
+                <File Location="ModelRootName.p">
+                    <Info/>
+                </File>
+                <File Location="OpenPartsModel.p">
+                    <Info/>
+                </File>
+                <File Location="PausedSimulationEnter.p">
+                    <Info/>
+                </File>
+                <File Location="PausedSimulationExit.p">
+                    <Info/>
+                </File>
+                <File Location="RedirectModelReferences.p">
+                    <Info/>
+                </File>
+                <File Location="RemoveSubpaths.p">
+                    <Info/>
+                </File>
+                <File Location="ReplaceGeneratedCodeFile.p">
+                    <Info/>
+                </File>
+                <File Location="SaveInactiveBlockPaths.p">
+                    <Info/>
+                </File>
+                <File Location="SetupControlFolder.p">
+                    <Info/>
+                </File>
+                <File Location="SetupOutputBuffers.p">
+                    <Info/>
+                </File>
+                <File Location="Workaround633.p">
+                    <Info/>
+                </File>
+                <File Location="addDoNotEdit.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateAudioStatsHeaders.p">
+                    <Info/>
+                </File>
+                <File Location="aggregatePingPongBuffers.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateRtcHeaders.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateRtcTokens.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateSchHeaders.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateSchTokens.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateSyncApi.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateTopHeaders.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateTopTokens.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateTspHeaders.p">
+                    <Info/>
+                </File>
+                <File Location="aggregateTspTokens.p">
+                    <Info/>
+                </File>
+                <File Location="assertCoreIndexRole.p">
+                    <Info/>
+                </File>
+                <File Location="assignAtomics.p">
+                    <Info/>
+                </File>
+                <File Location="compareChecksumsForBaseModel.p">
+                    <Info/>
+                </File>
+                <File Location="compareChecksumsForDerivedModel.p">
+                    <Info/>
+                </File>
+                <File Location="copyModel.p">
+                    <Info/>
+                </File>
+                <File Location="createFileChecksums.p">
+                    <Info/>
+                </File>
+                <File Location="createInterpretationEngine.p">
+                    <Info/>
+                </File>
+                <File Location="createSubModels.p">
+                    <Info/>
+                </File>
+                <File Location="createTheXML.p">
+                    <Info/>
+                </File>
+                <File Location="createTranslationEngine.p">
+                    <Info/>
+                </File>
+                <File Location="deleteAndStub.p">
+                    <Info/>
+                </File>
+                <File Location="generateErrorsForDisabledLinks.p">
+                    <Info/>
+                </File>
+                <File Location="getAtomicList.p">
+                    <Info/>
+                </File>
+                <File Location="getRateFactorMap.p">
+                    <Info/>
+                </File>
+                <File Location="getSubsystemPartitionInfo.p">
+                    <Info/>
+                </File>
+                <File Location="keepAndPrepare.p">
+                    <Info/>
+                </File>
+                <File Location="partitionModel.p">
+                    <Info/>
+                </File>
+                <File Location="peerCodeFolder.p">
+                    <Info/>
+                </File>
+                <File Location="readChecksumMaps.p">
+                    <Info/>
+                </File>
+                <File Location="synchCrossCoreBuffers.p">
+                    <Info/>
+                </File>
+                <File Location="validateName.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="shortcuts">
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="ribbon">
+                    <File Location="resources">
+                        <File Location="icons">
+                            <File Location="data_mfb_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="see_btc_var_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="add_tunevars_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="module_notes_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="config_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="remove_highlights_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="talaria_wiki_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="white_right_arrow_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="var_config_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="bug_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="add_tunevars.pixil">
+                                <Info/>
+                            </File>
+                            <File Location="jira_32.png">
+                                <Info/>
+                            </File>
+                            <File Location="jira_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="reset_block_color_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="jira_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="see_btc_var_24.pixil">
+                                <Info/>
+                            </File>
+                            <File Location="auto_block_height_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="reset_block_size_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="chick_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="model_btc_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="mathworks_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="talaria_wiki_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="module_notes_24.png">
+                                <Info/>
+                            </File>
+                            <File Location="mathworks_24.png">
+                                <Info/>
+                            </File>
+                            <DIR_SIGNIFIER Location="1">
+                                <Info/>
+                            </DIR_SIGNIFIER>
+                            <File Location="param_mfb_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="oldNew_24.png">
+                                <Info/>
+                            </File>
+                            <Info/>
+                            <File Location="remove_dot_comments.png">
+                                <Info/>
+                            </File>
+                            <File Location="reset_block_color_16.png">
+                                <Info/>
+                            </File>
+                            <File Location="oldnew.xcf">
+                                <Info/>
+                            </File>
+                        </File>
+                        <File Location="json">
+                            <DIR_SIGNIFIER Location="1">
+                                <Info/>
+                            </DIR_SIGNIFIER>
+                            <Info/>
+                            <File Location="customTab_popups.json">
+                                <Info/>
+                            </File>
+                            <File Location="customTab_actions.json">
+                                <Info/>
+                            </File>
+                            <File Location="customTab.json">
+                                <Info/>
+                            </File>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="sl_toolstrip_plugins.json">
+                            <Info/>
+                        </File>
+                        <Info/>
+                    </File>
+                    <Info/>
+                    <File Location="openTalariaWiki.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="openModuleNotes.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="addMfbFuncTrigger.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="registerMfbDsms.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="openTalariaJira.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <File Location="clean_up_project.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="Matlab_22b.ico">
+                    <Info/>
+                </File>
+                <File Location="open_parent_project.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="open_parent_project.png">
+                    <Info/>
+                </File>
+                <File Location="22b.png">
+                    <Info/>
+                </File>
+                <File Location="CheckTalariaRibbonVersion.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="set_up_project.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="open_parent_project.svg">
+                    <Info/>
+                </File>
+                <File Location="TouchPfiles.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+            </File>
+            <File Location="test">
+                <File Location="runTestMethods.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="TalariaTest.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="test"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+            </File>
+            <File Location="release">
+                <File Location="ObfuscationRelease.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="SelectiveDeleteProtect.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="RunTalariaTests.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ObfuscationRelease.p">
+                    <Info/>
+                </File>
+            </File>
+        </File>
+        <File Location="lib">
+            <File Location="slblocks.m">
+                <Info>
+                    <Category UUID="FileClassCategory">
+                        <Label UUID="design"/>
+                    </Category>
+                </Info>
+            </File>
+            <File Location="state">
+                <Info/>
+                <File Location="StateVar.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="StateVarCreateXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InterpretTrigger.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="interpretation_dll.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_statevar_access.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_interpret_trigger.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="StateVarMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TrivialInterpretationMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ConfigSetInterpretationEngineDll64.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InterpretTrigger.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InterpretTriggerMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_interpret_dll.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="StateVarCommon.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ConfigSetInterpretationEngineDll32.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="StateVarSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="InterpretError.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="StateVarSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EmptyInterpretation.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="fixdtNameParse_c">
+                    <Info/>
+                </File>
+                <File Location="TargetStateVarMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InterpretTriggerMask.p">
+                    <Info/>
+                </File>
+                <File Location="StateVarCreateXML.p">
+                    <Info/>
+                </File>
+                <File Location="StateVarMask.p">
+                    <Info/>
+                </File>
+                <File Location="StateVarSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="TargetStateVarMask.p">
+                    <Info/>
+                </File>
+                <File Location="TrivialInterpretationMask.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="util">
+                <File Location="ModelSyncApiSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="handy_templates">
+                    <File Location="Enum">
+                        <Info/>
+                    </File>
+                    <File Location="VariantEnum">
+                        <Info/>
+                    </File>
+                    <File Location="VariantConfig">
+                        <Info/>
+                    </File>
+                    <File Location="Case">
+                        <Info/>
+                    </File>
+                    <Info/>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="TuneConfig">
+                        <Info/>
+                    </File>
+                    <File Location="Config">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="HandyTextFile.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="HandyTextFileMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaParentModel.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="talariaVersion.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelInitializeMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaApiBufferAccess.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="HW_Verify.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="ModelRootOutportConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SyncApiTypeSetup.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeatureVersionMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelSyncApiSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaApiBufferMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="HW_Verify_SFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelExtMask.svg">
+                    <Info/>
+                </File>
+                <File Location="EdgePorts.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SvnInfoMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CompatHash.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelRootInportMask.svg">
+                    <Info/>
+                </File>
+                <File Location="TalariaApiBufferBuildTimeConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="ExtPortSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeatureVersion.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelExtInConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SetDsm.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaApiBuffer.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaApiBufferBTConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InportBT_Mask.svg">
+                    <Info/>
+                </File>
+                <File Location="ModelRootInportConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ExtPortSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InportBuildTimeConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_HW_Verify.h">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_HW_Verify.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaParentModelMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="HW_Verify_SFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelInitializeSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaParentModelSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaApiBufferBTMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CompatHashMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelInitialize.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SvnInfoConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ModelInitializeSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="SvnInfo.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InportBTConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TalariaParentModelSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DsmCheatRead">
+                    <Info/>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="DsmCheatReadSFunc.tlc">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="DsmCheatRead.slx">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="DsmCheatReadConfig.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="DsmCheatReadSFunc.mexw64">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="derived"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <File Location="InsertLockCodeSfunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InsertLockCodeSfunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CompatHashMask.p">
+                    <Info/>
+                </File>
+                <File Location="ExtPortSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="FeatureVersionMask.p">
+                    <Info/>
+                </File>
+                <File Location="HW_Verify_SFunc.p">
+                    <Info/>
+                </File>
+                <File Location="HandyTextFileMask.p">
+                    <Info/>
+                </File>
+                <File Location="IconTalariaApiBufferMask.p">
+                    <Info/>
+                </File>
+                <File Location="InsertLockCodeSfunc.p">
+                    <Info/>
+                </File>
+                <File Location="ModelInitializeMask.p">
+                    <Info/>
+                </File>
+                <File Location="ModelInitializeSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="ModelSyncApiSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="SvnInfoMask.p">
+                    <Info/>
+                </File>
+                <File Location="TalariaApiBufferBTMask.p">
+                    <Info/>
+                </File>
+                <File Location="TalariaApiBufferMask.p">
+                    <Info/>
+                </File>
+                <File Location="TalariaParentModelMask.p">
+                    <Info/>
+                </File>
+                <File Location="TalariaParentModelSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="talariaVersion.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="top">
+                <File Location="TOP_Indirect.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EvalToFlatNumeric.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TOP_Mask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TOP.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TOP_Access.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TOP_Common.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TOP_MEX.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TOP_Direct.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TOP_Direct.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TOP_RcvTrans.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TOP_Indirect.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="fixdtNameParse_c">
+                    <Info/>
+                </File>
+                <File Location="tlc_TOP_Console.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DumpTopExternalIntegrationXml.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="TOP_MEX.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="DumpTopExternalIntegrationXml.p">
+                    <Info/>
+                </File>
+                <File Location="EvalToFlatNumeric.p">
+                    <Info/>
+                </File>
+                <File Location="TOP_Mask.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="+Bose">
+                <File Location="@CSCAttrib_ApiBuffer">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                    <File Location="CSCAttrib_ApiBuffer.p">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="@Signal">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                    <File Location="Signal.p">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="@TOP">
+                    <Info/>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="TOP.p">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="@CSCAttrib_BoseFlatStructure">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                    <File Location="CSCAttrib_BoseFlatStructure.p">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="tlc">
+                    <File Location="BoseFlatStructure.tlc">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="BoseUnstructured.tlc">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                </File>
+                <File Location="csc_registration.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+            </File>
+            <File Location="feature_path">
+                <File Location="tlc_SCH_Payloads.xml">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="PartitionSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AsyncConsoleOption.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CoreIndexConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PartitionSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathUtil.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AsyncSIL_SFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CoreIndexSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathCreateAllXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CoreIndexMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathCreateModulesXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_ASDID_Indirect.h">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_ASDID.h">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PartitionMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CoreIndexSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePath_SFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CoreIndexAddressingModeEnum.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="FeaturePath.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePath_SFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_AsyncConsole.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathCommon.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="OverlayGroupMap.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_SchTokenApi.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AsyncSIL_SFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PartitionCommon.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AsyncConsoleMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="FeaturePathManager.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RtcManager.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TspManager.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AsyncConsoleMask.p">
+                    <Info/>
+                </File>
+                <File Location="AsyncConsoleOption.p">
+                    <Info/>
+                </File>
+                <File Location="AsyncSIL_SFunc.p">
+                    <Info/>
+                </File>
+                <File Location="CoreIndexAddressingModeEnum.p">
+                    <Info/>
+                </File>
+                <File Location="CoreIndexMask.p">
+                    <Info/>
+                </File>
+                <File Location="CoreIndexSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePathCreateAllXML.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePathCreateModulesXML.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePathManager.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePathMask.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePathUtil.p">
+                    <Info/>
+                </File>
+                <File Location="FeaturePath_SFunc.p">
+                    <Info/>
+                </File>
+                <File Location="OverlayGroupMap.p">
+                    <Info/>
+                </File>
+                <File Location="PartitionMask.p">
+                    <Info/>
+                </File>
+                <File Location="PartitionSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="RtcManager.p">
+                    <Info/>
+                </File>
+                <File Location="TspManager.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="tune">
+                <File Location="TranslateTrigger.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_translate_trigger.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CapturedConst.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneTOP_Mask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="tlc_translate_dll.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ConfigSetTranslationEngineDll32.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CapturedConst.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="TuneVarMEX.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_tunevar_access.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TranslateTrigger.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EmptyTranslation.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVarReadXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TranslateWarning.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TrivialTranslationMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="translation_dll.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVar.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CapturedConstMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVarMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVarMEX.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TranslateError.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVarCreateXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TuneVarCommon.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ConfigSetTranslationEngineDll64.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TranslateTriggerMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CapturedConstLib.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CapturedConstMask.p">
+                    <Info/>
+                </File>
+                <File Location="TranslateTriggerMask.p">
+                    <Info/>
+                </File>
+                <File Location="TrivialTranslationMask.p">
+                    <Info/>
+                </File>
+                <File Location="TuneTOP_Mask.p">
+                    <Info/>
+                </File>
+                <File Location="TuneVarCreateXML.p">
+                    <Info/>
+                </File>
+                <File Location="TuneVarMask.p">
+                    <Info/>
+                </File>
+                <File Location="TuneVarReadXML.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="audio_stats">
+                <File Location="AudioStatsFunc_MEX.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AudioStats_MEX.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="AudioStats_MEX.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AudioStats.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AudioStatsFunc_MEX.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AudioStatsFuncMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="AudioStatsMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="AudioStatsFuncMask.p">
+                    <Info/>
+                </File>
+                <File Location="AudioStatsMask.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="tsp">
+                <File Location="TSP_AsyncConsole.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TSP_AsyncConsole.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_SFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_TSP_Capture.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_CreateXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_Mask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="TSP_Capture.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_CaptureControlMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_SFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="tlc_TSP_Interpret.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_Common.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_Interpret.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="TSP_CaptureControlMask.p">
+                    <Info/>
+                </File>
+                <File Location="TSP_CreateXML.p">
+                    <Info/>
+                </File>
+                <File Location="TSP_Mask.p">
+                    <Info/>
+                </File>
+                <File Location="TSP_SFunc.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="rtc">
+                <File Location="RTC_REQ_RSP.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_RTC_Handler.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_RTC_Console.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_CreateXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EventList.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_BytePack.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_SimData.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_RTC_doxygen.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_Common.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="RTC_NTF.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_BytePackMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_NTF.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_Mask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_REQ_RSP.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC_BytePack.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="tlc_NTF_Handler.c">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="RTC.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="EventList.p">
+                    <Info/>
+                </File>
+                <File Location="RTC_BytePackMask.p">
+                    <Info/>
+                </File>
+                <File Location="RTC_CreateXML.p">
+                    <Info/>
+                </File>
+                <File Location="RTC_Mask.p">
+                    <Info/>
+                </File>
+                <File Location="RTC_SimData.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="itc">
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="InitTriggerControl.mexw64">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="derived"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InitTriggerControlMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InitTriggerControl.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="ITC.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="InitTriggerControlMask.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="pingpong">
+                <File Location="CrossCoreApiEnum.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CrossCoreConfig.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongControlMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="PingPongXmlMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongXmlSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongControl.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongControlSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="PingPongXml.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CrossCoreAllocationEnum.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongXmlSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongRecvSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongRecvSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongControlSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="PingPongCreateBlockMapXML.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CrossCoreAllocationEnum.p">
+                    <Info/>
+                </File>
+                <File Location="CrossCoreApiEnum.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongControlMask.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongControlSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongCreateBlockMapXML.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongRecvSFunc.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongXmlMask.p">
+                    <Info/>
+                </File>
+                <File Location="PingPongXmlSFunc.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="crosscore">
+                <File Location="CrossCoreControlMask.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <File Location="CrossCoreControl.slx">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="CrossCoreControlSFunc.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CrossCoreControlSFunc.tlc">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <File Location="CrossCoreControlMask.p">
+                    <Info/>
+                </File>
+                <File Location="CrossCoreControlSFunc.p">
+                    <Info/>
+                </File>
+            </File>
+            <File Location="BoseTalaria.slx">
+                <Info>
+                    <Category UUID="FileClassCategory">
+                        <Label UUID="design"/>
+                    </Category>
+                </Info>
+            </File>
+            <Info/>
+            <DIR_SIGNIFIER Location="1">
+                <Info/>
+            </DIR_SIGNIFIER>
+        </File>
+        <File Location="arch">
+            <File Location="x86">
+                <File Location="toolchain">
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="registry">
+                        <File Location="mingw_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <Info/>
+                        <File Location="get_mingw_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="mingw_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                    </File>
+                    <Info/>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <Info/>
+            </File>
+            <File Location="hifi4_rt685">
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="toolchain">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="registry">
+                        <File Location="hifi4_rt685_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="hifi4_rt685_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="get_hifi4_rt685_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <Info/>
+                    </File>
+                    <Info/>
+                </File>
+            </File>
+            <File Location="sharc_plus">
+                <File Location="toolchain">
+                    <File Location="registry">
+                        <Info/>
+                        <File Location="adsp_sc58x_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="get_sc58x_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="adsp_sc58x_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                    </File>
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                </File>
+                <File Location="+SharcPlusPILConfig">
+                    <File Location="rtiostream_file.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="ConnectivityConfig.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location=".vscode">
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="c_cpp_properties.json">
+                            <Info/>
+                        </File>
+                        <File Location="tasks.json">
+                            <Info/>
+                        </File>
+                        <Info/>
+                    </File>
+                    <Info/>
+                    <File Location="Utils.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="TargetApplicationFramework.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="rtiostream.h">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="librtiostream_file.dll">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="derived"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="Launcher.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="build_librtiostream_file.bat">
+                        <Info/>
+                    </File>
+                </File>
+                <File Location="build">
+                    <File Location="profile_model_in_cces.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="profiling_memory_baseline.mat">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <Info/>
+                    <File Location="Makefile">
+                        <Info/>
+                    </File>
+                    <File Location="test.ldf">
+                        <Info/>
+                    </File>
+                    <File Location="register_profile_sharc_plus.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="test.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                </File>
+                <File Location="sl_customization.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+            </File>
+            <File Location="sharc_plus_glxp">
+                <File Location="toolchain">
+                    <File Location="registry">
+                        <File Location="adsp_sc59x_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="get_sc59x_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <Info/>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="adsp_sc59x_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <Info/>
+                </File>
+                <File Location="+GLXPPILConfig">
+                    <File Location="rtiostream.h">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location=".vscode">
+                        <File Location="c_cpp_properties.json">
+                            <Info/>
+                        </File>
+                        <File Location="tasks.json">
+                            <Info/>
+                        </File>
+                        <Info/>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                    </File>
+                    <File Location="rtiostream_file.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="build_librtiostream_file.bat">
+                        <Info/>
+                    </File>
+                    <File Location="Utils.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="ConnectivityConfig.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Launcher.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="TargetApplicationFramework.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <Info/>
+                    <File Location="librtiostream_file.dll">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="derived"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <File Location="build">
+                    <File Location="test.ldf">
+                        <Info/>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="profiling_memory_baseline.mat">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Makefile">
+                        <Info/>
+                    </File>
+                    <Info/>
+                    <File Location="profile_model_glxp_in_cces.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="register_profile_sharc_plus_glxp.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="test.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <File Location="sl_customization.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+                <Info/>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+            </File>
+            <File Location="gul">
+                <File Location="toolchain">
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="registry">
+                        <File Location="get_adsp_2156x_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="adsp_2156x_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <Info/>
+                        <File Location="adsp_2156x_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                    </File>
+                    <Info/>
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <File Location="+GULPILConfig">
+                    <File Location="TargetApplicationFramework.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location=".vscode">
+                        <Info/>
+                        <File Location="c_cpp_properties.json">
+                            <Info/>
+                        </File>
+                        <File Location="tasks.json">
+                            <Info/>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                    </File>
+                    <File Location="build_librtiostream_file.bat">
+                        <Info/>
+                    </File>
+                    <File Location="rtiostream_file.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Launcher.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <Info/>
+                    <File Location="ConnectivityConfig.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="rtiostream.h">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="librtiostream_file.dll">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="derived"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Utils.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                </File>
+                <Info/>
+                <File Location="build">
+                    <File Location="test.ldf">
+                        <Info/>
+                    </File>
+                    <File Location="profile_model_gul_in_cces.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="test.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="profiling_memory_baseline.mat">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="register_profile_gul.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <Info/>
+                    <File Location="Makefile">
+                        <Info/>
+                    </File>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <File Location="sl_customization.m">
+                    <Info>
+                        <Category UUID="FileClassCategory">
+                            <Label UUID="design"/>
+                        </Category>
+                    </Info>
+                </File>
+            </File>
+            <File Location="sharc">
+                <File Location="build">
+                    <File Location="test.c">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Makefile">
+                        <Info/>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <File Location="test.ldf">
+                        <Info/>
+                    </File>
+                    <File Location="run_vdsp_project.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="register_profile_sharc.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="profiling_memory_baseline.mat">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="profile_model_in_vdsp.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="build_vdsp_project.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <File Location="Template.dpj">
+                        <Info/>
+                    </File>
+                    <Info/>
+                </File>
+                <File Location="toolchain">
+                    <File Location="registry">
+                        <Info/>
+                        <File Location="vdsp_tc.mat">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="rtwTargetInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <File Location="get_vdsp_ToolChainInfo.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                        <DIR_SIGNIFIER Location="1">
+                            <Info/>
+                        </DIR_SIGNIFIER>
+                        <File Location="vdsp_tc.m">
+                            <Info>
+                                <Category UUID="FileClassCategory">
+                                    <Label UUID="design"/>
+                                </Category>
+                            </Info>
+                        </File>
+                    </File>
+                    <File Location="create_toolchain.m">
+                        <Info>
+                            <Category UUID="FileClassCategory">
+                                <Label UUID="design"/>
+                            </Category>
+                        </Info>
+                    </File>
+                    <DIR_SIGNIFIER Location="1">
+                        <Info/>
+                    </DIR_SIGNIFIER>
+                    <Info/>
+                </File>
+                <DIR_SIGNIFIER Location="1">
+                    <Info/>
+                </DIR_SIGNIFIER>
+                <Info/>
+            </File>
+            <File Location="registerTargetProcessors.m">
+                <Info>
+                    <Category UUID="FileClassCategory">
+                        <Label UUID="design"/>
+                    </Category>
+                </Info>
+            </File>
+            <Info/>
+            <DIR_SIGNIFIER Location="1">
+                <Info/>
+            </DIR_SIGNIFIER>
+            <File Location="removeTargetProcessors.m">
+                <Info>
+                    <Category UUID="FileClassCategory">
+                        <Label UUID="design"/>
+                    </Category>
+                </Info>
+            </File>
+        </File>
+    </Files>
+    <ProjectPath Location="Root">
+        <Reference Location="90edf196-2541-4c31-bd85-ed3dee407dac">
+            <Info Ref="arch/sharc_plus/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="542670dc-030b-48f4-af0c-29f6e941f590">
+            <Info Ref="arch/gul/build" Type="Relative"/>
+        </Reference>
+        <Reference Location="6150742d-bd0b-42bf-9b6a-b1febde0f6f0">
+            <Info Ref="arch/gul" Type="Relative"/>
+        </Reference>
+        <Reference Location="c00cadb1-01a6-4877-a8cc-03b79d7ed5d8">
+            <Info Ref="arch/sharc/build" Type="Relative"/>
+        </Reference>
+        <Reference Location="eed660f5-bea9-4b30-a22f-865d70e58ab4">
+            <Info Ref="arch/gul/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="7c4fa909-5229-42fa-a080-76a9287ae1c8">
+            <Info Ref="arch/sharc_plus_glxp/build" Type="Relative"/>
+        </Reference>
+        <Reference Location="f234effc-a6e8-485d-9c1b-33396871a398">
+            <Info Ref="arch/hifi4_rt685/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="5d8cf4de-55c3-4526-ae9a-e0e5c00b77e2">
+            <Info Ref="arch/x86/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="aa868a43-4acf-4b3e-ae2a-1263c81bce9f">
+            <Info Ref="arch/sharc/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="127504e6-b340-47db-9357-81f0a51c83a5">
+            <Info Ref="arch" Type="Relative"/>
+        </Reference>
+        <Reference Location="5ca459e5-5b38-4606-ad04-760522b32218">
+            <Info Ref="arch/sharc_plus/build" Type="Relative"/>
+        </Reference>
+        <Reference Location="aa087778-de02-438d-9f11-cc9f0fbdcd3b">
+            <Info Ref="arch/sharc" Type="Relative"/>
+        </Reference>
+        <Reference Location="f37da2b5-a9aa-42e0-8adc-a9a978a6aaa3">
+            <Info Ref="arch/sharc_plus" Type="Relative"/>
+        </Reference>
+        <Reference Location="5cb75f37-2a23-4ff0-9378-6ddb315f0d10">
+            <Info Ref="arch/sharc_plus_glxp" Type="Relative"/>
+        </Reference>
+        <Reference Location="8d9d84fc-b89b-4529-9647-e5696bcced01">
+            <Info Ref="arch/sharc_plus_glxp/toolchain/registry" Type="Relative"/>
+        </Reference>
+        <Reference Location="9d6ed8a9-7151-4bb7-9f77-187d1a3b09d7">
+            <Info Ref="lib" Type="Relative"/>
+        </Reference>
+        <Reference Location="f2462614-d39c-4851-88a9-39dac318b052">
+            <Info Ref="lib/pingpong" Type="Relative"/>
+        </Reference>
+        <Reference Location="8a103913-56f4-4c81-9685-558f5977764b">
+            <Info Ref="lib/audio_stats" Type="Relative"/>
+        </Reference>
+        <Reference Location="246a6754-cc5e-4267-b357-e543be6bb898">
+            <Info Ref="lib/top" Type="Relative"/>
+        </Reference>
+        <Reference Location="3615fdca-9700-4dc1-a2a5-5c6d0656cd1c">
+            <Info Ref="lib/feature_path" Type="Relative"/>
+        </Reference>
+        <Reference Location="b6d37c13-4f0d-49b6-9b05-87de974add74">
+            <Info Ref="lib/tsp" Type="Relative"/>
+        </Reference>
+        <Reference Location="e661bc71-ebbf-4b1f-b86d-d0a9329975e3">
+            <Info Ref="lib/tune" Type="Relative"/>
+        </Reference>
+        <Reference Location="71616c34-b658-40f8-96b0-a1505afaede9">
+            <Info Ref="lib/itc" Type="Relative"/>
+        </Reference>
+        <Reference Location="557069e2-9480-4e5f-a111-4b4172ee4ada">
+            <Info Ref="lib/util/handy_templates" Type="Relative"/>
+        </Reference>
+        <Reference Location="823f975f-16d9-4bca-ab50-982e16e4a207">
+            <Info Ref="lib/crosscore" Type="Relative"/>
+        </Reference>
+        <Reference Location="5737b391-a082-4459-bcbc-381b86a44d20">
+            <Info Ref="lib/state" Type="Relative"/>
+        </Reference>
+        <Reference Location="4ea368e8-8f96-4dac-8c1c-f26ef3664788">
+            <Info Ref="lib/util" Type="Relative"/>
+        </Reference>
+        <Reference Location="b5584e9c-617b-4453-ac94-5cc80f9ce77b">
+            <Info Ref="lib/rtc" Type="Relative"/>
+        </Reference>
+        <Reference Location="238d88c6-2536-404a-8fff-1415ca93e54b">
+            <Info Ref="util/test" Type="Relative"/>
+        </Reference>
+        <Reference Location="910338fb-730d-487e-a4ad-d7855bbd21f6">
+            <Info Ref="util/partition" Type="Relative"/>
+        </Reference>
+        <Reference Location="59828cd4-d941-4b3c-94cd-24ea0704de54">
+            <Info Ref="util/build" Type="Relative"/>
+        </Reference>
+        <Reference Location="d638f888-3a41-4c71-af2d-bdc9314e08bd">
+            <Info Ref="util/shortcuts" Type="Relative"/>
+        </Reference>
+        <Reference Location="345438c5-7739-4554-b52c-d05fa116d086">
+            <Info Ref="util/shortcuts/ribbon" Type="Relative"/>
+        </Reference>
+        <Reference Location="8f655c39-8d21-4d46-b7ae-bfc79b61abba">
+            <Info Ref="util" Type="Relative"/>
+        </Reference>
+        <Reference Location="9f3920fa-fd91-42ce-90c9-b9e14dc62e83">
+            <Info Ref="util/config/BtcTreeView" Type="Relative"/>
+        </Reference>
+        <Reference Location="75e9696f-a85a-40f6-839d-98619676866b">
+            <Info Ref="util/mask" Type="Relative"/>
+        </Reference>
+        <Reference Location="0372eaa3-5fa2-4773-9fb8-f427c9bb3b31">
+            <Info Ref="util/config" Type="Relative"/>
+        </Reference>
+        <Reference Location="b0acafd9-4818-4d38-af5c-c21035c74b84">
+            <Info Ref="util/release" Type="Relative"/>
+        </Reference>
+        <Reference Location="7be19a22-05cb-4d30-8c0a-9d31026ba830">
+            <Info Ref="util/build/jsvn" Type="Relative"/>
+        </Reference>
+        <Reference Location="1688278f-8aec-4d83-ada1-a8945e9e3dd3">
+            <Info Ref="lib/util/DsmCheatRead" Type="Relative"/>
+        </Reference>
+        <Reference Location="2f78ad1d-f806-4889-9718-69cdb0c8c9ea">
+            <Info Ref="util/build/natsort" Type="Relative"/>
+        </Reference>
+    </ProjectPath>
+    <Root Location="Extensions">
+        <Extension Location="Information">
+            <Info description="Talaria core module consisting of the following elements:&#xa;- arch&#xa;  - toolchain integrations&#xa;- lib&#xa;  - custom simulink blocks and block library&#xa;  - &quot;Bose&quot; package with custom storage classes&#xa;- util&#xa;  - model partitioning tools&#xa;  - classdefs for build-time configuration&#xa;  - classdefs for testing with simulated RTC events&#xa;  - TALARIA custom ribbon bar&#xa;  - test wrappers in MATLAB and Python for translation and interpretation engines&#xa;  - other utilities&#xa;&#xa;"/>
+        </Extension>
+    </Root>
+    <WorkingFolders Location="Root">
+        <Reference Location="SimulinkCacheFolder">
+            <Info Ref="work" Type="Relative"/>
+        </Reference>
+        <Reference Location="SimulinkCodeGenFolder">
+            <Info Ref="work" Type="Relative"/>
+        </Reference>
+    </WorkingFolders>
+    <EnvironmentCustomizations Location="Root">
+        <Command Location="environment.slCustomization">
+            <Info Value="true"/>
+        </Command>
+    </EnvironmentCustomizations>
+</project>

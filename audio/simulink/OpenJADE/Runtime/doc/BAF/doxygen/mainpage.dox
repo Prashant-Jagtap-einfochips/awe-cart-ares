@@ -1,0 +1,19 @@
+/*! @mainpage BAF API
+
+@tableofcontents
+
+@section baf_intro_sec Introduction
+
+// @image html OpenJADE.jpg
+
+Welcome to the <em>BAF (Bose Audio Framework)  API.</em> BAF provides interface for the Customer Integrator to the OpenJADE Audio Framework.
+
+
+@section baf_module_sec BAF Modules
+
+// @image html baf.jpg
+
+@section baf_sequence_sec BAF Usage Example
+
+// @image html baf_sequence.jpg
+*/

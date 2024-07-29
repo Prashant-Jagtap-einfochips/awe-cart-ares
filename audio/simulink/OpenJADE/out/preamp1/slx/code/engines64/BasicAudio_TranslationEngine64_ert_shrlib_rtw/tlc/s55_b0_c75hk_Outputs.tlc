@@ -1,0 +1,567 @@
+%implements s55_b0_c75hk_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcOutputsFcnOfS14B0 = OpaqueTLCBlockFcn("Outputs", 14, 0, 28, 1, 0)
+%assign tlcOutputsFcnOfS14B1 = OpaqueTLCBlockFcn("Outputs", 14, 1, 28, 1, 1)
+%assign tlcOutputsFcnOfS14B4 = OpaqueTLCBlockFcn("Outputs", 14, 4, 28, 1, 2)
+%assign tlcOutputsFcnOfS14B5 = OpaqueTLCBlockFcn("Outputs", 14, 5, 28, 1, 3)
+%assign tlcOutputsFcnOfS14B6 = OpaqueTLCBlockFcn("Outputs", 14, 6, 28, 1, 4)
+%assign tlcOutputsFcnOfS14B9 = OpaqueTLCBlockFcn("Outputs", 14, 9, 28, 1, 5)
+%assign tlcOutputsFcnOfS14B10 = OpaqueTLCBlockFcn("Outputs", 14, 10, 28, 1, 6)
+%assign tlcOutputsFcnOfS14B11 = OpaqueTLCBlockFcn("Outputs", 14, 11, 28, 1, 7)
+%assign tlcOutputsFcnOfS14B14 = OpaqueTLCBlockFcn("Outputs", 14, 14, 28, 1, 8)
+%assign tlcOutputsFcnOfS14B15 = OpaqueTLCBlockFcn("Outputs", 14, 15, 28, 1, 9)
+%assign tlcOutputsFcnOfS14B16 = OpaqueTLCBlockFcn("Outputs", 14, 16, 28, 1, 10)
+%assign tlcOutputsFcnOfS14B19 = OpaqueTLCBlockFcn("Outputs", 14, 19, 28, 1, 11)
+%assign tlcOutputsFcnOfS14B20 = OpaqueTLCBlockFcn("Outputs", 14, 20, 28, 1, 12)
+%assign tlcOutputsFcnOfS14B21 = OpaqueTLCBlockFcn("Outputs", 14, 21, 28, 1, 13)
+%assign tlcOutputsFcnOfS14B24 = OpaqueTLCBlockFcn("Outputs", 14, 24, 28, 1, 14)
+%assign tlcOutputsFcnOfS14B25 = OpaqueTLCBlockFcn("Outputs", 14, 25, 28, 1, 15)
+%assign tlcOutputsFcnOfS14B26 = OpaqueTLCBlockFcn("Outputs", 14, 26, 28, 1, 16)
+%assign tlcOutputsFcnOfS14B29 = OpaqueTLCBlockFcn("Outputs", 14, 29, 28, 1, 17)
+%assign tlcOutputsFcnOfS14B30 = OpaqueTLCBlockFcn("Outputs", 14, 30, 28, 1, 18)
+%assign tlcOutputsFcnOfS14B31 = OpaqueTLCBlockFcn("Outputs", 14, 31, 28, 1, 19)
+%assign tlcOutputsFcnOfS14B34 = OpaqueTLCBlockFcn("Outputs", 14, 34, 28, 1, 20)
+%assign tlcOutputsFcnOfS14B35 = OpaqueTLCBlockFcn("Outputs", 14, 35, 28, 1, 21)
+%assign tlcOutputsFcnOfS14B36 = OpaqueTLCBlockFcn("Outputs", 14, 36, 28, 1, 22)
+%assign tlcOutputsFcnOfS27B0 = OpaqueTLCBlockFcn("Outputs", 27, 0, 28, 1, 23)
+%assign tlcOutputsFcnOfS27B1 = OpaqueTLCBlockFcn("Outputs", 27, 1, 28, 1, 24)
+%assign tlcOutputsFcnOfS27B4 = OpaqueTLCBlockFcn("Outputs", 27, 4, 28, 1, 25)
+%assign tlcOutputsFcnOfS27B5 = OpaqueTLCBlockFcn("Outputs", 27, 5, 28, 1, 26)
+%assign tlcOutputsFcnOfS27B6 = OpaqueTLCBlockFcn("Outputs", 27, 6, 28, 1, 27)
+%assign tlcOutputsFcnOfS27B9 = OpaqueTLCBlockFcn("Outputs", 27, 9, 28, 1, 28)
+%assign tlcOutputsFcnOfS27B10 = OpaqueTLCBlockFcn("Outputs", 27, 10, 28, 1, 29)
+%assign tlcOutputsFcnOfS27B11 = OpaqueTLCBlockFcn("Outputs", 27, 11, 28, 1, 30)
+%assign tlcOutputsFcnOfS27B14 = OpaqueTLCBlockFcn("Outputs", 27, 14, 28, 1, 31)
+%assign tlcOutputsFcnOfS27B15 = OpaqueTLCBlockFcn("Outputs", 27, 15, 28, 1, 32)
+%assign tlcOutputsFcnOfS27B16 = OpaqueTLCBlockFcn("Outputs", 27, 16, 28, 1, 33)
+%assign tlcOutputsFcnOfS27B19 = OpaqueTLCBlockFcn("Outputs", 27, 19, 28, 1, 34)
+%assign tlcOutputsFcnOfS27B20 = OpaqueTLCBlockFcn("Outputs", 27, 20, 28, 1, 35)
+%assign tlcOutputsFcnOfS27B21 = OpaqueTLCBlockFcn("Outputs", 27, 21, 28, 1, 36)
+%assign tlcOutputsFcnOfS27B24 = OpaqueTLCBlockFcn("Outputs", 27, 24, 28, 1, 37)
+%assign tlcOutputsFcnOfS27B25 = OpaqueTLCBlockFcn("Outputs", 27, 25, 28, 1, 38)
+%assign tlcOutputsFcnOfS27B26 = OpaqueTLCBlockFcn("Outputs", 27, 26, 28, 1, 39)
+%assign tlcOutputsFcnOfS27B29 = OpaqueTLCBlockFcn("Outputs", 27, 29, 28, 1, 40)
+%assign tlcOutputsFcnOfS27B30 = OpaqueTLCBlockFcn("Outputs", 27, 30, 28, 1, 41)
+%assign tlcOutputsFcnOfS27B31 = OpaqueTLCBlockFcn("Outputs", 27, 31, 28, 1, 42)
+%assign tlcOutputsFcnOfS27B34 = OpaqueTLCBlockFcn("Outputs", 27, 34, 28, 1, 43)
+%assign tlcOutputsFcnOfS27B35 = OpaqueTLCBlockFcn("Outputs", 27, 35, 28, 1, 44)
+%assign tlcOutputsFcnOfS30B0 = OpaqueTLCBlockFcn("Outputs", 30, 0, 28, 1, 45)
+%assign tlcOutputsFcnOfS30B1 = OpaqueTLCBlockFcn("Outputs", 30, 1, 28, 1, 46)
+%assign tlcOutputsFcnOfS30B4 = OpaqueTLCBlockFcn("Outputs", 30, 4, 28, 1, 47)
+%assign tlcOutputsFcnOfS30B5 = OpaqueTLCBlockFcn("Outputs", 30, 5, 28, 1, 48)
+%assign tlcOutputsFcnOfS42B0 = OpaqueTLCBlockFcn("Outputs", 42, 0, 28, 1, 49)
+%assign tlcOutputsFcnOfS42B1 = OpaqueTLCBlockFcn("Outputs", 42, 1, 28, 1, 50)
+%assign tlcOutputsFcnOfS42B4 = OpaqueTLCBlockFcn("Outputs", 42, 4, 28, 1, 51)
+%assign tlcOutputsFcnOfS42B5 = OpaqueTLCBlockFcn("Outputs", 42, 5, 28, 1, 52)
+%assign tlcOutputsFcnOfS42B6 = OpaqueTLCBlockFcn("Outputs", 42, 6, 28, 1, 53)
+%assign tlcOutputsFcnOfS42B9 = OpaqueTLCBlockFcn("Outputs", 42, 9, 28, 1, 54)
+%assign tlcOutputsFcnOfS42B10 = OpaqueTLCBlockFcn("Outputs", 42, 10, 28, 1, 55)
+%assign tlcOutputsFcnOfS42B11 = OpaqueTLCBlockFcn("Outputs", 42, 11, 28, 1, 56)
+%assign tlcOutputsFcnOfS42B14 = OpaqueTLCBlockFcn("Outputs", 42, 14, 28, 1, 57)
+%assign tlcOutputsFcnOfS42B15 = OpaqueTLCBlockFcn("Outputs", 42, 15, 28, 1, 58)
+%assign tlcOutputsFcnOfS42B16 = OpaqueTLCBlockFcn("Outputs", 42, 16, 28, 1, 59)
+%assign tlcOutputsFcnOfS42B19 = OpaqueTLCBlockFcn("Outputs", 42, 19, 28, 1, 60)
+%assign tlcOutputsFcnOfS42B20 = OpaqueTLCBlockFcn("Outputs", 42, 20, 28, 1, 61)
+%assign tlcOutputsFcnOfS42B21 = OpaqueTLCBlockFcn("Outputs", 42, 21, 28, 1, 62)
+%assign tlcOutputsFcnOfS42B24 = OpaqueTLCBlockFcn("Outputs", 42, 24, 28, 1, 63)
+%assign tlcOutputsFcnOfS42B25 = OpaqueTLCBlockFcn("Outputs", 42, 25, 28, 1, 64)
+%assign tlcOutputsFcnOfS42B26 = OpaqueTLCBlockFcn("Outputs", 42, 26, 28, 1, 65)
+%assign tlcOutputsFcnOfS42B29 = OpaqueTLCBlockFcn("Outputs", 42, 29, 28, 1, 66)
+%assign tlcOutputsFcnOfS42B30 = OpaqueTLCBlockFcn("Outputs", 42, 30, 28, 1, 67)
+%assign tlcOutputsFcnOfS42B31 = OpaqueTLCBlockFcn("Outputs", 42, 31, 28, 1, 68)
+%assign tlcOutputsFcnOfS42B34 = OpaqueTLCBlockFcn("Outputs", 42, 34, 28, 1, 69)
+%assign tlcOutputsFcnOfS42B35 = OpaqueTLCBlockFcn("Outputs", 42, 35, 28, 1, 70)
+%assign tlcOutputsFcnOfS49B0 = OpaqueTLCBlockFcn("Outputs", 49, 0, 28, 1, 71)
+%assign tlcOutputsFcnOfS49B1 = OpaqueTLCBlockFcn("Outputs", 49, 1, 28, 1, 72)
+%assign tlcOutputsFcnOfS49B4 = OpaqueTLCBlockFcn("Outputs", 49, 4, 28, 1, 73)
+%assign tlcOutputsFcnOfS49B5 = OpaqueTLCBlockFcn("Outputs", 49, 5, 28, 1, 74)
+%assign tlcOutputsFcnOfS49B6 = OpaqueTLCBlockFcn("Outputs", 49, 6, 28, 1, 75)
+%assign tlcOutputsFcnOfS49B7 = OpaqueTLCBlockFcn("Outputs", 49, 7, 28, 1, 76)
+%assign tlcOutputsFcnOfS49B10 = OpaqueTLCBlockFcn("Outputs", 49, 10, 28, 1, 77)
+%assign tlcOutputsFcnOfS49B11 = OpaqueTLCBlockFcn("Outputs", 49, 11, 28, 1, 78)
+%assign tlcOutputsFcnOfS49B12 = OpaqueTLCBlockFcn("Outputs", 49, 12, 28, 1, 79)
+%assign tlcOutputsFcnOfS49B15 = OpaqueTLCBlockFcn("Outputs", 49, 15, 28, 1, 80)
+%assign tlcOutputsFcnOfS49B16 = OpaqueTLCBlockFcn("Outputs", 49, 16, 28, 1, 81)
+%assign tlcOutputsFcnOfS50B5 = OpaqueTLCBlockFcn("Outputs", 50, 5, 28, 1, 82)
+%assign tlcOutputsFcnOfS50B6 = OpaqueTLCBlockFcn("Outputs", 50, 6, 28, 1, 83)
+%assign tlcOutputsFcnOfS50B7 = OpaqueTLCBlockFcn("Outputs", 50, 7, 28, 1, 84)
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B0)
+/* {S!d563}Outputs for Atomic SubSystem: '<S1>/Balance' */
+/* {S!d624}S-Function (TuneVarMEX): '<S9>/TuneVarChanRampMap'
+ *
+ * Block description for '<S9>/TuneVarChanRampMap':
+ *  Specifies the ramper to which each channel is mapped. Replace the channel number with:
+ *  '1' - 'Right'; '2' - 'Left'; '3' - 'Center'. Currently, the 'Center' group is assigned a linear gain of 1.
+ */
+%<SLibCG_DumpSSCode("/*@[ef45f*/",tlcOutputsFcnOfS14B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B1)
+/* {S!d564}S-Function (TranslateTrigger): '<S10>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef461*/",tlcOutputsFcnOfS14B1,"/*@]*/")>\
+%endif
+/* {E!d564}End of Outputs for S-Function (TranslateTrigger): '<S10>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B4)
+
+/* {S!d626}S-Function (TOP_MEX): '<S9>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef463*/",tlcOutputsFcnOfS14B4,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B5)
+/* {S!d628}S-Function (TuneVarMEX): '<S11>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef465*/",tlcOutputsFcnOfS14B5,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B6)
+/* {S!d566}S-Function (TranslateTrigger): '<S21>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef467*/",tlcOutputsFcnOfS14B6,"/*@]*/")>\
+%endif
+/* {E!d566}End of Outputs for S-Function (TranslateTrigger): '<S21>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B9)
+
+/* {S!d630}S-Function (TOP_MEX): '<S11>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef469*/",tlcOutputsFcnOfS14B9,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B10)
+/* {S!d632}S-Function (TuneVarMEX): '<S12>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef46b*/",tlcOutputsFcnOfS14B10,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B11)
+/* {S!d568}S-Function (TranslateTrigger): '<S25>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef46d*/",tlcOutputsFcnOfS14B11,"/*@]*/")>\
+%endif
+/* {E!d568}End of Outputs for S-Function (TranslateTrigger): '<S25>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B14)
+
+/* {S!d634}S-Function (TOP_MEX): '<S12>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef46f*/",tlcOutputsFcnOfS14B14,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B15)
+/* {S!d636}S-Function (TuneVarMEX): '<S13>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef471*/",tlcOutputsFcnOfS14B15,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B16)
+/* {S!d570}S-Function (TranslateTrigger): '<S29>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef473*/",tlcOutputsFcnOfS14B16,"/*@]*/")>\
+%endif
+/* {E!d570}End of Outputs for S-Function (TranslateTrigger): '<S29>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B19)
+
+/* {S!d638}S-Function (TOP_MEX): '<S13>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef475*/",tlcOutputsFcnOfS14B19,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B20)
+/* {S!d640}S-Function (TuneVarMEX): '<S14>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef477*/",tlcOutputsFcnOfS14B20,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B21)
+/* {S!d572}S-Function (TranslateTrigger): '<S33>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef479*/",tlcOutputsFcnOfS14B21,"/*@]*/")>\
+%endif
+/* {E!d572}End of Outputs for S-Function (TranslateTrigger): '<S33>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B24)
+
+/* {S!d642}S-Function (TOP_MEX): '<S14>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef47b*/",tlcOutputsFcnOfS14B24,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B25)
+/* {S!d644}S-Function (TuneVarMEX): '<S15>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef47d*/",tlcOutputsFcnOfS14B25,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B26)
+/* {S!d574}S-Function (TranslateTrigger): '<S37>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef47f*/",tlcOutputsFcnOfS14B26,"/*@]*/")>\
+%endif
+/* {E!d574}End of Outputs for S-Function (TranslateTrigger): '<S37>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B29)
+
+/* {S!d646}S-Function (TOP_MEX): '<S15>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef481*/",tlcOutputsFcnOfS14B29,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B30)
+/* {S!d648}S-Function (TuneVarMEX): '<S16>/TuneVarBalanceTable'
+ *
+ * Block description for '<S16>/TuneVarBalanceTable':
+ *  Define the balance curve using a table, with the first column being
+ *  the list of indices and the second column being the corresponding
+ *  balance gains in dB. Gain values for indices in between the elements
+ *  in the table are linearly interpolated.
+ */
+%<SLibCG_DumpSSCode("/*@[ef483*/",tlcOutputsFcnOfS14B30,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B31)
+/* {S!d576}S-Function (TranslateTrigger): '<S40>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef485*/",tlcOutputsFcnOfS14B31,"/*@]*/")>\
+%endif
+/* {E!d576}End of Outputs for S-Function (TranslateTrigger): '<S40>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B34)
+
+/* {S!d650}S-Function (TOP_MEX): '<S16>/TOP_TableIDb' */
+%<SLibCG_DumpSSCode("/*@[ef487*/",tlcOutputsFcnOfS14B34,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B35)
+/* {S!d652}S-Function (TOP_MEX): '<S16>/TOP_TableIdx' */
+%<SLibCG_DumpSSCode("/*@[ef489*/",tlcOutputsFcnOfS14B35,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS14B36)
+/* {S!d654}M-S-Function: '<S9>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef48a*/",tlcOutputsFcnOfS14B36,"/*@]*/")>\
+/* {E!d563}End of Outputs for SubSystem: '<S1>/Balance' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B0)
+
+/* {S!d579}Outputs for Atomic SubSystem: '<S1>/Bass' */
+/* {S!d656}S-Function (TuneVarMEX): '<S43>/BoostHz'
+ *
+ * Block description for '<S43>/BoostHz':
+ *  Indicates the 'corner frequency' of the target frequency band for the
+ *  'Boost' filter.
+ */
+%<SLibCG_DumpSSCode("/*@[ef48c*/",tlcOutputsFcnOfS27B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B1)
+/* {S!d580}S-Function (TranslateTrigger): '<S45>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef48e*/",tlcOutputsFcnOfS27B1,"/*@]*/")>\
+%endif
+/* {E!d580}End of Outputs for S-Function (TranslateTrigger): '<S45>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B4)
+
+/* {S!d658}S-Function (TOP_MEX): '<S43>/BoostCoeffs' */
+%<SLibCG_DumpSSCode("/*@[ef490*/",tlcOutputsFcnOfS27B4,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B5)
+/* {S!d660}S-Function (TuneVarMEX): '<S43>/CutHz'
+ *
+ * Block description for '<S43>/CutHz':
+ *  Indicates the 'corner frequency' of the target frequency band for the
+ *  'Cut' filter.
+ */
+%<SLibCG_DumpSSCode("/*@[ef492*/",tlcOutputsFcnOfS27B5,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B6)
+/* {S!d582}S-Function (TranslateTrigger): '<S46>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef494*/",tlcOutputsFcnOfS27B6,"/*@]*/")>\
+%endif
+/* {E!d582}End of Outputs for S-Function (TranslateTrigger): '<S46>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B9)
+
+/* {S!d662}S-Function (TOP_MEX): '<S43>/CutCoeffs' */
+%<SLibCG_DumpSSCode("/*@[ef496*/",tlcOutputsFcnOfS27B9,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B10)
+/* {S!d664}S-Function (TuneVarMEX): '<S43>/Boost_dB'
+ *
+ * Block description for '<S43>/Boost_dB':
+ *  Indicates the maximum impact in dB for the tone boost. This value must
+ *  be positive. A negative boost impact would imply a gain cut instead!
+ */
+%<SLibCG_DumpSSCode("/*@[ef498*/",tlcOutputsFcnOfS27B10,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B11)
+/* {S!d584}S-Function (TranslateTrigger): '<S44>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef49a*/",tlcOutputsFcnOfS27B11,"/*@]*/")>\
+%endif
+/* {E!d584}End of Outputs for S-Function (TranslateTrigger): '<S44>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B14)
+
+/* {S!d666}S-Function (TOP_MEX): '<S43>/Boost_dB TOP' */
+%<SLibCG_DumpSSCode("/*@[ef49c*/",tlcOutputsFcnOfS27B14,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B15)
+/* {S!d668}S-Function (TuneVarMEX): '<S43>/Cut_dB'
+ *
+ * Block description for '<S43>/Cut_dB':
+ *  Indicates the maximum impact in dB for the tone cut. This value must
+ *  be positive. A negative cut impact would imply a gain boost instead!
+ */
+%<SLibCG_DumpSSCode("/*@[ef49e*/",tlcOutputsFcnOfS27B15,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B16)
+/* {S!d586}S-Function (TranslateTrigger): '<S47>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4a0*/",tlcOutputsFcnOfS27B16,"/*@]*/")>\
+%endif
+/* {E!d586}End of Outputs for S-Function (TranslateTrigger): '<S47>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B19)
+
+/* {S!d670}S-Function (TOP_MEX): '<S43>/Cut_dB TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4a2*/",tlcOutputsFcnOfS27B19,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B20)
+/* {S!d672}S-Function (TuneVarMEX): '<S48>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4a4*/",tlcOutputsFcnOfS27B20,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B21)
+/* {S!d588}S-Function (TranslateTrigger): '<S61>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4a6*/",tlcOutputsFcnOfS27B21,"/*@]*/")>\
+%endif
+/* {E!d588}End of Outputs for S-Function (TranslateTrigger): '<S61>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B24)
+
+/* {S!d674}S-Function (TOP_MEX): '<S48>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4a8*/",tlcOutputsFcnOfS27B24,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B25)
+/* {S!d676}S-Function (TuneVarMEX): '<S49>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4aa*/",tlcOutputsFcnOfS27B25,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B26)
+/* {S!d590}S-Function (TranslateTrigger): '<S65>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4ac*/",tlcOutputsFcnOfS27B26,"/*@]*/")>\
+%endif
+/* {E!d590}End of Outputs for S-Function (TranslateTrigger): '<S65>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B29)
+
+/* {S!d678}S-Function (TOP_MEX): '<S49>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4ae*/",tlcOutputsFcnOfS27B29,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B30)
+/* {S!d680}S-Function (TuneVarMEX): '<S50>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4b0*/",tlcOutputsFcnOfS27B30,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B31)
+/* {S!d592}S-Function (TranslateTrigger): '<S69>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4b2*/",tlcOutputsFcnOfS27B31,"/*@]*/")>\
+%endif
+/* {E!d592}End of Outputs for S-Function (TranslateTrigger): '<S69>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B34)
+
+/* {S!d682}S-Function (TOP_MEX): '<S50>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4b4*/",tlcOutputsFcnOfS27B34,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS27B35)
+/* {S!d684}M-S-Function: '<S43>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef4b5*/",tlcOutputsFcnOfS27B35,"/*@]*/")>\
+/* {E!d579}End of Outputs for SubSystem: '<S1>/Bass' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS30B0)
+
+/* {S!d595}Outputs for Atomic SubSystem: '<S1>/Mute' */
+/* {S!d686}S-Function (TuneVarMEX): '<S74>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4b7*/",tlcOutputsFcnOfS30B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS30B1)
+/* {S!d596}S-Function (TranslateTrigger): '<S77>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4b9*/",tlcOutputsFcnOfS30B1,"/*@]*/")>\
+%endif
+/* {E!d596}End of Outputs for S-Function (TranslateTrigger): '<S77>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS30B4)
+
+/* {S!d688}S-Function (TOP_MEX): '<S74>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4bb*/",tlcOutputsFcnOfS30B4,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS30B5)
+/* {S!d690}M-S-Function: '<S73>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef4bc*/",tlcOutputsFcnOfS30B5,"/*@]*/")>\
+/* {E!d595}End of Outputs for SubSystem: '<S1>/Mute' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B0)
+
+/* {S!d599}Outputs for Atomic SubSystem: '<S1>/Treble' */
+/* {S!d692}S-Function (TuneVarMEX): '<S80>/BoostHz'
+ *
+ * Block description for '<S80>/BoostHz':
+ *  Indicates the 'corner frequency' of the target frequency band for the
+ *  'Boost' filter.
+ */
+%<SLibCG_DumpSSCode("/*@[ef4be*/",tlcOutputsFcnOfS42B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B1)
+/* {S!d600}S-Function (TranslateTrigger): '<S82>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4c0*/",tlcOutputsFcnOfS42B1,"/*@]*/")>\
+%endif
+/* {E!d600}End of Outputs for S-Function (TranslateTrigger): '<S82>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B4)
+
+/* {S!d694}S-Function (TOP_MEX): '<S80>/BoostCoeffs' */
+%<SLibCG_DumpSSCode("/*@[ef4c2*/",tlcOutputsFcnOfS42B4,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B5)
+/* {S!d696}S-Function (TuneVarMEX): '<S80>/CutHz'
+ *
+ * Block description for '<S80>/CutHz':
+ *  Indicates the 'corner frequency' of the target frequency band for the
+ *  'Cut' filter.
+ */
+%<SLibCG_DumpSSCode("/*@[ef4c4*/",tlcOutputsFcnOfS42B5,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B6)
+/* {S!d602}S-Function (TranslateTrigger): '<S83>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4c6*/",tlcOutputsFcnOfS42B6,"/*@]*/")>\
+%endif
+/* {E!d602}End of Outputs for S-Function (TranslateTrigger): '<S83>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B9)
+
+/* {S!d698}S-Function (TOP_MEX): '<S80>/CutCoeffs' */
+%<SLibCG_DumpSSCode("/*@[ef4c8*/",tlcOutputsFcnOfS42B9,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B10)
+/* {S!d700}S-Function (TuneVarMEX): '<S80>/Boost_dB'
+ *
+ * Block description for '<S80>/Boost_dB':
+ *  Indicates the maximum impact in dB for the tone boost. This value must
+ *  be positive. A negative boost impact would imply a gain cut instead!
+ */
+%<SLibCG_DumpSSCode("/*@[ef4ca*/",tlcOutputsFcnOfS42B10,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B11)
+/* {S!d604}S-Function (TranslateTrigger): '<S81>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4cc*/",tlcOutputsFcnOfS42B11,"/*@]*/")>\
+%endif
+/* {E!d604}End of Outputs for S-Function (TranslateTrigger): '<S81>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B14)
+
+/* {S!d702}S-Function (TOP_MEX): '<S80>/Boost_dB TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4ce*/",tlcOutputsFcnOfS42B14,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B15)
+/* {S!d704}S-Function (TuneVarMEX): '<S80>/Cut_dB'
+ *
+ * Block description for '<S80>/Cut_dB':
+ *  Indicates the maximum impact in dB for the tone cut. This value must
+ *  be positive. A negative cut impact would imply a gain boost instead!
+ */
+%<SLibCG_DumpSSCode("/*@[ef4d0*/",tlcOutputsFcnOfS42B15,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B16)
+/* {S!d606}S-Function (TranslateTrigger): '<S84>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4d2*/",tlcOutputsFcnOfS42B16,"/*@]*/")>\
+%endif
+/* {E!d606}End of Outputs for S-Function (TranslateTrigger): '<S84>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B19)
+
+/* {S!d706}S-Function (TOP_MEX): '<S80>/Cut_dB TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4d4*/",tlcOutputsFcnOfS42B19,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B20)
+/* {S!d708}S-Function (TuneVarMEX): '<S85>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4d6*/",tlcOutputsFcnOfS42B20,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B21)
+/* {S!d608}S-Function (TranslateTrigger): '<S98>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4d8*/",tlcOutputsFcnOfS42B21,"/*@]*/")>\
+%endif
+/* {E!d608}End of Outputs for S-Function (TranslateTrigger): '<S98>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B24)
+
+/* {S!d710}S-Function (TOP_MEX): '<S85>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4da*/",tlcOutputsFcnOfS42B24,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B25)
+/* {S!d712}S-Function (TuneVarMEX): '<S86>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4dc*/",tlcOutputsFcnOfS42B25,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B26)
+/* {S!d610}S-Function (TranslateTrigger): '<S102>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4de*/",tlcOutputsFcnOfS42B26,"/*@]*/")>\
+%endif
+/* {E!d610}End of Outputs for S-Function (TranslateTrigger): '<S102>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B29)
+
+/* {S!d714}S-Function (TOP_MEX): '<S86>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4e0*/",tlcOutputsFcnOfS42B29,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B30)
+/* {S!d716}S-Function (TuneVarMEX): '<S87>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4e2*/",tlcOutputsFcnOfS42B30,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B31)
+/* {S!d612}S-Function (TranslateTrigger): '<S106>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4e4*/",tlcOutputsFcnOfS42B31,"/*@]*/")>\
+%endif
+/* {E!d612}End of Outputs for S-Function (TranslateTrigger): '<S106>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B34)
+
+/* {S!d718}S-Function (TOP_MEX): '<S87>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4e6*/",tlcOutputsFcnOfS42B34,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS42B35)
+/* {S!d720}M-S-Function: '<S80>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef4e7*/",tlcOutputsFcnOfS42B35,"/*@]*/")>\
+/* {E!d599}End of Outputs for SubSystem: '<S1>/Treble' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B0)
+
+/* {S!d615}Outputs for Atomic SubSystem: '<S1>/Volume' */
+/* {S!d722}S-Function (TuneVarMEX): '<S110>/TuneVar_Table'
+ *
+ * Block description for '<S110>/TuneVar_Table':
+ *  <HTML>Gain table maps index to gain.
+ *  The index values are <FONT color="red">normalized</Font> floats between 0 and 1 while the gains are in dB (i.e. 0 implies no attenuation).
+ *  </html>
+ */
+%<SLibCG_DumpSSCode("/*@[ef4e9*/",tlcOutputsFcnOfS49B0,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B1)
+/* {S!d616}S-Function (TranslateTrigger): '<S112>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4eb*/",tlcOutputsFcnOfS49B1,"/*@]*/")>\
+%endif
+/* {E!d616}End of Outputs for S-Function (TranslateTrigger): '<S112>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B4)
+
+/* {S!d724}S-Function (TOP_MEX): '<S110>/TOP_GainDB' */
+%<SLibCG_DumpSSCode("/*@[ef4ed*/",tlcOutputsFcnOfS49B4,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B5)
+/* {S!d726}S-Function (TOP_MEX): '<S110>/TOP_Index' */
+%<SLibCG_DumpSSCode("/*@[ef4ef*/",tlcOutputsFcnOfS49B5,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B6)
+/* {S!d728}S-Function (TuneVarMEX): '<S113>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4f1*/",tlcOutputsFcnOfS49B6,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B7)
+/* {S!d618}S-Function (TranslateTrigger): '<S118>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4f3*/",tlcOutputsFcnOfS49B7,"/*@]*/")>\
+%endif
+/* {E!d618}End of Outputs for S-Function (TranslateTrigger): '<S118>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B10)
+
+/* {S!d730}S-Function (TOP_MEX): '<S113>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4f5*/",tlcOutputsFcnOfS49B10,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B11)
+/* {S!d732}S-Function (TuneVarMEX): '<S111>/Tune Variable' */
+%<SLibCG_DumpSSCode("/*@[ef4f7*/",tlcOutputsFcnOfS49B11,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B12)
+/* {S!d620}S-Function (TranslateTrigger): '<S122>/S-Function' */
+%<SLibCG_DumpSSCode("/*@[ef4f9*/",tlcOutputsFcnOfS49B12,"/*@]*/")>\
+%endif
+/* {E!d620}End of Outputs for S-Function (TranslateTrigger): '<S122>/S-Function' */
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B15)
+
+/* {S!d734}S-Function (TOP_MEX): '<S111>/TOP' */
+%<SLibCG_DumpSSCode("/*@[ef4fb*/",tlcOutputsFcnOfS49B15,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS49B16)
+/* {S!d736}M-S-Function: '<S109>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef4fc*/",tlcOutputsFcnOfS49B16,"/*@]*/")>\
+/* {E!d615}End of Outputs for SubSystem: '<S1>/Volume' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS50B5)
+
+/* {S!d738}M-S-Function: '<S2>/CoreIndexSFunc' */
+%<SLibCG_DumpSSCode("/*@[ef4fe*/",tlcOutputsFcnOfS50B5,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS50B6)
+/* {S!d740}M-S-Function: '<S2>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef4ff*/",tlcOutputsFcnOfS50B6,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS50B7)
+/* {S!d742}M-S-Function: '<Root>/FeaturePath' */
+%<SLibCG_DumpSSCode("/*@[ef500*/",tlcOutputsFcnOfS50B7,"/*@]*/")>\
+%endif
+%<SLibInsertSolverResetCode()>\
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(28, 1, fcnProtoType)>
+%endfunction

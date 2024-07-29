@@ -1,0 +1,358 @@
+%implements s105_b0_435hk_8_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+suFnE4DIYISSjYbtQHPXOwD_BasicAudio_Target_T phaseConfig[2];
+real32_T currentGain_tmp;
+real32_T currentImpact_db;
+real32_T db_diff;
+real32_T quantum_ms;
+real32_T targetEffectiveGain;
+real32_T targetImpact_db;
+real32_T x;
+boolean_T currentIsBoost;
+boolean_T targetIsBoost;
+%closefile localVarDecl
+/*  %<"\%inputs"> */
+/*  %<"\% inputs \% parameters"> */
+/* parameters */
+/* MATLAB Function 'BasicAudio/Bass/Tone/InnerLink/tone control': '<S52>:1' */
+/*  See Control summary at the end: */
+/*  Step 1: FREEZE the gain ramper so that we can perform calculations based */
+/*  on the current gain value. (This step now performed on canvas) */
+/*  Step 2a: IMPACT-TARGET Translate the normalized gain into a dB impact */
+/*  based on the maximum boost or cut values. */
+/*  ("-1" = maximum cut, "1" = maximum boost.) */
+/* '<S52>:1:16' targetIsBoost = (normalized_gain_impact >= 0); */
+/*@>1431ba*/targetIsBoost/*@>12e8fc*/ = (/*@>143265*/rtu_normalized_gain_impact/*@>12e921*/ >= /*@>1431b9*/0.0F);
+/* '<S52>:1:17' if (targetIsBoost) */
+/*@>12e936*/if (/*@>1431bc*/targetIsBoost) {
+    /* '<S52>:1:18' targetImpact_db = normalized_gain_impact * boost_max_db; */
+    /*@>1431be*/targetImpact_db/*@>12e8fe*/ = /*@>143267*/rtu_normalized_gain_impact/*@>1433d1*/ * /*@>143269*/rtu_boost_max_db;
+    /* '<S52>:1:19' targetEffectiveGain = undb20(targetImpact_db); */
+    /* UNDB20  Decibels to linear quantity */
+    /*    Converts x from DB to absolute magnitude assuming that x is in volts. */
+    /*    y = 10^(x/20) */
+    /*  */
+    /*  See also: DB20, UNDB10 */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /*  Created : 9/7/1994 Bill Berardi */
+    /* $Id: undb20.m 11244 2011-10-31 18:51:23Z rg20270 $ */
+    /* 'undb20:12' y = exp(x * log(10)/20); */
+    /*@>1431dc*/targetEffectiveGain/*@>12ea71*/ = /*@>145df2*/expf(/*@>14322f*/targetImpact_db/*@>1433cd*/ * /*@>14323a*/2.30258512F/*@>12eb3d*/ / /*@>14323b*/20.0F);
+    /*  1 or greater */
+} else {
+    /* '<S52>:1:20' else */
+    /* '<S52>:1:21' targetImpact_db = normalized_gain_impact * cut_max_db; */
+    /*@>1431c0*/targetImpact_db/*@>12e8ff*/ = /*@>14326b*/rtu_normalized_gain_impact/*@>1433c9*/ * /*@>14326d*/rtu_cut_max_db;
+    /* '<S52>:1:22' targetEffectiveGain = undb20(targetImpact_db); */
+    /* UNDB20  Decibels to linear quantity */
+    /*    Converts x from DB to absolute magnitude assuming that x is in volts. */
+    /*    y = 10^(x/20) */
+    /*  */
+    /*  See also: DB20, UNDB10 */
+    /*    Copyright 2018-2019 Bose Corporation */
+    /*  Created : 9/7/1994 Bill Berardi */
+    /* $Id: undb20.m 11244 2011-10-31 18:51:23Z rg20270 $ */
+    /* 'undb20:12' y = exp(x * log(10)/20); */
+    /*@>1431de*/targetEffectiveGain/*@>12ea74*/ = /*@>145df0*/expf(/*@>14322d*/targetImpact_db/*@>1433c5*/ * /*@>14323c*/2.30258512F/*@>12eb3c*/ / /*@>14323d*/20.0F);
+    /*  less than 1 */
+}
+/* '<S52>:1:25' actualTargetGainLinear = targetEffectiveGain; */
+/*  Step 2b: IMPACT-CURRENT Fetch the current gain from the previously */
+/*  active ramper. */
+/* '<S52>:1:29' currentPhase = Phase; */
+/* '<S52>:1:30' currentGain = Rampers(currentPhase).currentGain; */
+/*@>14428b*/currentGain_tmp/*@>14428d*/ = %<SLibCG_DumpSSCode("/*@[147575*/",(SLibCG_SE(SLibCG_CSCDW(2, 1, "[/*@>147540*/(int32_T)%<SLibCG_DumpSSCode("/*@[147542*/",(SLibCG_CSCDW(13, 1, "", -1, "", 0)),"/*@]*/")>/*@>14753f*/ - /*@>14754b*/1].currentGain", -1, "", 0))),"/*@]*/")>;
+/* '<S52>:1:31' currentIsBoost = (currentGain >= 1); */
+/*@>1431c6*/currentIsBoost/*@>12e904*/ = (currentGain_tmp/*@>12e926*/ >= /*@>1431c5*/1.0F);
+/* '<S52>:1:32' currentImpact_db = db20(currentGain); */
+/* DB20  Linear quantity to decibels */
+/*    Converts x to dB assuming that x represents volts. */
+/*    y=20*log10(abs(x)); */
+/*  */
+/*  See Also: DB10, UNDB20 */
+/*    Copyright 2018-2019 Bose Corporation */
+/*  Bill Berardi */
+/*  $Id: db20.m 11813 2012-07-11 17:31:25Z rs7109 $ */
+/* 'db20:12' y = 20/log(10)*log(abs(x)); */
+/*@>1431ce*/currentImpact_db/*@>12e9ca*/ = /*@>145df6*/logf(/*@>145df4*/fabsf(currentGain_tmp))/*@>1433bb*/ * /*@>14323e*/8.68588924F;
+/*  Setup processing to continue on seamlessly while we work here */
+/* '<S52>:1:35' Rampers(1).currentGain = currentGain; */
+/* '<S52>:1:36' Phase = uint32(1); */
+%<SLibCG_DumpSSCode("/*@[14731b*/",SLibCG_SetCSCDW(13, 1, "", -1, "", 0, "1U"),"/*@]*/")>\
+/*  reset phase to 1 */
+/*  Now that we have both current and target impacts, find the difference */
+/* '<S52>:1:38' db_diff = abs(currentImpact_db - targetImpact_db); */
+/*@>1431e0*/db_diff/*@>12ea77*/ = /*@>145df8*/fabsf(/*@>14321f*/currentImpact_db/*@>12eb52*/ - /*@>143221*/targetImpact_db);
+/*  Step 3a: TIME- If a slope in dB/second is provided, ignore the ramp time */
+/* '<S52>:1:41' if (db_per_sec) */
+/*@>12e946*/if (/*@>14326f*/rtu_db_per_sec/*@>12e927*/ != /*@>1431cb*/0.0F) {
+    /* '<S52>:1:42' ramp_ms = db_diff / single(db_per_sec) * 1000; */
+    /*@>1431f5*/x/*@>12e9ad*/ = /*@>143223*/db_diff/*@>12eb57*/ / /*@>143271*/rtu_db_per_sec/*@>1433aa*/ * /*@>143240*/1000.0F;
+} else {
+    /* '<S52>:1:43' else */
+    /* '<S52>:1:44' ramp_ms = single(ramp_time_ms); */
+    /*@>1431f7*/x/*@>12e909*/ = /*@>143273*/rtu_ramp_time_ms;
+}
+/*  Step 3b: TIME- QUANTIZE the desired ramp time to our FrameSize.  */
+/* '<S52>:1:48' quantum_ms = 1000 * frame_size / sample_rate_in_hertz; */
+/*@>1431cc*/quantum_ms/*@>12e9b1*/ = /*@>143241*/1000.0F/*@>1433a6*/ * /*@>143275*/rtu_frame_size/*@>12e9b0*/ / /*@>143277*/rtu_sample_rate_in_hertz;
+/* '<S52>:1:49' numFrames = ramp_ms / quantum_ms; */
+/* '<S52>:1:50' numFrames = max (1, ceil(numFrames)); */
+/*@>1431e6*/x/*@>12ea7a*/ = /*@>145dfc*/fmaxf(/*@>143242*/1.0F, /*@>145dfa*/ceilf(/*@>143231*/x/*@>12eba6*/ / /*@>143233*/quantum_ms));
+/*  Step 4a: PHASES- Determine whether ramping from current gain to target */
+/*  gain requires a unity crossing in linear gain. */
+/* '<S52>:1:54' isTwoPhase = (currentIsBoost ~= targetIsBoost) && ... */
+/* '<S52>:1:55'              (currentGain ~= 1) && ... %<"\% cannot cross if you\'re already there"> */
+/* '<S52>:1:56'              (targetImpact_db ~= 1); */
+/*  %<"\% cannot cross if you\'re already there"> */
+/*  no crossing needed when impact already nothing */
+/*  Setup a structure to hold information about what the rampers should do */
+/* '<S52>:1:58' twoSingles = {single(0) single(0)}; */
+/* '<S52>:1:59' phaseConfig = struct('frames',twoSingles,'target_linear',twoSingles,'current_linear',twoSingles); */
+/* '<S52>:1:60' phaseConfig = tone_control_split(numFrames,currentImpact_db,db_diff,... */
+/* '<S52>:1:61'     currentGain,currentIsBoost,rgain_SILENT_GAIN,targetIsBoost,... */
+/* '<S52>:1:62'     targetEffectiveGain,isTwoPhase,phaseConfig); */
+/* '<S52>:1:104' if (isTwoPhase) */
+/*@>12e9ed*/if ((/*@>143279*/currentIsBoost/*@>140892*/ != /*@>14327b*/targetIsBoost)/*@>140891*/ && (/*@>1443a9*/currentGain_tmp/*@>140899*/ != /*@>14327f*/1.0F)/*@>140890*/ && (/*@>143280*/targetImpact_db/*@>14089d*/ != /*@>143282*/1.0F)) {
+    /*  Both boost and cut phases will be required to get where we are going. */
+    /*  Make sure we have at least two frames to work with: */
+    /* '<S52>:1:107' numFrames = max (2, round(numFrames)); */
+    /*@>1431e2*/x/*@>12ea7c*/ = /*@>145e0a*/fmaxf(/*@>143243*/2.0F, /*@>143225*/x);
+    /*  Divide up our ramp time into pieces for each phase to use */
+    /* '<S52>:1:110' phase1Frames = ceil(numFrames * abs(currentImpact_db) / db_diff); */
+    /*@>1431e4*/targetImpact_db/*@>12ea7f*/ = /*@>145e0e*/ceilf(/*@>143235*/x/*@>14339e*/ * /*@>145e0c*/fabsf(/*@>143237*/currentImpact_db)/*@>12eb61*/ / /*@>143227*/db_diff);
+    /* '<S52>:1:111' phase2Frames = numFrames - phase1Frames; */
+    /*  Make sure phase 2 has at least 1 frame to work with */
+    /* '<S52>:1:114' phase2Frames = max(1, phase2Frames); */
+    /*@>14329a*/phaseConfig/*@>142b5f*/[/*@>1432c8*/1]./*@>147866*/frames/*@>12ea82*/ = /*@>145e10*/fmaxf(/*@>143244*/1.0F, /*@>143229*/x/*@>12eb64*/ - /*@>14322b*/targetImpact_db);
+    /*  Setup Phase 1 ramper that takes us to zero impact (i.e. unity gain) */
+    /* '<S52>:1:117' phaseConfig(1).current_linear   = currentGain; */
+    /*@>14329c*/phaseConfig/*@>142b68*/[/*@>1432c9*/0]./*@>147839*/current_linear/*@>12e9d6*/ = /*@>1443b1*/currentGain_tmp;
+    /*  we know this is not 1 */
+    /* '<S52>:1:118' phaseConfig(1).target_linear    = NudgeUnity(1,currentIsBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /*@>12ea59*/if (/*@>143217*/currentIsBoost) {
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>1432a2*/phaseConfig/*@>142b78*/[/*@>1432cb*/0]./*@>147854*/target_linear/*@>12ea88*/ = /*@>143247*/1.00000048F;
+    } else {
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1432a4*/phaseConfig/*@>142b71*/[/*@>1432ca*/0]./*@>147857*/target_linear/*@>12ea8a*/ = /*@>143248*/0.999999523F;
+    }
+    /* '<S52>:1:119' phaseConfig(1).frames           = phase1Frames; */
+    /*@>1432a6*/phaseConfig/*@>142b7f*/[/*@>1432cc*/0]./*@>14783c*/frames/*@>12e9da*/ = /*@>1431d8*/targetImpact_db;
+    /*  Setup Phase 2 ramper that delivers us to target impact */
+    /* '<S52>:1:122' phaseConfig(2).current_linear   = NudgeUnity(1,targetIsBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /*@>12ea68*/if (/*@>143219*/targetIsBoost) {
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>1432ae*/phaseConfig/*@>142b8f*/[/*@>1432ce*/1]./*@>147860*/current_linear/*@>12ea90*/ = /*@>14324b*/1.00000048F;
+    } else {
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1432b0*/phaseConfig/*@>142b88*/[/*@>1432cd*/1]./*@>147863*/current_linear/*@>12ea92*/ = /*@>14324c*/0.999999523F;
+    }
+    /*  start quiet */
+    /* '<S52>:1:123' phaseConfig(2).target_linear    = targetEffectiveGain; */
+    /*@>1432b2*/phaseConfig/*@>142b96*/[/*@>1432cf*/1]./*@>14783f*/target_linear/*@>12e9dd*/ = /*@>14321b*/targetEffectiveGain;
+    /*  we know this is not 0 */
+    /* '<S52>:1:124' phaseConfig(2).frames           = phase2Frames; */
+} else {
+    /* '<S52>:1:125' else */
+    /*  Only one phase is needed to accomplish our goal. We are are the */
+    /*  target side of unity... but we must determine which side that is */
+    /* '<S52>:1:128' if (currentGain == 1) */
+    /*@>12e9fc*/if (/*@>1443ab*/currentGain_tmp/*@>12e9ea*/ == /*@>1431d0*/1.0F) {
+        /*  One is in-between sides: use the target to determine the side */
+        /* '<S52>:1:130' isBoost = targetIsBoost; */
+        /*@>1431d1*/currentIsBoost/*@>12e9de*/ = /*@>1431fb*/targetIsBoost;
+    } else {
+        /* '<S52>:1:131' else */
+        /*  Current gain is already on one side of unity so use that */
+        /* '<S52>:1:133' isBoost = currentIsBoost; */
+    }
+    /* '<S52>:1:135' phaseConfig(1).current_linear   = NudgeUnity(currentGain,isBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /*@>12ea32*/if (/*@>1431fd*/currentIsBoost) {
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>14329e*/phaseConfig/*@>142b0f*/[/*@>1432bf*/0]./*@>147848*/current_linear/*@>12ea84*/ = /*@>145e02*/fmaxf(/*@>1443af*/currentGain_tmp, /*@>143245*/1.00000048F);
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>1432a8*/phaseConfig/*@>142b20*/[/*@>1432c1*/0]./*@>14784e*/target_linear/*@>12ea8c*/ = /*@>145e04*/fmaxf(/*@>143207*/targetEffectiveGain, /*@>143249*/1.00000048F);
+    } else {
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1432a0*/phaseConfig/*@>142b07*/[/*@>1432be*/0]./*@>14784b*/current_linear/*@>12ea86*/ = /*@>145dfe*/fminf(/*@>1443ad*/currentGain_tmp, /*@>143246*/0.999999523F);
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1432aa*/phaseConfig/*@>142b18*/[/*@>1432c0*/0]./*@>147851*/target_linear/*@>12ea8e*/ = /*@>145e00*/fminf(/*@>143205*/targetEffectiveGain, /*@>14324a*/0.999999523F);
+    }
+    /* '<S52>:1:136' phaseConfig(1).target_linear    = NudgeUnity(targetEffectiveGain,isBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /* '<S52>:1:137' phaseConfig(1).frames           = numFrames; */
+    /*@>1432ac*/phaseConfig/*@>142b28*/[/*@>1432c2*/0]./*@>147842*/frames/*@>12e9e3*/ = /*@>1431d4*/x;
+    /*  Setup Phase 2 ramper to sit at the target gain */
+    /* '<S52>:1:140' phaseConfig(2).current_linear   = NudgeUnity(targetEffectiveGain,isBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /*@>12ea45*/if (/*@>143209*/currentIsBoost) {
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>1452b1*/targetImpact_db/*@>1452b3*/ = /*@>145e08*/fmaxf(/*@>14320d*/targetEffectiveGain, /*@>14324d*/1.00000048F);
+        /*@>1432b4*/phaseConfig/*@>142b39*/[/*@>1432c4*/1]./*@>14785a*/current_linear/*@>12ea94*/ = /*@>1452b5*/targetImpact_db;
+        /* '<S52>:1:95' adjustedLinearGain = max(linearGain, 1 + silentGain); */
+        /*@>1432b8*/phaseConfig/*@>142b4a*/[/*@>1432c6*/1]./*@>147869*/target_linear/*@>12ea98*/ = targetImpact_db;
+    } else {
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1452c1*/targetImpact_db/*@>1452c3*/ = /*@>145e06*/fminf(/*@>14320b*/targetEffectiveGain, /*@>14324e*/0.999999523F);
+        /*@>1432b6*/phaseConfig/*@>142b31*/[/*@>1432c3*/1]./*@>14785d*/current_linear/*@>12ea96*/ = /*@>1452c5*/targetImpact_db;
+        /* '<S52>:1:96' else */
+        /* '<S52>:1:97' adjustedLinearGain = min(linearGain, 1 - silentGain); */
+        /*@>1432ba*/phaseConfig/*@>142b42*/[/*@>1432c5*/1]./*@>14786c*/target_linear/*@>12ea9a*/ = targetImpact_db;
+    }
+    /* '<S52>:1:141' phaseConfig(2).target_linear    = NudgeUnity(targetEffectiveGain,isBoost,rgain_SILENT_GAIN); */
+    /*  Nudge the gain values a bit if they are sitting right at one (aka unity). */
+    /*  When a control set goes live, ensure that the current gain will move. */
+    /*  If current gain is one, replace with a value very close to one. What we */
+    /*  really want is a value which is on the edge of perception - not too small */
+    /*  or large. If the value is too small, we'll waste some of our ramp time */
+    /*  in perceived silence. If the value is too large, the audio will lurch */
+    /*  into perceptability at the start of the ramp. Remember that normally we */
+    /*  worry about gains of 0 -- this checks instead against 1 because filter */
+    /*  gain is effective gain minuus 1. */
+    /* '<S52>:1:94' if (isPositive) */
+    /* '<S52>:1:142' phaseConfig(2).frames           = single(0); */
+    /*@>1432bc*/phaseConfig/*@>142b52*/[/*@>1432c7*/1]./*@>147845*/frames/*@>12e9e6*/ = /*@>143251*/0.0F;
+}
+/*  Step 4b: PHASES- Setup rampers for both phases */
+/* '<S52>:1:65' for currentPhase=1:2 */
+/* '<S52>:1:66' if (phaseConfig(currentPhase).frames) */
+/*@>142d0f*/if (/*@>146a39*/phaseConfig/*@>146a3b*/[/*@>146a38*/0].frames/*@>142d10*/ != /*@>1432d3*/0.0F) {
+    /* '<S52>:1:67' ramp_ms = quantum_ms * phaseConfig(currentPhase).frames; */
+    /* '<S52>:1:68' factor = log(phaseConfig(currentPhase).target_linear / phaseConfig(currentPhase).current_linear); */
+    /* '<S52>:1:69' RampCoef = exp(factor / (sample_rate_in_hertz * ramp_ms / 1000)); */
+%<SLibCG_DumpSSCode("/*@[147381*/",SLibCG_SetCSCDW(2, 1, "[/*@>147358*/0].rampCoeff", -1, "", 0, "/*@>1478d1*/expf(/*@>1478d4*/logf(/*@>1478d8*/phaseConfig/*@>1478d7*/[/*@>1478d9*/0].target_linear/*@>1478d5*/ / /*@>1478dd*/phaseConfig/*@>1478dc*/[/*@>1478de*/0].current_linear)/*@>1478d2*/ / (/*@>1478e3*/quantum_ms/*@>1478e2*/ * /*@>1478e6*/phaseConfig/*@>1478e5*/[/*@>1478e7*/0].frames/*@>1478e1*/ * /*@>1478e9*/rtu_sample_rate_in_hertz/*@>1478e0*/ / /*@>1478ea*/1000.0F))"),"/*@]*/")>\
+} else {
+    /* '<S52>:1:70' else */
+    /* '<S52>:1:71' RampCoef = single(1); */
+%<SLibCG_DumpSSCode("/*@[14734e*/",SLibCG_SetCSCDW(2, 1, "[/*@>147325*/0].rampCoeff", -1, "", 0, "/*@>1478fc*/1.0F"),"/*@]*/")>\
+}
+/* '<S52>:1:73' Rampers(currentPhase).rampCoeff   = single(RampCoef); */
+/* '<S52>:1:74' Rampers(currentPhase).targetGain  = actualTargetGainLinear; */
+%<SLibCG_DumpSSCode("/*@[1473b4*/",SLibCG_SetCSCDW(2, 1, "[/*@>14738b*/0].targetGain", -1, "", 0, "/*@>14790e*/targetEffectiveGain"),"/*@]*/")>\
+/*  phase 1 value ignored. */
+/* '<S52>:1:75' Rampers(currentPhase).currentGain = single(phaseConfig(currentPhase).current_linear); */
+%<SLibCG_DumpSSCode("/*@[1473e7*/",SLibCG_SetCSCDW(2, 1, "[/*@>1473be*/0].currentGain", -1, "", 0, "/*@>147922*/phaseConfig/*@>147921*/[/*@>147923*/0].current_linear"),"/*@]*/")>\
+/* '<S52>:1:76' Rampers(currentPhase).frameCount  = int32(phaseConfig(currentPhase).frames); */
+%<SLibCG_DumpSSCode("/*@[14741a*/",SLibCG_SetCSCDW(2, 1, "[/*@>1473f1*/0].frameCount", -1, "", 0, "/*@>147936*/(int32_T)/*@>147939*/phaseConfig/*@>147938*/[/*@>14793a*/0].frames"),"/*@]*/")>\
+/* '<S52>:1:66' if (phaseConfig(currentPhase).frames) */
+/*@>142d8e*/if (/*@>146a57*/phaseConfig/*@>146a59*/[/*@>146a56*/1].frames/*@>142d8f*/ != /*@>14330a*/0.0F) {
+    /* '<S52>:1:67' ramp_ms = quantum_ms * phaseConfig(currentPhase).frames; */
+    /* '<S52>:1:68' factor = log(phaseConfig(currentPhase).target_linear / phaseConfig(currentPhase).current_linear); */
+    /* '<S52>:1:69' RampCoef = exp(factor / (sample_rate_in_hertz * ramp_ms / 1000)); */
+%<SLibCG_DumpSSCode("/*@[147480*/",SLibCG_SetCSCDW(2, 1, "[/*@>147457*/1].rampCoeff", -1, "", 0, "/*@>14794e*/expf(/*@>147951*/logf(/*@>147955*/phaseConfig/*@>147954*/[/*@>147956*/1].target_linear/*@>147952*/ / /*@>14795a*/phaseConfig/*@>147959*/[/*@>14795b*/1].current_linear)/*@>14794f*/ / (/*@>147960*/quantum_ms/*@>14795f*/ * /*@>147963*/phaseConfig/*@>147962*/[/*@>147964*/1].frames/*@>14795e*/ * /*@>147966*/rtu_sample_rate_in_hertz/*@>14795d*/ / /*@>147967*/1000.0F))"),"/*@]*/")>\
+} else {
+    /* '<S52>:1:70' else */
+    /* '<S52>:1:71' RampCoef = single(1); */
+%<SLibCG_DumpSSCode("/*@[14744d*/",SLibCG_SetCSCDW(2, 1, "[/*@>147424*/1].rampCoeff", -1, "", 0, "/*@>147979*/1.0F"),"/*@]*/")>\
+}
+/* '<S52>:1:73' Rampers(currentPhase).rampCoeff   = single(RampCoef); */
+/* '<S52>:1:74' Rampers(currentPhase).targetGain  = actualTargetGainLinear; */
+%<SLibCG_DumpSSCode("/*@[1474b3*/",SLibCG_SetCSCDW(2, 1, "[/*@>14748a*/1].targetGain", -1, "", 0, "/*@>14798b*/targetEffectiveGain"),"/*@]*/")>\
+/*  phase 1 value ignored. */
+/* '<S52>:1:75' Rampers(currentPhase).currentGain = single(phaseConfig(currentPhase).current_linear); */
+%<SLibCG_DumpSSCode("/*@[1474e6*/",SLibCG_SetCSCDW(2, 1, "[/*@>1474bd*/1].currentGain", -1, "", 0, "/*@>14799f*/phaseConfig/*@>14799e*/[/*@>1479a0*/1].current_linear"),"/*@]*/")>\
+/* '<S52>:1:76' Rampers(currentPhase).frameCount  = int32(phaseConfig(currentPhase).frames); */
+%<SLibCG_DumpSSCode("/*@[147519*/",SLibCG_SetCSCDW(2, 1, "[/*@>1474f0*/1].frameCount", -1, "", 0, "/*@>1479b3*/(int32_T)/*@>1479b6*/phaseConfig/*@>1479b5*/[/*@>1479b7*/1].frames"),"/*@]*/")>\
+/*  unfreeze the gain. (This step now performed on canvas) */
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[8].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(8, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(8, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(8, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_tonecontrol(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(8, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_tonecontrol", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%<comma>real32_T rtu_boost_max_db\
+%assign comma = ", "
+%<comma>real32_T rtu_cut_max_db\
+%assign comma = ", "
+%<comma>real32_T rtu_normalized_gain_impact\
+%assign comma = ", "
+%<comma>real32_T rtu_db_per_sec\
+%assign comma = ", "
+%<comma>real32_T rtu_ramp_time_ms\
+%assign comma = ", "
+%<comma>real32_T rtu_sample_rate_in_hertz\
+%assign comma = ", "
+%<comma>real32_T rtu_frame_size\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(8, 0, fcnProtoType)>
+%endfunction

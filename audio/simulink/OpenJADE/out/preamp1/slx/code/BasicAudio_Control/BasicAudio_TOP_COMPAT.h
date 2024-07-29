@@ -1,0 +1,14 @@
+#ifndef RTW_HEADER_BasicAudio_TOP_COMPAT_h_
+#define RTW_HEADER_BasicAudio_TOP_COMPAT_h_
+
+// Auto-generated code for model BasicAudio
+/**** TOP TOKEN COMPATIBILITY HASH VALUES ****/
+#define TOP_COMPAT {0x6E521A79UL}
+#define TOP_COMPAT_NAME {"BasicAudio"}
+#define TOP_COMPAT_NAME_HASH {0x9FD22631UL}
+/**** COMPAT HASH VALUES BY MODULE ****/
+#define BASICAUDIO_TOP_COMPAT 0x6E521A79UL
+/**** NAME HASH VALUES BY MODULE ****/
+#define BASICAUDIO_TOP_NAME_HASH 0x9FD22631UL
+
+#endif /* RTW_HEADER_BasicAudio_TOP_COMPAT_h_ */

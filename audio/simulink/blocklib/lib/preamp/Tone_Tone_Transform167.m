@@ -1,0 +1,6 @@
+function outData = Tone_Tone_Transform167(inData)
+% Transform function automatically created by RenameLibraryMaskParameters
+   outData = MaskUtil.TransformFunctionRename(inData, ...
+      {'MaskToneName'}, ...
+      {'MaskFeatureName'});
+end

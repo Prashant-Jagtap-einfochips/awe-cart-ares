@@ -1,0 +1,293 @@
+%implements FeaturePath_SFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%include "FeaturePathCommon.tlc"
+
+%% unknown why - but if model has no TOPs, the top folder is not in the 
+%% ... TLC file search path! Here we just add it ourselves. Weird.
+%addincludepath "../top"
+%include "TOP_Common.tlc"
+
+%% Code for the SCH tokens and handlers
+%include "tlc_SchTokenApi.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% -----------------------------------------------------
+    %% Create a header file to aggregate the total model counts through model references
+    %openfile buffer
+        %assign refModels = LibGetReferencedModelNames()
+        %assign modelNames = ""
+        %foreach j = refModels.NumReferencedModels
+            // ------------------------------------------------------------
+            // This file is created by the existence of a FeaturePath block
+            // ------------------------------------------------------------
+
+            // Include defines from referenced models
+            #include "%<refModels.ReferencedModel[j].Name>_ModelCount.h"
+            %assign modelNames = modelNames + " + %<refModels.ReferencedModel[j].Name>_ModelCount"
+        %endforeach
+
+        // Define total model count for this model
+        #define %<ModelPrefix()>ModelCount (1%<modelNames>)
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Header","Custom",ModelPrefix() + "ModelCount")
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+    %% -----------------------------------------------------
+    %% ASDID header
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetAsdIdFileName())
+    %openfile buffer
+         
+            %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %if IsIndirect
+            %include "tlc_ASDID_Indirect.h"
+        %else
+            %include "tlc_ASDID.h"
+        %endif
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %openfile buffer
+        // ------------------------------------------------------------
+        // DATATYPE CODES
+        // ------------------------------------------------------------
+        typedef enum
+        {
+            TSS_DOUBLE = 0,
+            TSS_SINGLE = 1,
+            TSS_INT8 = 2,
+            TSS_UINT8 = 3,
+            TSS_INT16 = 4,
+            TSS_UINT16 = 5,
+            TSS_INT32 = 6,
+            TSS_UINT32 = 7,
+            TSS_BOOLEAN = 8
+        } SimulinkDatatypeId;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %% Do not emit asynchronous API functions for referenced models - they 
+    %% hookup their assets to the top model's methods.
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %%---------------------------------------------------------------------
+        %% [SHARED_HANDLER] SETUP SHARED ASDID HANDLER FUNCTION - API function
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetApiFileName())
+        %<FeaturePathSetupAsdIdHandler(fileH)>
+        %% Includes :
+        %openfile buffer
+            #include "rtwtypes.h"
+            #include "%<FeaturePathGetAsdIdFileName()>.h"
+            #include "%<FeaturePathGetApiFileName()>.h"
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %% OPEN the handler function
+        %openfile buffer
+            /** @ingroup ASDID
+            * Top level asynchronous message handler accepting inbound
+            * request and potentially generating a response. The inbound request
+            * may relate to any ASDID based service such as RTCs or TOPs.
+            * If the request has an associated response, this function's return
+            * code will indicate how many bytes were consumed in pRspBuf.
+            * Even if the request fails, the return code here should be positive
+            * here indicating the size of the response. The status code INSIDE
+            * the response can indicate the failure. @see AsdIdStatus_type 
+            * Negative values returned from this function use ASDSTATUS codes-
+            * e.g. ASDSTATUS_RSP_BUFFER_SMALL indicates a response (even an 
+            * error response) could not be created in the provided rspBufSize.
+            *  @param pReqBuf Request buffer containing request
+            *  @param reqBufSize number of bytes used in the request buffer
+            *  @param pRspBuf Response buffer to receive response of @ref AsdIdStatus_type
+            *  @param rspBufSize Size of available bytes provided for the response to fill
+            *  @return Returns the total number of bytes utilized in the response buffer, or
+            *          ASDSTATUS_RSP_BUFFER_SMALL if the response would not fit. Note that the
+            *          response itself may contain an error statusCode based on processing
+            *          the request. Some request messages never return responses.
+            * @see AsdIdStatus_type for the header format of the response
+            * @see ASDID_IS_ERROR to detect error payloads in the response payload status
+            */
+            int %<ModelPrefix()>HandleAsdIdRequest(void* pReqBuf, uint32_t reqBufSize,
+                                   void* pRspBuf, uint32_t rspBufSize)
+            {
+                int retVal = 0;
+                uint32_t asdId = ((uint32_t*)pReqBuf)[0];
+
+                %% [SHARED_HANDLER] EXPECTS TOP,RTC,ETC TO ADD HANDLERS IN VIA FeaturePathAddAsdIdHandler
+
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"HandleAsdIdRequestTop",buffer)>
+        %% CLOSE the handler function
+        %openfile buffer
+                return retVal;
+            }
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"HandleAsdIdRequestBottom",buffer)>
+
+        %%---------------------------------------------------------------------
+        %% [SHARED_NOTIFICATION] SETUP SHARED SERVICE NOTIFICATION FUNCTION - API function
+        %<FeaturePathSetupServiceNotifications(fileH)>
+        %% OPEN the notification service function
+        %openfile buffer
+            /** @ingroup ASDID
+             * Top level notification servicing - polling for request completion as well as
+             * creating notification message payloads upon completion. When no notification
+             * payload is returned, it means all notifications have been serviced for the
+             * current audio frame. However, if a notification payload *is* returned, then
+             * this routine can be called again (repeatedly) until no payload is returned.
+             * All notifications have a message ID and caller handle matching their original
+             * request and a statusCode of ASDSTATUS_RTC_NOTIFICATION.
+             * NOTE: the same thread that handlers ASDID requests must be responsible for
+             * servicing notifications as well. The two routines must not operate at the
+             * same time or race conditions can lead to faulty operation.
+             *  @param pNtfBuf Empty buffer read to receive a notification message.
+             *  @param ntfBufSize Size of buffer in bytes.
+             *  @returns Number of bytes used in the provided notification buffer (pNtfBuf).
+             *          Return Value | Meaning
+             *           ----------- | :--------
+             *               0       | All done. No use in calling this again until audio processing happens.
+             *             > 0       | A notification was returned with this many bytes used in buffer. Line up more buffer space and call again if you can.
+             *             < 0       | Error: buffer is too small. This is how many bytes are needed for the buffer (in negative form)
+             * @ingroup rtc
+             * @see AsdIdStatus_type for format of each notification message's header
+             */
+            int %<ModelPrefix()>ServiceNotifications(void* pNtfBuf, uint32_t ntfBufSize)
+            {
+                int retVal = 0;
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"ServiceNotificationsTop",buffer)>
+        %openfile buffer
+                return retVal;
+            }
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"ServiceNotificationsBottom",buffer)>
+    %% END OF SHARED API FOR ASYNCHRONOUS API
+    %endif
+
+    %%---------------------------------------------------------------------
+    %% API header file
+    %% First, create a generic TalariaAPI.h header that directs to this model's API
+    %assign genericHeaderName = "TalariaAPI"
+    %if FeaturePathGetApiFileName() != genericHeaderName
+        %openfile buffer
+            #include "%<FeaturePathGetApiFileName()>.h"
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Header","Custom",genericHeaderName)
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    %endif
+    %% whew... ok, now continue with the real API file:
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetApiFileName())
+    %openfile buffer
+        #include <stdint.h>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %openfile buffer
+        %if LibIsModelReferenceTarget()
+            %assign PRE = ModelPrefix()
+        %else
+            %assign PRE = ""
+        %endif
+        // ------------------------------------------------------------
+        // MODEL SYNCHRONOUS PROCESSING INTERFACE
+        // ------------------------------------------------------------
+        %assign NumSyncTasks = LibGetNumSyncPeriodicTasks()
+        #define %<PRE>MODEL_FUNC(fname) %<LibGetMdlSrcBaseName()>_ ## fname
+        #define %<PRE>MODEL_HEADER_FILENAME "%<LibGetMdlPubHdrBaseName()>.h"
+        #define %<PRE>MODEL_SYNC_TASK_COUNT %<NumSyncTasks>
+        %if NumSyncTasks == 1
+            #define %<PRE>MODEL_RUN_FLAGS_UPDATE(flags)
+            #define %<PRE>MODEL_STEP(TID) MODEL_FUNC(step)();
+            #define %<PRE>MODEL_TASK_RATE_FACTORS 1
+        %else
+            #define %<PRE>MODEL_RUN_FLAGS_UPDATE(flags) MODEL_FUNC(SetEventsForThisBaseStep)(flags);
+            #define %<PRE>MODEL_STEP(TID) MODEL_FUNC(step)(TID);
+            #define %<PRE>MODEL_TASK_RATE_FACTORS \
+            %foreach j=NumSyncTasks
+                %assign RateFactor = %<SPRINTF("%.0f",LibGetClockTickStepSize(j)/LibGetClockTickStepSize(0))>
+                %if j < NumSyncTasks-1
+                  %<RateFactor>,\
+                %else
+                  %<RateFactor>
+                %endif
+            %endforeach
+        %endif
+        #define %<PRE>MODEL_TASK_SAMPLE_PERIODS \
+        %foreach j=NumSyncTasks-1
+                %<LibGetSampleTimePeriodAndOffset(j, 0)>,\ 
+        %endforeach
+        %<LibGetSampleTimePeriodAndOffset(NumSyncTasks-1, 0)> 
+        #define %<PRE>MODEL_TASK_SAMPLE_OFFSETS \
+        %foreach j=NumSyncTasks-1
+            %<LibGetSampleTimePeriodAndOffset(j, 1)>,\ 
+        %endforeach
+        %<LibGetSampleTimePeriodAndOffset(NumSyncTasks-1, 1)>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %% Do not try to guess the signatures of model API functions for any
+    %% referenced models - they vary by nesting and other factors.
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %% Guess at the names of these functions. If they are customized
+            %% in Simulink, this code will break with linker errors
+            %% (i.e. these symbols will never be defined by Simulink's codegen)
+            %% The reliable method is to instead include the model header file.
+            // Relevant function prototypes- some referenced by above macros
+            // (Officially declared in %<LibGetMdlPubHdrBaseName()>.h)
+            %if NumSyncTasks == 1
+                extern void %<ModelPrefix()>step(void);
+            %else
+                extern void %<ModelPrefix()>step(int tid);
+                extern void %<ModelPrefix()>SetEventsForThisBaseStep(uint8_t *eventFlags);
+            %endif
+            extern void %<ModelPrefix()>initialize(void);
+            extern void %<ModelPrefix()>terminate(void);
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %endif
+
+    %% Add the api header to the general includes since it might now be the
+    %% source of declaration for some symbols we've moved there:
+    %assign modelApiInclude = "%<FeaturePathGetApiFileName()>.h"
+    %<LibAddToCommonIncludes(modelApiInclude)>
+
+    %% Do not emit asynchronous API functions for referenced models - they 
+    %% hookup their assets to the top model's methods.
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            // ------------------------------------------------------------
+            // ASYNCHRONOUS NOTIFICATION SERVICE
+            // ------------------------------------------------------------
+            int %<ModelPrefix()>ServiceNotifications(void* pNtfBuf, uint32_t nftBufSize);
+
+            // ------------------------------------------------------------
+            // ASDID ASYNCHRONOUS MESSAGE HANDLER
+            // ------------------------------------------------------------
+            int %<ModelPrefix()>HandleAsdIdRequest(void* pReqBuf, uint32_t reqBufSize,
+                                   void* pRspBuf, uint32_t rspBufSize);
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% Emit the static token files
+    %if TLC_FALSE == EXISTS(::TALARIA_ENGINE)
+        %<EmitStaticCommandHandlerAPI(block,system)>
+    %endif
+
+%endfunction
+
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+    %% Nothing to do here for code generation. Feature Path block instances are
+    %% mostly canvas creatures - offering information to config block mask routines
+
+%endfunction

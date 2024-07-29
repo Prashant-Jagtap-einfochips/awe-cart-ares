@@ -1,0 +1,40 @@
+import os
+
+Import('env')
+Import('filelist_path')
+Import('jframework_name')
+Import('jmodule_name')
+
+
+def generate_obj_filelist(target, source, env):
+    with open(str(target[0]), 'w') as f:
+        f.write('\n'.join(os.path.basename(str(x)) for x in source))
+
+local_env = env.Clone()
+# Create Object File List builder
+local_env['BUILDERS']['ObjFileList'] = env.Builder(action = generate_obj_filelist, suffix='.lst')
+
+# Generate File list for OpenJADE Runtime
+ObjRFL = local_env.ObjFileList(target=[filelist_path + 'Runtime'], source = local_env['RuntimeList'])
+# Generate File list for JFramework
+ObjFFL = local_env.ObjFileList(target=[filelist_path + 'Jframework'], source = local_env['JFrameworkList'][jframework_name])
+# Generate File list for Model
+ObjMFL = local_env.ObjFileList(target=[filelist_path + 'Model'], source = local_env['ModelList'][jmodule_name])
+
+rval = ["ObjRFL", "ObjFFL", "ObjMFL"]
+if 'PlatformList' in local_env:
+    # Generate File list for JTest Platform
+    ObjPLTFL = local_env.ObjFileList(target=[filelist_path + 'Platform'], source = local_env['PlatformList'])
+    rval.append("ObjPLTFL")
+
+if 'CrlList' in local_env:
+    # Generate File list for CRL sources
+    ObjCRLFL = local_env.ObjFileList(target=[filelist_path + 'CRL'], source = local_env['CrlList'])
+    rval.append("ObjCRLFL")
+
+if 'DriversList' in local_env:
+    # Generate File list for CRL sources
+    ObjDRVFL = local_env.ObjFileList(target=[filelist_path + 'Drivers'], source = local_env['DriversList'])
+    rval.append("ObjDRVFL")
+
+Return(rval)

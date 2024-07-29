@@ -1,0 +1,340 @@
+/*
+Copyright 2011 Bose Corporation
+Contact: Chris Cheng
+$Revision: 14285 $ $Date: 2016-07-19 16:39:52 -0400 (Tue, 19 Jul 2016) $
+*/
+
+%implements "SampleRateConverter_sfunc" "C"
+
+
+%% ------------------------------------------------------------------------
+%%    Function:    BlockTypeSetup
+%function BlockTypeSetup(block, system) void
+    %% Add appropriate includes to header file
+    
+    // Standard libraries
+    %<LibAddToCommonIncludes("<stdlib.h>")>
+    %<LibAddToCommonIncludes("<stdio.h>")>
+    
+    %openfile buffer
+
+    // Intel signal-processing primitives
+    #if defined (PCPREQ4)
+    #include <math.h>
+    //#include <ipp.h>
+    #elif defined (__HEXAGON_ARCH__)
+    #include <math.h>
+    #else
+	#include <math.h>
+	#include <builtins.h>
+    #endif
+	
+    %closefile buffer
+
+    %% Add to header file
+    %<LibCacheDefine(buffer)>
+
+%endfunction %% BlockInstanceSetup
+
+
+%% ------------------------------------------------------------------------
+%% Function: InitializeConditions
+%function InitializeConditions(block, system) Output
+    // %<Type> Block: %<Name> (%<ParamSettings.FunctionName>)
+    {
+        %% Block parameters
+        %assign UP_FACTOR      = CAST("Number",LibBlockParameterValue(P1, 0))
+        %assign DOWN_FACTOR    = CAST("Number",LibBlockParameterValue(P2, 0))
+        %assign NFRAME_OUT     = CAST("Number",LibBlockParameterValue(P3, 0))
+        %assign NFILTERBLOCK   = CAST("Number",LibBlockParameterValue(P4, 0))
+
+        %% Assign work vectors
+        %assign INPUTBUFFER_PTR        = LibBlockPWork(PWork, "", "", 0)
+        %assign INPUTBUFFEREND_PTR     = LibBlockPWork(PWork, "", "", 1)
+        %assign INPUTWRITE_PTR         = LibBlockPWork(PWork, "", "", 2)
+        %assign INPUTREAD_PTR          = LibBlockPWork(PWork, "", "", 3)
+        %assign FILTER_PTR             = LibBlockPWork(PWork, "", "", 4)
+        %assign FILTEREND_PTR          = LibBlockPWork(PWork, "", "", 5)
+        %assign FILTERCURR_PTR         = LibBlockPWork(PWork, "", "", 6)
+        %assign ADVANCE_PTR            = LibBlockPWork(PWork, "", "", 7)
+        %assign ADVANCEEND_PTR         = LibBlockPWork(PWork, "", "", 8)
+        %assign ADVANCECURR_PTR        = LibBlockPWork(PWork, "", "", 9)
+        %assign NBUFFER                = LibBlockIWork(IWork, "", "", 0)
+        %assign INPUTBUFFER_PTR_MEM    = LibBlockDWork(pInputBuffer, "", "", 0)
+        %assign INPUTBUFFEREND_PTR_MEM = LibBlockDWork(pInputBufferEnd, "", "", 0)
+        %assign INPUTWRITE_PTR_MEM     = LibBlockDWork(pInputWrite, "", "", 0)
+        %assign INPUTREAD_PTR_MEM      = LibBlockDWork(pInputRead, "", "", 0)
+        %assign INPUTREAD_MEM          = LibBlockDWork(InputBuffer, "", "", 0)
+
+        // Temporary values/pointers
+        int idx;
+        int nCh = %<LibBlockInputSignalDimensions(0)[1]>;
+		int nFrameIn = %<LibBlockInputSignalDimensions(0)[0]>;
+		int nFrameOut;
+		if ((%<NFRAME_OUT>) == -1)	nFrameOut = nFrameIn;
+		else						nFrameOut = (%<NFRAME_OUT>);
+
+        // Pointer to filter coefficient blocks
+        float *pFilter, *pFilterEnd, *pFilterCurr;
+        int *pAdvance, *pAdvanceEnd, *pAdvanceCurr;
+
+        int nBuffer;           // Number of input samples
+
+        // Pointer to input circular buffers and read/write pointers
+        float **pInputBuffer, **pInputBufferEnd, **pInputWrite, **pInputRead; 
+
+        /*
+         * Save filter and advance sample pointers
+         */
+
+        pFilter = (float*)(%<LibBlockInputSignalAddr(1, "", "", 0)>);
+        pFilterEnd = pFilter + (%<LibBlockInputSignalWidth(1)>);
+        pFilterCurr = pFilter;
+        pAdvance = (int*)(%<LibBlockInputSignalAddr(2, "", "", 0)>);
+        pAdvanceEnd = pAdvance + (%<LibBlockInputSignalWidth(2)>);
+        pAdvanceCurr = pAdvance;
+
+        /*
+         * Allocate input buffers and pointers
+         */
+
+        // Calculate the number of input samples needed to produce output per input frame
+		nBuffer = 2 * ceil(nFrameOut * (%<DOWN_FACTOR>) / (%<UP_FACTOR>)) + (%<NFILTERBLOCK>);
+
+        // Quantize to input frame size
+        nBuffer = (int)(ceil((float)nBuffer / (float)nFrameIn));	//Number of frames
+		if (nBuffer<2) nBuffer = 2;										//Min num of frames = 2
+		nBuffer = nBuffer * nFrameIn;
+
+        // Allocate the circular buffers along with end/read/write pointers
+        pInputBuffer = (float**)&%<INPUTBUFFER_PTR_MEM>;
+        pInputBufferEnd = (float**)&%<INPUTBUFFEREND_PTR_MEM>;
+        pInputWrite = (float**)&%<INPUTWRITE_PTR_MEM>;
+        pInputRead = (float**)&%<INPUTREAD_PTR_MEM>;
+        for (idx = 0; idx < nCh; idx++) {
+            // Allocate twice what is needed ("double buffer")
+			pInputBuffer[idx] = (float*)&%<INPUTREAD_MEM> + (idx * nBuffer);
+            pInputBufferEnd[idx] = pInputBuffer[idx] + nBuffer;
+            pInputWrite[idx] = pInputBuffer[idx] ;
+            pInputRead[idx] = pInputBuffer[idx] + (nBuffer>>1) - 1;
+        }
+
+        // Save pointers
+        %<INPUTBUFFER_PTR>    = (void*)pInputBuffer;
+        %<INPUTBUFFEREND_PTR> = (void*)pInputBufferEnd;
+        %<INPUTWRITE_PTR>     = (void*)pInputWrite;
+        %<INPUTREAD_PTR>      = (void*)pInputRead;
+        %<FILTER_PTR>         = (void*)pFilter;
+        %<FILTEREND_PTR>      = (void*)pFilterEnd;
+        %<FILTERCURR_PTR>     = (void*)pFilterCurr;
+        %<ADVANCE_PTR>        = (void*)pAdvance;
+        %<ADVANCEEND_PTR>     = (void*)pAdvanceEnd;
+        %<ADVANCECURR_PTR>    = (void*)pAdvanceCurr;
+        %<NBUFFER>            = nBuffer;
+    }
+    
+%endfunction %% Start  
+
+
+%% ------------------------------------------------------------------------
+%function Update(block, system) Output
+    /* %<Type> Block: %<Name> (%<ParamSettings.FunctionName>) */
+    {
+        %% Assign work vectors
+        %assign INPUTBUFFER_PTR    = LibBlockPWork(PWork, "", "", 0)
+        %assign INPUTBUFFEREND_PTR = LibBlockPWork(PWork, "", "", 1)
+        %assign INPUTWRITE_PTR     = LibBlockPWork(PWork, "", "", 2)
+        %assign NBUFFER            = LibBlockIWork(IWork, "", "", 0)
+
+        int ch;
+        int nCh = %<LibBlockInputSignalDimensions(0)[1]>;
+		int nFrameIn = %<LibBlockInputSignalDimensions(0)[0]>;
+        if (%<LibIsSFcnSampleHit("InputPortIdx0")>) {
+            // Copy input samples into the circular buffer
+            float *in = (float*)(%<LibBlockInputSignalAddr(0, "", "", 0)>);
+            float **pInputBuffer = (float**)(%<INPUTBUFFER_PTR>);
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+            float **pInputBufferEnd = (float**)(%<INPUTBUFFEREND_PTR>);
+#endif
+            float **pInputWrite = (float**)(%<INPUTWRITE_PTR>);
+
+            for (ch = 0; ch < nCh; ch++) {
+#if !defined (PCPREQ4) && !defined (__HEXAGON_ARCH__)
+				aligned(pInputWrite[ch], 2 * sizeof(float));
+#endif
+                memcpy(pInputWrite[ch], in, nFrameIn * sizeof(float));
+                in += nFrameIn;
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+                pInputWrite[ch] += nFrameIn;
+                if (pInputWrite[ch] >= pInputBufferEnd[ch]) {
+                    pInputWrite[ch] = pInputBuffer[ch];
+                }
+#else
+				pInputWrite[ch] = circptr(pInputWrite[ch], nFrameIn * sizeof(float), pInputBuffer[ch], (%<NBUFFER>) * sizeof(float));
+#endif
+            }
+        }
+    }
+
+%endfunction %% Update
+
+
+%% ------------------------------------------------------------------------
+%function Outputs(block, system) Output
+    /* %<Type> Block: %<Name> (%<ParamSettings.FunctionName>) */
+    {
+        %% Block parameters
+        %assign NFRAME_OUT     = CAST("Number",LibBlockParameterValue(P3, 0))
+        %assign NFILTERBLOCK   = CAST("Number",LibBlockParameterValue(P4, 0))
+
+        %% Assign work vectors
+        %assign INPUTBUFFER_PTR    = LibBlockPWork(PWork, "", "", 0)
+        %assign INPUTBUFFEREND_PTR = LibBlockPWork(PWork, "", "", 1)
+        %assign INPUTWRITE_PTR     = LibBlockPWork(PWork, "", "", 2)
+        %assign INPUTREAD_PTR      = LibBlockPWork(PWork, "", "", 3)
+        %assign FILTER_PTR         = LibBlockPWork(PWork, "", "", 4)
+        %assign FILTEREND_PTR      = LibBlockPWork(PWork, "", "", 5)
+        %assign FILTERCURR_PTR     = LibBlockPWork(PWork, "", "", 6)
+        %assign ADVANCE_PTR        = LibBlockPWork(PWork, "", "", 7)
+        %assign ADVANCEEND_PTR     = LibBlockPWork(PWork, "", "", 8)
+        %assign ADVANCECURR_PTR    = LibBlockPWork(PWork, "", "", 9)
+        %assign NBUFFER            = LibBlockIWork(IWork, "", "", 0)
+
+        int nCh = %<LibBlockInputSignalDimensions(0)[1]>;
+        int ch, idx, samp;
+		int nFrameOut;
+		if ((%<NFRAME_OUT>) == -1)	nFrameOut = %<LibBlockInputSignalDimensions(0)[0]>;
+		else						nFrameOut = (%<NFRAME_OUT>);
+        if (%<LibIsSFcnSampleHit("OutputPortIdx0")>) {
+            float *out = (float*)(%<LibBlockOutputSignalAddr(0, "", "", 0)>);
+            float **pInputBuffer = (float**)(%<INPUTBUFFER_PTR>);
+            float **pInputBufferEnd = (float**)(%<INPUTBUFFEREND_PTR>);
+            float **pInputWrite = (float**)(%<INPUTWRITE_PTR>);
+            float **pInputRead = (float**)(%<INPUTREAD_PTR>);
+            float *pFilter = (float*)(%<FILTER_PTR>);
+            float *pFilterEnd = (float*)(%<FILTEREND_PTR>);
+            float *pFilterCurr = (float*)(%<FILTERCURR_PTR>);
+            int *pAdvance = (int*)(%<ADVANCE_PTR>);
+            int *pAdvanceEnd = (int*)(%<ADVANCEEND_PTR>);
+            int *pAdvanceCurr = (int*)(%<ADVANCECURR_PTR>);
+
+            for (idx = 0; idx < nFrameOut; idx++) {
+                float *pOut = out + idx;
+                float *pFiltBase = pFilterCurr;
+
+                // Do the polyphase convolution for each channel
+#define CHAN_2_CHANGE
+#ifdef CHAN_2_CHANGE
+				ch = 0;
+				if (nCh - ((nCh>>1)<<1))
+				{
+                    float *pIn = pInputRead[ch];
+                    float outval = 0.0;
+                    pFilterCurr = pFiltBase;
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp++) {
+						outval += *(pFilterCurr++) * *(pIn++);
+						if (pIn > pInputBufferEnd[ch] - 1) {
+							pIn -= %<NBUFFER>;
+						}
+                    }
+#else
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp += 1) {
+                        outval += pFilterCurr[samp] * *(pIn);
+						pIn = circptr(pIn, sizeof(float), pInputBuffer[ch], %<NBUFFER> * sizeof(float));
+                    }
+					pFilterCurr += (%<NFILTERBLOCK>);
+#endif
+                    *pOut = outval;
+                    pOut += nFrameOut;
+					ch++;
+				}
+                for (; ch < nCh; ch += 2) {
+                    float *pIn1 = pInputRead[ch];
+                    float *pIn2 = pInputRead[ch+1];
+                    float outval1 = 0.0;
+                    float outval2 = 0.0;					
+                    pFilterCurr = pFiltBase;
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp++) {
+						outval1 += *(pFilterCurr) * *(pIn1++);
+						outval2 += *(pFilterCurr++) * *(pIn2++);
+						if (pIn1 > pInputBufferEnd[ch] - 1) {
+							pIn1 -= %<NBUFFER>;
+							pIn2 -= %<NBUFFER>;
+						}
+                    }
+#else
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp += 1) {
+                        outval1 += pFilterCurr[samp] * *(pIn1);
+                        outval2 += pFilterCurr[samp] * *(pIn2);
+						pIn1 = circptr(pIn1, sizeof(float), pInputBuffer[ch], %<NBUFFER> * sizeof(float));
+						pIn2 = circptr(pIn2, sizeof(float), pInputBuffer[ch+1], %<NBUFFER> * sizeof(float));
+                    }
+					pFilterCurr += (%<NFILTERBLOCK>);
+#endif
+                    *pOut = outval1;
+                    pOut += nFrameOut;
+                    *pOut = outval2;
+                    pOut += nFrameOut;
+                }
+#else	//#ifdef CHAN_2_CHANGE
+                for (ch = 0; ch < nCh; ch++) {
+                    float *pIn = pInputRead[ch];
+                    float outval = 0.0;
+                    pFilterCurr = pFiltBase;
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp++) {
+						outval += *(pFilterCurr++) * *(pIn++);
+						if (pIn > pInputBufferEnd[ch] - 1) {
+							pIn -= %<NBUFFER>;
+						}
+                    }
+#else
+					for (samp = 0; samp < (%<NFILTERBLOCK>); samp += 1) {
+                        outval += pFilterCurr[samp] * *(pIn);
+						pIn = circptr(pIn, sizeof(float), pInputBuffer[ch], %<NBUFFER> * sizeof(float));
+                    }
+					pFilterCurr += (%<NFILTERBLOCK>);
+#endif
+                    *pOut = outval;
+                    pOut += nFrameOut;
+                }
+#endif
+
+                // Move back to the first filter block if we're at the end
+                if (pFilterCurr >= pFilterEnd) {
+                    pFilterCurr = pFilter;
+                }
+
+                // Increment input read as needed
+                for (ch = 0; ch < nCh; ch++) {
+#if defined (PCPREQ4) || defined (__HEXAGON_ARCH__)
+                    pInputRead[ch] += *pAdvanceCurr;
+                    if (pInputRead[ch] >= pInputBufferEnd[ch]) {
+                        pInputRead[ch] -= %<NBUFFER>;
+                    }
+#else
+					pInputRead[ch] = circptr(pInputRead[ch], sizeof(float) * (*pAdvanceCurr), pInputBuffer[ch], %<NBUFFER> * sizeof(float));
+#endif
+                }
+                pAdvanceCurr++;
+                if (pAdvanceCurr >= pAdvanceEnd) {
+                    pAdvanceCurr = pAdvance;
+                }
+            }
+            %<FILTERCURR_PTR>     = (void*)pFilterCurr;
+            %<ADVANCECURR_PTR>     = (void*)pAdvanceCurr;
+        }
+    }
+
+%endfunction %% Outputs
+
+
+%% ------------------------------------------------------------------------
+%function Terminate(block, system) Output
+    /* %<Type> Block: %<Name> (%<ParamSettings.FunctionName>) */
+    {
+    } 
+
+%endfunction %% Terminate

@@ -1,0 +1,125 @@
+Starting: Simulink
+--- Setting CCES 2.9.1 environment variable ---
+--- Setting Xtensa environment variable ---
+--- Setting VDSP environment variable ---
+--- Setting CCES 2.6.0 environment variable ---
+--- Setting CCES 2.10.0 environment variable ---
+--- Adding SharcPlus processor ---
+--- Adding GUL processor ---
+--- Adding GLXP processor ---
+Updating *.p file timestamps in folder C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria...
+Refreshing Simulink customizations
+Running BasicAudioTestCase
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\gul\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-2156x v1.0 | gmake makefile (64-bit Windows)"
+has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom
+registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\hifi4_rt685\toolchain\registry\rtwTargetInfo.m": "Toolchain "Xtensa Toolchain RI-2020.5-win32 (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc\toolchain\registry\rtwTargetInfo.m": "Toolchain "VisualDSP 5.0 | gmake makefile (64-bit Windows)"
+has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom
+registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc_plus\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-SC58x v2.3 | gmake makefile (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\sharc_plus_glxp\toolchain\registry\rtwTargetInfo.m": "Toolchain "ADSP-SC59x v1.0 | gmake makefile (64-bit
+Windows)" has already been registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This
+custom registration is not loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: An error occurred while registering an object in RTW.TargetRegistry from file
+"C:\work_dev\ares\AWE\ARES_AWE_02\audio\simulink\talaria\arch\x86\toolchain\registry\rtwTargetInfo.m": "Toolchain "MinGW64 | gmake (32-bit Windows)" has already been
+registered. Check that there are not multiple sl_customization.m files on the MATLAB path that specify the same toolchain name.". This custom registration is not
+loaded.] 
+[> In coder.targetreg.internal.TargetRegistry/refresh
+In coder.targetreg.internal/TargetRegistry/refreshToolchain
+In coder.make.internal.getToolchainInfos (line 12)
+In coder.make.internal.getToolchainList (line 7)
+In coder.make.internal.guicallback.getToolchains (line 9)
+In configset.internal.util.getFilteredToolchains
+In load_system>i_load_system (line 44)
+In load_system (line 20)
+In TalariaTest/simulateModel (line 278)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+[Warning: Environment Controller block will be removed in a future release. Replace Environment Controller block 'BasicAudio/Input/Environment Controller' with Variant
+Source block with the Variant control mode parameter set to 'sim codegen switching'. Use <a href="matlab: internallinktoadvisor.launchAdvisor(bdroot);">Model
+Advisor</a> to do this automatically.] 
+[> In sldiagviewer.reportWarning
+In internalcustomization.dispECBWarning
+In TalariaTest/simulateModel (line 327)
+In TalariaTestOJT/simulateModel (line 185)
+In BasicAudioTestCase/testTail (line 21)
+In BasicAudioTestCase/test_default (line 29)]
+  Stop Time = 0.100000
+  Tune Count = 0
+  TSP Count = 0
+  RTC Count = 2
+.
+Done BasicAudioTestCase
+__________
+

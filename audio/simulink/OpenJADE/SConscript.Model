@@ -1,0 +1,121 @@
+import os
+
+Import('env')
+Import('model_path')
+Import('project_path')
+Import('talaria_model')
+Import('target')
+Import('code_gen_folder')
+Import('test_folder')
+Import('jtest_path')
+Import('test_bin')
+Import('arch')
+
+local_env = env.Clone(code_gen_path=code_gen_folder[2:]) # skip '#/'
+
+def build_and_test_model(target, source, env, for_signature):
+    jtest_path_abs = os.path.abspath(jtest_path)
+    project_path_folder = os.path.abspath(Dir(project_path).path)
+    project_file = talaria_model['Project']
+    model_name = talaria_model['Name']
+    code_gen_path = os.path.abspath(os.path.dirname(File(target[0]).srcnode().path))
+    gen_log = os.path.join(code_gen_path, 'matlab_gen.log')
+    done_log = os.path.abspath(File(target[0]).srcnode().path)
+    if ('PartitionGenerateOptions' in talaria_model) and (talaria_model['PartitionGenerateOptions']):
+        build_options = os.path.abspath(talaria_model['PartitionGenerateOptions'])
+    else:
+        build_options = talaria_model['DLL']
+    if ('config' in talaria_model) and ( arch in talaria_model['config']) and talaria_model['config'][arch]:
+        config = os.path.abspath(talaria_model['config'][arch])
+    else:
+        config = ''
+    test_path = os.path.abspath(os.path.dirname(File(target[1]).srcnode().path))
+
+    build_cmd = [local_env['MATLAB']+ ' -batch  \"diary ' + gen_log + '; addpath ' + jtest_path_abs + '; addpath ' + code_gen_path + '; cd(\'' + project_path_folder +'\'); build_model_cmdlineOJT(\'' + project_file + '\',\'' + model_name + '\',\'' + build_options + '\',\'' + config + '\',\'' + code_gen_path + '\',\''+done_log + '\',\'' + talaria_model['Test']['Name'] + '\',\'' + talaria_model['Test']['Case'] + '\',\'' + test_path +'\'); quit force;\"']
+
+    return build_cmd
+
+def build_model(target, source, env, for_signature):
+    jtest_path_abs = os.path.abspath(jtest_path)
+    project_path_folder = os.path.abspath(Dir(project_path).path)
+    project_file = talaria_model['Project']
+    model_name = talaria_model['Name']
+    code_gen_path = os.path.abspath(os.path.dirname(File(target[0]).srcnode().path))
+    gen_log = os.path.join(code_gen_path, 'matlab_gen.log')
+    done_log = os.path.abspath(File(target[0]).srcnode().path)
+    if ('PartitionGenerateOptions' in talaria_model) and (talaria_model['PartitionGenerateOptions']):
+        build_options = os.path.abspath(talaria_model['PartitionGenerateOptions'])
+    else:
+        build_options = talaria_model['DLL']
+    if ('config' in talaria_model) and ( arch in talaria_model['config']) and talaria_model['config'][arch]:
+        config = os.path.abspath(talaria_model['config'][arch])
+    else:
+        config = ''
+
+    build_cmd = [local_env['MATLAB']+ ' -batch  \"diary ' + gen_log + '; addpath ' + jtest_path_abs + '; addpath ' + code_gen_path + '; cd(\'' + project_path_folder +'\'); build_model_cmdlineOJT(\'' + project_file + '\',\'' + model_name + '\',\'' + build_options + '\',\'' + config + '\',\'' + code_gen_path + '\',\''+done_log+'\'); quit force;\"']
+
+    return build_cmd
+
+def test_model(target, source, env, for_signature):
+    jtest_path_abs = os.path.abspath(jtest_path)
+    project_path_folder = os.path.abspath(Dir(project_path).path)
+    project_file = os.path.join(project_path_folder, talaria_model['Project'])
+    test_path = os.path.abspath(os.path.dirname(File(target[0]).srcnode().path))
+    test_log = os.path.join(test_path, 'matlab_test.log')
+    code_gen_path = os.path.abspath(local_env['code_gen_path'])
+
+    test_cmd = [local_env['MATLAB']+ ' -batch  "diary ' + test_log + '; addpath ' + jtest_path_abs + '; addpath ' + code_gen_path + '; open(\''+project_file+'\'); run(' + talaria_model['Test']['Name'] + '(\'\',\''+test_path+'\'),\''+talaria_model['Test']['Case']+'\'); quit force; "']
+
+    return test_cmd
+
+def create_empty_bin(target, source, env) :
+    print('Info: creating an empty binary file %s' % (target[0]))
+    with open('%s' % (target[0]), 'wb') as fp:
+        fp.write(b'\x00')
+
+build_and_test = True if (('Test' in talaria_model) and (talaria_model['Test']) and ('combinedBuildTest' in talaria_model['Test']) and (talaria_model['Test']['combinedBuildTest'])) else False
+
+empty_bin = os.path.join('%s' % (File(test_bin[0]).dir), 'empty.bin')
+
+if build_and_test:
+    print('build_and_test_combined')
+    local_env['BUILDERS']['BuildTestModel'] = local_env.Builder(generator = build_and_test_model, src_suffix='.prj')
+    JBuildTestModel = local_env.BuildTestModel(
+        target = [ code_gen_folder+'/build.log']+test_bin+target,
+        source = [ Glob(model_path+'/'+talaria_model['Name']+'*') ] )
+
+    local_env['BUILDERS']['EmptyBin'] = local_env.Builder(action = create_empty_bin)
+    JEmptyBin = local_env.EmptyBin(
+        target = empty_bin,
+        source = None )
+    local_env.Depends(JEmptyBin, JBuildTestModel)
+
+    Return(["JBuildTestModel", "JEmptyBin"])
+else:
+    print('build_and_test_separate')
+    local_env['BUILDERS']['BuildModel'] = local_env.Builder(generator = build_model, src_suffix='.prj')
+    JBuildModel = local_env.BuildModel(
+        target = [ code_gen_folder+'/build.log']+target,
+        source = [ Glob(model_path+'/'+talaria_model['Name']+'*') ] )
+
+    if test_folder:
+        local_env['BUILDERS']['TestModel'] = local_env.Builder(generator = test_model, src_suffix='.m')
+        JTestModel = local_env.TestModel(
+            target = test_bin,
+            source = [ Glob(model_path+'/'+talaria_model['Name']+'*') ] )
+        if arch == 'mil' :
+            Return(["JTestModel"])
+        else:
+
+            local_env['BUILDERS']['EmptyBin'] = local_env.Builder(action = create_empty_bin)
+            JEmptyBin = local_env.EmptyBin(
+                target = empty_bin,
+                source = None )
+
+            local_env.Depends(JEmptyBin, JTestModel)
+            Return(["JBuildModel", "JTestModel", "JEmptyBin"])
+    else:
+        if arch == 'mil' :
+            Return([])
+        else:
+            Return(["JBuildModel"])

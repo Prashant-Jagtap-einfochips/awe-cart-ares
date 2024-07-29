@@ -1,0 +1,169 @@
+%% methods to generate code supporting TSP outports (state interpretation)
+%% INCLUDED BY: TSP_SFunc.tlc
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: BlockTypeSetup ===============================================
+%function TSP_InterpretBlockTypeSetup() void
+    %% File Names  (without the LibGetModelName())
+    %assign tspInterpretFileName = ModelPrefix() + "TSP_Interpret"
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+
+    %% --------------------------------------------------------------------
+    %% SOURCE FILE *.c tspInterpretFileName source
+    %% --------------------------------------------------------------------
+    %assign fileH = LibCreateSourceFile("Source","Custom",tspInterpretFileName)
+    %% Includes :
+    %openfile buffer
+        #include <ctype.h>
+        #include <string.h> // for strncmp
+        #include "rtwtypes.h"
+        #include "%<tspInterpretFileName>.h"
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        #include "%<LibGetMdlPubHdrBaseName()>.h" // for TSP output signals
+        #include <stdio.h> // for sscanf, vsnprintf
+        #include <stdarg.h> // for variadic args (va_start)
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+
+        // Struct for TSP interpretation (outport) dispatch table
+        typedef struct TSP_InterpretationTable_tag
+        {
+            const char*         name;               // featurepath of tsp
+            int                 sightings_count;    // counts RecognizeTSP invocations
+            SimulinkDatatypeId  dtype_id;           // SimulinkDatatypeId of numeric data type
+            int                 element_bytes;      // byte size of a single element
+            int                 width;              // number of elements in value
+            void*               value_ptr;          // array of current numeric value
+        } TSP_InterpretationTable_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Dependencies")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+
+    %openfile buffer
+
+        // ----- TSP interpret dispatch table:
+        static TSP_InterpretationTable_type tsp_interpret_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        };
+
+        // Share table in a public interface for use by top-model
+        void* %<ModelPrefix()>tsp_interpret_table = tsp_interpret_table;
+        int %<ModelPrefix()>tsp_interpret_table_count = sizeof(tsp_interpret_table) / sizeof(TSP_InterpretationTable_type);
+
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+
+
+    %% Only include engine code for top-model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_TSP_Interpret.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",tspInterpretFileName)
+    %% Add framework entry point to use the request dispatch table
+    %openfile buffer
+      %% Only add access code for top-model generation
+      %if TLC_FALSE == LibIsModelReferenceTarget()
+        #include "%<interpretTriggerFileName>.h" // for InterpretEngineIterator
+
+        #ifdef INCLUDE_INTERPRETATION_DLL_API
+        // Returns a TSP iterator if name is recognized, INVALID_INTERPRET_ITERATOR otherwise
+        InterpretEngineIterator RecognizeTSP(const char* tspName);
+        #endif
+
+        // Reset all TSP sighting counts to zero
+        void ClearAllTSPSightings( void );
+
+        // Return count of how many times the specified TSP has been seen
+        int GetTSPSightings(InterpretEngineIterator tspNumberIn);
+
+        // Return TSP name (or NULL if bad number)
+        const char* GetTSPName(InterpretEngineIterator tspNumberIn);
+
+        // Set a single value of the TSP (index traverses by column first)
+        // For an N row by M column matrix using zero-based row and col, indexIn = row + (col * N);
+        // Returns 0 for OK, nonzero for error (does not set error state)
+        int SetTSPElement(InterpretEngineIterator tspNumberIn, int indexIn, const char* stringElementValueIn);
+
+        // Retrieve reported error strings
+        const char* GetTSPErrorStrings( void );
+
+        // Clear error strings (call when starting new operation)
+        void ClearTSPErrorStrings( void );
+      %endif
+        // Local model StateVar table
+        extern void* %<ModelPrefix()>tsp_interpret_table;
+        extern int %<ModelPrefix()>tsp_interpret_table_count;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    
+    %% ------------------- Dump our interpretation numbers to the INTERPRET-TRIGGER file
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+    %<FeaturePathAddTable(fileH,"Typedefs","TspEnum")>
+    %openfile buffer
+    // Interpretation numbers local to this model:
+        enum TSPNumber {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TspEnumTop",buffer)>
+    %openfile buffer
+        NUM_TSP_NUMBERS
+    };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TspEnumBottom",buffer)>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function TSP_InterpretBlockInstanceSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign tspInterpretFileName = ModelPrefix() + "TSP_Interpret"
+    %assign interpretTriggerFileName = ModelPrefix() + "InterpretTrigger"
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+
+    %% S Function RTW Data Variables
+    %assign Path    = ParamSettings.Path
+    %assign DTypeID = ParamSettings.DTypeID[0][0]
+    %assign Width   = ParamSettings.Width[0][0]
+
+    %% Declare the TSP number
+    %openfile buffer
+        ID_TSP_%<Path>, /* '%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",interpretTriggerFileName)
+    %<LibSetSourceFileCustomSection(fileH,"TspEnumEntries",buffer)>
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        {  /* '%<LibGetBlockName(block)>' */ ...
+            "%<Path>", 0, ...
+            %<DTypeConstName[DTypeID]>, ...
+            sizeof(%<LibGetDataTypeNameFromId(DTypeID)>), ...
+            %<SPRINTF("%dU",Width)>, ...
+            %<LibBlockOutputSignalAddr(0, "", "", 0)>
+        },
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",tspInterpretFileName)
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+%endfunction

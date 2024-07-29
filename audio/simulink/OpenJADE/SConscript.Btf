@@ -1,0 +1,74 @@
+import os
+import json
+
+Import('env')
+Import('cart')
+Import('target')
+Import('arch')
+Import('namespace')
+
+local_env = env.Clone(
+    CPPPATH=[
+    '.', 
+    'inc',
+    'FeatureLib/inc',
+    'FeatureLib/Features/inc',
+    'FeatureLib/Bamfs/inc',
+    'FeatureLib/Bam_Proxys/inc', 
+    'BACR/inc', 
+    'BCP/include', 
+    'BCP/src', 
+    'BCP/elements', 
+    'BCP/sys', 
+    'BDP', 
+    
+    'APIHandlers', 
+    cart+'/Runtime/CART',
+    cart+'/Runtime/BTF',
+    cart+'/Runtime',
+    cart+'/Module/dll_btf', 
+    'FeatureLibAuto/inc',
+    'FeatureLibAuto/Features/inc',
+    'FeatureLibAuto/Bam_Proxys/inc'],
+   )
+
+cpp_flags = ['-D','BAFS=BTFS'] if namespace is None else ['-D','BAFS='+namespace,'-D','BTFS='+namespace] 
+local_env.Append(CPPFLAGS=cpp_flags)
+
+
+source = []
+source_feature_lib = []
+bamproxy_exclude = []
+bamf_exclude = []
+bdp_exclude = [
+    'a2b_debug.c',
+    'misc_debug.c',
+    'serial.c',
+    'mfg_cmds.c',
+]
+source.extend( Glob(cart+'/Runtime/BTF.c' ))
+source.extend( Glob('APIHandlers/*.c' ))
+source.extend( Glob('FeatureLib/src/*.cpp'))
+source.extend( Glob('FeatureLib/Features/src/*.cpp'))
+source.extend( Glob('FeatureLib/Bamfs/src/*.cpp', 
+                    exclude=['FeatureLib/Bamfs/src/'+file for file in bamf_exclude] ))
+source.extend( Glob('FeatureLib/Bam_Proxys/src/*.cpp', 
+                    exclude=['FeatureLib/Bam_Proxys/src/'+file for file in bamproxy_exclude] ))
+source.extend( Glob('BACR/src/*.cpp' ))
+
+source.extend( Glob('FeatureLibAuto/src/OJ*.cpp' ))
+source.extend( Glob('FeatureLibAuto/Features/src/OJ*.cpp' ))
+source.extend( Glob('FeatureLibAuto/Bam_Proxys/src/OJ*.cpp' ))
+source.extend( Glob('BDP/*.c', 
+                    exclude=['BDP/'+file for file in bdp_exclude] ))
+source.extend( Glob('BDP/test/*.c'))
+
+Btf = local_env.Library(target = [target+'/Btf'], source = source)
+
+if arch in ['x64', 'qnx_nto_aarch64', 'amd64']: 
+    source.extend( Glob(cart+'/Module/dll_btf/*.c' ))
+    Btf_dll = local_env.SharedLibrary(target = ['Btf_dll'], source = source)
+    Btf_test = local_env.Program(target =  ['Btf_test'], source = ['test/main.c', Btf])
+    Return(['Btf', 'Btf_dll', 'Btf_test'])
+
+Return(['Btf'])

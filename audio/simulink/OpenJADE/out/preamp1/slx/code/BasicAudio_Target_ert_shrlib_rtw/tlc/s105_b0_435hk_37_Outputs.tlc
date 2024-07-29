@@ -1,0 +1,110 @@
+%implements s105_b0_435hk_37_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+real32_T rampRate;
+real32_T y;
+%closefile localVarDecl
+/* {S!d167}MATLAB Function: '<S67>/calculate_ramp_rate' */
+/* {S!d172}MATLAB Function: '<S67>/calculate_ramp_rate' */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'RTC/REQ': '<S76>:1' */
+/* '<S76>:1:3' go(); */
+/*@>172b1e*/y/*@>12f8ae*/ = %<SLibCG_DumpSSCode("/*@[173ad6*/",(SLibCG_SE(SLibCG_BOCSC(37, 1, "", -1, "", 0))),"/*@]*/")>;
+/*  %<"\% Inputs"> */
+/*  parameters */
+/* MATLAB Function 'BasicAudio/Mute/mute/InnerLink/MuteControl/calculate_ramp_rate': '<S72>:1' */
+/*  Ramp time and rate are provided to the block through RTC messages. However  */
+/*  in case neither of them are provided, the block will use the default ramp  */
+/*  time given in the tune variable. */
+/* '<S72>:1:8' ramptime = single(rampTimeTune); */
+/* '<S72>:1:9' rampRate = single(0); */
+/*@>172b1a*/rampRate/*@>12f8b0*/ = /*@>172b28*/0.0F;
+/* '<S72>:1:11' if (rampRateRTC) */
+/*@>12f8b9*/if (%<SLibCG_DumpSSCode("/*@[173a82*/",(SLibCG_SE(SLibCG_BOCSC(13, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f8b2*/ != /*@>172b16*/0U) {
+    /* '<S72>:1:12' rampRate = single(rampRateRTC); */
+    /* '<S72>:1:13' rampRate = max(rampRateBounds(1), rampRate); */
+    /* '<S72>:1:14' rampRate = min(rampRateBounds(2), rampRate); */
+    /*@>172b18*/rampRate/*@>12f8cd*/ = /*@>1734fb*/fminf(/*@>172b2a*/50000.0F, /*@>1734f9*/fmaxf(/*@>172b29*/5.0F, /*@>12f8de*/(real32_T)%<SLibCG_DumpSSCode("/*@[173b0e*/",(SLibCG_BOCSC(13, 1, "", -1, "", 0)),"/*@]*/")>));
+}
+/* '<S72>:1:16' if (rampTimeRTC) */
+/*@>12f8bb*/if (%<SLibCG_DumpSSCode("/*@[173a9e*/",(SLibCG_SE(SLibCG_BOCSC(14, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f8b3*/ != /*@>172b17*/0U) {
+    /* '<S72>:1:17' ramptime = single(rampTimeRTC); */
+    /*@>172b1c*/y/*@>12f8b1*/ = /*@>12f8b4*/(real32_T)%<SLibCG_DumpSSCode("/*@[173af2*/",(SLibCG_SE(SLibCG_BOCSC(14, 1, "", -1, "", 0))),"/*@]*/")>;
+}
+/* {S!d168}MATLAB Function: '<S68>/get_ramp_coeffs' */
+/* {S!d174}MATLAB Function: '<S68>/get_ramp_coeffs' incorporates:
+ *  DataStoreRead: '<S68>/Data Store Read'
+ *  MATLAB Function: '<S67>/calculate_ramp_rate'
+ *  S-Function (AudioStats_MEX): '<S68>/Audio Stats'
+ */
+/* '<S72>:1:19' ramptime = max(rampTimeBounds(1), ramptime); */
+/* '<S72>:1:20' ramptime = min(rampTimeBounds(2), ramptime); */
+/*@>172b3d*/y/*@>12f8f9*/ = /*@>1734ff*/fminf(/*@>172b6b*/3000.0F, /*@>1734fd*/fmaxf(/*@>172b6d*/1.0F, /*@>172b6e*/y));
+/* MATLAB Function 'MuteRamper/get_ramp_coeffs': '<S81>:1' */
+/* '<S81>:1:5' targetLinearGain = single(1.0); */
+%<SLibCG_DumpSSCode("/*@[173b2c*/",SLibCG_SetCSCDW(8, 1, "", -1, "", 0, "/*@>173d2c*/1.0F"),"/*@]*/")>\
+/* '<S81>:1:7' if muteSwitch */
+/*@>12f901*/if (%<SLibCG_DumpSSCode("/*@[173aba*/",(SLibCG_SE(SLibCG_BOCSC(12, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f8fd*/ != /*@>172b2f*/0U) {
+    /* '<S81>:1:8' targetLinearGain = single(max(0, silentGainLinear)); */
+%<SLibCG_DumpSSCode("/*@[173b48*/",SLibCG_SetCSCDW(8, 1, "", -1, "", 0, "/*@>173d3e*/4.7315126E-7F"),"/*@]*/")>\
+}
+/*  %<"\% Nudge the gain values a bit if they are sitting at zero."> */
+/*  %<"\% If current gain is zero, replace with a value very close to zero. What we"> */
+/*  %<"\% really want is a value which is on the edge of perception - not too small"> */
+/*  %<"\% or large. If the value is too small, we\'ll waste some of our ramp time"> */
+/*  %<"\% in perceived silence. If the value is too large, the audio will lurch"> */
+/*  %<"\% into perceptability at the start of the ramp."> */
+/*  %<"\% So, \'max(currentGainValue, silentGainLinear)\' & \'max(TargetGain, silentGainLinear)\' are"> */
+/*  %<"\% used in equations"> */
+/*  In order to have the desired ramp time, the slope must vary dependent */
+/*  on the gain difference between target and current value. */
+/*  Equivalent ramp rate is therefore calculated as follows: */
+/* '<S81>:1:24' if (rampingRate_dBPerSec) */
+/*@>12f90f*/if (/*@>172b43*/rampRate/*@>12f8ff*/ != /*@>172b32*/0.0F) {
+    /* '<S81>:1:25' currentGain_db = 20*log10(max(currentGainValue, silentGainLinear)); */
+    /* '<S81>:1:26' targetGain_db = 20*log10( targetLinearGain); */
+    /* '<S81>:1:27' diff = abs(currentGain_db - targetGain_db); */
+    /* '<S81>:1:28' rampingTime_ms = diff / single(rampingRate_dBPerSec) * 1000; */
+    /*@>172b3b*/y/*@>12f931*/ = /*@>173507*/fabsf(/*@>172b5c*/20.0F/*@>172b82*/ * /*@>173503*/log10f(/*@>173501*/fmaxf(%<SLibCG_DumpSSCode("/*@[173b7e*/",(SLibCG_CSCDW(6, 1, "", -1, "", 0)),"/*@]*/")>, /*@>172b72*/4.7315126E-7F))/*@>12f958*/ - /*@>172b5d*/20.0F/*@>172b86*/ * /*@>173505*/log10f(%<SLibCG_DumpSSCode("/*@[173b62*/",(SLibCG_CSCDW(8, 1, "", -1, "", 0)),"/*@]*/")>))/*@>12f94f*/ / /*@>172b47*/rampRate/*@>172b7e*/ * /*@>172b5e*/1000.0F;
+}
+/* '<S81>:1:31' quantum_ms = 1000 * frameSize / Fs_Hz; */
+/*@>172b33*/rampRate/*@>12f936*/ = /*@>172b71*/32000.0F/*@>12f935*/ / %<SLibCG_DumpSSCode("/*@[173ba0*/",(SLibCG_SE(SLibCG_Expr(53, 0, 0, 1, "", -1, "", 0))),"/*@]*/")>;
+/* '<S81>:1:32' numFrames = rampingTime_ms / quantum_ms; */
+/*  Do a ceil rather than a round to insure that we create enough */
+/*  frames. i.e. a fraction of a frame is promoted to an addition frame */
+/* '<S81>:1:35' nFrames = max (1, ceil(numFrames)); */
+%<SLibCG_DumpSSCode("/*@[173c34*/",SLibCG_SetCSCDW(7, 1, "", -1, "", 0, "/*@>173d51*/fmaxf(/*@>173d52*/1.0F, /*@>173d54*/ceilf(/*@>173d56*/y/*@>173d55*/ / /*@>173d57*/rampRate))"),"/*@]*/")>\
+/* '<S81>:1:36' quantized_rampTime_ms = nFrames * quantum_ms; */
+/*  In order to have the desired ramp time, the slope must vary dependent */
+/*  on the gain differencebetween target and current value. */
+/*  Ramper's coefficient is therefore calculated as follows: */
+/*  */
+/*    TargetGain = CurrentGain *( RampCoef ^ (Fs*RampTime_ms/1000) ) */
+/*  */
+/*  therefore... */
+/*  */
+/*                      log(TargetGain/CurrentGain) */
+/*    log(RampCoef) = ------------------------------ */
+/*                         Fs*(RampTime_ms/1000) */
+/*  */
+/* '<S81>:1:50' ramping_coeff= exp(log( targetLinearGain /max(currentGainValue, silentGainLinear) ) / (Fs_Hz * quantized_rampTime_ms / 1000)); */
+/*@>173845*/BasicAudio_Target_B./*@>173d05*/ramping_coeff/*@>12f93a*/ = /*@>17350f*/logf(%<SLibCG_DumpSSCode("/*@[173c16*/",(SLibCG_SE(SLibCG_CSCDW(8, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f95e*/ / /*@>17350d*/fmaxf(%<SLibCG_DumpSSCode("/*@[173bfa*/",(SLibCG_CSCDW(6, 1, "", -1, "", 0)),"/*@]*/")>, /*@>172b73*/4.7315126E-7F))/*@>12f939*/ / (%<SLibCG_DumpSSCode("/*@[173bde*/",(SLibCG_SE(SLibCG_CSCDW(7, 1, "", -1, "", 0))),"/*@]*/")>/*@>172b7a*/ * /*@>172b55*/rampRate/*@>172b76*/ * %<SLibCG_DumpSSCode("/*@[173bc2*/",(SLibCG_SE(SLibCG_Expr(53, 0, 0, 1, "", -1, "", 0))),"/*@]*/")>/*@>12f956*/ / /*@>172b60*/1000.0F);
+/*@>17384b*/BasicAudio_Target_B./*@>173d08*/ramping_coeff/*@>12f940*/ = /*@>173511*/expf(/*@>173851*/BasicAudio_Target_B./*@>173d0b*/ramping_coeff);
+/* {E!d174}End of MATLAB Function: '<S68>/get_ramp_coeffs' */
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void HandleReqBasicAudioMuteSet(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(37, 0, fcnProtoType)>
+%endfunction

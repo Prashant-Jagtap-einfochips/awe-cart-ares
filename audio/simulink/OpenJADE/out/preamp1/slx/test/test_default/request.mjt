@@ -1,0 +1,20 @@
+[SYS_NUM_FRAMES 0.1], registerBAF, 0
+PASSTHRU_SINGLE, registerRTC, BasicAudioVolumeSet, 0.040000, [ 3000 240 0 30 0 ]
+PASSTHRU_SINGLE, registerRTC, BasicAudioVolumeSet, 0.080000, [ 4000 255 0 9 0 ]
+# Disable all logs at the start
+[SYS_LOG_DISABLE LOG_TYPE_PRINT], registerBAF, 0
+[SYS_LOG_DISABLE LOG_TYPE_CAPTURE], registerBAF, 0
+[SYS_LOG_DISABLE LOG_TYPE_EXEC], registerBAF, 0
+
+# Put exec log in circular mode
+[SYS_LOG_CIRCULAR LOG_TYPE_EXEC], registerBAF, 0
+
+# Enable exec log
+[SYS_LOG_ENABLE LOG_TYPE_EXEC], registerBAF, 0
+
+# Enable capture log
+[SYS_LOG_ENABLE LOG_TYPE_CAPTURE], registerBAF, 0
+
+# Dump exec log at the end
+[SYS_LOG_DUMP LOG_TYPE_EXEC], registerBAF, 0.1
+

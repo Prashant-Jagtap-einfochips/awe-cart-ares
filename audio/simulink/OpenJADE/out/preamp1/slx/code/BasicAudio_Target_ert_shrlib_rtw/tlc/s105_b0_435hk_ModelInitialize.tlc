@@ -1,0 +1,135 @@
+%implements s105_b0_435hk_ModelInitialize "C"
+
+%function ModelInitialize(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcEnableFcnOfS86B5 = OpaqueTLCBlockFcn("Enable", 86, 5, 51, 3, 0)
+%assign tlcEnableFcnOfS18B8 = OpaqueTLCBlockFcn("Enable", 18, 8, 51, 3, 1)
+%assign tlcEnableFcnOfS53B2 = OpaqueTLCBlockFcn("Enable", 53, 2, 51, 3, 2)
+%assign tlcEnableFcnOfS35B6 = OpaqueTLCBlockFcn("Enable", 35, 6, 51, 3, 3)
+%assign tlcEnableFcnOfS68B6 = OpaqueTLCBlockFcn("Enable", 68, 6, 51, 3, 4)
+%assign tlcOutputsFcnOfS18B26 = OpaqueTLCBlockFcn("Outputs", 18, 26, 51, 3, 5)
+%assign tlcOutputsFcnOfS35B25 = OpaqueTLCBlockFcn("Outputs", 35, 25, 51, 3, 6)
+%assign tlcOutputsFcnOfS68B25 = OpaqueTLCBlockFcn("Outputs", 68, 25, 51, 3, 7)
+%<SLibInsertAsyncTaskInitializeCode(system)>
+%<SLibWriteMachineInitialize()>
+%<SLibCGIRDumpSystemUserCode(89, "Start", "Header")>\
+%<SLibCGIRDumpSystemUserCode(89, "Start", "Body")>\
+%<SLibCGIRDumpSystemUserCode(89, "Start", "Trailer")>\
+%<SLibCGIRDumpSystemUserCode(89, "Initialize", "Header")>\
+%<SLibCGIRDumpSystemUserCode(89, "Initialize", "Body")>\
+/* {S!d415}SystemInitialize for Atomic SubSystem: '<S1>/Volume' */
+%<SLibCG_DumpSSCode("/*@[18caa2*/",SLibCGIRDumpSystemUserCode(86, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caa3*/",SLibCGIRDumpSystemUserCode(86, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caa4*/",SLibCGIRDumpSystemUserCode(86, "Initialize", "Trailer"),"/*@]*/")>\
+/* {E!d415}End of SystemInitialize for SubSystem: '<S1>/Volume' */
+
+/* {S!d417}SystemInitialize for Atomic SubSystem: '<S1>/Balance' */
+%<SLibCG_DumpSSCode("/*@[18caa5*/",SLibCGIRDumpSystemUserCode(18, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caa6*/",SLibCGIRDumpSystemUserCode(18, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caa7*/",SLibCGIRDumpSystemUserCode(18, "Initialize", "Trailer"),"/*@]*/")>\
+/* {E!d417}End of SystemInitialize for SubSystem: '<S1>/Balance' */
+
+/* {S!d419}SystemInitialize for Atomic SubSystem: '<S1>/Mute' */
+%<SLibCG_DumpSSCode("/*@[18caa8*/",SLibCGIRDumpSystemUserCode(53, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caa9*/",SLibCGIRDumpSystemUserCode(53, "Initialize", "Body"),"/*@]*/")>\
+/* {S!d420}SystemInitialize for Atomic SubSystem: '<S68>/Ramping_Subsystem' */
+/* {S!d421}SystemInitialize for IfAction SubSystem: '<S82>/ifActionSubsystem' */
+/* {S!d456}InitializeConditions for DiscreteFilter: '<S85>/ramping_filter' */
+/*@>18b2e7*/BasicAudio_Target_DW./*@>18f5e3*/ramping_filter_icLoad/*@>130c2b*/ = /*@>18f5bc*/1U;
+/* {E!d421}End of SystemInitialize for SubSystem: '<S82>/ifActionSubsystem' */
+/* {E!d420}End of SystemInitialize for SubSystem: '<S68>/Ramping_Subsystem' */
+%<SLibCG_DumpSSCode("/*@[18caaa*/",SLibCGIRDumpSystemUserCode(53, "Initialize", "Trailer"),"/*@]*/")>\
+/* {E!d419}End of SystemInitialize for SubSystem: '<S1>/Mute' */
+
+/* {S!d425}SystemInitialize for Atomic SubSystem: '<S1>/Bass' */
+%<SLibCG_DumpSSCode("/*@[18caab*/",SLibCGIRDumpSystemUserCode(35, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caac*/",SLibCGIRDumpSystemUserCode(35, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caad*/",SLibCGIRDumpSystemUserCode(35, "Initialize", "Trailer"),"/*@]*/")>\
+/* {E!d425}End of SystemInitialize for SubSystem: '<S1>/Bass' */
+
+/* {S!d427}SystemInitialize for Atomic SubSystem: '<S1>/Treble' */
+%<SLibCG_DumpSSCode("/*@[18caae*/",SLibCGIRDumpSystemUserCode(68, "Initialize", "Header"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18caaf*/",SLibCGIRDumpSystemUserCode(68, "Initialize", "Body"),"/*@]*/")>\
+%<SLibCG_DumpSSCode("/*@[18cab0*/",SLibCGIRDumpSystemUserCode(68, "Initialize", "Trailer"),"/*@]*/")>\
+/* {E!d427}End of SystemInitialize for SubSystem: '<S1>/Treble' */
+%<SLibCGIRDumpSystemUserCode(89, "Initialize", "Trailer")>\
+%if !WHITE_SPACE(tlcEnableFcnOfS86B5)
+/* {S!d429}Enable for Atomic SubSystem: '<S1>/Volume' */
+/* {S!d430}Enable for S-Function (RTC_REQ_RSP): '<S120>/RTC Request Response Trigger' */
+%<SLibCG_DumpSSCode("/*@[18cab3*/",tlcEnableFcnOfS86B5,"/*@]*/")>\
+/* {E!d430}End of Enable for S-Function (RTC_REQ_RSP): '<S120>/RTC Request Response Trigger' */
+/* {E!d429}End of Enable for SubSystem: '<S1>/Volume' */
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS18B8)
+
+/* {S!d433}Enable for Atomic SubSystem: '<S1>/Balance' */
+/* {S!d434}Enable for S-Function (RTC_REQ_RSP): '<S12>/RTC Request Response Trigger' */
+%<SLibCG_DumpSSCode("/*@[18cab5*/",tlcEnableFcnOfS18B8,"/*@]*/")>\
+/* {E!d434}End of Enable for S-Function (RTC_REQ_RSP): '<S12>/RTC Request Response Trigger' */
+/* {E!d433}End of Enable for SubSystem: '<S1>/Balance' */
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS53B2)
+
+/* {S!d437}Enable for Atomic SubSystem: '<S1>/Mute' */
+/* {S!d438}Enable for S-Function (RTC_REQ_RSP): '<S69>/RTC Request Response Trigger' */
+%<SLibCG_DumpSSCode("/*@[18cab7*/",tlcEnableFcnOfS53B2,"/*@]*/")>\
+/* {E!d438}End of Enable for S-Function (RTC_REQ_RSP): '<S69>/RTC Request Response Trigger' */
+/* {E!d437}End of Enable for SubSystem: '<S1>/Mute' */
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS35B6)
+
+/* {S!d441}Enable for Atomic SubSystem: '<S1>/Bass' */
+/* {S!d442}Enable for S-Function (RTC_REQ_RSP): '<S41>/RTC Request Response Trigger' */
+%<SLibCG_DumpSSCode("/*@[18cab9*/",tlcEnableFcnOfS35B6,"/*@]*/")>\
+/* {E!d442}End of Enable for S-Function (RTC_REQ_RSP): '<S41>/RTC Request Response Trigger' */
+/* {E!d441}End of Enable for SubSystem: '<S1>/Bass' */
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS68B6)
+
+/* {S!d445}Enable for Atomic SubSystem: '<S1>/Treble' */
+/* {S!d446}Enable for S-Function (RTC_REQ_RSP): '<S93>/RTC Request Response Trigger' */
+%<SLibCG_DumpSSCode("/*@[18cabb*/",tlcEnableFcnOfS68B6,"/*@]*/")>\
+/* {E!d446}End of Enable for S-Function (RTC_REQ_RSP): '<S93>/RTC Request Response Trigger' */
+/* {E!d445}End of Enable for SubSystem: '<S1>/Treble' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS18B26)
+
+/* {S!d449}ConstCode for Atomic SubSystem: '<S1>/Balance' */
+/* {S!d458}ConstCode for S-Function (CapturedConst): '<S11>/Captured Tune Const' incorporates:
+ *  S-Function (AudioStats_MEX): '<S11>/Audio Stats1'
+ */
+%<SLibCG_DumpSSCode("/*@[18cabd*/",tlcOutputsFcnOfS18B26,"/*@]*/")>\
+/* {E!d449}End of ConstCode for SubSystem: '<S1>/Balance' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS35B25)
+
+/* {S!d451}ConstCode for Atomic SubSystem: '<S1>/Bass' */
+/* {S!d460}ConstCode for S-Function (CapturedConst): '<S40>/Captured Tune Const' incorporates:
+ *  S-Function (AudioStats_MEX): '<S40>/Audio Stats'
+ */
+%<SLibCG_DumpSSCode("/*@[18cabf*/",tlcOutputsFcnOfS35B25,"/*@]*/")>\
+/* {E!d451}End of ConstCode for SubSystem: '<S1>/Bass' */
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS68B25)
+
+/* {S!d453}ConstCode for Atomic SubSystem: '<S1>/Treble' */
+/* {S!d462}ConstCode for S-Function (CapturedConst): '<S92>/Captured Tune Const' incorporates:
+ *  S-Function (AudioStats_MEX): '<S92>/Audio Stats'
+ */
+%<SLibCG_DumpSSCode("/*@[18cac1*/",tlcOutputsFcnOfS68B25,"/*@]*/")>\
+/* {E!d453}End of ConstCode for SubSystem: '<S1>/Treble' */
+%endif
+%<SLibInsertInitPeriodicCStatesFcn(system)>
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function ModelInitializeFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void ModelInitialize(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(51, 3, fcnProtoType)>
+%endfunction

@@ -1,0 +1,170 @@
+%implements s105_b0_435hk_14_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%openfile localVarDecl
+
+int32_T q0;
+int32_T qY;
+real32_T aCoeffs;
+real32_T bCoeffs_idx_0;
+real32_T bCoeffs_idx_1;
+real32_T gain;
+real32_T k;
+uint32_T ramper;
+%closefile localVarDecl
+/*     %<"\% inputs \% parameters"> */
+/* MATLAB Function 'BasicAudio/Treble/Tone/InnerLink/tone': '<S103>:1' */
+/*  Data Store objects (registered in "Edit Data" dialog */
+/*  Keep memory for the filter persistent from frame to frame */
+/*  figure out the frame size and channel count */
+/* '<S103>:1:15' [frame_size, channel_count] = size(audioIn); */
+/* '<S103>:1:17' if (isempty(toneFilterStates)) */
+/*  set the size and datatype of the output buffer */
+/* '<S103>:1:23' audioOut = coder.nullcopy(audioIn); */
+/* '<S103>:1:25' ramper = Phase; */
+/*@>1586ea*/ramper/*@>12fee2*/ = %<SLibCG_DumpSSCode("/*@[15c037*/",(SLibCG_SE(SLibCG_CSCDW(11, 1, "", -1, "", 0))),"/*@]*/")>;
+/* '<S103>:1:26' ramperCount = numel(Rampers); */
+/* '<S103>:1:28' if (Freeze == false) */
+/*@>12ff72*/if (%<SLibCG_DumpSSCode("/*@[15c053*/",(SLibCG_SE(SLibCG_CSCDW(10, 1, "", -1, "", 0))),"/*@]*/")>/*@>12ff3b*/ == /*@>158731*/0U) {
+    /* '<S103>:1:29' if (Rampers(ramper).frameCount == 0) */
+    /*@>12ff73*/if (%<SLibCG_DumpSSCode("/*@[15c0b1*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c07c*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c07e*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c07b*/ - /*@>15c087*/1].frameCount", -1, "", 0))),"/*@]*/")>/*@>12ff3e*/ == /*@>1586ef*/0) {
+        /*  The current ramper is finished. Is there another one? */
+        /* '<S103>:1:31' if (ramper < ramperCount && Rampers(ramper+1).frameCount > 0) */
+        /*@>12ff75*/if ((%<SLibCG_DumpSSCode("/*@[15c0cd*/",(SLibCG_SE(SLibCG_CSCDW(11, 1, "", -1, "", 0))),"/*@]*/")>/*@>12ff3f*/ < /*@>158734*/2U)/*@>15c582*/ && (%<SLibCG_DumpSSCode("/*@[15c129*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c0f5*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c0f7*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>].frameCount", -1, "", 0))),"/*@]*/")>/*@>12ff43*/ > /*@>1586fb*/0)) {
+            /*  Yes - move on to the next phase */
+            /* '<S103>:1:33' ramper = ramper + 1; */
+            /*@>1588d9*/qY/*@>1588db*/ = /*@>158f1d*/(int32_T)(%<SLibCG_DumpSSCode("/*@[15c145*/",(SLibCG_SE(SLibCG_CSCDW(11, 1, "", -1, "", 0))),"/*@]*/")>/*@>1588d8*/ + /*MW:OvSatOk*/ /*@>158701*/1U);
+            /*@>158702*/ramper/*@>12feea*/ = %<SLibCG_DumpSSCode("/*@[15c161*/",(SLibCG_SE(SLibCG_CSCDW(11, 1, "", -1, "", 0))),"/*@]*/")>/*@>1593b9*/ + /*@>1593bd*/1U;
+            /* '<S103>:1:34' Phase = ramper; */
+%<SLibCG_DumpSSCode("/*@[15c19b*/",SLibCG_SetCSCDW(11, 1, "", -1, "", 0, "%<SLibCG_DumpSSCode("/*@[15c788*/",(SLibCG_SE(SLibCG_CSCDW(11, 1, "", -1, "", 0))),"/*@]*/")>/*@>15c787*/ + /*@>15c793*/1U"),"/*@]*/")>\
+            /* '<S103>:1:35' k = Rampers(ramper).rampCoeff; */
+            /*@>158714*/k/*@>12fef1*/ = %<SLibCG_DumpSSCode("/*@[15c1d1*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c1a7*/qY/*@>15c1a5*/ - /*@>15c1a8*/1].rampCoeff", -1, "", 0))),"/*@]*/")>;
+            /* '<S103>:1:36' gain = Rampers(ramper).currentGain; */
+            /*@>158719*/gain/*@>12fef6*/ = %<SLibCG_DumpSSCode("/*@[15c209*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c1df*/qY/*@>15c1dd*/ - /*@>15c1e0*/1].currentGain", -1, "", 0))),"/*@]*/")>;
+            /* '<S103>:1:37' Rampers(ramper).frameCount = Rampers(ramper).frameCount - 1; */
+            /*@>158881*/q0/*@>158883*/ = %<SLibCG_DumpSSCode("/*@[15c241*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c217*/qY/*@>15c215*/ - /*@>15c218*/1].frameCount", -1, "", 0))),"/*@]*/")>;
+            /*@>159867*/if (/*@>1593dd*/q0/*@>1593db*/ < /*@>1593de*/-2147483647) {
+%<SLibCG_DumpSSCode("/*@[15c580*/",SLibCG_SetCSCDW(1, 1, "[/*@>15c553*/qY/*@>15c551*/ - /*@>15c554*/1].frameCount", -1, "", 0, "MIN_int32_T"),"/*@]*/")>\
+            } else {
+%<SLibCG_DumpSSCode("/*@[15c27b*/",SLibCG_SetCSCDW(1, 1, "[/*@>15c24f*/qY/*@>15c24d*/ - /*@>15c250*/1].frameCount", -1, "", 0, "/*@>15c7b7*/q0/*@>15c7b6*/ - /*@>15c7b8*/1"),"/*@]*/")>\
+            }
+        } else {
+            /* '<S103>:1:38' else */
+            /*   Stop ramping and SNAP to the target */
+            /* '<S103>:1:40' k = single(1); */
+            /*@>15870a*/k/*@>12feff*/ = /*@>158733*/1.0F;
+            /* '<S103>:1:41' gain = Rampers(ramper).targetGain; */
+            /*@>158711*/gain/*@>12ff03*/ = %<SLibCG_DumpSSCode("/*@[15c2d7*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c2a2*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c2a4*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c2a1*/ - /*@>15c2ad*/1].targetGain", -1, "", 0))),"/*@]*/")>;
+            /*  Update completion flag */
+        }
+    } else {
+        /* '<S103>:1:44' else */
+        /*  The ramp is *NOT* frozen or done: gain is moving */
+        /* '<S103>:1:46' k = Rampers(ramper).rampCoeff; */
+        /*@>1586f8*/k/*@>12ff07*/ = %<SLibCG_DumpSSCode("/*@[15c335*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c300*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c302*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c2ff*/ - /*@>15c30b*/1].rampCoeff", -1, "", 0))),"/*@]*/")>;
+        /* '<S103>:1:47' gain = Rampers(ramper).currentGain; */
+        /*@>1586fd*/gain/*@>12ff0b*/ = %<SLibCG_DumpSSCode("/*@[15c393*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c35e*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c360*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c35d*/ - /*@>15c369*/1].currentGain", -1, "", 0))),"/*@]*/")>;
+        /* '<S103>:1:48' Rampers(ramper).frameCount = Rampers(ramper).frameCount - 1; */
+        /*@>15882c*/q0/*@>15882e*/ = %<SLibCG_DumpSSCode("/*@[15c3f1*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c3bc*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c3be*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c3bb*/ - /*@>15c3c7*/1].frameCount", -1, "", 0))),"/*@]*/")>;
+        /*@>15985a*/if (/*@>1593a1*/q0/*@>15939f*/ < /*@>1593a2*/-2147483647) {
+%<SLibCG_DumpSSCode("/*@[15c547*/",SLibCG_SetCSCDW(1, 1, "[/*@>15c50f*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c511*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c50e*/ - /*@>15c51a*/1].frameCount", -1, "", 0, "MIN_int32_T"),"/*@]*/")>\
+        } else {
+%<SLibCG_DumpSSCode("/*@[15c451*/",SLibCG_SetCSCDW(1, 1, "[/*@>15c41a*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c41c*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c419*/ - /*@>15c425*/1].frameCount", -1, "", 0, "/*@>15c7dc*/q0/*@>15c7db*/ - /*@>15c7dd*/1"),"/*@]*/")>\
+        }
+    }
+} else {
+    /* '<S103>:1:50' else */
+    /*  Frozen. Stay at current gain */
+    /* '<S103>:1:52' k = single(1); */
+    /*@>1586f0*/k/*@>12ff12*/ = /*@>158732*/1.0F;
+    /* '<S103>:1:53' gain = Rampers(ramper).currentGain; */
+    /*@>1586f5*/gain/*@>12ff16*/ = %<SLibCG_DumpSSCode("/*@[15c4ad*/",(SLibCG_SE(SLibCG_CSCDW(1, 1, "[/*@>15c478*/(int32_T)%<SLibCG_DumpSSCode("/*@[15c47a*/",(SLibCG_CSCDW(11, 1, "", -1, "", 0)),"/*@]*/")>/*@>15c477*/ - /*@>15c483*/1].currentGain", -1, "", 0))),"/*@]*/")>;
+}
+/*  Apply the tone filter */
+/* '<S103>:1:57' if (gain < 1) */
+/*@>12ff8a*/if (/*@>158704*/gain/*@>12ff5b*/ < /*@>158706*/1.0F) {
+    /*  Cut */
+    /* '<S103>:1:59' bCoeffs = cut_coeffs(1:2); */
+    /*@>1587e1*/bCoeffs_idx_0/*@>1583cc*/ = /*@>15b8ab*/rtu_cut_coeffs/*@>15b8ad*/[/*@>15b8a9*/0];
+    /*@>1587e3*/bCoeffs_idx_1/*@>1583db*/ = /*@>15b8b7*/rtu_cut_coeffs/*@>15b8b9*/[/*@>15b8b5*/1];
+    /* '<S103>:1:60' aCoeffs = cut_coeffs(3); */
+    /*@>158716*/aCoeffs/*@>12ff1b*/ = /*@>15b8cb*/rtu_cut_coeffs/*@>15b8cd*/[/*@>15b8c9*/2];
+} else {
+    /* '<S103>:1:61' else */
+    /*  Boost */
+    /* '<S103>:1:63' bCoeffs = boost_coeffs(1:2); */
+    /*@>1587e5*/bCoeffs_idx_0/*@>1583ef*/ = /*@>15b8b1*/rtu_boost_coeffs/*@>15b8b3*/[/*@>15b8af*/0];
+    /*@>1587e7*/bCoeffs_idx_1/*@>1583fe*/ = /*@>15b8c5*/rtu_boost_coeffs/*@>15b8c7*/[/*@>15b8c3*/1];
+    /* '<S103>:1:64' aCoeffs = boost_coeffs(3); */
+    /*@>15871b*/aCoeffs/*@>12ff1f*/ = /*@>15b8d9*/rtu_boost_coeffs/*@>15b8db*/[/*@>15b8d7*/2];
+}
+/*  [filtered,toneFilterStates] = filter(bCoeffs, aCoeffs, audioIn, toneFilterStates); */
+/*  Loop through samples, adjusting gain and applying to channels */
+/* '<S103>:1:70' for n=1:frame_size */
+/*@>12ff95*/for (/*@>15c633*/q0 = /*@>15c632*/0; /*@>15c63d*/q0 < /*@>15c63b*/32; /*@>15c639*/q0/*@>15c641*/++) {
+    real32_T filterOut;
+    real32_T filterOut_tmp;
+    /*  Update the gain and then subtract one before applying it to the */
+    /*  filtered signal. Disregarding phase shifting  */
+    /* '<S103>:1:73' gain = gain * k; */
+    /*@>15872f*/gain/*@>15c642*/ *= /*@>15872d*/k;
+    /* '<S103>:1:74' filterGain = gain - 1; */
+    /*  Loop through channels adding in gain-adjusted filtered samples */
+    /* '<S103>:1:76' for chanIdx = 1:channel_count */
+    /* '<S103>:1:78' filterOut = (bCoeffs(1) * audioIn(n,chanIdx)) + toneFilterStates(chanIdx); */
+    /*@>15877e*/filterOut/*@>15830e*/ = /*@>1587d9*/bCoeffs_idx_0/*@>158931*/ * /*@>15b8e8*/rtu_audioIn/*@>15b8ea*/[/*@>15b8e6*/q0]/*@>158310*/ + /*@>15baba*/localDW->/*@>15c757*/toneFilterStates/*@>15b8ef*/[/*@>15b8ec*/0];
+    /* '<S103>:1:79' toneFilterStates(chanIdx) = (bCoeffs(2) * audioIn(n,chanIdx)) + (aCoeffs(1) * filterOut); */
+    /*@>15bac1*/localDW->/*@>15c75a*/toneFilterStates/*@>158329*/[/*@>15879e*/0]/*@>158328*/ = /*@>1587db*/bCoeffs_idx_1/*@>158929*/ * /*@>15b8f4*/rtu_audioIn/*@>15b8f6*/[/*@>15b8f2*/q0]/*@>15832d*/ + /*@>15878c*/aCoeffs/*@>15892d*/ * /*@>15878e*/filterOut;
+    /* '<S103>:1:81' audioOut(n,chanIdx) = audioIn(n,chanIdx) + (filterOut * filterGain); */
+    /*@>15ba8d*/localB->/*@>15c751*/audioOut/*@>158346*/[/*@>158792*/q0]/*@>158345*/ = (/*@>15879a*/gain/*@>15835e*/ - /*@>15879c*/1.0F)/*@>158925*/ * /*@>158798*/filterOut/*@>15834f*/ + /*@>15b8fb*/rtu_audioIn/*@>15b8fd*/[/*@>15b8f9*/q0];
+    /* '<S103>:1:78' filterOut = (bCoeffs(1) * audioIn(n,chanIdx)) + toneFilterStates(chanIdx); */
+    /*@>159d0b*/filterOut_tmp/*@>159d0d*/ = /*@>15b904*/rtu_audioIn/*@>15b906*/[/*@>15b901*/q0/*@>15b8ff*/ + /*@>15b902*/32];
+    /*@>15879f*/filterOut/*@>15836b*/ = /*@>159d0f*/filterOut_tmp/*@>158921*/ * /*@>1587dd*/bCoeffs_idx_0/*@>15836d*/ + /*@>15bac8*/localDW->/*@>15c75d*/toneFilterStates/*@>15b90b*/[/*@>15b908*/1];
+    /* '<S103>:1:79' toneFilterStates(chanIdx) = (bCoeffs(2) * audioIn(n,chanIdx)) + (aCoeffs(1) * filterOut); */
+    /*@>15bacf*/localDW->/*@>15c760*/toneFilterStates/*@>158386*/[/*@>1587bf*/1]/*@>158385*/ = filterOut_tmp/*@>158919*/ * /*@>1587df*/bCoeffs_idx_1/*@>15838a*/ + /*@>1587ad*/aCoeffs/*@>15891d*/ * /*@>1587af*/filterOut;
+    /* '<S103>:1:81' audioOut(n,chanIdx) = audioIn(n,chanIdx) + (filterOut * filterGain); */
+    /*@>15ba94*/localB->/*@>15c754*/audioOut/*@>1583a3*/[/*@>1587b3*/q0/*@>1583a5*/ + /*@>1587d7*/32]/*@>1583a2*/ = (/*@>1587bb*/gain/*@>1583bb*/ - /*@>1587bd*/1.0F)/*@>158915*/ * /*@>1587b9*/filterOut/*@>1583ac*/ + filterOut_tmp;
+}
+/* '<S103>:1:85' Rampers(ramper).currentGain = gain; */
+%<SLibCG_DumpSSCode("/*@[15c4e8*/",SLibCG_SetCSCDW(1, 1, "[/*@>15c4ba*/(int32_T)/*@>15c4bc*/ramper/*@>15c4b9*/ - /*@>15c4bd*/1].currentGain", -1, "", 0, "/*@>15c7ef*/gain"),"/*@]*/")>\
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[14].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Output", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))
+%<SLibCG_AccessArg(14, 0, 0)>
+%endif
+%if SLibCG_ArgAccessed(14, 0, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Output", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Output"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(14, 0, 0)>
+%endif
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_tone_e(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(14, 0, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_tone_e", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%<comma>const real32_T rtu_boost_coeffs[3]\
+%assign comma = ", "
+%<comma>const real32_T rtu_cut_coeffs[3]\
+%assign comma = ", "
+%<comma>const real32_T rtu_audioIn[64]\
+%assign comma = ", "
+%<comma>B_tone_BasicAudio_Target_h_T *localB\
+%assign comma = ", "
+%<comma>DW_tone_BasicAudio_Target_p_T *localDW\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(14, 0, fcnProtoType)>
+%endfunction

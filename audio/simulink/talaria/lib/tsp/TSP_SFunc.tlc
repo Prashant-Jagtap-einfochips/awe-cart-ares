@@ -1,0 +1,56 @@
+%implements TSP_SFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+%include "TSP_Common.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% Figure out which ports are present for this model - try just using
+    %% whichever block is fed to us for type setup (the "debug" mask settings
+    %% can cause this to fail)
+    %assign TspIn = ParamSettings.In[0][0]
+    %assign TspOut = ParamSettings.Out[0][0]
+    %assign CoreIndex   = (ParamSettings.CoreIndex[0][0] & 7)
+    %assign IsIndirect  = ParamSettings.IsIndirect[0][0]
+
+    %<TspTypeSetup(block,TspIn,TspOut,CoreIndex,IsIndirect)>
+
+    %if TspIn && IsIndirect
+        %% The following comment is needed for Indirect Addressing initialization
+        %%  --->   LibSystemInitializeCustomCode()  (this enables init code to work)
+    %endif
+%endfunction
+
+%% Function: BlockInstanceSetup ===========================================
+%function BlockInstanceSetup(block, system) void
+
+    %assign IN = ParamSettings.In[0][0]
+    %assign OUT = ParamSettings.Out[0][0]
+    %if IN
+    %<TSP_CaptureBlockInstanceSetup(block,system)>
+    %endif
+
+    %if OUT
+    %<TSP_InterpretBlockInstanceSetup(block,system)>
+    %endif
+
+%endfunction
+
+
+%% Function: Update =======================================================
+%function Update (block, system) Output
+    %assign IN = ParamSettings.In[0][0]
+    %if IN
+        %assign EnableAdvancedDefine = LibBlockParameter(EnableAdvanced, "", "", 0)
+        %assign AdditionalCaptureCodeCheck = TspGetAdditionalCaptureCodeCheck(block)
+        // TSP advanced triggered capture for %<ParamSettings.Path> '%<LibGetBlockName(block)>':
+        #if %<EnableAdvancedDefine>%<AdditionalCaptureCodeCheck>
+         %<ModelPrefix()>TSP_StepCapture(%<block.BlockTspTable>, %<block.BlockTspIndex>, %<LibBlockInputSignalAddr(0, "", "", 0)>);
+        #endif //%<EnableAdvancedDefine>%<AdditionalCaptureCodeCheck>
+    %endif
+%endfunction
+

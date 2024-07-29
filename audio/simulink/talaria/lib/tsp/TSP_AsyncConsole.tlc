@@ -1,0 +1,101 @@
+%% TSP_AsyncConsole
+%%
+%%   Copyright 2016-2018 Bose Corporation
+
+
+%% Function: TSP Async Console Setup ===============================================
+%function TspAsyncConsoleSetup(block, system) void
+
+    %assign config = TSP_CaptureGetConfig()
+
+    %%---------------------------------------------------------------------
+    %% ----------- TSP Console message table setup
+    %assign fileH = LibCreateSourceFile("Source","Custom",config.ConsoleFileName)
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include "%<FeaturePathGetAsyncConsoleFilename()>.h"
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        #include <stdio.h> // for printf, scanf
+        #include <stddef.h> // for offsetof
+        #include <string.h> // for strncmp, strncpy, strlen
+        #include "%<config.IdsFileName>.h" // for TSPIDs
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+    %openfile buffer
+        // Struct to hold the per-TSP access details
+        typedef struct TspConsoleAccessTag
+        {
+            const char* name;
+            SimulinkDatatypeId dtypeId;
+            uint32_T width;
+            uint32_T msgId[4];
+        } TspConsoleAccessType;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+    %<FeaturePathAddTable(fileH,"Declarations","TspAccessTable")>
+    %openfile buffer
+        // TSP Console access table
+        static TspConsoleAccessType TspConsoleAccessTable[] =
+        {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TspAccessTableTop",buffer)>
+    %openfile buffer
+        };
+        void* %<ModelPrefix()>ac_tsp_table = TspConsoleAccessTable;
+        int  %<ModelPrefix()>ac_tsp_count = sizeof(TspConsoleAccessTable) / sizeof(TspConsoleAccessTable[0]);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TspAccessTableBottom",buffer)>
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %<FeaturePathSetupAsyncConsoleHandlerTable()>
+        %<FeaturePathAddAsyncConsoleHandler("%<ModelPrefix()>TspConsoleHandler")>
+        %openfile buffer
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_TSP_AsyncConsole.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+    %% Share our table definitions with our model's async root
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+    %openfile buffer
+        extern void* %<ModelPrefix()>ac_tsp_table;
+        extern int   %<ModelPrefix()>ac_tsp_count;
+        #define AC_TSP &%<ModelPrefix()>ac_tsp_table, &%<ModelPrefix()>ac_tsp_count
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+%endfunction %%TspAsyncConsoleSetup
+
+%function TspAsyncConsoleBlockInstance(block, system) void
+
+    %assign config = TSP_CaptureGetConfig()
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+    %assign DTypeConstCount = SIZE(DTypeConstName)[1]
+
+    %assign Path            = ParamSettings.Path
+    %assign width           = LibBlockInputSignalWidth(0)
+    %assign InDataTypeId    = LibBlockInputSignalDataTypeId(0)
+    %if (InDataTypeId < DTypeConstCount)
+        %assign inDT = DTypeConstName[InDataTypeId]
+    %else
+        %assign inDT = InDataTypeId
+    %endif
+
+    %assign fileH = LibCreateSourceFile("Source","Custom",config.ConsoleFileName)
+    %% ----------- TSP Console access table entry
+    %openfile buffer
+        { // '%<LibGetBlockName(block)>'
+            "%<Path>",  %<inDT>, %<width>,
+            {
+                TSP_ADD_%<Path>,
+                TSP_SUB_%<Path>,
+                TSP_RETRIEVE_%<Path>,
+                TSP_BLIND_READ_%<Path>
+            }
+        },
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TspAccessTableEntries",buffer)>
+
+%endfunction

@@ -1,0 +1,443 @@
+%% RTC_BytePack 
+%%
+%%   Copyright 2016 Bose Corporation
+
+%implements RTC_BytePack "C"
+
+%% Retrieve common RTC methods
+%include "RTC_Common.tlc"
+
+%% Pull in the doxygen creation code
+%include "tlc_RTC_doxygen.tlc"
+
+%% Setup for shared ASDID system and possible RTC Console system
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Byte packing roles
+%% 0 = request
+%% 1 = response
+%% 2 = notification
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names  (without the LibGetModelName())
+    %assign idFileName = "%<RtcGetIdFileName()>"
+
+    %% Add an include file directly to model source. We define
+    %% some C struct types that are used in the pack/unpack handlers
+    %<LibAddToCommonIncludes(idFileName + ".h")> %% for RTC structures
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+
+    %% Includes :
+    %openfile buffer
+        #include <stdint.h>
+        #include "ASDID.h"
+        %% (the below comment string is matched in aggregateRtcHeaders.m)
+        // ------------------------------------------------------------
+        // CORE ENDIAN SETTINGS
+        // ------------------------------------------------------------
+        #define %<RtcAddCoreTagToString("ENDIANNESS_CORE")>  %<ConfigSet.ProdEndianess>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Setup the sections for payload definitions
+    %<LibAddSourceFileCustomSection(fileH, "Types", "REQ")>
+    %<LibAddSourceFileCustomSection(fileH, "Types", "RSP")>
+    %<LibAddSourceFileCustomSection(fileH, "Types", "NTF")>
+
+    %openfile buffer
+        %% (the below comment string is matched in aggregateRtcHeaders.m)
+        // ------------------------------------------------------------
+        // RTC REQUEST PAYLOAD DEFINITIONS
+        // ------------------------------------------------------------
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"REQ",buffer)>
+    %openfile buffer
+        %% (the below comment string is matched in aggregateRtcHeaders.m)
+        // ------------------------------------------------------------
+        // RTC RESPONSE PAYLOAD DEFINITIONS
+        // ------------------------------------------------------------
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"RSP",buffer)>
+    %openfile buffer
+        %% (the below comment string is matched in aggregateRtcHeaders.m)
+        // ------------------------------------------------------------
+        // RTC NOTIFICATION PAYLOAD DEFINITIONS
+        // ------------------------------------------------------------
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"NTF",buffer)>
+
+    %% Setup sections to create C language unions for each payload type
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionHeader")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionREQ")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionREQ2RSP")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionRSP")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionRSP2NTF")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionNTF")>
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "UnionFooter")>
+
+    %openfile buffer
+        %% (the below comment string is matched in aggregateRtcHeaders.m)
+        // ------------------------------------------------------------
+        // PAYLOAD UNION MACROS
+        // ------------------------------------------------------------
+        #define %<RtcAddCoreTagToString("ALL_REQ_PAYLOADS")> \
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"UnionHeader",buffer)>
+    %openfile buffer
+
+        #define %<RtcAddCoreTagToString("ALL_RSP_PAYLOADS")> \
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"UnionREQ2RSP",buffer)>
+    %openfile buffer
+
+        #define %<RtcAddCoreTagToString("ALL_NTF_PAYLOADS")> \
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"UnionRSP2NTF",buffer)>
+    %openfile buffer
+
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"UnionFooter",buffer)>
+
+
+    %%---------------------------------------------------------------------
+    %% ----------- RTC Console message table setup
+    %if ::INCLUDE_ASYNC_CONSOLE
+        %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetConsoleFileName())
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+        %openfile buffer
+            #include <stdint.h>
+            #include "%<FeaturePathGetAsyncConsoleFilename()>.h"
+            #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+            #include <stdio.h> // for printf, scanf
+            #include <stddef.h> // for offsetof
+            #include <string.h> // for strncmp, strncpy, strlen
+            #include "%<idFileName>.h" // for RTCIDs
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %openfile buffer
+            // struct to hold message payload element definitions
+            typedef struct
+            {
+                const char* name;
+                SimulinkDatatypeId dtypeId;
+                uint32_t width;
+                uint32_t charOffset;
+            } RtcConsolePayloadElement;
+            // struct to hold message definitions
+            typedef struct
+            {
+                const char* name;
+                uint32_t msgId;
+                RtcConsolePayloadElement* reqElems;
+                RtcConsolePayloadElement* rspElems;
+                RtcConsolePayloadElement* ntfElems;
+                uint32_t reqCount;
+                uint32_t rspCount;
+                uint32_t ntfCount;
+            } RtcConsoleMessage;
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+        %openfile buffer
+            // RTC Console message table
+            static RtcConsoleMessage RtcConsoleMessageTable[] =
+            {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+        %openfile buffer
+            };
+            void* %<ModelPrefix()>ac_rtc_table = RtcConsoleMessageTable;
+            int  %<ModelPrefix()>ac_rtc_count = sizeof(RtcConsoleMessageTable) / sizeof(RtcConsoleMessage);
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            %<FeaturePathSetupAsyncConsoleHandlerTable()>
+            %<FeaturePathAddAsyncConsoleHandler("%<ModelPrefix()>RtcConsoleHandler")>
+            %openfile buffer
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %include "tlc_RTC_Console.c"
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %closefile buffer
+            %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %endif
+        %% Share our table definitions with our model's async root
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+        %openfile buffer
+            extern void* %<ModelPrefix()>ac_rtc_table;
+            extern int   %<ModelPrefix()>ac_rtc_count;
+            #define AC_RTC &%<ModelPrefix()>ac_rtc_table, &%<ModelPrefix()>ac_rtc_count
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %%  end of ::INCLUDE_ASYNC_CONSOLE
+    %endif   
+
+    %% Don't forget to add the string.h header for memcpy usage during pack and unpack operations
+    %% This method ensures the header isn't listed multiple times, but sadly there is no way to
+    %% indicate why this header is included, or who included it (added by us here for memcpy)
+    %assign incFileName = "<string.h>"
+    %<LibAddToSystemCustomIncludes(system, incFileName)>
+
+%endfunction %%BlockTypeSetup
+
+%function BlockInstanceSetup(block, system) void
+    %assign idFileName = "%<RtcGetIdFileName()>"
+    %assign role           = block.SFcnParamSettings.Role
+    %assign name           = block.SFcnParamSettings.Name
+    %assign bytes          = block.SFcnParamSettings.Bytes
+    %assign index          = block.SFcnParamSettings.Index
+    %assign dtype          = block.SFcnParamSettings.DType
+    %assign packedDataName = block.SFcnParamSettings.PackedDataName
+    %assign MessagePath    = block.SFcnParamSettings.MessagePath
+    %assign TotalByteSize  = block.SFcnParamSettings.TotalByteSize
+    %% Use C99 type names defined in stdint.h for this header
+    %assign dtypeStr = ["double","float","int8_t","uint8_t","int16_t","uint16_t","int32_t","uint32_t","uint8_t"]
+    %assign int32_t_dtype = 6
+
+    %% Setup variables to handle the variability between various payload types:
+    %switch role
+        %case 1   %% PACK Response
+            %assign PAYLOAD = "Response"
+            %assign STRUCTSECTION = "RSP"
+            %assign UNIONSECTION = "UnionRSP"
+            %assign PORTS = NumDataInputPorts
+            %break
+        %case 2   %% PACK Notification
+            %assign PAYLOAD = "Notification"
+            %assign STRUCTSECTION = "NTF"
+            %assign UNIONSECTION = "UnionNTF"
+            %assign PORTS = NumDataInputPorts
+            %break
+        %case 0   %% UNPACK Request
+            %assign PAYLOAD = "Request"
+            %assign STRUCTSECTION = "REQ"
+            %assign UNIONSECTION = "UnionREQ"
+            %assign PORTS = NumDataOutputPorts
+            %break
+    %endswitch   %% role
+
+    %% Emit a struct definition
+    %openfile buffer
+        %if (TotalByteSize > 0)
+            %assign PayloadElemWidthDefines = ""
+            %<RtcDoxygenEmitPayloadComment(MessagePath,PAYLOAD,STRUCTSECTION,TLC_FALSE)>
+            typedef struct
+            {
+                uint32_t msgId; // always RTCID_%<MessagePath>
+                %foreach j = PORTS
+                    %if (bytes[j] > 0)
+                        %% insert padding (if any)
+                        %if (j > 0)
+                            %assign padding = %<index[j]> - %<index[j-1]> - %<bytes[j-1]>
+                            %if (padding > 0)
+                                uint8_t _unused_pad%<j>[%<padding>];
+                            %endif
+                        %endif
+                        %% Get the width of the signal
+                        %if (role == 0)
+                            %assign SignalWidth = LibBlockOutputSignalWidth(j)
+                        %else
+                            %assign SignalWidth = LibBlockInputSignalWidth(j)
+                        %endif
+                        %if (SignalWidth > 1)
+                            %assign ArrayTxt = SPRINTF("[%d]",SignalWidth)
+                            %assign PayloadElemWidthDefines = PayloadElemWidthDefines + \
+                                SPRINTF("#define %s_%s_%s_SIZE %d /* '%s' */\n", \
+                                    MessagePath, STRUCTSECTION, name[j], SignalWidth,block.Name)
+                        %else
+                            %assign ArrayTxt = ""
+                        %endif
+
+                        %% RSP and NTF payloads are being switched to use the ASDSTATUS typedef for consistency and clarity
+                        %if (((role == 1) || (role == 2)) && (name[j] == "status_code") && (dtype[j] == int32_t_dtype))
+                            ASDSTATUS %<name[j]>%<ArrayTxt>;  // startChar:%<index[j]> charSize:%<bytes[j]>
+                        %else
+                            %<dtypeStr[dtype[j]]> %<name[j]>%<ArrayTxt>;  // startChar:%<index[j]> charSize:%<bytes[j]>
+                        %endif
+                    %else
+                        %% This is an entry which increments a sequence number
+                    %endif
+                %endforeach
+            } %<MessagePath>_%<STRUCTSECTION>_T; /* '%<block.Name>' */
+            %% Dump out any payload element size defines
+            %<PayloadElemWidthDefines>
+        %else
+            %<RtcDoxygenEmitPayloadComment(MessagePath,PAYLOAD,STRUCTSECTION,TLC_TRUE)>
+
+        %endif
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+    %<LibSetSourceFileCustomSection(fileH,STRUCTSECTION,buffer)>
+
+    %% Now do the same thing except in XML for external interfacing.
+    %openfile buffer
+        %if (TotalByteSize > 0)
+            <%<STRUCTSECTION> id="%<MessagePath>">
+                <Signal id="msgId" charOffset="0" dtypeStr="uint32_t" dtypeNum="7" width="1"/>
+                %foreach j = PORTS
+                    %if (bytes[j] > 0)
+                        %% Get the width of the signal
+                        %if (role == 0)
+                            %assign SignalWidth = LibBlockOutputSignalWidth(j)
+                        %else
+                            %assign SignalWidth = LibBlockInputSignalWidth(j)
+                        %endif
+                        <Signal id="%<name[j]>" charOffset="%<index[j] + 4>" dtypeStr="%<dtypeStr[dtype[j]]>" dtypeNum="%<dtype[j]>" width="%<SignalWidth>"/>
+                    %else
+                        %% This is an entry which increments a sequence number
+                    %endif
+                %endforeach
+            %<SPRINTF("</%s>",STRUCTSECTION)>
+        %else
+            %% This means there is no payload of this type here
+        %endif
+    %closefile buffer
+    %assign fileH = RtcSetupXmlSections()
+    %<LibSetSourceFileCustomSection(fileH,"XMLEntries",buffer)>
+
+    %% Emit a member of the relevant union's definition
+    %if (TotalByteSize > 0)
+        %openfile buffer
+            %<MessagePath>_%<STRUCTSECTION>_T %<MessagePath>;\
+        %closefile buffer
+        %assign fileH = LibCreateSourceFile("Header","Custom",idFileName)
+        %<LibSetSourceFileCustomSection(fileH,UNIONSECTION,buffer)>
+    %endif
+
+    %%---------------------------------------------------------------------
+    %% ---------- RTC Console Block-specific Code
+    %if ::INCLUDE_ASYNC_CONSOLE
+        %assign fileH = LibCreateSourceFile("Source","Custom",RtcGetConsoleFileName())
+        %% ----------- RTC Console message table entry (only request does this)
+        %if (role == 0)
+            %openfile buffer
+                { // '%<LibGetBlockName(block)>'
+                    "%<MessagePath>",  RTCID_%<MessagePath>, 
+                    RtcConReqElem_%<MessagePath>,
+                    RtcConRspElem_%<MessagePath>,
+                    RtcConNtfElem_%<MessagePath>,
+                    RtcConReqCount_%<MessagePath>,
+                    RtcConRspCount_%<MessagePath>,
+                    RtcConNtfCount_%<MessagePath>,
+                },
+            %closefile buffer
+            %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+        %endif
+        %% ----------- RTC Console payload element array
+        %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+        %switch role
+            %case 1   %% PACK Response
+                %assign ELEMARRAY = "RtcConRspElem_%<MessagePath>"
+                %assign COUNTDEFINE = "RtcConRspCount_%<MessagePath>"
+                %assign PORTS = NumDataInputPorts
+                %break
+            %case 2   %% PACK Notification
+                %assign ELEMARRAY = "RtcConNtfElem_%<MessagePath>"
+                %assign COUNTDEFINE = "RtcConNtfCount_%<MessagePath>"
+                %assign PORTS = NumDataInputPorts
+                %break
+            %case 0   %% UNPACK Request
+                %assign ELEMARRAY = "RtcConReqElem_%<MessagePath>"
+                %assign COUNTDEFINE = "RtcConReqCount_%<MessagePath>"
+                %assign PORTS = NumDataOutputPorts
+                %break
+        %endswitch   %% role
+        %openfile buffer
+            %assign PayloadElementCount = 0
+            %% Check if payload contains only an int (i.e. message id)
+            %if (TotalByteSize <= ConfigSet.ProdBitPerInt / 8)
+                %% payload is empty or contains only msgId
+                static RtcConsolePayloadElement %<ELEMARRAY>[] = {0}; // '%<LibGetBlockName(block)>'
+            %else
+                static RtcConsolePayloadElement %<ELEMARRAY>[] = {  // '%<LibGetBlockName(block)>'
+                %foreach j = PORTS
+                    %if (bytes[j] == 0)
+                            %% This is an entry which increments a sequence number
+                    %else
+                        %assign PayloadElementCount = PayloadElementCount+1
+                        %if (role == 0)
+                            %assign SignalWidth = LibBlockOutputSignalWidth(j)
+                        %else
+                            %assign SignalWidth = LibBlockInputSignalWidth(j)
+                        %endif
+                        {"%<name[j]>", %<DTypeConstName[dtype[j]]>, %<SignalWidth>, \
+                        offsetof(%<MessagePath>_%<STRUCTSECTION>_T,%<name[j]>)},
+                    %endif
+                %endforeach
+                };
+            %endif
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+        %openfile buffer
+            #define %<COUNTDEFINE> %<PayloadElementCount>
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    %endif
+
+%endfunction   %% BlockInstanceSetup
+
+%function Outputs(block, system) Output
+    %assign role           = block.SFcnParamSettings.Role
+    %assign bytes          = block.SFcnParamSettings.Bytes
+    %assign index          = block.SFcnParamSettings.Index
+    %assign packedDataName = block.SFcnParamSettings.PackedDataName
+    %assign name           = block.SFcnParamSettings.Name
+    %assign dtype          = block.SFcnParamSettings.DType
+    %assign MessagePath    = block.SFcnParamSettings.MessagePath
+    %assign dtypeStr = ["real64_T","real32_T","int8_T","uint8_T","int16_T","uint16_T","int32_T","uint32_T","boolean_T"]
+    %assign STRUCTSECTION = "NTF"
+    %switch role
+        %case 1   %% PACK
+           %assign STRUCTSECTION = "RSP"
+        %case 2   %% PACK
+            %if (NumDataInputPorts > 0)
+                %<MessagePath>_%<STRUCTSECTION>_T* payload%<STRUCTSECTION> = (%<MessagePath>_%<STRUCTSECTION>_T*)%<packedDataName>;
+                %foreach j = NumDataInputPorts
+                    %assign SignalWidth = LibBlockInputSignalWidth(j)
+                    %if SignalWidth > 1
+                    (void)memcpy((uint8_t*)payload%<STRUCTSECTION>->%<name[j]>, ...
+                                 (uint8_t*)%<LibBlockInputSignalAddr(j, "", "", 0)>, ...
+                                 sizeof(%<dtypeStr[dtype[j]]>)*%<SignalWidth> ); // copy %<bytes[j]> chars
+                    %else
+                        payload%<STRUCTSECTION>->%<name[j]> = %<LibBlockInputSignal(j, "", "", 0)>;
+                    %endif
+                %endforeach
+                /* End of S-Function (RTC_BytePack) %<STRUCTSECTION> packing */
+            %else
+                /* Byte Packing: %<block.Name> : nothing to do */
+            %endif
+        %break
+
+        %case 0   %% UNPACK
+            %assign STRUCTSECTION = "REQ"
+            %if (NumDataOutputPorts > 0)
+                %<MessagePath>_%<STRUCTSECTION>_T* payload%<STRUCTSECTION> = (%<MessagePath>_%<STRUCTSECTION>_T*)%<packedDataName>;
+                %foreach j = NumDataOutputPorts
+                    %assign SignalWidth = LibBlockOutputSignalWidth(j)
+                    %if (bytes[j] > 0)
+                        %if SignalWidth > 1
+                        (void)memcpy((uint8_t*)%<LibBlockOutputSignalAddr(j, "", "", 0)>, ...
+                                     (uint8_t*)payload%<STRUCTSECTION>->%<name[j]>, ...
+                                     sizeof(%<dtypeStr[dtype[j]]>)*%<SignalWidth> ); // copy %<bytes[j]> chars
+                        %else
+                            %<LibBlockOutputSignal(j, "", "", 0)> = payload%<STRUCTSECTION>->%<name[j]>;
+                        %endif
+                    %else
+                        %% This is an entry which increments a sequence number
+                        (%<LibBlockOutputSignal(j, "", "", 0)>)++;    // Increment sequence
+                    %endif
+                %endforeach
+                /* End of S-Function (RTC_BytePack) %<STRUCTSECTION> unpacking */
+            %else
+                /* Byte Unpacking: %<block.Name> : nothing to do */
+            %endif
+            %break
+
+    %endswitch   %% direction
+
+%endfunction   %% bose_asd_byte_packing

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <FeaturePath id="BasicAudio" name="BasicAudio" want_group="on" want_module="off">
+    <FeaturePath id="BasicAudioBalance" libref="BalanceBtc/Balance" name="Balance" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioBass" libref="ToneBtc/Tone" name="Bass" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioMute" libref="MuteControlBtc/MuteControl" name="Mute" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioMute" libref="MuteRamperBtc/MuteRamper" name="Mute" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioTreble" libref="ToneBtc/Tone" name="Treble" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioVolume" libref="VolumeBtc/Volume" name="Volume" want_group="off" want_module="off" />
+    <FeaturePath id="BasicAudioCoreIndexRole" libref="FeaturePath/CoreIndex" name="CoreIndexRole" want_group="off" want_module="off" />
+  </FeaturePath>
+</root>

@@ -1,0 +1,233 @@
+%% DIRECT ADDRESSING TOP code generation
+
+%%   Copyright 2018 Bose Corporation
+
+
+%% ------------------------------------------------------
+%function TopSetupAllDirect() void
+
+    %% Check if the high level setup of TOP is already done
+    %if EXISTS(::TOP_GROUP)
+        %% Yep - already done. We can leave.
+        %return
+    %endif
+
+    %% (ELSE)
+
+    %createrecord ::TOP_GROUP{ Index 0 }
+    %createrecord ::TOP_GROUP_BANK_IDS {}
+
+    %% -----------------------------------------------------
+    %% SOURCE FILES *.c TOP ACCESS
+    %% topAccessFileName source
+    %assign fileH = LibCreateSourceFile("Source","Custom",TopGetAccessFileName())
+    %assign topHeaderName = ModelPrefix() + "TOP.h"
+
+    %% Includes :
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for ASDID parsing macros
+        #include "%<topHeaderName>"
+        #include <string.h> // for memcpy
+        #include "%<TopGetAccessFileName()>.h"
+        #include "%<TopGetIdFileName()>.h" // for request structure
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+
+        // Struct for overlay bank table
+        typedef struct TOP_BankTable_tag
+        {
+            uint32_t            bank_sizeof;
+            void*               bank_ptr;
+        } TOP_BankTable_type;
+
+        // Struct for overlay group table
+        typedef struct TOP_GroupTable_tag
+        {
+            uint32_t             bank_count;
+            TOP_BankTable_type*  bank_table;
+        } TOP_GroupTable_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "BankTables")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+    %openfile buffer
+        // ----- The GROUP TABLE -----:
+        static TOP_GroupTable_type top_group_table[] = {
+        //TABLE-START
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        //TABLE-END
+        };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+
+    %% Add framework entry point to use the request dispatch table
+    %openfile buffer
+        %% Pull in the hand-written function implementations
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        %include "tlc_TOP_Direct.c"
+        %include "tlc_TOP_Access.c"
+        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Do not emit asynchronous API functions for referenced models - they 
+    %% hookup their assets to the top model's methods.
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %%---------------------------------------------------------------------
+        %% [SHARED_HANDLER] ASDID HANDLER FUNCTION INTEGRATION FOR TOP ACCESS
+        %openfile includeBuffer
+            #include "%<TopGetAccessFileName()>.h" // for TOP access request handler
+        %closefile includeBuffer
+        %openfile handlerBuffer
+            if (ASDID_IS_TOP(asdId))
+            {
+              retVal = %<ModelPrefix()>HandleTopRequest(pReqBuf,reqBufSize,pRspBuf,rspBufSize);
+            }
+        %closefile handlerBuffer
+        %<FeaturePathAddAsdIdHandler(includeBuffer,handlerBuffer)>
+    %endif
+    
+    %%---------------------------------------------------------------------
+    %% ------------------- ID header file (also used by Control processor)
+    %assign fileH = LibCreateSourceFile("Header","Custom",TopGetIdFileName())
+    %openfile buffer
+    #include <stdint.h>
+    #include "ASDID.h"
+
+    // ------------------------------------------------------------
+    // TOP ACCESS TOKENS
+    // ------------------------------------------------------------
+    %% The content here is filled in by the BoseFlatStructure.tlc code
+    %% since this model is using DIRECT ADDRESSING
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+    %openfile buffer
+        // ------------------------------------------------------------
+        // TOP ACCESS REQUEST PAYLOADS
+        // ------------------------------------------------------------
+        typedef struct
+        {
+            uint32_t topId;         // Any TOP_WRITE_ token
+            uint32_t callerHandle;
+            uint32_t offset;
+            uint32_t byteCount;
+            uint8_t data[];
+        } TOP_WriteRequest_type;
+        typedef TOP_WriteRequest_type TOP_Request_type; // backward compatibility
+
+        typedef struct
+        {
+            uint32_t topId;         // Any TOP_READ_ token
+            uint32_t callerHandle;
+            uint32_t offset;
+            uint32_t byteCount;
+        } TOP_ReadRequest_type;
+
+        // ------------------------------------------------------------
+        // TOP ACCESS RESPONSE PAYLOADS
+        // ------------------------------------------------------------
+        // See also AsdIdStatus_type in %<FeaturePathGetAsdIdFileName()>.h
+        typedef struct
+        {
+            uint32_t            topId;
+            uint32_t            callerHandle;
+            ASDSTATUS           statusCode;
+        } TOP_WriteResponse_type;
+
+        typedef struct
+        {
+            uint32_t            topId;
+            uint32_t            callerHandle;
+            ASDSTATUS           statusCode;
+            uint32_t            byteCount;
+            uint8_t             data[];
+        } TOP_ReadResponse_type;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% --------------------------------------------------------------------
+    %% topAccessFileName header (TOP_Access)
+    %assign fileH = LibCreateSourceFile("Header","Custom",TopGetAccessFileName())
+    %% Add framework entry point to use the request dispatch table
+    %openfile buffer
+        // ------------------------------------------------------------
+        // ACCESS ROUTINE TO GET AND SET TOP VALUES
+        // ------------------------------------------------------------
+        // See %<FeaturePathGetAsdIdFileName()>.h for returned ASDSTATUS codes.
+        int %<ModelPrefix()>HandleTopRequest(void* pReqBuf, uint32_t reqBufSize,
+                             void* pRspBuf, uint32_t rspBufSize);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+%endfunction
+
+%%-------------------------------------------------------------------------
+%function TopSetupSingleDirect(block) void
+
+    %% Ensure the shared high level setup is complete
+    %<TopSetupAllDirect()>
+
+    %% Get our overlay group and see if we've already set it up
+    %assign GroupPath = SFcnParamSettings.GroupPath
+    %% The names of the C structures are based on model name and group path
+    %assign StructRoot = LibGetModelName() +"_"+ GroupPath
+
+    %%    check the entry for bank 0 :
+    %if ISFIELD(::TOP_GROUP_BANK_IDS,"%<StructRoot>0")
+        %% Bail out - somebody already setup this overlay group
+        %return
+    %endif
+
+    %% (ELSE) Setup the overlay group
+    %assign CoreIndex = SFcnParamSettings.CoreIndex & 7
+    %assign Bank = SFcnParamSettings.Bank & 7
+    %assign PartitionNumber = SFcnParamSettings.PartitionNumber
+    %assign BankCount = 7
+
+    %% Direct addressing allocates 4 bits in the token to specify Overlay Group
+    %% ... but reserves group 0 to indicate RTC messages.
+    %% So only Index values [0..14] are supported for these groups [1..15]
+    %if ::TOP_GROUP.Index >= 15
+        %error Talaria supports only 15 Overlay Group declarations for code generation. Please reduce or combine Overlay Groups.
+    %endif
+
+    %%---------------- topAccessFileName *.c
+    %assign fileH = LibCreateSourceFile("Source","Custom",TopGetAccessFileName())
+    %% Define an entry in the top_group_table table
+    %openfile buffer
+        { %<BankCount>, %<GroupPath>_BankTable }, // "%<GroupPath>" overlay group
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+    %% Define the bank table for this group
+    %% Also - record the group id and bank id for use in creating TOP ASDIDs
+    %% during custom storage class processing. Note the string concatenation
+    %% of group and bank numbers below must match the struct name placed
+    %% on the TOP outbound signal line by TOP_Mask
+    %openfile buffer
+    static TOP_BankTable_type %<GroupPath>_BankTable[] = {
+        %foreach j = BankCount
+            {TOP_BANK_%<StructRoot>%<j>_SIZE, (void*)TOP_BANK_%<StructRoot>%<j>},
+            %addtorecord ::TOP_GROUP_BANK_IDS \
+                %<StructRoot>%<j> { coreId CoreIndex groupId %<::TOP_GROUP.Index + 1> bankId j path GroupPath}
+        %endforeach
+        };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"BankTables",buffer)>
+
+    %assign ::TOP_GROUP.Index = (::TOP_GROUP.Index + 1)
+
+%endfunction

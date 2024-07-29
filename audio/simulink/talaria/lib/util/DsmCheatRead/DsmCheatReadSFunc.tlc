@@ -1,0 +1,30 @@
+%implements DsmCheatReadSFunc "C"
+
+%%   Copyright 2023 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+    %% Define the ImportedExternPointer!
+    %assign fullInputExpression = LibBlockInputSignal(0, "", "", 0)
+    %assign justInputVariable = FEVAL("strtok",fullInputExpression,"[")
+    %assign dsmIdentifier = SFcnParamSettings.DsmIdentifier
+    %assign fileH = LibGetModelDotCFile()
+    %openfile buffer
+        // Define DSM Cheat reading pointer for '%<LibGetBlockName(block)>'
+        %<LibBlockInputSignalDataTypeName(0,"")> *%<justInputVariable> = %<dsmIdentifier>;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+%endfunction

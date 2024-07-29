@@ -1,0 +1,90 @@
+%implements PartitionSFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% FeaturePath / ASDID utilities and defines
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+
+%% RTC defines
+%addincludepath "../rtc"
+%include "RTC_Common.tlc"
+
+%% TOP defines
+%addincludepath "../top"
+%include "TOP_Common.tlc"
+%include "TOP_Indirect.tlc"
+
+%include "PartitionCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% The following comment is required to ensure that
+    %% TLC's built-in searching mechanisms invoke custom intialization.
+    %% Here it is:  LibSystemInitializeCustomCode()
+    %% (The call in question is found in TOP_Indirect.tlc, indirectly invoked below)
+
+    %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+    %if TLC_FALSE == IsIndirect
+        %% We're not supposed to generate code here. Bail.
+        %return
+    %endif
+
+    %<PartitionTypeSetup()>
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+    %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+    %assign IgnoreBlock = ParamSettings.IgnoreBlock[0][0]
+    %if TLC_FALSE == IsIndirect || IgnoreBlock
+        %% We're not supposed to generate code here. Bail.
+        %return
+    %endif
+
+    %assign PartitionNumber  = ParamSettings.PartitionNumber[0][0]
+    %assign GroupNumber      = ParamSettings.GroupNumber[0][0]
+    %assign RootObjName      = SPRINTF("RootG%dP%d",GroupNumber,PartitionNumber)
+
+    %% Setup this partition's root object
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetPartitionFilename())
+    %openfile buffer
+        %assign RtcRootName = SPRINTF("RTCROOT_G%dP%d",GroupNumber,PartitionNumber)
+        %assign TopRootName = SPRINTF("TOPROOT_G%dP%d",GroupNumber,PartitionNumber)
+        %assign TspRootName = SPRINTF("TSPROOT_G%dP%d",GroupNumber,PartitionNumber)
+        #ifndef %<RtcRootName>
+        #define %<RtcRootName> 0,0
+        #endif
+        #ifndef %<TopRootName>
+        #define %<TopRootName> 0,0,0
+        #endif
+        #ifndef %<TspRootName>
+        #define %<TspRootName> 0,0
+        #endif
+        PartitionRoot_type %<RootObjName> = 
+        { 
+            %<RtcRootName>,
+            %<TopRootName>,
+            %<TspRootName>
+        };
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %% Add root object to initialization function
+    %openfile buffer
+        RegisterPartition(%<GroupNumber>,%<PartitionNumber>,&%<RootObjName>);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"InitFuncEntries",buffer)>
+
+    %assign TopBlockList = ParamSettings.TopBlock
+    %if ISEMPTY(TopBlockList)
+        %% There are no TOPs in this partition. Bail.
+        %return
+    %endif
+
+    %% We have TOPs! Generate the code:
+    %<TopSetupPartitionIndirect(block,system)>
+
+%endfunction

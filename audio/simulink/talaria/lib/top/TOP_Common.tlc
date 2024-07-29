@@ -1,0 +1,227 @@
+%% Common defines and tools for TOP code generation
+
+%%   Copyright 2018 Bose Corporation
+
+%% Could add "LibGetModelName() +" to the filenames, but then there would be
+%% no good way to write generic inclusion code. Difficult to perform marco
+%% expansion in a #include macro 
+
+%include "TOP_Direct.tlc"
+%include "TOP_Indirect.tlc"
+
+%% ------------------------------------------------------
+%function TopGetIdFileName() void
+    %return ModelPrefix() + "TOP_IDs"
+%endfunction
+
+%% ------------------------------------------------------
+%function TopGetConsoleFileName() void
+    %return ModelPrefix() + "TOP_Console"
+%endfunction
+
+%% ------------------------------------------------------
+%function TopGetAccessFileName() void
+    %return ModelPrefix() + "TOP_Access"
+%endfunction
+
+%% ------------------------------------------------------
+%function TopTypeSetup(IsIndirect,HaveInputPort,HaveOutputPort) void
+    %% File Names
+    %assign dispTableFileName = ModelPrefix() + "TOP_RcvTrans"
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+
+    %% Keep track of whether this setup has happened
+    %if EXISTS(::TOP_TYPE_SETUP)
+        %return
+    %endif
+    %assign ::TOP_TYPE_SETUP = 1
+
+    %if HaveOutputPort
+        %createrecord ::TOP_DTYPE_NAMES{}
+        %if IsIndirect
+            %<TopSetupAllIndirect()>
+        %else
+            %<TopSetupAllDirect()>
+        %endif
+    %endif
+
+    %if HaveInputPort
+        %% Translation Engine code (TOP_RcvTrans)
+        %% ------------------- dispatch table *.c file
+        %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+        %% Includes :
+        %openfile buffer
+            #include "rtwtypes.h"
+            #include "%<dispTableFileName>.h"
+            #include "%<LibGetMdlPubHdrBaseName()>.h" // for TOP translated inputs
+            #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+            %if HaveOutputPort
+            %assign topHeaderName = ModelPrefix() + "TOP"
+            #include "%<topHeaderName>.h" // for TOP storage itself (source models only)
+            %endif
+            #include <stdio.h> // for snprintf
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %% Ensure the top header file exists in the source model case when
+        %% model references are present and the top model has no TOPs.
+        %if HaveOutputPort
+            %<LibCreateSourceFile("Header","Custom",topHeaderName)>
+        %endif
+
+        %% Forward declare the datatypes
+        %openfile buffer
+            // Struct for table (moved to *.h file, see MathWorks Case#02530176)
+            typedef struct TOP_RcvTrans_tag
+            {
+                const char*         top_name;               // String name of Target Overlay Parameter
+                int                 top_sightings_count;    // Count how many times translated value received
+                SimulinkDatatypeId  top_in_dtype_id;        // Id number of numeric type (e.g. float, int, etc)
+                SimulinkDatatypeId  top_out_dtype_id;       // Id number of numeric type (e.g. float, int, etc)
+                const char*         top_in_dtype_name;      // Name of numeric type
+                const char*         top_out_dtype_name;     // Name of numeric type
+                int                 top_is_complex;         // "1" if complex number (interleaved format)
+                int                 top_element_count;      // count of numeric data values
+                void*               top_value_src_ptr;      // array of translated numeric values
+                void*               top_value_dst_ptr;      // Source Model only : the TOP storage itself
+            } TOP_RcvTrans_type;
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+        %% Setup the top middle and bottom of the table definition
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+        %openfile buffer
+
+            // ----- TOP_RcvTrans object table listing all instances
+            static TOP_RcvTrans_type TOP_RcvTrans_table[] = {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+        %openfile buffer
+            };
+
+            // Share table in a public interface for use by top-model
+            void* %<ModelPrefix()>TOP_RcvTrans_table = TOP_RcvTrans_table;
+            int %<ModelPrefix()>TOP_RcvTrans_table_count = sizeof(TOP_RcvTrans_table) / sizeof(TOP_RcvTrans_type);
+
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+
+        %% Only include translation engine code for top-model generation
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            %openfile buffer
+                %include "tlc_TOP_RcvTrans.c"
+            %closefile buffer
+            %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %endif
+
+        %% ------------------- dispatch table *.h file
+        %assign fileH = LibCreateSourceFile("Header","Custom",dispTableFileName)
+
+        %% Declare entry points / methods
+        %openfile buffer
+            %% Only include engine code for top-model code generation
+            %if TLC_FALSE == LibIsModelReferenceTarget()
+            #include "%<translateTriggerFileName>.h" // for TranslateEngineIterator 
+
+             // Dump the translated value to provided buffer & updating sightings
+             // Returns number of chars filled in buffer
+             int DumpTranslatedValue(TranslateEngineIterator rcvTransNumberIn, char* bufferInOut, int bufferSizeIn);
+
+             // Get the name of a TOP, or NULL if not found
+             const char* GetTopName(TranslateEngineIterator topNumberIn);
+            %endif
+
+            // Local model translation table
+            extern void* %<ModelPrefix()>TOP_RcvTrans_table;
+            extern int %<ModelPrefix()>TOP_RcvTrans_table_count;
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %% Define the IDs used to access TOP_RcvTrans
+        %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+        %<FeaturePathAddTable(fileH,"Types","TopRcvEnum")>
+        %openfile buffer
+            enum TOP_RcvTransNumber {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TopRcvEnumTop",buffer)>
+        %openfile buffer
+                NUM_TOP_RCVTRANSNUMBERS
+            };
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TopRcvEnumBottom",buffer)>
+
+    %% end of input port TOP type setup
+    %endif
+
+    %%---------------------------------------------------------------------
+    %% ----------- TOP Console message table setup
+    %if ::INCLUDE_ASYNC_CONSOLE
+        %assign fileH = LibCreateSourceFile("Source","Custom",TopGetConsoleFileName())
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+        %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+        %openfile buffer
+            #include "rtwtypes.h"
+            #include "%<FeaturePathGetAsyncConsoleFilename()>.h"
+            #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+            #include <stdio.h> // for printf, scanf
+            #include <string.h> // for strcmp, strncpy, strlen
+            #include <stdlib.h> // for atoi
+            #include "%<TopGetIdFileName()>.h" // for TOP IDs
+            #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+        %openfile buffer
+            // struct to hold top element definitions
+            typedef struct
+            {
+                const char* name;
+                uint32_t writeId;
+                uint32_t readId;
+                SimulinkDatatypeId dtypeId;
+                uint32_t width;
+            } TopConsoleElement;
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+        %openfile buffer
+            // TOP Console element table
+            static TopConsoleElement topConsoleElementTable[] =
+            {
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+        %openfile buffer
+            };
+            void* %<ModelPrefix()>ac_top_table = topConsoleElementTable;
+            int  %<ModelPrefix()>ac_top_count = sizeof(topConsoleElementTable) / sizeof(TopConsoleElement);
+        %closefile buffer
+        %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            %<FeaturePathSetupAsyncConsoleHandlerTable()>
+            %<FeaturePathAddAsyncConsoleHandler("%<ModelPrefix()>TopWriteConsoleHandler")>
+            %<FeaturePathAddAsyncConsoleHandler("%<ModelPrefix()>TopReadConsoleHandler")>
+            %openfile buffer
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                %include "tlc_TOP_Console.c"
+                %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %closefile buffer
+            %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %endif
+        %% Share our table definitions with our model's async root
+        %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+        %openfile buffer
+            extern void* %<ModelPrefix()>ac_top_table;
+            extern int   %<ModelPrefix()>ac_top_count;
+            #define AC_TOP &%<ModelPrefix()>ac_top_table, &%<ModelPrefix()>ac_top_count
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+
+    %%  end of ::INCLUDE_ASYNC_CONSOLE
+    %endif   
+
+%endfunction

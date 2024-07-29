@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <NTF id="BasicAudioBalanceSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="BasicAudioBalanceSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="BasicAudioBalanceSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="0" coreTag="" id="BasicAudioBalanceSet" msgId="0x10000000" payloadMetaHash="0xB435421A">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="BasicAudioBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="BasicAudioBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="BasicAudioBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="0" coreTag="" id="BasicAudioBassSet" msgId="0x10000001" payloadMetaHash="0xB435421A">
+    <Description>Provide the target value as a 32-bit signed integer index value (to be mapped through a tunable calibration into a normalized float between -1 and 1). To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="BasicAudioMuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="BasicAudioMuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="BasicAudioMuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <RTC coreIndex="0" coreTag="" id="BasicAudioMuteSet" msgId="0x10000002" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="BasicAudioTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="BasicAudioTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="BasicAudioTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="0" coreTag="" id="BasicAudioTrebleSet" msgId="0x10000003" payloadMetaHash="0xB435421A">
+    <Description>Provide the target value as a 32-bit signed integer index value (to be mapped through a tunable calibration into a normalized float between -1 and 1). To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="BasicAudioVolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="BasicAudioVolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+    <Signal charOffset="20" dtypeNum="6" dtypeStr="int32_t" id="gain_offset" width="1" />
+  </REQ>
+  <RSP id="BasicAudioVolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="0" coreTag="" id="BasicAudioVolumeSet" msgId="0x10000004" payloadMetaHash="0x3B6D65F2">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="24" RSP="16" />
+  </RTC>
+  <COMPAT compat_hash="0x1A7BF40E" id="BasicAudio" name_hash="0x9FD22631" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x1A7BF40E" id="BasicAudio" name_hash="0x9FD22631" />
+</root>

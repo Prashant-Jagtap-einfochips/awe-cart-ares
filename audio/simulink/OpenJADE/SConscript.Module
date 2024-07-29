@@ -1,0 +1,57 @@
+
+import os
+
+Import('env')
+Import('target')
+Import('option')
+Import('runtime')
+Import('platform')
+Import('lib')
+Import('lib_path')
+Import('modulePath')
+Import('dynamic')
+Import('targetName')
+
+# Starting with existing environment, reuse and modify as needed for building the shared object.
+local_env = env.Clone(CPPPATH=['#/'+ runtime, '#/'+ runtime+'/BAF', '#/'+ runtime+'/CART']) 
+lib_source = []
+
+ModuleBuilder = None
+
+if option and ('MultiRatePlatform' in option) and option['MultiRatePlatform']:
+    local_env.Append(CPPFLAGS='-DPLATFORM_MULTIRATE_AUDIOTHREADS')
+
+if option and ('BaseThreadLevel' in option) and option['BaseThreadLevel']:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=%d' % (option['BaseThreadLevel']))
+else:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=0')
+
+if (local_env['PROCESSOR'] in ['x86'] and 'dll' in platform) or (local_env['PROCESSOR'] in ['x64', 'amd64']):
+    local_env.Append(CPPPATH = runtime + '/Audio_Graph')
+    local_env.Append(CPPFLAGS = '-DBAF_DLL_BUILD -DBAF_LOGGER')
+
+lib_source = []
+lib_source += env.Glob(modulePath+'/*.c',  exclude=None) 
+
+if 'SHLIBPREFIX' in env and env['SHLIBPREFIX'] != '' and 'SHLIBSUFFIX' in env: 
+    targetName = env['SHLIBPREFIX'] + targetName + env['SHLIBSUFFIX']
+else:
+    # Add default lib suffix if not specified in JConfig.
+    targetName = targetName + '.dll' # = 'Baf.dll' works.
+
+if dynamic == 'yes':
+    # Link BAF.lib
+    lib_source += [lib]
+
+    ModuleBuilder = local_env.SharedLibrary(
+        target = targetName,
+        source = lib_source)    
+else:
+    print('Building static library: ' + targetName)
+
+    lib_source += [lib]
+    ModuleBuilder = local_env.Library(
+        target = targetName,
+        source = lib_source)   
+
+Return(["ModuleBuilder"])

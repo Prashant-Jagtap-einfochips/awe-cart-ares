@@ -1,0 +1,186 @@
+%%   Copyright 2020 Bose Corporation
+
+
+%function TuneVarTypeSetup() void
+
+    %% Keep track of whether this setup has happened
+    %if EXISTS(::TUNEVAR_TYPE_SETUP)
+        %return
+    %endif
+    %assign ::TUNEVAR_TYPE_SETUP = 1
+
+    %% File Names  (without the LibGetModelName())
+    %assign dispTableFileName = ModelPrefix() + "TuneVar"
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+    %assign MAX_TUNEVAR_DIM = CAST("Unsigned",FEVAL("TuneVarMask.MaxDim"))
+
+    %% ------------------- dispatch table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",dispTableFileName)
+    %% Includes :
+    %openfile buffer
+        #include <ctype.h>
+        #include "rtwtypes.h"
+        #include "%<dispTableFileName>.h"
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        #include "%<LibGetMdlPubHdrBaseName()>.h" // for tune variable output signals
+        #include <stdio.h> // for sscanf, vsnprintf
+        #include <stdarg.h> // for variadic args (va_start)
+        #include <string.h> // for memset, memcpy, strlen, etc
+    %closefile buffer
+     %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+
+        #define MAX_TUNEVAR_DIM %<MAX_TUNEVAR_DIM>
+        // TuneVar table record
+        typedef struct TuneVar_tag
+        {
+            const char*            name;               // name of TuneVar
+            int                    sightings_count;    // counts RecognizeTuneVariable invocations
+            SimulinkDatatypeId     dtype_id;           // SimulinkDatatypeId of numeric data type
+            int                    string_parse;       // 0=numeric input, 1=string input
+            int                    element_bytes;      // byte size of a single element
+            int                    width;              // maximum supported elements
+            int                    max_size[MAX_TUNEVAR_DIM];   // maximum for each dimension
+            int                    variable_dim;       // index of the dimension allowed to vary in size (for inputs)
+            int                    num_dims;           // number of dimensions
+            int                    current_width;      // width of current value (although stored in max dimensional size)
+            void*                  default_value;
+            int                    default_width;
+            double*                current_dims;       // dimensions of current value
+            void*                  value_ptr;          // array of current numeric value
+            int                    translation_count;  // indicates how many translations feed off this TuneVar
+            enum TranslationNumber *translations;      // array of translation numbers feeding off this TuneVar
+        } TuneVar_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Dependencies")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+    %openfile buffer
+        // ----- Dependent translations for each tune variable:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Dependencies",buffer)>
+
+    %openfile buffer
+
+        // ----- Tune variable dispatch table:
+        static TuneVar_type tune_var_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        };
+
+        // Share table in a public interface for use by top-model
+        void* %<ModelPrefix()>tune_var_table = tune_var_table;
+        int %<ModelPrefix()>tune_var_table_count = sizeof(tune_var_table) / sizeof(TuneVar_type);
+
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+    
+    %% Add TuneVar access code- but only for top-model
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %include "tlc_tunevar_access.c"
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",dispTableFileName)
+
+    %% Add framework entry point to use the request dispatch table
+    %openfile buffer
+
+        %% Only add access code for top-model generation
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            #include "%<translateTriggerFileName>.h" // for TranslateEngineIterator
+
+            #ifdef INCLUDE_TRANSLATION_DLL_API
+            // Returns a tune variable iterator if name is recognized, -1 otherwise
+            // Adds to error strings if name is not recognized (see GetTuneVarErrorStrings)
+            // Also "touches" any translations that will be impacted by changing the found variable
+            TranslateEngineIterator RecognizeTuneVariable(const char* variableName);
+
+            // Returns a tune variable iterator if name is recognized, -1 otherwise
+            // Instead use "RecognizeTuneVariable" if the TuneVar will be changed
+            TranslateEngineIterator GetTuneVarIteratorByName(const char* variableName);
+            #endif
+
+            // Reset all TuneVar sighting counts to zero
+            void ClearAllTuneSightings(void);
+
+            // Return count of how many times the specified TuneVar has been seen
+            int GetTuneVarSightings(TranslateEngineIterator tuneVarNumberIn);
+
+            // Return TuneVar name (or NULL if bad number)
+            const char* GetFirstTuneVarName(TranslateEngineIterator* tuneVarNumberIn);
+            const char* GetNextTuneVarName(TranslateEngineIterator* tuneVarNumberIn);
+            const char* GetTuneVarName(TranslateEngineIterator tuneVarNumberIn);
+
+            // Set incoming TuneVar size - required for all TuneVars to account
+            // for variable size TuneVars and conversion from row-major to
+            // column-major storage indexing.
+            // Returns 0 for OK, 1 for error (does not set translation error state)
+            // ... but DOES set TuneVar error messages
+            int SetTuneVariableSize(TranslateEngineIterator tuneVarNumberIn, int countIn);
+
+            // Set a single value of the tune variable. Provide total count of
+            // values in addition to the index of current value to set. The index
+            // traverses the TuneVar storage in row-major organization which is
+            // typical for C language matrix storage (i.e. same as the way a matrix
+            // is represented in a text file... listing out each row contiguously).
+            // Returns 0 for OK, 1 for error (does not set translation error state)
+            int SetTuneVariableElement(TranslateEngineIterator tuneVarNumberIn, int rowMajorIndexIn,
+                                         const char* stringElementValueIn);
+
+            // returns num chars used, negative if buffer was too small, 0 if TuneVar not recognized
+            int PrintTuneVarToBuffer(TranslateEngineIterator tuneVarNumberIn, char* returnBuffer, int returnBufferSize);
+
+            // Retrieve reported error strings
+            const char* GetTuneVarErrorStrings(void);
+
+            // Clear error strings (call when starting new operation)
+            void ClearTuneVarErrorStrings(void);
+
+            // Load default values for all TuneVars
+            void LoadAllTuneVarDefaults(void);
+        %endif
+
+        // Local model TuneVar table
+        extern void* %<ModelPrefix()>tune_var_table;
+        extern int %<ModelPrefix()>tune_var_table_count;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Define the IDs used to access TuneVars
+    %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+    %<FeaturePathAddTable(fileH,"Types","TuneVarEnum")>
+    %openfile buffer
+        enum TuneVarNumber {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TuneVarEnumTop",buffer)>
+    %openfile buffer
+            NUM_TUNEVAR_NUMBERS
+        };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TuneVarEnumBottom",buffer)>
+
+
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %% Setup initial values for TuneVars
+        %<LibAddToCommonIncludes(dispTableFileName + ".h")>
+        %openfile buffer
+            // Load default values for all TuneVars
+            LoadAllTuneVarDefaults();
+        %closefile buffer
+        %<LibMdlStartCustomCode(buffer, "execution")>
+    %endif
+%endfunction
+

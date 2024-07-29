@@ -1,0 +1,127 @@
+import os
+import json
+
+Import('env')
+Import('runtime')
+Import('jframework')
+Import('target')
+Import('config_path')
+Import('gen_path')
+Import('arch')
+Import('jautogenCode')
+Import('jconfigapp')
+
+local_env = env.Clone(
+    CPPPATH=['.', runtime+'/Audio_Graph', runtime+'/BAF', runtime, config_path]
+   )
+
+OptArch = arch
+option = jframework
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+def generate_jframework(target, source, env):
+    jframegen = jframework['Generator']
+    jautogenCode.GenerateJFrameworkExSingle(jframegen.baf, name=jframework['Name'], genpath=gen_path)
+
+local_env['BUILDERS']['GenerateJFramework'] = local_env.Builder(action = generate_jframework, suffix='.c')
+
+def generate_execgraph_json(target, source, env):
+    jframegen = jframework['Generator']
+    jframe_name = jframework['Name']
+    callrates_list = jframegen.GetCallRates(name=jframe_name)
+    process_list =  jframegen.GetProcesses(name=jframe_name)
+    probe_points = jframework['JModule'][0]['TalariaModel']['ProbePoints'] if ('TalariaModel' in jframework['JModule'][0]) and ('ProbePoints' in jframework['JModule'][0]['TalariaModel']) else None
+    accel_process_list = jframework['MIPSReport']['Option']['AccelProcesses'][arch] if ('MIPSReport' in jframework) and ('AccelProcesses' in jframework['MIPSReport']['Option']) and (arch in jframework['MIPSReport']['Option']['AccelProcesses']) else None
+    exec_graph_json = os.path.abspath(File(target[0]).srcnode().path)
+
+    exec_graph_params = {
+        'callrates_list': callrates_list,
+        'process_list': process_list,
+        'probe_points': probe_points,
+        'accel_process_list': accel_process_list}
+
+    with open(exec_graph_json, "w") as outfile:
+        json.dump(exec_graph_params, outfile, indent=4)
+
+local_env['BUILDERS']['GenerateExecGraphJSON'] = local_env.Builder(action = generate_execgraph_json, suffix='.json')
+
+
+if 'Specific' in jframework and jframework['Specific']:
+    specific = jframework['Specific']
+    if arch in specific:
+        for item in specific[arch]:
+            local_env.Append(CPPFLAGS='-DOJ_'+item.upper()+'='+str(specific[arch][item]))
+if ('SOC_ID' in jframework) and ('CORE_ID' in jframework) :
+    local_env.Append(CPPFLAGS=['-DSOC_ID='+jframework['SOC_ID'],'-DCORE_ID='+jframework['CORE_ID']])
+
+source_list = ['JModule_Lib/JModule_List.c','Audio_Graph/Audio_Graph.c']
+
+if 'Option' in jframework and 'Lite' in jframework['Option'] and jframework['Option']['Lite']:
+    source_list = [] # Audiograph not used
+
+def my_lib_emitter(target, source, env):
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+if ('Generator' in jframework) and (jframework['Generator']):
+    gen_list = ['#/' + gen_path + '/' + jframework['Name'] + '/' + x for x in source_list]
+
+    JGenFramework = local_env.GenerateJFramework(
+        target = gen_list,
+        source = None )
+
+    if jconfigapp != None:
+        local_env.Depends(JGenFramework, '#/'+jconfigapp)
+
+    exec_graph_json = ['#/' + gen_path + '.exec_graph.json']
+    JGenExecGraphJSON = local_env.GenerateExecGraphJSON(
+        target = exec_graph_json,
+        source = None )
+
+    JFramework = local_env.Library(
+        target = target,
+        source = gen_list )
+
+    local_env.Depends(JFramework, JGenExecGraphJSON)
+    local_env.Depends(JFramework, JGenFramework)
+else:
+    for jmodule in  jframework['JModule']:
+        obj_env = local_env.Clone()
+        if ('TalariaModel' in jmodule) and jmodule['TalariaModel']:
+            obj_env.Append(CPPFLAGS=['-DMODEL='+jmodule['TalariaModel']['Name']])
+
+    JFramework = local_env.Library(
+        target = target,
+        source = source_list )
+
+
+
+env['JFrameworkList'][jframework['Name']] = ['#' + os.path.join(gen_path + '/' + jframework['Name'], str(x)) for x in source_list]
+
+Return("JFramework")

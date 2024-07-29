@@ -1,0 +1,404 @@
+import os
+import math
+
+Import('env')
+Import('target')
+Import('platform')
+Import('runtime')
+Import('OptArch')
+Import('OptPlatform')
+Import('SOC_ID')
+Import('CORE_ID')
+Import('code_gen_folder')
+Import('talaria_model')
+Import('base_rate_period')
+Import('option')
+Import('modulePath')
+
+parent_env = env
+
+local_env = env.Clone(
+    CPPPATH=['.','#',runtime])
+
+if base_rate_period:
+    core_frequency = None
+    if OptArch in ['gxp','gul']:
+        core_frequency = 1000000000
+    elif OptArch == 'sharc':
+        core_frequency = 500000000
+    if core_frequency:
+        base_frame_cycles = int(math.ceil(float(base_rate_period) * core_frequency))
+
+if 'option' in globals() and option:
+    if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+        if isinstance(option['PIL_InterFrameDelay'], int):
+            inter_frame_delay = option['PIL_InterFrameDelay']
+        if isinstance(option['PIL_InterFrameDelay'], str) and (option['PIL_InterFrameDelay'] == 'auto'):
+            if base_rate_period and (OptArch in ['gxp','gul','sharc']):
+                inter_frame_delay = base_frame_cycles
+
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+def compile_target(target, source, env, for_signature):
+    return '$CCCOM'
+
+local_env['BUILDERS']['Compile'] = local_env.Builder(generator = compile_target, suffix='$OBJSUFFIX', src_suffix='.c')
+
+if option and ('MultiRatePlatform' in option) and option['MultiRatePlatform']:
+    local_env.Append(CPPFLAGS='-DPLATFORM_MULTIRATE_AUDIOTHREADS')
+else:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASERATE_AUDIOTHREAD')
+
+if option and ('BaseThreadLevel' in option) and option['BaseThreadLevel']:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=%d' % (option['BaseThreadLevel']))
+else:
+    local_env.Append(CPPFLAGS='-DPLATFORM_BASETHREADLEVEL=0')
+
+Platform = None
+source_list = None
+
+def my_lib_emitter(target, source, env):
+    lst = []
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+            lst.append(x)
+    parent_env['PlatformList'] = lst
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+if OptArch == 'x86':
+    if OptPlatform == 'SIL':
+        local_env.Append(CPPFLAGS = '-DARGC_ARGV_SUPPORTED')
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c']
+elif OptArch == 'amd64':
+    if OptPlatform == 'SIL':
+        local_env.Append(CPPFLAGS = '-DARGC_ARGV_SUPPORTED')
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c']
+    if OptPlatform == 'RTA':
+        local_env.Append(CPPFLAGS=['-DMODEL=Vega'])
+        source_list = ['oj_platform.c', 'pq_midi.c', 'pq_param.c', 'common.c']
+elif OptArch == 'gxp':
+    if OptPlatform in ['PIL', 'SC594PIL', 'SC598PIL']:
+        if 'option' in globals() and option:
+            if 'PIL_DCacheFlushInvalidate' in option and option['PIL_DCacheFlushInvalidate']:
+                local_env.Append(CPPFLAGS='-DPIL_DCACHEFLUSHINVALIDATE')
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+    elif OptPlatform in ['HIL', 'SC594HIL', 'SC598HIL']:
+        if 'option' in globals() and option:
+            if 'FreeRunning' in option and option['FreeRunning']:
+                local_env.Append(CPPFLAGS='-DHIL_FREERUNNING')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_twi.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/twi/adi_twi.c') )
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        local_objs.append( local_env.Compile(target = 'adi_pdma_2156x.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pdma/adi_pdma_2156x.c') )
+        local_objs.append( local_env.Compile(target = 'adi_spu.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/spu/adi_spu.c') )
+        source_list = ['gxp_ezkit.c', 'oj_platform.c', 'SoftConfig.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c', 'output_stats.c', 'ram_file.c'] + local_objs
+    elif OptPlatform in ['RTA', 'SC594RTA', 'SC598RTA']:
+        if 'option' in globals() and option:
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_twi.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/twi/adi_twi.c') )
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        local_objs.append( local_env.Compile(target = 'adi_pdma_2156x.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pdma/adi_pdma_2156x.c') )
+        local_objs.append( local_env.Compile(target = 'adi_spu.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/spu/adi_spu.c') )
+        source_list = ['gxp_ezkit.c', 'oj_platform.c', 'SoftConfig.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c'] + local_objs
+    elif OptPlatform == 'DPIL':
+        optionMDMA = False
+        if 'option' in globals() and option:
+            if 'PIL_DCacheFlushInvalidate' in option and option['PIL_DCacheFlushInvalidate']:
+                local_env.Append(CPPFLAGS='-DPIL_DCACHEFLUSHINVALIDATE')
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            elif base_rate_period:
+                # DPIL always needs a inter frame delay for it work properly
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(base_frame_cycles))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+            if ('InterCoreXfer' in option):
+                optionMDMA = (option['InterCoreXfer'] == 'MDMA')
+        if 'CORE_ID' in globals() and CORE_ID:
+            if CORE_ID == '1':
+                local_env.Append(CPPFLAGS='-DSPC1')
+            elif CORE_ID == '2':
+                local_env.Append(CPPFLAGS='-DSPC2')
+
+        source_list = ['heapstack_usage.c', 'output_stats.c', 'ram_file.c']
+
+        oj_platform_env = local_env.Clone()
+        codegen_folder_prefix = code_gen_folder +'/' + talaria_model['Name'] + '_'+ SOC_ID + '_'+ CORE_ID + '_ert_shrlib_rtw/'
+        oj_platform_env.Append(CPPPATH = [codegen_folder_prefix])
+        if optionMDMA:
+            oj_platform_env.Append(CPPFLAGS='-DINTERCORE_XFER_MDMA')
+            source_list += [ oj_platform_env.Object(source='MDMA_Intercore.c') ]
+
+        source_list += [ oj_platform_env.Object(source='oj_platform.c') ]
+
+elif OptArch == 'gul':
+    if OptPlatform in ['PIL','SOMPIL']:
+        if 'option' in globals() and option:
+            if 'PIL_DCacheFlushInvalidate' in option and option['PIL_DCacheFlushInvalidate']:
+                local_env.Append(CPPFLAGS='-DPIL_DCACHEFLUSHINVALIDATE')
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+    elif OptPlatform in ['HIL','SOMHIL']:
+        if 'option' in globals() and option:
+            if 'FreeRunning' in option and option['FreeRunning']:
+                local_env.Append(CPPFLAGS='-DHIL_FREERUNNING')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_twi.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/twi/adi_twi.c') )
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        if OptPlatform == 'SOMHIL':
+            local_objs.append( local_env.Compile(target = 'adi_pdma_2156x.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pdma/adi_pdma_2156x.c') )
+            local_objs.append( local_env.Compile(target = 'adi_spu.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/spu/adi_spu.c') )
+        source_list = ['gul_ezkit.c', 'oj_platform.c', 'SoftConfig_21569.c',  'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c', 'ram_file.c', 'output_stats.c'] + local_objs
+    elif OptPlatform in ['RTA','SOMRTA']:
+        if 'option' in globals() and option:
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_twi.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/twi/adi_twi.c') )
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        if OptPlatform == 'SOMRTA':
+            local_objs.append( local_env.Compile(target = 'adi_pdma_2156x.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/pdma/adi_pdma_2156x.c') )
+            local_objs.append( local_env.Compile(target = 'adi_spu.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/services/Source/spu/adi_spu.c') )
+        source_list = ['gul_ezkit.c', 'oj_platform.c', 'SoftConfig_21569.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c'] + local_objs
+    elif OptPlatform == 'MPIL':
+        if 'option' in globals() and option:
+            if 'PIL_DCacheFlushInvalidate' in option and option['PIL_DCacheFlushInvalidate']:
+                local_env.Append(CPPFLAGS='-DPIL_DCACHEFLUSHINVALIDATE')
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+    elif OptPlatform == 'MHIL':
+        if 'option' in globals() and option:
+            if 'FreeRunning' in option and option['FreeRunning']:
+                local_env.Append(CPPFLAGS='-DHIL_FREERUNNING')
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_env.Append(CPPPATH = [platform+'/preload_code'])
+        local_env.Append(CPPFLAGS = ['-D__HW_DP2__'])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        source_list = ['adi_initialize.c', 'gul_melville.c', 'oj_platform.c', 'pcg_init.c', 'pinmux_config.c', 'heapstack_usage.c', 'sru_init.c', 'ram_file.c', 'output_stats.c'] + local_objs
+    elif OptPlatform == 'MRTA':
+        if 'option' in globals() and option:
+            if ('EnableGHAM' in option) and (option['EnableGHAM'] == True):
+                local_env.Append(CPPFLAGS='-DENABLE_GHAM_MODULE')
+                if ('driversPath' in option):
+                    local_env.Append(CPPPATH = [option['driversPath']])
+                if ('driversInitPath' in option):
+                    local_env.Append(CPPPATH = [option['driversInitPath']])
+        local_env.Append(CPPPATH = [platform+'/preload_code'])
+        local_env.Append(CPPFLAGS = ['-D__HW_DP2__'])
+
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        source_list = ['adi_initialize.c', 'gul_melville.c', 'oj_platform.c', 'pcg_init.c', 'pinmux_config.c', 'heapstack_usage.c', 'sru_init.c'] + local_objs
+
+        if os.path.exists('preload.dxe'):
+            print ("preload.dxe: Pre-loader exists.")
+        else:
+            print ("preload.dxe Pre-load doesn't exist.")
+
+    elif OptPlatform == 'MDRTA' or OptPlatform == 'MDPIL' or OptPlatform == 'MDHIL':
+        local_env.Append(CPPPATH = [platform+'/preload_code'])
+        local_env.Append(CPPFLAGS = ['-D__HW_DP2__'])
+
+        if SOC_ID == '1':
+            # Dual Core Master
+            local_env.Append(CPPFLAGS = ['-DDUALSOC_SUPPORT'])
+        else:
+            # Dual Core Slave
+            local_env.Append(CPPFLAGS = ['-DDUALSOC_SUPPORT'])
+            local_env.Append(CPPFLAGS = ['-DDUALSOC_SLAVE'])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_sport.doj', source = env['TOOLSPATH']+'/SHARC/lib/src/drivers/Source/sport/adi_sport.c') )
+        source_list = ['adi_initialize.c', 'gul_melville.c', 'oj_platform.c', 'pcg_init.c', 'pinmux_config.c', 'heapstack_usage.c', 'sru_init.c'] + local_objs
+
+        if os.path.exists('preload.dxe'):
+            print ("preload.dxe: Pre-loader exists.")
+        else:
+            print ("preload.dxe Pre-load doesn't exist.")
+
+elif OptArch == 'sharc':
+    if OptPlatform == 'PIL':
+        if 'option' in globals() and option:
+            if 'PIL_DCacheFlushInvalidate' in option and option['PIL_DCacheFlushInvalidate']:
+                local_env.Append(CPPFLAGS='-DPIL_DCACHEFLUSHINVALIDATE')
+            if 'PIL_InterFrameDelay' in option and option['PIL_InterFrameDelay']:
+                local_env.Append(CPPFLAGS='-DPIL_INTERFRAMEDELAY='+str(inter_frame_delay))
+            if ('PIL_EzKitOnly' in option) and (option['PIL_EzKitOnly'] == True):
+                local_env.Append(CPPFLAGS='-DPIL_EZKIT_ONLY')
+        source_list = ['heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+    elif OptPlatform == 'HIL':
+        if 'option' in globals() and option:
+            if 'FreeRunning' in option and option['FreeRunning']:
+                local_env.Append(CPPFLAGS='-DHIL_FREERUNNING')
+        local_env.Append(CPPPATH = [platform+'/drivers/include'])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_adau1979.doj', source = 'drivers/src/drivers/adc/adau1979/adi_adau1979.c') )
+        local_objs.append( local_env.Compile(target = 'adi_adau1962a.doj', source = 'drivers/src/drivers/dac/adau1962a/adi_adau1962a.c') )
+        source_list = ['sc584_ezkit.c', 'oj_platform.c', 'SoftConfig_SC584.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c', 'ram_file.c', 'output_stats.c'] + local_objs
+    elif OptPlatform == 'RTA':
+        local_env.Append(CPPPATH = [platform+'/drivers/include'])
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'adi_adau1979.doj', source = 'drivers/src/drivers/adc/adau1979/adi_adau1979.c') )
+        local_objs.append( local_env.Compile(target = 'adi_adau1962a.doj', source = 'drivers/src/drivers/dac/adau1962a/adi_adau1962a.c') )
+        source_list = ['sc584_ezkit.c', 'oj_platform.c', 'SoftConfig_SC584.c', 'adi_initialize.c', 'pinmux_config.c', 'heapstack_usage.c'] + local_objs
+
+elif OptArch == 'c66':
+    if OptPlatform == 'PIL':
+        source_list = ['c6678_platform.c', 'heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c']
+
+elif OptArch == 'hifi4':
+    if OptPlatform == 'RT685PIL':
+        # Includes and definitions for supporting RT685
+        local_env.Append(CPPFLAGS = ['-I'+local_env['SDKPATH']+'devices/MIMXRT685S/drivers',
+                            '-I'+local_env['SDKPATH']+'components/lists',
+                            '-I'+local_env['SDKPATH']+'devices/MIMXRT685S',
+                            '-I'+local_env['SDKPATH']+'CMSIS/Core/Include',
+                            '-DCPU_MIMXRT685SFVKB_dsp',
+                            '-DXOS_CLOCK_FREQ=594000000',
+                            # '-DMCUXPRESSO_SDK'
+                            ])
+
+        # SDK paths necessary for compiling CRLs
+        # TODO - Eventually the source DSP functions should only be brought in when a specific CRL is used. However, currently only FirEven is supported.
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'bkfirf_hifi4.o',         source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_hifi4.c') )
+        local_objs.append( local_env.Compile(target = 'bkfirf_process_hifi4.o', source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_process_hifi4.c') )
+        local_objs.append( local_env.Compile(target = 'vec_addf_hifi4.o',       source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/vectorf/vec_addf_hifi4.c') )
+
+        source_list = ['hifi4_platform.c', 'heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c'] + local_objs
+    elif OptPlatform == 'SIMULATORPIL':
+        # SDK paths necessary for compiling CRLs
+        # TODO - Eventually the source DSP functions should only be brought in when a specific CRL is used. However, currently only FirEven is supported.
+        local_objs = []
+        #local_objs.append( local_env.Compile(target = 'bkfirf_hifi4.o',         source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_hifi4.c') )
+        #local_objs.append( local_env.Compile(target = 'bkfirf_process_hifi4.o', source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_process_hifi4.c') )
+        #local_objs.append( local_env.Compile(target = 'vec_addf_hifi4.o',       source = local_env['SDKPATH']+'middleware/dsp/naturedsp/hifi4/vectorf/vec_addf_hifi4.c') )
+
+        source_list = ['hifi4_platform.c', 'heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c'] + local_objs
+
+
+    elif OptPlatform == 'QCC7226PIL':
+        # Includes and definitions for supporting RT685
+
+        # SDK paths necessary for compiling CRLs
+        local_objs = []
+
+        source_list = ['qcc7226_platform.c', 'heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c'] + local_objs
+
+elif OptArch == 'hifi5':
+    if OptPlatform == 'AB1585PIL':
+        # Includes and definitions for supporting AB1585
+
+        # TODO - Move the NatureDSP sdk to a centralized location
+        # TODO - Eventually the source DSP functions should only be brought in when a specific CRL is used. However, currently only FirEven is supported.
+        local_objs = []
+        local_objs.append( local_env.Compile(target = 'bkfirf_hifi4.o',         source = 'C:/nxp/SDK_RT685/middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_hifi4.c') )
+        local_objs.append( local_env.Compile(target = 'bkfirf_process_hifi4.o', source = 'C:/nxp/SDK_RT685/middleware/dsp/naturedsp/hifi4/fir/firblkf/bkfirf_process_hifi4.c') )
+        local_objs.append( local_env.Compile(target = 'vec_addf_hifi4.o',       source = 'C:/nxp/SDK_RT685/middleware/dsp/naturedsp/hifi4/vectorf/vec_addf_hifi4.c') )
+
+        source_list = ['hifi5_platform.c', 'heapstack_usage.c', 'oj_platform.c', 'output_stats.c', 'ram_file.c'] + local_objs
+
+
+elif OptArch in ['hexagon','hexagon_v66','hexagon_v73']:
+    if OptPlatform == 'PIL':
+        source_list = ['oj_platform.c', 'output_stats.c', 'ram_file.c']
+
+elif OptArch == 'qnx_nto_aarch64':
+    local_env.Append(CPPPATH = [modulePath])
+    if (OptPlatform == 'PIL') or (OptPlatform == 'PIL_shared_library'):
+        source_list = ['oj_platform.c', 'output_stats.c', 'ram_file.c']
+
+if source_list:
+    Platform = local_env.Library(target = target, source = source_list)
+
+if Platform == None:
+    print ('Error: unsupported arch-%s, platform-%s' % (OptArch, OptPlatform))
+
+Return("Platform")
+

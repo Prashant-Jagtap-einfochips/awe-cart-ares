@@ -1,0 +1,853 @@
+--------------------------------------------------------------------
+Module Name:
+------------
+    talaria
+
+Description:
+-------------------
+Repository for Simulink customizations enabling
+code generation for production audio features.
+
+Current Module Externals
+-------------------------------
+    +-------------------------------+
+    |                               |
+    |** TALARIA=tags/V2200BK        |
+    |                               |
+    +-------------------------------+
+    
+    /asd2/talaria/${TALARIA}/module   talaria
+
+Required Simulink Project References
+-------------------------------
+    Talaria.prj
+
+Source control URL:
+-------------------------------
+    https://svn.bose.com/asd2/talaria/tags
+
+(development takes place in a separate asd2/talariaDev repo)
+
+....................................................................
+-------------------
+Release Log:
+-------------------
+============ 22.00.BK =========================== 2024-04-16
+• [TALARIA-831] - ExportModelBtcToTools must handle private components and "any" classdef
+
+============ 22.00.BJ =========================== 2024-04-04
+• [TALARIA-817] - From IMT: createSubModels parallel workers cannot access currProj
+• [TALARIA-818] - From IMT: remove SLiblsNdlndexingFeatureOn() from BoseUnstructured.tlc
+• [TALARIA-822] - IndirectAddressing: CoreMap.c multiple issues exposed by Qualcomm compiler
+• [TALARIA-823] - TalariaTest: Create method to review async RTC traffic in *MIL* tests
+• [TALARIA-824] - LockObfuscatingLibraries adjust for assembly_crl and other re-used names
+• [TALARIA-826] - Additional TOP COMPAT_HASH identifier needed in breed/variant translation scenarios
+• [TALARIA-827] - Non-standard model-level-BTC variable names need special create links
+• [TALARIA-828] - Fix ExtractModelBTC / ExtractModelBtcToolsExport handling of "logical" properties
+• [TALARIA-829] - ExportToTools requires more flexible control
+• [TALARIA-830] - Add ExtractModelBtcToolsExport to the P&G process
+
+============ 22.00.BI =========================== 2024-03-13
+• [TALARIA-807] - Remove rtwtypes from <Model>_CoreMap.c
+• [TALARIA-808] - Update ProcessUnitMap for use with BTC, especially breed/variant scenarios
+• [TALARIA-809] - BtcTreeView value edit box blocked by class edit button for enums
+• [TALARIA-810] - Translation Engine GetTuneVar erroneously sets translations as required
+• [TALARIA-811] - Translation Engine LoadAllTuneVarDefaults cleanup
+• [TALARIA-812] - Add hierarchical BTC Validate button to BtcTreeView
+• [TALARIA-813] - GetTranslationErrorState return type: unsigned int vs uint32
+• [TALARIA-814] - MaskUtil.GetBlockLinkString handle non-char, and isolate InterpretError use
+• [TALARIA-819] - Switch Talaria ribbon-bar automation from Variant to Breed
+• [TALARIA-820] - Add DefaultAllChildren to BtcLockAndDefault class
+• [TALARIA-821] - Add LockAllChildren to BtcLockAndDefault class
+
+============ 22.00.BH =========================== 2024-02-26
+• [TALARIA-786] - Add routine to pre-verify ObfuscationRelease SavedBlockNameRegexPatterns
+• [TALARIA-800] - Fix ObfuscationRelease.RemoveTranslateAndInterpretContent empty cases
+• [TALARIA-801] - Create FindLibLinksByFolder to find library use by models all by folder
+• [TALARIA-804] - Add BTC tracking of where each BTC value is last set (file, line #)
+
+============ 22.00.BG =========================== 2024-02-15
+• [TALARIA-782] - FindTuneVarBTC must ignore commented out blocks
+• [TALARIA-783] - Support "many more cores" in partition_and_generate
+• [TALARIA-784] - CoreIndex block dialog should lock allocation to None when API is None
+• [TALARIA-788] - Allow / do not crash if TuneVar defaults are random math expressions
+• [TALARIA-792] - Incorrect uint8_t in TspBlindWriteReqType - should be int8
+• [TALARIA-795] - Enable test models to use non-standard model-level-BTC variable names
+• [TALARIA-796] - Enhance DataMapUtil to load maps into variables, compare maps, provide filepaths
+• [TALARIA-797] - Enhance XML file creation routines DumpTopExternalIntegrationXml ExtractModelBTC FindTuneVarBTC
+• [TALARIA-798] - Enable new TalariaTest capability to save and load TOP values
+• [TALARIA-799] - Enhance ObfuscationRelease with services for non-translate/interpret releases
+
+============ 22.00.BF =========================== 2024-01-22
+• [TALARIA-763] - Create internal/external read/write memory via DsmCheatRead and TSP blind write
+• [TALARIA-776] - Enhance the SetDsm block used for RTC "freeze" to insert #define lock macros
+• [TALARIA-777] - Indirect Addressing FeaturePath block still complains even when commented out
+• [TALARIA-780] - Fix Python-based tsp_parser and add blindwrite
+• [TALARIA-781] - Fix "typo" in BTConfig.CheckConfigParam for lines of code to add
+
+============ 22.00.BE =========================== 2023-11-20
+[TALARIA-748] - Async SIL block generates bad printf code
+[TALARIA-755] - Create obfuscation-compatible workflow for CscUtil to use in mask code
+[TALARIA-756] - Create solution to replace TuneVar property block's "TuneDefault" Description
+[TALARIA-757] - DumpTopExternalIntegrationXml error in error message (when data not found)
+[TALARIA-760] - TalariaTest saveRegisteredSignals trouble with strings
+[TALARIA-771] - TSP codegen symbol conflicts when building multiple partitions into a single binary
+[TALARIA-772] - Ribbon bar automation too slow: regexp to blame
+[TALARIA-773] - P&G parallel builds ("+p") FAIL to use correct BTC values
+[TALARIA-774] - ObfuscationRelease must not rename Partition blocks
+
+============ 22.00.BD =========================== 2023-11-09
+• [TALARIA-715] - Support Variant-BTC hierarchical defaults / selection goals
+• [TALARIA-753] - Support C89 compilers by removing local loop variable declaration
+• [TALARIA-762] - Aggregate SCH API ID header(s) into the Control folder during P&G
+• [TALARIA-764] - Create model check that ensures Talaria blocks are indeed library links
+• [TALARIA-765] - Add separate BtcBaseClassWithBreeds to enable shared enumeration
+• [TALARIA-766] - Ensure BTConfig.AddAllTuneVars enforces PascalCase in construction of added property names
+• [TALARIA-768] - Add ability to edit string properties in BtcTreeView
+• [TALARIA-769] - ObfuscationRelease encounters ObfuscatedBlock name collision
+• [TALARIA-770] - ObfuscationRelease new property to protect blocks from being renamed
+
+============ 22.00.BC =========================== 2023-09-13
+• [TALARIA-734] - Update TuneVar ribbon automation prefix to "TuneVar" instead of "Default"
+• [TALARIA-737] - Add MATLAb "dostat" command to use jsvn to display modified files
+• [TALARIA-742] - mexw64 files missing svn:executable flag in the _ext release repo
+• [TALARIA-744] - Remove Talaria ribbon toolbar and arch integrations from _ext releases
+
+============ 22.00.BB =========================== 2023-08-29
+• [TALARIA-731] - SelectiveDeleteProtect DOES need to operate in the container project
+• [TALARIA-732] - Add TouchPfiles to fix timestamps for obfuscated projects
+• [TALARIA-733] - Deprecate the experimental "BtcGet" function
+
+============ 22.00.BA =========================== 2023-08-23
+• [TALARIA-725] - Set TuneVar sightings on LoadAllTuneVarDefaults
+• [TALARIA-726] - ObfuscationRelease can copy tests and run directly without special test project
+• [TALARIA-727] - ObfuscationRelease trouble with cygwin paths for "obf" folder cleanup
+• [TALARIA-728] - Allow symbolic dimensions for AudioStats / AudioStatsFunc
+
+============ 22.00.AZ =========================== 2023-08-21
+• [TALARIA-718] - Disappearing DSM happens in profile_model also - apply workaround.
+• [TALARIA-719] - ExtractModelBTC should emit actionable error for empty component properties
+• [TALARIA-720] - Create CleanMyPathPlease routine to eliminate "other" paths
+• [TALARIA-721] - PartitionGenerateOptions should enable configuration of atomic list
+• [TALARIA-723] - Remove source control integration for build projects
+• [TALARIA-724] - Comments in the EmptyTranslation code are out-of-date regarding variable dimensions
+
+============ 22.00.AY =========================== 2023-08-06
+• [TALARIA-710] - SelectiveDeleteProtect should also clean project path
+• [TALARIA-713] - TuneTop library has value of off for the pre/post overlay mask
+• [TALARIA-714] - AutomateMask.RenameLibraryBlock makes faulty forwarding table edits
+
+============ 22.00.AX =========================== 2023-08-03
+• [TALARIA-708] - ObfuscationRelease VerifyModuleNotes more precise matching
+• [TALARIA-711] - Create external release script
+• [TALARIA-712] - Python cache and init files do not belong in Talaria release
+
+============ 22.00.AW =========================== 2023-07-31
+• [TALARIA-707] V2200AV release is missing the updates it claimed to contain
+
+============ 22.00.AV =========================== 2023-07-28
+• [TALARIA-700] - TOP blocks do not allow setting the Data type - silently ignored
+• [TALARIA-704] - Enhance ObfuscationRelease test interface to specify list of tests *not* to run
+• [TALARIA-705] - TuneVar specify max size sometimes does not accept dimensions
+
+============ 22.00.AU =========================== 2023-07-27
+• [TALARIA-702] - LockObfuscatingLibraries concatenation dimensions problem
+• [TALARIA-703] - Add "edit class" button to BtcTreeView
+
+============ 22.00.AT =========================== 2023-07-25
+• [TALARIA-695] - ObfuscationRelease git interaction typos
+• [TALARIA-697] - Rework ObfuscationRelease test API
+• [TALARIA-698] - LockObfuscatingLibraries uses ModelRootName, causing problems
+
+============ 22.00.AS =========================== 2023-07-21
+• [TALARIA-685] - Add "reset BTC" button to BtcTreeView
+• [TALARIA-686] - Add LockObfuscatingLibraries command to prep for obfuscation
+• [TALARIA-687] - ObfuscatedRelease does not enable full SVN version customization
+• [TALARIA-689] - Enhance ObfuscatedRelease object to be used by Talaria releases also
+• [TALARIA-690] - SvnInfo block fails if no SVN
+• [TALARIA-691] - SelectiveDeleteProtect is not recognizing "empty" property help
+• [TALARIA-693] - Refactor/move ObfuscationRelease to its own folder
+• [TALARIA-694] - Give error if obfuscating a library that does not have locked links
+
+============ 22.00.AR =========================== 2023-07-12
+• [TALARIA-680] - Rework sample time searches in prep for 2023b
+• [TALARIA-681] - Obfuscation release must preserve top-level inport outport names
+• [TALARIA-682] - Obfuscation release interaction improvements
+• [TALARIA-683] - Handle 23b pre-release "Only one signal mapping"
+• [TALARIA-684] - Rename Talaria ribbon bar internal name to avoid conflicts with "custom"
+
+============ 22.00.AQ =========================== 2023-06-30
+• [TALARIA-653] - {ExportToTools} prototype for BTC tools export
+• [TALARIA-657] - Obfuscation releases can shuffle RTC token values
+• [TALARIA-660] - StateVarMask value text display does not support greater than 2 dimensions
+• [TALARIA-662] - Translation/Interpretation Engine models could have Do-Not-Edit block
+• [TALARIA-663] - Indirect addressing code generation finds TOPs that are not active
+• [TALARIA-664] - Add method to check required CRL is present
+• [TALARIA-665] - Payload parser packing signed integer error
+• [TALARIA-666] - partition_and_generate config struct repeated
+• [TALARIA-667] - FeaturePathCreateModulesXML should not list the same OverlyGroup/Module twice
+• [TALARIA-668] - AggregateTokens gets stuck on duplicates
+• [TALARIA-669] - mention BuildGeneratedPartsModelCode in COMPAT_HASH warning
+• [TALARIA-670] - BTC class display is missing final linefeed when COMPACT
+• [TALARIA-671] - Commenting out FeaturePaths should do something
+• [TALARIA-674] - ExtractModelBTC typo GetLockValue when should be GetDefaultValue
+• [TALARIA-675] - Switch TSP tokens to determine by feature path sort instead of Simulink scheduler
+
+============ 22.00.AP =========================== 2023-06-16
+• [TALARIA-648] - Improved API for ObfuscationRelease
+• [TALARIA-649] - Missing context in BTC unrecognized property error message
+• [TALARIA-651] - BtcVariant classes try to copy locked properties
+• [TALARIA-652] - BtcTreeView ribbon integration- make it at least show the model-level
+• [TALARIA-654] - On failed set of BTC-locked property, at least print plain text error
+• [TALARIA-655] - Update talaria.mk to correct Matlab version
+• [TALARIA-656] - Enhance BTConfig FeaturePath/BTC alignment to also ignore "ConvertLegacy" functions.
+
+============ 22.00.AO =========================== 2023-05-26
+• [TALARIA-643] - TuneVarDefaults XML does not take into account BTC locks
+• [TALARIA-644] - Create BtcUpgradeTuneVars to accelerate calculated defaults
+• [TALARIA-645] - Rework the calculated default mechanism! The Config.Get syntax is too intrusive
+
+============ 22.00.AN =========================== 2023-05-23
+• [TALARIA-637] - Apply BtcUpgradeObservers to Talaria BTC classes
+• [TALARIA-638] - Refresh of Simulink customizations got turned off again
+• [TALARIA-639] - Ribbon bar Add Child fails with STRING input error
+• [TALARIA-641] - BTC calculated defaults should respect property validation classes
+• [TALARIA-642] - Ribbon BTC automation has no tests
+
+============ 22.00.AM =========================== 2023-05-19
+• [TALARIA-610] - Make FeaturePath name promotion more convenient
+• [TALARIA-611] - Add BTC debug tree view
+• [TALARIA-619] - BTC calculated Lock is vulnerable to timing-depth and circular dependency
+• [TALARIA-620] - Add BtcBaseClass abilities to BtcVariant and TuneConfig classes
+• [TALARIA-622] - Reduce the count of Talaria files with switch to SingleFile project definition
+• [TALARIA-623] - Introducing CreateBuildProject to make Simulink projects for builds
+• [TALARIA-624] - Customize BtcBaseClass display to show locks/defaults
+• [TALARIA-625] - Indirect Addressing, Model_CoreMap.c typo ASDID_ID_SCH
+• [TALARIA-626] - Update ExtractModelBtc and BtcVariantproperty stat handling to use shared routines
+• [TALARIA-628] - CoreIndexConfig Validate should clarify whether no api means no allocation
+• [TALARIA-631] - BtcVariantEnum looses its classname cache sometimes
+• [TALARIA-632] - Add dimensions attribute to TSP_Tokens.xml
+• [TALARIA-633] - Mismatched ping-pong struct
+• [TALARIA-634] - GenerateBtcMfileFromXml must handle empties better.
+• [TALARIA-636] - Create BtcUpgradeObservers to accelerate adoption of listener-based locking
+
+============ 22.00.AL =========================== 2023-05-02
+• [TALARIA-484] - Enhance profile_model to search for supported architectures instead of explicitly listing them
+• [TALARIA-538] - Talaria ribbon could assist with inspecting BTC during model browse
+• [TALARIA-613] - BtcVariant.CopyOldProperties tries too hard and generates warnings
+• [TALARIA-614] - Generated atomicList should comment about how to update itself
+• [TALARIA-615] - Model-level BTC does not call DoMaskInit, only Validate
+• [TALARIA-617] - find_disabled_links fails with bad handle error due to updating links
+• [TALARIA-618] - HandyTextFile easily fooled in automation when blockname already claimed
+
+============ 22.00.AK =========================== 2023-04-18
+ • [TALARIA-603] - BTConfig code insertion and checking should be aware of commented code
+ • [TALARIA-604] - Introducing function_handle arguments in BTC to help syntax
+ • [TALARIA-605] - SyncApi XML file generation not correctly supporting all rate groups
+ • [TALARIA-608] - Add error detection for hierarchical conflict in atomic assignment of partition list
+ • [TALARIA-609] - Ribbonbar TuneVar BTC support new single-property calculated default pattern
+ • [TALARIA-612] - Fix VerifyModelConfig expected solver to just FixedStep
+
+============ 22.00.AJ =========================== 2023-03-27
+ • [TALARIA-599] - IndirectAddressing: Redefinition in Model_Target_Partitions.c
+ • [TALARIA-600] - Mismatched pointer type in Model_Target_RTC_NTF.c
+ • [TALARIA-602] - Indirect Addressing code generation failure with variant subsystems and TOPs
+
+============ 22.00.AI =========================== 2023-03-22
+ • [TALARIA-556] - Create FillEmpty routine for use in BtcBaseClass
+ • [TALARIA-587] - Enable easier testing of Python Translation/Interpretation scripts
+ • [TALARIA-588] - Partition tool encounters error on disconnected line inside library
+ • [TALARIA-589] - Workaround to "DSM not found" needs to detect more cases
+ • [TALARIA-590] - Update HandyCaseFile to include datatype and use ModelSettings instead of ModelConfig
+ • [TALARIA-591] - Port rtc, tsp, top, payload parser to python
+ • [TALARIA-592] - Update release script to release on github repo
+ • [TALARIA-593] - Payload parser python library not processing floats correctly
+ • [TALARIA-595] - ExtractModelBTC should respect datatype and dimensions
+ • [TALARIA-596] - RTC NTF checks and other C-language function prototypes missing "void"
+
+============ 22.00.AH =========================== 2023-03-15
+ • [TALARIA-582] - DataStore Memories are sometimes "not found" in code mapping interface
+ • [TALARIA-583] - BtcVariant class too protective of Parent property
+ • [TALARIA-584] - Verify that TuneVar translations run at time zero - on all rate groups
+ • [TALARIA-586] - PausedSimulationEnter vulnerable to model stop times
+
+============ 22.00.AG =========================== 2023-03-09
+ • [TALARIA-576] - Create "edit me links" on more of the files generated in partition_and_generate
+ • [TALARIA-578] - top_parser broken from up-integration coreTag in token XML files
+ • [TALARIA-579] - Indirect addressing not supporting SCH tokens
+ • [TALARIA-580] - rtc_parser encounters its own error in unpacking error response payloads
+
+============ 22.00.AF =========================== 2023-03-06
+ • [TALARIA-568] - Create python wrapper for translation and interpretation engine
+ • [TALARIA-569] - generateErrorsForDisabledLinks broken
+ • [TALARIA-570] - CscUtil routines should automatically handle "engine" builds
+ • [TALARIA-571] - BTConfig.GetModelSettings requires model to be loaded
+ • [TALARIA-573] - Talaria custom ribbon bar does not show up sometimes
+ • [TALARIA-575] - Add GenCodeOnly to VerifyModelConfig
+ • [TALARIA-577] - VerifyModelConfig should allow FixedStepAuto *or* FixedStepDiscrete
+ 
+============ 22.00.AE =========================== 2023-02-21
+ • [TALARIA-517] - Eliminate ancient toolbar now that custom ribbon toolstrip is available
+ • [TALARIA-543] - Create "model obfuscator" script to make model content unreadable
+ • [TALARIA-544] - Indirect Addressing "groupNumber" has case mismatch in mask workspace
+ • [TALARIA-555] - TalariaTest.verifyLoggedSignals should support AbsTol as well
+ • [TALARIA-558] - MaskUtil.CreateWikiName doesn't always give back a valid wiki name
+ • [TALARIA-559] - Ribbon "MFB Parameters Button" not working
+ • [TALARIA-560] - Create automated feature obfuscation release routine
+ • [TALARIA-562] - Add option to reset model BTC settings in BTConfig.GetModelSettings
+ • [TALARIA-563] - Add MaskInit to BtcBaseClass + WithVariants + BtcVariant
+ • [TALARIA-564] - Add coreTag as XML attribute of token files for RTC,TOP,TSP
+ • [TALARIA-566] - Add "SelectVariant" routine to BtcBaseClassWithVariants to support partial matches
+ • [TALARIA-567] - Partition engine error if only a single commented block is present
+ 
+============ 22.00.AD =========================== 2023-01-05
+ • [TALARIA-535] - ExtractModelBTC should better recognize variables
+ • [TALARIA-543] - Create "model obfuscator" script to make model content unreadable
+ • [TALARIA-547] - Add warnings to rename-compatibility BTC classdef code
+ • [TALARIA-548] - Talaria ribbon AutomateMask.ManageMfbParameterMask can set default value
+ • [TALARIA-549] - Enable AutomateMask.ManageMfbParameterMask to recognize library link and clear mask
+ • [TALARIA-550] - Enhance BTConfig.AutomateCreateMaskParameter or similar to work for entire model
+ • [TALARIA-551] - Add ribbon-bar button to quickly add TuneVar default property to BTC
+ • [TALARIA-553] - Add Rename Library Block to Talaria ribbon bar
+ • [TALARIA-554] - GenerateBtcMfileFromXml is not aware of model-level BTC classdefs
+
+============ 22.00.AC =========================== 2022-12-05
+ • [TALARIA-530] - TalariaTest.GetUnframedOutputSignal only works for top-level model signals
+ • [TALARIA-532] - HandyTextFile mask display does not update when model name changes
+ • [TALARIA-533] - HandyTextFile block mask dialog should close once text file opens
+ • [TALARIA-534] - Add Subversive-Rogue-Async-Thread choice for Windows on AsyncConsole block
+ • [TALARIA-536] - TalariaTest and MaskUtil help text "see also" items are not links
+ • [TALARIA-539] - Don't p-code the BTC *Config.m classes in Talaria
+ • [TALARIA-541] - sharcPlusConfiguration writing to read-only parameter ProdIntDivRoundTo
+ • [TALARIA-542] - registerMfbDsms (ribbon toolbar) not able to find MFB DSMs without semicolon
+
+============ 22.00.AB =========================== 2022-10-17
+ • [TALARIA-524] - RTC/full-rate interaction trick with "freeze" is getting optimized out
+ • [TALARIA-525] - Eliminate workaround for blocks changing names on delete
+ • [TALARIA-527] - CoreIndexBlock signaling errors that aren't there or go away
+ • [TALARIA-528] - Add OpenPartsModel function to assist with projects without "parts" on path
+ • [TALARIA-529] - Enable LineTrace to return multiple source blocks in bus-creation scenarios
+
+============ 22.00.AA =========================== 2022-10-04
+ • [TALARIA-514] - Turn off code-gen report and static code metrics for engine DLLs
+ • [TALARIA-515] - Upgrade Talaria to 2022b
+ • [TALARIA-516] - Switch from find_system to Simulink.findBlocks in many cases
+ • [TALARIA-518] - Remove warning about non-visible parameters during BTC extraction.
+ • [TALARIA-519] - New TSP "Core" XML element did not support model references
+ • [TALARIA-522] - MATLAB function block output function triggers need direct feedthrough
+
+----------------------------------------------------------------------------
+**************************** Upgrading to 2022b **************************** 
+Direct-feedthrough has been enabled for RTC function triggers as per Mathworks recommendations.
+Possibly this change will drive algebraic loops, but it's not clear.
+Also - the "Freeze" datastore trick for RTC interactions with audio-rate may not work
+as previously coded. A new scheme or syntax may be necessary to achieve desired interactions. 
+----------------------------------------------------------------------------
+
+============ 21.00.AI =========================== 2022-09-28
+ • [TALARIA-501] - Tighten up error reporting - Big Red X is not enough
+ • [TALARIA-511] - Ready the custom ribbon for deployment
+
+============ 21.00.AH =========================== 2022-09-21
+ • [TALARIA-446] - Create a Talaria custom ribbon tab
+ • [TALARIA-491] - Force cross-core TID selection via manual configuration
+ • [TALARIA-495] - Add MATLAB payload parser (like rtc_parser) for TOP and TSP message traffic
+ • [TALARIA-496] - Partition tool checksum maps should not require MATLAB path
+ • [TALARIA-499] - CscUtil workaround 5 signal removals is not enough
+ • [TALARIA-500] - FeatureVersion block is not aware of translation/interpretation engine builds
+ • [TALARIA-502] - Model references and some checksum handling still require parts on path
+ • [TALARIA-503] - New SvnInfo block giving TSP-based character strings
+ • [TALARIA-504] - Cross-core ping-pong transfer pointers for decimated rates do not ensure alignment
+ • [TALARIA-505] - A better error code for TSP triggered capture that is disabled
+ • [TALARIA-506] - Improve multi-core single-executable builds a little
+ • [TALARIA-507] - Improve BTC XML file creation and M file generation
+ • [TALARIA-508] - Enhance AutomateMask.ManageMfbParameterMask with [Param:Name] quick adds
+
+============ 21.00.AG =========================== 2022-08-09
+ • [TALARIA-435] - Add #defines for RTC payload element array sizes
+ • [TALARIA-450] - Add toolchain support for HiFi4 processor
+ • [TALARIA-477] - Eliminate the need to place the Parts folder on path
+ • [TALARIA-479] - Remove FeatureVersion legacy APIs by default, but keep for existing uses
+ • [TALARIA-480] - Align FeaturePath's name prompt to match convention
+ • [TALARIA-481] - Eliminate C-lang build warnings for SCH token api c file and memcpy no declaration
+ • [TALARIA-482] - Add new SCH token API errors to ext_port_model wrapper
+ • [TALARIA-483] - Add talariaVersion to partition_and_generate log
+ • [TALARIA-486] - FeatureVersion TuneTop blocks have become broken links!
+ • [TALARIA-487] - Make FeatureVersion read-only values be design-time
+ • [TALARIA-488] - Additional TOP details in TopDefaults.xml and rename to TopExternalIntegration.xml
+ • [TALARIA-490] - Improve MaskUtil.GetEvaluatedParameter, MaskUtil.FindParameterValue
+
+============ 21.00.AF =========================== 2022-07-25
+ • [TALARIA-381] - New script to generate *.m equivalent to a source BTC XML file.
+ • [TALARIA-423] - Remove Package element from TuneVar XML file
+ • [TALARIA-470] - Fix ExtractModelBTC to not include hidden properties in XML
+ • [TALARIA-473] - Enhance CscUtil to provide helper link to add mapping object to models
+ • [TALARIA-475] - Create atlasbase tunefile from TuneVar.xml
+ • [TALARIA-474] - At least hide the CscUtil workaround messages
+ • [TALARIA-476] - Enable variant-BTC-configuration properties to work with BTC xml files
+
+============ 21.00.AE =========================== 2022-07-15
+ • [TALARIA-457] - Add a 4th type of token message for immutable system queries
+ • [TALARIA-458] - Add COMPAT_HASH values for FeaturePath "Modules"
+ • [TALARIA-459] - Add COMPAT_HASH for RTC tokens
+ • [TALARIA-460] - CoreIndexMask stray "a" character accidental introduction in Rev 879
+ • [TALARIA-461] - TSP support of "boolean" looks faulty
+ • [TALARIA-462] - CscUtil: Simulink codegen does not see struct-name in uniqueness checks
+ • [TALARIA-465] - Enhance profile_model to specify location of LDF file
+ • [TALARIA-466] - Return the "TOP-ish RTC" inside the FeatureVersion block
+ • [TALARIA-468] - Enhance AutomateMask legacy upgrade for quicker blocklib support.
+ • [TALARIA-469] - Enhance AutomateMask - copy port names in legacy wrap
+ • [TALARIA-471] - Add AutomateMask routine for MFB parameters to create a mask
+ • [TALARIA-472] - Ensure C-language prototypes declared for CoreMap
+
+============ 21.00.AD =========================== 2022-04-29
+ • [TALARIA-434] - Add shared memory based cross core audio communication support to multi-core SOC based platform
+ • [TALARIA-444] - Include build-time-configurable CoreIndex block
+ • [TALARIA-447] - Typo in talaria
+ • [TALARIA-449] - Update workaround for CscUtil.m
+ • [TALARIA-451] - Update copyright date in templates that generate new text files
+ • [TALARIA-452] - Create BTC variant classes
+ • [TALARIA-454] - Make TOP_IS_READ be inherently Boolean
+ • [TALARIA-455] - Partition script vulnerable to base workspace clearing
+ • [TALARIA-456] - PartitionTool will comment through own parent in attempt to eliminate conveyance
+
+============ 21.00.AC =========================== 2022-02-14
+ • [TALARIA-251] - Add #pragma section to StructStaticInit storage class
+ • [TALARIA-306] - Translate triggers must not be contained in enabled subsystems
+ • [TALARIA-429] - Add GXP in profile_model() target option
+ • [TALARIA-430] - TranslateTrigger directly accesses activeTunePath, but if TuneVar has problem, error is hard to understand
+ • [TALARIA-437] - Add PIL test for GUL and GXP processor
+ • [TALARIA-439] - TuneVar downgrade "no feature path" to warning while in library
+ • [TALARIA-440] - Upgrade internal BTC-based example model and MiniBlocklib library
+ • [TALARIA-441] - Using SHARC+ code replacement library results in error
+ • [TALARIA-442] - Improve partitioning tool error messages and color the canvas before most errors happen
+ • [TALARIA-443] - Enhance getAtomicList to support "round-tripping" preservation of previous assignments
+
+============ 21.00.AB =========================== 2021-12-10
+ • [TALARIA-333] - Improve timing of multicore partitioning's aggregation of text files
+ • [TALARIA-420] - Partition tool does not support multi-rate bus wires
+ • [TALARIA-421] - Add ability to specify the assigned core number for single-core partitioning deployments
+ • [TALARIA-424] - Use Simulink.IntEnumType in HandyTextFile enumeration template
+ • [TALARIA-425] - Enhance TSP to support more than 2 dimensions
+ • [TALARIA-426] - Copy EnableLBRepository during library Btc AutomateMask upgrades
+ • [TALARIA-427] - assertCoreIndexRole.findTangentialVariants did not handle single subsystem ancestry
+ • [TALARIA-431] - Partitioning will fail if there is zero communication between cores
+ • [TALARIA-432] - Automatically create the config class in BTConfig.AutomateCreateMaskParameter
+ • [TALARIA-433] - Update BoseFlatStructure to base off 2021b's FlatStructure.tlc
+
+============ 21.00.AA =========================== 2021-10-21
+ • [TALARIA-415] - Merge in 2020b enhancements
+ • [TALARIA-416] - Run full Simulink project upgrade to 2021b
+
+----------------------------------------------------------------------------
+**************************** Upgrading to 2021b **************************** 
+Library diagrams no longer support code generation settings. Use CscUtil.
+See short discussion videos here: https://wiki.bose.com/x/-cIuC 
+----------------------------------------------------------------------------
+
+============ 19.00.BE ===========================
+ • [TALARIA-254] - Eliminate TuneVar "package" from Talaria
+ • [TALARIA-388] - Remove use of deprecated "simulinkproject" function
+ • [TALARIA-414] - Eliminate blocklib from Talaria development
+ • [TALARIA-418] - Allow ModelRootInPort & ModelRootOutPort blocks through partitioning outside atomic subsystems
+ • [TALARIA-419] - Enhance BTConfig.AutomateCreateMaskParameter for better code analysis
+ • [TALARIA-422] - Re-enable partitioning tool acceptance of "passthrough" signals for same-core-sourced buffers
+
+============ 19.00.BD ===========================
+ • [TALARIA-408] - Ensure preOverlay and postOverlay TOP values are boolean
+ • [TALARIA-409] - Create ProcessUnitMap class to assist with core HW resource assignments
+ • [TALARIA-410] - Some header files have MISRA violations
+ • [TALARIA-411] - AutomateMask improvements: add back deprecated wrap, auto-fix non-working block names
+ • [TALARIA-412] - Do not pcode example BTC classes included in the Talaria blockset
+
+============ 19.00.BC ===========================
+ • [TALARIA-403] - Do not P-code TranslateError and others due to model check failure
+ • [TALARIA-404] - Eliminate warnings in Talaria libraries for first round of Simulink Checks
+ • [TALARIA-405] - Add ability to indicate if the OverlayGroup's pre-overlay and/or post-overlay action is required for each TOP
+ • [TALARIA-406] - Simulink variants and partitioning tool: enable (default) variant by not deleting others
+ • [TALARIA-407] - Bad HandyTextFile orientation is everywhere: create FixHandyTextBlockOrientation to help
+
+============ 19.00.BB ===========================
+ • [TALARIA-399] - Add individual name hash defines to COMPAT header files
+ • [TALARIA-400] - BTConfig.CheckConfigParam does not discover the correct classdef name sometimes
+ • [TALARIA-401] - BusElementTestCase can fail if previous release is cached
+
+============ 19.00.BA ===========================
+ • [TALARIA-374] - Add ability to turn off TSP triggered capture for individual TSPs
+ • [TALARIA-385] - Add support for ASDP-21569 processor
+ • [TALARIA-389] - Add TOP and TSP COMPAT numbers to the DSP images via an optional block
+ • [TALARIA-392] - Back-port CscUtil to release 2019b
+ • [TALARIA-394] - AutomateMask block renaming searches too deep - under sub-masks
+ • [TALARIA-395] - AutomateMask.CreateClassdefBlockAndWrapInsideLegacy bug with promoted parameters
+ • [TALARIA-396] - Add backwards-compatibility classdef code to AutomateMask.RenamePropertiesOfClassdef
+ • [TALARIA-397] - TSP token COMPAT codes calculated incorrectly
+
+============ 19.00.AZ ===========================
+ • [TALARIA-308] - partition_and_generate checksums have existence assumptions
+ • [TALARIA-376] - Enhancements / revisions to FindTuneVarBTC
+ • [TALARIA-377] - AutomateMask.CreateClassdefBlockAndWrapInsideLegacy mishandles design time
+ • [TALARIA-378] - Error message for unsupported cross-core sample time
+ • [TALARIA-380] - Add COMPAT id hash to enable compatibility number lookups by "name"
+ 
+============ 19.00.AY ===========================
+ • [TALARIA-367] - Make cross-core and cross-chip delay configurable
+ • [TALARIA-370] - TSP access of any type is not working (in direct-addressing mode only)
+ • [TALARIA-372] - Script to create mapping between TuneVar feature-path and BTC external-data variable
+ • [TALARIA-373] - Talaria block renaming not complete: Translate trigger create sample translation blocks
+ • [TALARIA-375] - InitTrigger optimized functions are not defined in header file
+
+ ============ 19.00.AX ===========================
+ • [TALARIA-363] - Add build option to configure building engine model and code
+ • [TALARIA-364] - Cross Core transfers are out of sync
+ • [TALARIA-366] - SetupOutputBuffers doesn't create cross core buffer correctly
+ 
+============ 19.00.AW ===========================
+ • [TALARIA-351] - Partitioning tool manifests rate groups needlessly
+ • [TALARIA-353] - Adjust Talaria blockset to meet _most_ MBD Guidelines naming conventions
+ • [TALARIA-354] - Add ability to extract BTC XML file without use of any variables (defaults only)
+ • [TALARIA-355] - Add advanced options to partition_and_generate
+ • [TALARIA-356] - Add BTConfig automation check for use with custom SimulinkChecks
+ • [TALARIA-357] - Partition tool gives better error message for multi-rate crosscore signals without using Bus Element ports
+ • [TALARIA-358] - Add template for HandyTextFile TalariaTest script
+ • [TALARIA-359] - Add ert target file and touch up VerifyModelConfig script
+ • [TALARIA-361] - Add pre-simulation callback handle to TalariaTest
+
+============ 19.00.AV ===========================
+ • [TALARIA-352] PingPongXml block crashes in complex multi-core rate group scenarios
+ 
+============ 19.00.AU ===========================
+ • [TALARIA-342] - Add ability to map pragmas for PIL tests
+ • [TALARIA-344] - More descriptive error for invalid Partition Model sample times
+ • [TALARIA-345] - Add libref attribute to all feature path XML file
+ • [TALARIA-346] - Add AutomateMask.RenameLibraryBlock
+ • [TALARIA-348] - Make rate_in_sec in SyncApi xml file match the TalariaAPI.h file
+ • [TALARIA-349] - Add system base rate to SyncAPI xml file
+ • [TALARIA-350] - SyncAPI xml pingpong buffer task placement is incorrect
+
+============ 19.00.AT ===========================
+ • [TALARIA-298] - Partition tool does not support busses or shadow inports
+ • [TALARIA-334] - HandyTextFile not appearing in quick-insert or library browser
+ • [TALARIA-335] - Add support for radiobutton and popoup conversion to enum in AutomateMask
+ • [TALARIA-336] - Add AutomateMask routine for renaming classdef properties
+ • [TALARIA-337] - Enhance AutomateMask's rename dialog
+ • [TALARIA-338] - Create new API function in translation engine for querying which TuneVars are associated with specific TOPs
+ • [TALARIA-339] - PingPongXml Block causing Model to add more sample rates than needed
+ • [TALARIA-340] - Update LineTrace to return port handles
+ • [TALARIA-341] - HandyTextFile's explicit file extensions broke with the introduction of template files
+ • [TALARIA-343] - The '-ball' build option should not build the engine models
+
+============ 19.00.AS ===========================
+ • [TALARIA-232] - Update Talaria Training Course to R2019b
+ • [TALARIA-323] - Add ability to eliminate pingpong cross-core buffers in partition_and_generate
+ • [TALARIA-325] - PingPong buffer pointer must be statically initialized
+ • [TALARIA-327] - Output XML file with *all* feature path blocks
+ • [TALARIA-328] - Add XML files to detail the aggregated buffers between cores by partition tool
+ • [TALARIA-330] - Add BtcBaseClass LockPropertyAsAlias
+ • [TALARIA-331] - Edge port block mask icons are not making it through release process
+ • [TALARIA-332] - Remove ModelRootName dependency on load_system call
+ 
+============ 19.00.AR ===========================
+ • [TALARIA-269] - Accelerate ability to enforce FeatureName alignment with build-time configuration data
+ • [TALARIA-272] - Make HandyTextFile block use template files instead of mask text
+ • [TALARIA-312] - Add build-time configuration base class and model BTC extraction script
+ • [TALARIA-313] - Improve rate in sec precision for I/O port meta data in _SyncAPI.xml
+ • [TALARIA-314] - ModelRootInport does not generate AudioStats macros
+ • [TALARIA-315] - Rename FeaturePath "tool group" to "module"
+ • [TALARIA-316] - RenameLibraryMaskParameters library version number off by one
+ • [TALARIA-317] - Partition tool must lock signal properties into place in all cross-core situations
+ • [TALARIA-318] - Create "modules" XML file to list distinguished FeaturePaths
+ • [TALARIA-319] - SynchCrossCoreBuffers does not work if atomic subsystems are masked
+ • [TALARIA-321] - SyncAPI.xml generation for core's that don't have inport/outport blocks
+ • [TALARIA-322] - Create automation script for legacy block masks to transition to classdef BTC
+ • [TALARIA-324] - TalariaApiBuffer doesn't handle double data type correctly
+ • [TALARIA-326] - Make parallel builds configurable from command line
+
+ ============ 19.00.AQ ===========================
+ • [TALARIA-311] - Only first model ping pong buffer is configurable
+
+============ 19.00.AP ===========================
+ • [TALARIA-239] - Rename Talaria source code to meet naming convention
+ • [TALARIA-294] - Partition failing for Medusa update
+ • [TALARIA-310] - Make model Ping Pong buffers placement to be configurable
+
+============ 19.00.AO ===========================
+ • [TALARIA-301] - TuneVar XML file DefaultValue is column-major, which is ill-suited for translation engine
+ • [TALARIA-307] - Model Ping Pong buffers placement to be configurable for GUL
+
+============ 19.00.AN ===========================
+ • [TALARIA-284] - Handling of variant subsystems not correct during partitioning for "engine" models
+ • [TALARIA-286] - Create build-time configurable "root in" and "root out" blocks
+ • [TALARIA-287] - Create utility to accelerate build-time config translation from base workspace to classdef
+ • [TALARIA-288] - partitionModel API changed without default for performCleanBuild
+ • [TALARIA-289] - AudioStats signal property validation gives incorrect error messages
+ • [TALARIA-290] - Create ExtModelIn/Out blocks and MATLAB wrapper to assist with RNC tooling
+ • [TALARIA-291] - Migrate build-time config routines from MaskUtil to BTConfig
+ • [TALARIA-292] - Parallelize createSubModel
+ • [TALARIA-293] - Create rtc_parser to enable working with RTC binary payloads in MATLAB
+ • [TALARIA-296] - Add "exported pointer" to Talaria API Buffer block
+ • [TALARIA-297] - Create meta data file with I/O port and rate info
+ • [TALARIA-300] - Add use of "Bose" code template to VerifyModelConfig
+
+============ 19.00.AM ===========================
+ • [TALARIA-281] - Support complex numbers natively with TOPs
+ • [TALARIA-283] - Rename talaria folders and files to shorten path temporarily
+
+============ 19.00.AL ===========================
+ • [TALARIA-275] - Add option to make a clean build ignoring the checksum
+ • [TALARIA-276] - Display disabled links errors while running partition_and_generate
+ • [TALARIA-277] - Remove build time settings from TSP capture block
+ • [TALARIA-278] - Add parts directory to PATH
+ • [TALARIA-279] - RTC initial value- auto-flatten to vector and ensure width matches
+ 
+============ 19.00.AK ===========================
+• [TALARIA-260] - Deprecate / remove out-of-date RTC XML file made by RTC_CreateXML
+• [TALARIA-265] - Enhance MaskUtil.ConfigAssert to use isa(), thereby supporting sub-classing build-time config classdefs
+• [TALARIA-266] - Add error if MATLAB version is less than 2019b Update 6
+• [TALARIA-267] - Create RenameLibraryMaskParameters function to help modelers rename mask parameters
+• [TALARIA-268] - Remove underscore from test model name
+• [TALARIA-270] - Update <model>_TuneVar.xml default value for string parse TuneVars to be easy-to-use for pre-stocking translations
+• [TALARIA-271] - Add recognition of UnitDelay block in partition tool (in addition to current support of just "Delay")
+• [TALARIA-274] - Remove Parts folder from the PATH
+
+============ 19.00.AJ ===========================
+• [TALARIA-159] - 'TranslateWarning' for Translation Engine
+• [TALARIA-218] - Matlab crash after 2019b upgrade with assortment of RTCs and Feature Paths
+• [TALARIA-233] - Consider adding diagnostic error for failed Overlay Group specifications
+• [TALARIA-238] - Add ability to "switch off" the advanced audio-rate capabilities of TSPs to conserve MIPS
+• [TALARIA-257] - Add multi-core support to virtual amp
+• [TALARIA-258] - AssertCoreIndexRole had bad merge from TALARIA-134 branch
+• [TALARIA-259] - RTC ASDID macros have erroneous inequalities to determine presence of payloads
+• [TALARIA-261] - Partition tool could handle Commented-Through subsystem inside a library link
+• [TALARIA-263] - Add utility to help accelerate use of Config mask parameter as classdef object
+• [TALARIA-264] - Create a built-time-configuration version of TalariaApiBuffer
+
+============ 19.00.AI ===========================
+• [TALARIA-80] - Improve room mode change support
+• [TALARIA-134] - Pass a single RTC message into a model reference
+• [TALARIA-215] - <model>_RTC_IDs.h and <model>_TOP_IDs should include ASDID.h
+• [TALARIA-219] - 36-bit tokens produced when lots of Overlay Groups present in direct addressing mode 
+• [TALARIA-221] - Partition script dropping a valid partition
+• [TALARIA-223] - On fresh checkout, warning about sl_customization.p file often happens
+• [TALARIA-228] - Add "parent model" block to enable Talaria async/translate blocks in referenced models to work even when parent does not contain any
+• [TALARIA-229] - Add "model initialize" block to simplify/improve the process of triggering model initialization after room mode download
+• [TALARIA-230] - Update HandyTextFileDefaultConfig to use classdef objects instead of AddOnlyStruct
+• [TALARIA-234] - Switch exposed "Talaria API" header and code files to use C99 types instead of rtwtypes.h
+• [TALARIA-235] - Add support for building generic C version of model for improved test capabilitiy
+• [TALARIA-241] - RTC_IDs.h file should use the ASDSTATUS typedef instead of int32_t for status code
+• [TALARIA-243] - Replace source code references to "master" with more descriptive names
+• [TALARIA-244] - The Talaria project doesn't support underscore in model name
+• [TALARIA-245] - Investigate parallelizing tasks in profile_and_generate()
+• [TALARIA-247] - Floating point comparison fails in MaskUtil.m
+• [TALARIA-248] - calls to new_system workaround fail during partitioning
+• [TALARIA-249] - Fix data store memory Initial Value field being lost during code generation
+• [TALARIA-252] - single-core partition_and_generate does not create certain XML files
+• [TALARIA-253] - TSP blind read does not accurately react to offset
+• [TALARIA-255] - Modify TSP "Blind Read" payloads to exactly match TOP reads
+
+============ 19.00.AH ===========================
+• [TALARIA-220] - RTC simulation REQ triggering encounters floating precision error
+
+============ 19.00.AG ===========================
+• [TALARIA-216] - Update model profiling linker flags to improve memory usage
+• [TALARIA-217] - Find *workaround* to MATLAB crash associated with RTCs in V1900AF
+
+============ 19.00.AF ===========================
+• [TALARIA-150] - Translation engine generated code does not have round-tripping float-to-string conversions
+• [TALARIA-190] - RTC SIL frame trigger may have rounding issue
+• [TALARIA-206] - Simulation error can cause command line build to hang indefinitely
+• [TALARIA-207] - LineTrace should support Bus Element ports
+• [TALARIA-210] - Enhance translation engine to signal error if internal buffer too small for TOP return
+• [TALARIA-211] - TalariaTest changeTestParameters does not break library links
+• [TALARIA-212] - Enhance cross-core pingpong handling to turn off "lazy sister" mechanism
+• [TALARIA-213] - Add svn:executable flag to talariaDev exec files
+
+============ 19.00.AE ===========================
+• [TALARIA-208] - Translation engine output buffer appears to be too small
+
+============ 19.00.AD ===========================
+• [TALARIA-199] - Add capture interval to TSP advanced list add request
+• [TALARIA-200] - Built-in help for most MaskUtil methods are missing basic function-argument listings
+• [TALARIA-201] - Partition tool should visually modify generated models to dissuade editing
+• [TALARIA-202] - LineTrace support for variant subsystems follows port number instead of port name
+• [TALARIA-203] - Partition tool does not handle block names that match the model name
+• [TALARIA-204] - Partition tool synchCrossCoreBuffers does not allow library blocks
+
+============ 19.00.AC ===========================
+• [TALARIA-136] - Error while loading model in profile_model
+• [TALARIA-140] - Error message about compiled state omits model name by accident
+• [TALARIA-180] - Paritioning tool creating incorrect number of ping pong buffers
+• [TALARIA-191] - Refactor Partition Tool to use our own LineTrace instead of undocumented MATLAB trace
+• [TALARIA-192] - Support multi-model code deployments in same executable
+• [TALARIA-193] - Allow multiple declaration of overlay groups
+• [TALARIA-194] - Remove ping pong intialize function from model init
+• [TALARIA-198] - Partition process does not handle failure as intended during build
+
+============ 19.00.AB ===========================
+• [TALARIA-145] - Add PIL simulation support
+• [TALARIA-170] - Create wiki page on how to handle build time configuration parameters in the model
+• [TALARIA-184] - Accelerator mode fails code gen with TLC path find problem
+• [TALARIA-185] - Partition block didn't warn about nested atomic units
+• [TALARIA-187] - TOP_IDs.h struct comments are opposite for read vs. write
+• [TALARIA-188] - MATLAB 2019b changed StorageClass string: Missing '(Custom)' now
+• [TALARIA-189] - Inconvenient to work with "framed" output data in TalariaTest test cases
+
+============ 19.00.AA ===========================
+• [TALARIA-146] - Upgrade to 2019b
+
+============ 01.07.AN ===========================
+• [TALARIA-73] - Remove/separate code-replacement-libraries (CRL) from Talaria core repo
+• [TALARIA-180] - Paritioning tool creating incorrect number of ping pong buffers
+• [TALARIA-37] - Add ability to read TuneVar values (for PREQ / 2.0)
+• [TALARIA-157] - Enhance the TOP block to accept greater than 2 dimensions (e.g. 3D)
+• [TALARIA-167] - Rtc initialize lookup table (indirect addressing) code gen missing function prototype
+• [TALARIA-175] - RTC request trigger sorted order in model simulation seems non-deterministic
+• [TALARIA-181] - Pre-compile assembly CRL functions
+
+******************** Compatibility note *****************
+    This version requires blocklib tag V000025 or greater
+**********************************************************
+
+============ 01.07.AM ===========================
+• [TALARIA-165] - Register tunevar fails if the variable is a mask
+• [TALARIA-168] - several generated code warnings from improper prototypes
+• [TALARIA-172] - Revise TOP read response payload to include byte count
+• [TALARIA-174] - Infinite loop problem with resynch delay buffers
+• [TALARIA-169] - SIL execution is one frame out-of-sync
+
+============ 01.07.AL ===========================
+• [TALARIA-144] - auto-release process does not copy SVN properties
+• [TALARIA-152] - Remove RTC byte alignment parameter which is not used
+• [TALARIA-158] - Make sure executable flags are properly set for .dll, .mex64 and .p files
+• [TALARIA-160] - Enhance RTC to enable initialization-time triggering of request handler
+• [TALARIA-161] - Create an initialization time trigger control block (ITC)
+• [TALARIA-163] - TalariaTest should detect if model-under-test is in modified state before sim and bail out
+• [TALARIA-164] - Initialize function not properly being called during profile model
+
+============ 01.07.AK ===========================
+• [TALARIA-137] - Generated code references header files that don't exist, and is missing include statements.
+• [TALARIA-151] - Including RTC msg token values in the RTC XML file is desired by Open Jade team
+• [TALARIA-153] - Partition block should not complain about atomicity if block is not atomic (e.g. direct addressing mode)
+
+============ 01.07.AJ ===========================
+• [TALARIA-147] - Regression: TuneVar feed to multiple translations does not work
+• [TALARIA-148] - Regression: CapturedConstant can sometimes lead to invalid registration run-time param pooling error
+
+============ 01.07.AI ===========================
+• [TALARIA-91] - Change Assembler instruction encoding to swc
+• [TALARIA-111] - Fix feature path name conflicts across variant subsystems
+• [TALARIA-133] - Matlab crashes during partitioning when AP3.5 added to model
+• [TALARIA-136] - Error while loading model in profile_model
+• [TALARIA-138] - TranslateTrigger block should emit full-stop error instead of soft-error for non-TuneVar/CapturedConst inputs
+• [TALARIA-140] - Error message about compiled state omits model name by accident
+• [TALARIA-141] - Refactor Captured Constant for Tune and State into common block
+• [TALARIA-142] - model\util\mask\copysignf.m throws error when generating x86 softclipper code
+• [TALARIA-143] - Translation engine flags a (soft) error for missing partition number
+
+============ 01.07.AH ===========================
+• [TALARIA-93] - Compile time check of data type sizes returns an error when using VDSP
+• [TALARIA-104] - Talaria-generated code conflicts with optional Simulink-generated C API code
+• [TALARIA-132] - Update makefile so configuration files can be passed in
+
+============ 01.07.AG ===========================
+• [TALARIA-90] - Add TalariaTest callback function handle for processing after simulation before model close
+• [TALARIA-106] - TuneVar values with too many or malformed rows should be ERRORS not warnings
+• [TALARIA-107] - Modify code generation such the a partitioned model does not have all rates from the source model
+• [TALARIA-108] - ProtectedCopy fails "the first time" after copy with error about FeaturePathMask
+• [TALARIA-109] - Error when partitioned model has no FeaturePath
+• [TALARIA-110] - Create support for specifying the source model base rate
+• [TALARIA-113] - TSP target code will not build due to missing buffer symbols
+• [TALARIA-128] - MODEL_TASK_RATE_FACTORS incorrect when using 12/13 wrapper
+• [TALARIA-122] - Run tests at the beginning (talariaDev) and end (talaria) of release process
+• [TALARIA-123] - Do subversion integration for release process
+• [TALARIA-127] - Add #pragma section declarations to TOP structs
+============ 01.07.AF ===========================
+• [TALARIA-40] - Model profiler has CCES installation directory hard-coded
+• [TALARIA-92] - Go ahead and remove the warning if no RTC_SimData object is found.
+• [TALARIA-94] - AsyncSIL (for RTC SIL testing) supports empty sim object, but not empty requests inside obj
+• [TALARIA-95] - Make TSP dataTypes match those of TOPs in XML files
+• [TALARIA-97] - Translation engine build fails due to RTCs not being found
+• [TALARIA-98] - TuneVar variable size support has been incorrectly attempting to support column size instead of row size variance
+• [TALARIA-100] - Translation engine does not store multi-dimensional arrays correctly in column-major format
+• [TALARIA-101] - Add function that translates partition list ID to core number
+• [TALARIA-103] - TalariaTest RTC method does not work for URL-based registration!
+============ 01.07.AE ===========================
+• [TALARIA-86] - Improve TalariaTest logging to support multiple test cases
+• [TALARIA-87] - Async SIL block code generation fails if RTC sim object is missing
+• [TALARIA-88] - TalariaTest RTC and TuneVar methods have confusing name - specify by Url or FeaturePath
+• [TALARIA-89] - Build failure with TOPs inside a atomic subsystem with separate function/data
+============ 01.07.AD ===========================
+• [TALARIA-84] - MaskUtil.UnpromoteParameter giving warnings about not finding parameters
+• [TALARIA-85] - Add easy method to TalariaTest to perform Normal vs. SIL simulations
+============ 01.07.AC ===========================
+• Support for Simulink atomic block non-reusable-function packaging with translation engine content
+o [TALARIA-83] - Translations do not support atomic block custom file specification
+o [TALARIA-79] - Translation engine build breaks when moving subsystem code to separate files
+============ 01.07.AB ===========================
+• Addition of SIL testing for RTC requests
+• Removes warnings about out-of-date *.p files (see TALARIA-82 below)
+• Includes changes for the following JIRAs:
+o [TALARIA-82] - protectedCopy needs better support for automated releases
+o [TALARIA-77] - Remove RTC ability to set which SimData object to use. Force to all use RTC_SIM_OBJ
+o [TALARIA-78] - Add RTC simulated event player for SIL testing
+============ 01.07.AA ===========================
+• Main change to a new “asd2” repository
+• Includes changes for the following JIRAs:
+o [TALARIA-71] - LineTrace used in creating translation engine fails to keep inport in subsystem navigation w/goto-from
+o [TALARIA-74] - Source model build: generated code for TOP_RcvTrans includes "top.h" which does not exist
+o [TALARIA-75] - Protected copy of *.m files strips off function help. Try to add it back in!
+o [TALARIA-69] - TSP do not support probe of signals with pointer storage class
+o [TALARIA-76] - Create partition list for indirect addressing and add "BAM" macro
+o [TALARIA-43] - Move Talaria repo to ASD2
+============================= 01.06.AH =================================
+• [TALARIA-67] - A single misplaced ")" character in TOP_Indirect
+============================= 01.06.AG =================================
+• [TALARIA-49] - RTC_CreateXML does not work with broken RTC library links
+• [TALARIA-50] - Generate "real" error during code generation if any TOP block does not have an Overlay Group
+• [TALARIA-51] - FeaturePath indirect addressing group number not released when block is no longer a group
+• [TALARIA-55] - Partition script TSP token aggregation fails if multiple cores have TSPs
+• [TALARIA-62] - Cross-core pingpong buffer controller does not check if buffer is present on core - writes to address 0
+• [TALARIA-64] - Translation engine should force BOOLEAN values to be zero or one only
+New Features Added
+• [TALARIA-48] - Improve TalariaTest framework in regard to broken library link user experience
+• [TALARIA-52] - Add ability to catalog partition and group numbers for indirect addressing
+• [TALARIA-59] - Enhance generated code to support linking multiple models into a single binary
+• [TALARIA-61] - Enhance RTC initial-value code generation to perform static initialization, not procedural
+• [TALARIA-65] - Add ability to log (and then verify) any signal line in TalariaTest framework
+Tasks Completed
+• [TALARIA-39] - Create sanitized version of TalariaAPI.h for an integrator to include
+============================= 01.06.AF =================================
+• TALARIA-10 New version block for Talaria (FeatureVersion)
+• TALARIA-23 Remove translation engine's CheckAllTranslationsComplete feature
+• TALARIA-25 Allow FeaturePath to declare TuneVar Packages *without* being overlay group
+• TALARIA-36 TOP block needs useful error during code generation if translations have not run
+• TALARIA-45 Fixed-point array not supported in partition_and_generate()
+============================= 01.06.AA =================================
+• TALARIA-10 New version block for Talaria
+• TALARIA-11 Test TSP access routines on target hardware (fixed point also)
+• TALARIA-12 Add translation and interpretation engine tests using MATLAB DLL wrapper
+• TALARIA-13 Add indirect core addressing as an option for Talaria ASDIDs - aka "atomic modules"
+• TALARIA-15 Surface Translation/Interpretation Engine error strings to the DLL interface
+• TALARIA-18 Add ClearAllTranslationRequiredFlags access in MATLAB translation_engine class
+• TALARIA-19 Enhance the CB_EMChartRegister tool customization to check DataStores are Simulink global
+• TALARIA-20 Enhance Translation Engine to support TuneVar updates DURING extraction of TOPs
+• TALARIA-22 Add help for setting up / reviewing Group and Partition numbers in a model
+• TALARIA-24 Change Talaria to support ONLY 32-bit datatypes for RTC and TOP
+• TALARIA-25 Allow FeaturePath to declare TuneVar Packages *without* being overlay group
+• TALARIA-28 Indirect addressing mode should include datatypes and widths in TOP xml file
+• TALARIA-30 registerRTCEvent() throws an error when it is given the blockPath (which is what it asks for, in the function declaration) as argument
+• TALARIA-33 Add support for scoped and global goto/from blocks in LineTrace.m for translation engine connections 
+=========================== 01.05.AC =================================
+• TALARIA-16 Fix myriad of issues with 01.05.AB release
+=========================== 01.05.AB =================================
+• Upgrade to MATLAB 2018b
+=========================== 01.05.AA =================================
+• DLL build of numeric tuning translation engine based on Simulink model content
+• DLL build of embedded state interpretation engine based on Simulink model content (aka reverse translations or reads)
+• Integration of translation and interpretation engine DLLs to Symfun (32-bit Perl), MATLAB (64-bit), and C#
+• Support for fixed point data types in target overlay parameters (TOPs)
+• New model profiling support
+• Bug fixes and enhancements to nearly all components of Talaria, core replacement libraries, and build scripts.
+• Packaging of MinGW-w64 compiler as MATLAB add-on supporting both 64-bit and 32-bit builds
+• Compatibility hash numbers for Target Overlay Parameters and Target State Probes to enable API version checks
+• Introduced memory banks to target overlay parameters (replacing packages) to support developer-specified contiguous memory.
+• Default model configuration parameters for SHARC and SHARC+ architectures.

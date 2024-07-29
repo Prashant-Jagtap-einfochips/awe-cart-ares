@@ -1,0 +1,29 @@
+%implements AudioStatsFunc_MEX "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: BlockOutputSignal =================================================
+%% Abstract:
+%%      Return the appropriate reference to the parameter.  This function *may*
+%%      be used by Simulink when optimizing the Block IO data structure.
+%%
+%function BlockOutputSignal(block,system,portIdx,ucv,lcv,idx,retType) void
+    %assign portVarName = SPRINTF("block.SFcnParamSettings.ConstOut%d",portIdx)
+    %assign portValue = %<portVarName>
+    %assign portTypeName = SPRINTF("block.SFcnParamSettings.ConstType%d",portIdx)
+    %assign portType = %<portTypeName>
+    %switch retType
+        %case "Signal"
+            %return portValue
+        %case "SignalAddr"
+%%example C99 syntax for constant immediate ((char[]){0x00, 0x01, 0x03})
+            %assign theExp = SPRINTF("((%s[]){2,1,2})",portType)
+%%breakpoint
+            %return theExp
+        %%START_ASSERT
+        %default
+            %assign errTxt = "Unsupported return type: %<retType>"
+            %<LibBlockReportError(block,errTxt)>
+        %%END_ASSERT
+    %endswitch
+%endfunction

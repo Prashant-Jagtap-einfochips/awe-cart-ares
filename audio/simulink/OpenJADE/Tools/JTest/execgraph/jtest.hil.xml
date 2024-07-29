@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+	<PLATFORM type="JTestHIL" board="gul_ezkit"/>
+	<BAF_XML  file="../../Message_Id.xml"/>
+	<PROCESSOR  clock_rate="1000000000"/>
+	<AUDIO_PARAMS sample_rate="48000" frame_size="32"/>
+</root>
+
+

@@ -1,0 +1,67 @@
+{
+    "FEATURE": "j42U",
+    "ENABLE": true,
+    "SOURCE_FILES": [
+        "*.c"
+    ],
+    "STEP_1_FUNC": "Model_1_1_step0",
+    "STEP_2_FUNC": "Model_1_1_step1",
+    "STEP_3_FUNC": "Model_1_1_step2",
+    "STEP_4_FUNC": "Model_1_1_step3",
+    "STEP_5_FUNC": "Model_1_1_step4",
+    "STEP_6_FUNC": "",
+    "STEP_7_FUNC": "",
+    "STEP_8_FUNC": "",
+    "STEP_9_FUNC": "",
+    "EXCLUDED_FILES": [
+        "*.h"
+    ],
+    "EXCLUDED_SYMBOLS": [
+        "^InitTrigger_",
+        "^RtcNtfCheck_",
+        "^RtcNtfPack_",
+        "^RtcReqRsp_",
+        "^SchReqRsp_",
+        "^HandleReq",
+        "^GetTableBy",
+        "^GetTsp",
+        "^GetPartition",
+        "^TSP_",
+        ".*_InitPartitions$",
+        ".*_ServiceNotifications$",
+        ".*_ServiceTspNotifications$",
+        ".*_ServiceRtcNotifications$",
+        ".*_HandleAsdIdRequest$",
+        ".*_HandleRtcRequest$",
+        ".*_HandleTopRequest$",
+        ".*_HandleTspRequest$",
+        ".*_HandleSchRequest$",
+        ".*_Init$",
+        ".*_Reset$",
+        ".*_Start$",
+        ".*_initialize$"
+    ],
+    "EXPLICIT_SYMBOL_MAP":{
+        "L1Block0Data": [],
+        "L1Block0Bsz": [],
+        "L1Block0Code": [],
+        "L1Block1Data": [],
+        "L1Block1Bsz": [],
+        "L1Block1Code": [],
+        "L1Block2Data": [],
+        "L1Block2Bsz": ["ControlCoefficients","Model_1_1_ErrorBuffer_B","Model_1_1_SecBuffer_B"],
+        "L1Block2Code": [],
+        "L1Block3Data": [],
+        "L1Block3Bsz": [],
+        "L1Block3Code": [],
+        "L2Data": ["Model_1_1_RNC_p0_b1", "Model_1_1_ehe__p0_b0"],
+        "L2Bsz": [],
+        "L2Code": []
+    }
+    "PROBE_POINTS":[
+		"Model_Target_step1",
+		"Model_Target_step2",
+		"Atomic_function1",
+		"Atomic_function2"
+    ]
+}

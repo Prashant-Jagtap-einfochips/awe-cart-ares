@@ -1,0 +1,784 @@
+%implements s55_b0_c75hk_TLCInterface "C"
+
+%function getSystemOutputFcnCallInfo_14_1_28_0_1_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effd2*/FuncTranslation_BasicAudio_2333_295_79"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_6_28_0_3_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effd6*/FuncTranslation_BasicAudio_2333_295_81_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_11_28_0_5_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effda*/FuncTranslation_BasicAudio_2333_295_83_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_16_28_0_7_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effde*/FuncTranslation_BasicAudio_2333_295_84_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_21_28_0_9_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effe2*/FuncTranslation_BasicAudio_2333_295_143_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_26_28_0_11_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effe6*/FuncTranslation_BasicAudio_2333_295_85_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_31_28_0_13_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effea*/FuncTranslation_BasicAudio_2333_295_90"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_1_28_0_18_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>effee*/FuncTranslation_BasicAudio_2337_236_149"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_6_28_0_19_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>efff2*/FuncTranslation_BasicAudio_2337_236_153"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_11_28_0_16_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>efff6*/FuncTranslation_BasicAudio_2337_236_174"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_16_28_0_20_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>efffa*/FuncTranslation_BasicAudio_2337_236_176"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_21_28_0_22_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>efffe*/FuncTranslation_BasicAudio_2337_236_210_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_26_28_0_24_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0002*/FuncTranslation_BasicAudio_2337_236_229_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_31_28_0_26_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0006*/FuncTranslation_BasicAudio_2337_236_209_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_30_1_28_0_29_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f000a*/FuncTranslation_BasicAudio_2341_254_276_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_1_28_0_33_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f000e*/FuncTranslation_BasicAudio_2345_236_149"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_6_28_0_34_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0012*/FuncTranslation_BasicAudio_2345_236_153"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_11_28_0_31_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0016*/FuncTranslation_BasicAudio_2345_236_174"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_16_28_0_35_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f001a*/FuncTranslation_BasicAudio_2345_236_176"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_21_28_0_37_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f001e*/FuncTranslation_BasicAudio_2345_236_210_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_26_28_0_39_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0022*/FuncTranslation_BasicAudio_2345_236_229_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_31_28_0_41_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0026*/FuncTranslation_BasicAudio_2345_236_209_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_1_28_0_44_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f002a*/FuncTranslation_BasicAudio_2349_263_280"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_7_28_0_46_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f002e*/FuncTranslation_BasicAudio_2349_263_281_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_12_28_0_48_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0032*/FuncTranslation_BasicAudio_2349_263_256_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getOutputAddr_14_0_28_1_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f05b8*//*@>f05ac*/BasicAudio_TranslationEngine64_B./*@>f05be*/ChanRampMap"
+%endfunction
+
+%function getOutput_14_0_28_1_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f05cc*/BasicAudio_TranslationEngine64_B./*@>f05df*/ChanRampMap"
+%endfunction
+
+%function getInputAddr_14_4_28_1_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0623*//*@>f0617*/BasicAudio_TranslationEngine64_B./*@>f0629*/ChanRampMap_i" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_14_4_28_1_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0637*/BasicAudio_TranslationEngine64_B./*@>f064a*/ChanRampMap_i" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_14_5_28_1_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0677*//*@>f066b*/BasicAudio_TranslationEngine64_B./*@>f067d*/BoostDisable"
+%endfunction
+
+%function getOutput_14_5_28_1_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f068b*/BasicAudio_TranslationEngine64_B./*@>f069e*/BoostDisable"
+%endfunction
+
+%function getInputAddr_14_9_28_1_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f06e2*//*@>f06d6*/BasicAudio_TranslationEngine64_B./*@>f06e8*/Value_l0"
+%endfunction
+
+%function getInput_14_9_28_1_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f06f6*/BasicAudio_TranslationEngine64_B./*@>f0709*/Value_l0"
+%endfunction
+
+%function getOutputAddr_14_10_28_1_6_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0736*//*@>f072a*/BasicAudio_TranslationEngine64_B./*@>f073c*/Offset_k"
+%endfunction
+
+%function getOutput_14_10_28_1_6_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f074a*/BasicAudio_TranslationEngine64_B./*@>f075d*/Offset_k"
+%endfunction
+
+%function getInputAddr_14_14_28_1_8_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f07a1*//*@>f0795*/BasicAudio_TranslationEngine64_B./*@>f07a7*/Value_iw"
+%endfunction
+
+%function getInput_14_14_28_1_8_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f07b5*/BasicAudio_TranslationEngine64_B./*@>f07c8*/Value_iw"
+%endfunction
+
+%function getOutputAddr_14_15_28_1_9_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f07f5*//*@>f07e9*/BasicAudio_TranslationEngine64_B./*@>f07fb*/RampTime_d"
+%endfunction
+
+%function getOutput_14_15_28_1_9_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0809*/BasicAudio_TranslationEngine64_B./*@>f081c*/RampTime_d"
+%endfunction
+
+%function getInputAddr_14_19_28_1_11_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0860*//*@>f0854*/BasicAudio_TranslationEngine64_B./*@>f0866*/Value_d"
+%endfunction
+
+%function getInput_14_19_28_1_11_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0874*/BasicAudio_TranslationEngine64_B./*@>f0887*/Value_d"
+%endfunction
+
+%function getOutputAddr_14_20_28_1_12_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f08b4*//*@>f08a8*/BasicAudio_TranslationEngine64_B./*@>f08ba*/SleepingBeautyMutesBass"
+%endfunction
+
+%function getOutput_14_20_28_1_12_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f08c8*/BasicAudio_TranslationEngine64_B./*@>f08db*/SleepingBeautyMutesBass"
+%endfunction
+
+%function getInputAddr_14_24_28_1_14_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f091f*//*@>f0913*/BasicAudio_TranslationEngine64_B./*@>f0925*/Value_ih"
+%endfunction
+
+%function getInput_14_24_28_1_14_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0933*/BasicAudio_TranslationEngine64_B./*@>f0946*/Value_ih"
+%endfunction
+
+%function getOutputAddr_14_25_28_1_15_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0973*//*@>f0967*/BasicAudio_TranslationEngine64_B./*@>f0979*/EnableSilentExtreme"
+%endfunction
+
+%function getOutput_14_25_28_1_15_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0987*/BasicAudio_TranslationEngine64_B./*@>f099a*/EnableSilentExtreme"
+%endfunction
+
+%function getInputAddr_14_29_28_1_17_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f09de*//*@>f09d2*/BasicAudio_TranslationEngine64_B./*@>f09e4*/Value_g"
+%endfunction
+
+%function getInput_14_29_28_1_17_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f09f2*/BasicAudio_TranslationEngine64_B./*@>f0a05*/Value_g"
+%endfunction
+
+%function getOutputAddr_14_30_28_1_18_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0a32*//*@>f0a26*/BasicAudio_TranslationEngine64_B./*@>f0a38*/Table"
+%endfunction
+
+%function getOutput_14_30_28_1_18_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0a46*/BasicAudio_TranslationEngine64_B./*@>f0a59*/Table"
+%endfunction
+
+%function getInputAddr_14_34_28_1_20_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0a9d*//*@>f0a91*/BasicAudio_TranslationEngine64_B./*@>f0aa3*/tableDb" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_14_34_28_1_20_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0ab1*/BasicAudio_TranslationEngine64_B./*@>f0ac4*/tableDb" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInputAddr_14_35_28_1_21_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0af1*//*@>f0ae5*/BasicAudio_TranslationEngine64_B./*@>f0af7*/tableIdx" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_14_35_28_1_21_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0b05*/BasicAudio_TranslationEngine64_B./*@>f0b18*/tableIdx" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_27_0_28_1_23_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0b5a*//*@>f0b4e*/BasicAudio_TranslationEngine64_B./*@>f0b60*/BoostFrequencyHz_o"
+%endfunction
+
+%function getOutput_27_0_28_1_23_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0b6e*/BasicAudio_TranslationEngine64_B./*@>f0b81*/BoostFrequencyHz_o"
+%endfunction
+
+%function getInputAddr_27_4_28_1_25_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0bc7*//*@>f0bba*/BasicAudio_TranslationEngine64_B./*@>f0bd2*/sf_tonefiltertunetranslate1./*@>f0bcf*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_27_4_28_1_25_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0be1*/BasicAudio_TranslationEngine64_B./*@>f0bfa*/sf_tonefiltertunetranslate1./*@>f0bf7*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_27_5_28_1_26_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0c27*//*@>f0c1b*/BasicAudio_TranslationEngine64_B./*@>f0c2d*/CutFrequencyHz_o"
+%endfunction
+
+%function getOutput_27_5_28_1_26_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0c3b*/BasicAudio_TranslationEngine64_B./*@>f0c4e*/CutFrequencyHz_o"
+%endfunction
+
+%function getInputAddr_27_9_28_1_28_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0c94*//*@>f0c87*/BasicAudio_TranslationEngine64_B./*@>f0c9f*/sf_tonefiltertunetranslate2_e./*@>f0c9c*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_27_9_28_1_28_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0cae*/BasicAudio_TranslationEngine64_B./*@>f0cc7*/sf_tonefiltertunetranslate2_e./*@>f0cc4*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_27_10_28_1_29_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0cf4*//*@>f0ce8*/BasicAudio_TranslationEngine64_B./*@>f0cfa*/BoostMaximum_dB_i"
+%endfunction
+
+%function getOutput_27_10_28_1_29_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0d08*/BasicAudio_TranslationEngine64_B./*@>f0d1b*/BoostMaximum_dB_i"
+%endfunction
+
+%function getInputAddr_27_14_28_1_31_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0d61*//*@>f0d54*/BasicAudio_TranslationEngine64_B./*@>f0d6c*/sf_tonefiltertunetranslate3./*@>f0d69*/maxOut"
+%endfunction
+
+%function getInput_27_14_28_1_31_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0d7b*/BasicAudio_TranslationEngine64_B./*@>f0d94*/sf_tonefiltertunetranslate3./*@>f0d91*/maxOut"
+%endfunction
+
+%function getOutputAddr_27_15_28_1_32_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0dc1*//*@>f0db5*/BasicAudio_TranslationEngine64_B./*@>f0dc7*/CutMaximum_dB_a"
+%endfunction
+
+%function getOutput_27_15_28_1_32_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0dd5*/BasicAudio_TranslationEngine64_B./*@>f0de8*/CutMaximum_dB_a"
+%endfunction
+
+%function getInputAddr_27_19_28_1_34_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0e2e*//*@>f0e21*/BasicAudio_TranslationEngine64_B./*@>f0e39*/sf_tonefiltertunetranslate4_i./*@>f0e36*/maxOut"
+%endfunction
+
+%function getInput_27_19_28_1_34_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0e48*/BasicAudio_TranslationEngine64_B./*@>f0e61*/sf_tonefiltertunetranslate4_i./*@>f0e5e*/maxOut"
+%endfunction
+
+%function getOutputAddr_27_20_28_1_35_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0e8e*//*@>f0e82*/BasicAudio_TranslationEngine64_B./*@>f0e94*/Offset_l"
+%endfunction
+
+%function getOutput_27_20_28_1_35_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0ea2*/BasicAudio_TranslationEngine64_B./*@>f0eb5*/Offset_l"
+%endfunction
+
+%function getInputAddr_27_24_28_1_37_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0ef9*//*@>f0eed*/BasicAudio_TranslationEngine64_B./*@>f0eff*/Value_p"
+%endfunction
+
+%function getInput_27_24_28_1_37_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0f0d*/BasicAudio_TranslationEngine64_B./*@>f0f20*/Value_p"
+%endfunction
+
+%function getOutputAddr_27_25_28_1_38_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0f4d*//*@>f0f41*/BasicAudio_TranslationEngine64_B./*@>f0f53*/ramptime_l"
+%endfunction
+
+%function getOutput_27_25_28_1_38_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0f61*/BasicAudio_TranslationEngine64_B./*@>f0f74*/ramptime_l"
+%endfunction
+
+%function getInputAddr_27_29_28_1_40_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f0fb8*//*@>f0fac*/BasicAudio_TranslationEngine64_B./*@>f0fbe*/Value_lm"
+%endfunction
+
+%function getInput_27_29_28_1_40_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f0fcc*/BasicAudio_TranslationEngine64_B./*@>f0fdf*/Value_lm"
+%endfunction
+
+%function getOutputAddr_27_30_28_1_41_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f100c*//*@>f1000*/BasicAudio_TranslationEngine64_B./*@>f1012*/Scale_o"
+%endfunction
+
+%function getOutput_27_30_28_1_41_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1020*/BasicAudio_TranslationEngine64_B./*@>f1033*/Scale_o"
+%endfunction
+
+%function getInputAddr_27_34_28_1_43_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1077*//*@>f106b*/BasicAudio_TranslationEngine64_B./*@>f107d*/Value_h"
+%endfunction
+
+%function getInput_27_34_28_1_43_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f108b*/BasicAudio_TranslationEngine64_B./*@>f109e*/Value_h"
+%endfunction
+
+%function getOutputAddr_30_0_28_1_45_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f10e0*//*@>f10d4*/BasicAudio_TranslationEngine64_B./*@>f10e6*/RampTime_c"
+%endfunction
+
+%function getOutput_30_0_28_1_45_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f10f4*/BasicAudio_TranslationEngine64_B./*@>f1107*/RampTime_c"
+%endfunction
+
+%function getInputAddr_30_4_28_1_47_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f114b*//*@>f113f*/BasicAudio_TranslationEngine64_B./*@>f1151*/Value_b"
+%endfunction
+
+%function getInput_30_4_28_1_47_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f115f*/BasicAudio_TranslationEngine64_B./*@>f1172*/Value_b"
+%endfunction
+
+%function getOutputAddr_42_0_28_1_49_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f11b4*//*@>f11a8*/BasicAudio_TranslationEngine64_B./*@>f11ba*/BoostFrequencyHz"
+%endfunction
+
+%function getOutput_42_0_28_1_49_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f11c8*/BasicAudio_TranslationEngine64_B./*@>f11db*/BoostFrequencyHz"
+%endfunction
+
+%function getInputAddr_42_4_28_1_51_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1221*//*@>f1214*/BasicAudio_TranslationEngine64_B./*@>f122c*/sf_tonefiltertunetranslate1_d./*@>f1229*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_42_4_28_1_51_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f123b*/BasicAudio_TranslationEngine64_B./*@>f1254*/sf_tonefiltertunetranslate1_d./*@>f1251*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_42_5_28_1_52_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1281*//*@>f1275*/BasicAudio_TranslationEngine64_B./*@>f1287*/CutFrequencyHz"
+%endfunction
+
+%function getOutput_42_5_28_1_52_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1295*/BasicAudio_TranslationEngine64_B./*@>f12a8*/CutFrequencyHz"
+%endfunction
+
+%function getInputAddr_42_9_28_1_54_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f12ee*//*@>f12e1*/BasicAudio_TranslationEngine64_B./*@>f12f9*/sf_tonefiltertunetranslate2_fq./*@>f12f6*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_42_9_28_1_54_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1308*/BasicAudio_TranslationEngine64_B./*@>f1321*/sf_tonefiltertunetranslate2_fq./*@>f131e*/FilterCoeffs" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_42_10_28_1_55_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f134e*//*@>f1342*/BasicAudio_TranslationEngine64_B./*@>f1354*/BoostMaximum_dB"
+%endfunction
+
+%function getOutput_42_10_28_1_55_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1362*/BasicAudio_TranslationEngine64_B./*@>f1375*/BoostMaximum_dB"
+%endfunction
+
+%function getInputAddr_42_14_28_1_57_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f13bb*//*@>f13ae*/BasicAudio_TranslationEngine64_B./*@>f13c6*/sf_tonefiltertunetranslate3_fg./*@>f13c3*/maxOut"
+%endfunction
+
+%function getInput_42_14_28_1_57_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f13d5*/BasicAudio_TranslationEngine64_B./*@>f13ee*/sf_tonefiltertunetranslate3_fg./*@>f13eb*/maxOut"
+%endfunction
+
+%function getOutputAddr_42_15_28_1_58_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f141b*//*@>f140f*/BasicAudio_TranslationEngine64_B./*@>f1421*/CutMaximum_dB"
+%endfunction
+
+%function getOutput_42_15_28_1_58_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f142f*/BasicAudio_TranslationEngine64_B./*@>f1442*/CutMaximum_dB"
+%endfunction
+
+%function getInputAddr_42_19_28_1_60_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1488*//*@>f147b*/BasicAudio_TranslationEngine64_B./*@>f1493*/sf_tonefiltertunetranslate4_lk./*@>f1490*/maxOut"
+%endfunction
+
+%function getInput_42_19_28_1_60_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f14a2*/BasicAudio_TranslationEngine64_B./*@>f14bb*/sf_tonefiltertunetranslate4_lk./*@>f14b8*/maxOut"
+%endfunction
+
+%function getOutputAddr_42_20_28_1_61_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f14e8*//*@>f14dc*/BasicAudio_TranslationEngine64_B./*@>f14ee*/Offset"
+%endfunction
+
+%function getOutput_42_20_28_1_61_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f14fc*/BasicAudio_TranslationEngine64_B./*@>f150f*/Offset"
+%endfunction
+
+%function getInputAddr_42_24_28_1_63_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1553*//*@>f1547*/BasicAudio_TranslationEngine64_B./*@>f1559*/Value_e"
+%endfunction
+
+%function getInput_42_24_28_1_63_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1567*/BasicAudio_TranslationEngine64_B./*@>f157a*/Value_e"
+%endfunction
+
+%function getOutputAddr_42_25_28_1_64_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f15a7*//*@>f159b*/BasicAudio_TranslationEngine64_B./*@>f15ad*/ramptime"
+%endfunction
+
+%function getOutput_42_25_28_1_64_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f15bb*/BasicAudio_TranslationEngine64_B./*@>f15ce*/ramptime"
+%endfunction
+
+%function getInputAddr_42_29_28_1_66_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1612*//*@>f1606*/BasicAudio_TranslationEngine64_B./*@>f1618*/Value_l"
+%endfunction
+
+%function getInput_42_29_28_1_66_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1626*/BasicAudio_TranslationEngine64_B./*@>f1639*/Value_l"
+%endfunction
+
+%function getOutputAddr_42_30_28_1_67_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1666*//*@>f165a*/BasicAudio_TranslationEngine64_B./*@>f166c*/Scale"
+%endfunction
+
+%function getOutput_42_30_28_1_67_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f167a*/BasicAudio_TranslationEngine64_B./*@>f168d*/Scale"
+%endfunction
+
+%function getInputAddr_42_34_28_1_69_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f16d1*//*@>f16c5*/BasicAudio_TranslationEngine64_B./*@>f16d7*/Value_j"
+%endfunction
+
+%function getInput_42_34_28_1_69_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f16e5*/BasicAudio_TranslationEngine64_B./*@>f16f8*/Value_j"
+%endfunction
+
+%function getOutputAddr_49_0_28_1_71_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f173a*//*@>f172e*/BasicAudio_TranslationEngine64_B./*@>f1740*/Table_i"
+%endfunction
+
+%function getOutput_49_0_28_1_71_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f174e*/BasicAudio_TranslationEngine64_B./*@>f1761*/Table_i"
+%endfunction
+
+%function getInputAddr_49_4_28_1_73_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f17a5*//*@>f1799*/BasicAudio_TranslationEngine64_B./*@>f17ab*/Table_dB" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_49_4_28_1_73_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f17b9*/BasicAudio_TranslationEngine64_B./*@>f17cc*/Table_dB" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInputAddr_49_5_28_1_74_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f17f9*//*@>f17ed*/BasicAudio_TranslationEngine64_B./*@>f17ff*/Table_Idx" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getInput_49_5_28_1_74_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f180d*/BasicAudio_TranslationEngine64_B./*@>f1820*/Table_Idx" + SLibCG_ArrayIndexer(ucv, lcv, sigIdx)
+%endfunction
+
+%function getOutputAddr_49_6_28_1_75_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f184d*//*@>f1841*/BasicAudio_TranslationEngine64_B./*@>f1853*/maxgain"
+%endfunction
+
+%function getOutput_49_6_28_1_75_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1861*/BasicAudio_TranslationEngine64_B./*@>f1874*/maxgain"
+%endfunction
+
+%function getInputAddr_49_10_28_1_77_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f18b8*//*@>f18ac*/BasicAudio_TranslationEngine64_B./*@>f18be*/Value_i"
+%endfunction
+
+%function getInput_49_10_28_1_77_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f18cc*/BasicAudio_TranslationEngine64_B./*@>f18df*/Value_i"
+%endfunction
+
+%function getOutputAddr_49_11_28_1_78_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f190c*//*@>f1900*/BasicAudio_TranslationEngine64_B./*@>f1912*/RampTime"
+%endfunction
+
+%function getOutput_49_11_28_1_78_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f1920*/BasicAudio_TranslationEngine64_B./*@>f1933*/RampTime"
+%endfunction
+
+%function getInputAddr_49_15_28_1_80_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<f1977*//*@>f196b*/BasicAudio_TranslationEngine64_B./*@>f197d*/Value"
+%endfunction
+
+%function getInput_49_15_28_1_80_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>f198b*/BasicAudio_TranslationEngine64_B./*@>f199e*/Value"
+%endfunction
+
+%function getOutputAddr_50_5_28_1_82_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_CoreIndexSFunc
+
+%return "&/*@<f19dc*//*@>f19d2*/rtb_CoreIndexSFunc"
+%endfunction
+
+%function getOutput_50_5_28_1_82_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_CoreIndexSFunc
+
+%return "/*@>f19eb*/rtb_CoreIndexSFunc"
+%endfunction
+
+%function getSystemOutputFcnCallInfo_14_1_28_1_1_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0036*/FuncTranslation_BasicAudio_2333_295_79"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_6_28_1_3_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f003a*/FuncTranslation_BasicAudio_2333_295_81_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_11_28_1_5_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f003e*/FuncTranslation_BasicAudio_2333_295_83_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_16_28_1_7_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0042*/FuncTranslation_BasicAudio_2333_295_84_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_21_28_1_9_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0046*/FuncTranslation_BasicAudio_2333_295_143_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_26_28_1_11_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f004a*/FuncTranslation_BasicAudio_2333_295_85_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_14_31_28_1_13_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f004e*/FuncTranslation_BasicAudio_2333_295_90"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_1_28_1_18_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0052*/FuncTranslation_BasicAudio_2337_236_149"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_6_28_1_19_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0056*/FuncTranslation_BasicAudio_2337_236_153"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_11_28_1_16_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f005a*/FuncTranslation_BasicAudio_2337_236_174"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_16_28_1_20_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f005e*/FuncTranslation_BasicAudio_2337_236_176"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_21_28_1_22_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0062*/FuncTranslation_BasicAudio_2337_236_210_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_26_28_1_24_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0066*/FuncTranslation_BasicAudio_2337_236_229_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_27_31_28_1_26_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f006a*/FuncTranslation_BasicAudio_2337_236_209_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_30_1_28_1_29_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f006e*/FuncTranslation_BasicAudio_2341_254_276_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_1_28_1_33_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0072*/FuncTranslation_BasicAudio_2345_236_149"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_6_28_1_34_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0076*/FuncTranslation_BasicAudio_2345_236_153"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_11_28_1_31_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f007a*/FuncTranslation_BasicAudio_2345_236_174"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_16_28_1_35_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f007e*/FuncTranslation_BasicAudio_2345_236_176"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_21_28_1_37_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0082*/FuncTranslation_BasicAudio_2345_236_210_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_26_28_1_39_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0086*/FuncTranslation_BasicAudio_2345_236_229_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_42_31_28_1_41_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f008a*/FuncTranslation_BasicAudio_2345_236_209_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_1_28_1_44_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f008e*/FuncTranslation_BasicAudio_2349_263_280"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_7_28_1_46_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0092*/FuncTranslation_BasicAudio_2349_263_281_67_18"; Args [] }
+%return fcnInfo
+%endfunction
+%function getSystemOutputFcnCallInfo_49_12_28_1_48_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>f0096*/FuncTranslation_BasicAudio_2349_263_256_67_18"; Args [] }
+%return fcnInfo
+%endfunction

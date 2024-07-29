@@ -1,0 +1,33 @@
+%implements s105_b0_435hk_27_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+/* MATLAB Function: '<S40>/check done' */
+/*  Invoke the function trigger output */
+/* MATLAB Function 'RTC/NtfCheck': '<S54>:1' */
+/* '<S54>:1:3' go(); */
+/* MATLAB Function 'BasicAudio/Bass/Tone/InnerLink/check done': '<S48>:1' */
+/*  Checking whether the frameCounts are exactly equal to 0 was leading to */
+/*  unpredictable behavior. Therefore, we now check whether or not the  */
+/*  frameCounts are less-than/equal-to 0. */
+/*  See SAMPLERATE-1196 & SAMPLERATE-1205 for more details.  */
+/* '<S48>:1:10' done = (Rampers(1).frameCount <= 0) && (Rampers(2).frameCount <= 0); */
+/*@>16e85f*/BasicAudio_Target_B./*@>16e9b2*/done_m/*@>12f7f1*/ = ((%<SLibCG_DumpSSCode("/*@[16e975*/",(SLibCG_SE(SLibCG_CSCDW(2, 1, "[/*@>16e94e*/0].frameCount", -1, "", 0))),"/*@]*/")>/*@>12f7f2*/ <= /*@>16e4d6*/0) && (%<SLibCG_DumpSSCode("/*@[16e942*/",(SLibCG_SE(SLibCG_CSCDW(2, 1, "[/*@>16e91b*/1].frameCount", -1, "", 0))),"/*@]*/")>/*@>12f7f3*/ <= /*@>16e4d8*/0));
+/* Outputs for Function Call SubSystem: '<S40>/Triggered Subsystem' */
+/* SignalConversion generated from: '<S44>/In1' */
+/*@>16e865*/BasicAudio_Target_B./*@>16e9b5*/In1_h/*@>12f7df*/ = %<SLibCG_DumpSSCode("/*@[16e90f*/",(SLibCG_SE(SLibCG_BOCSC(17, 1, "", -1, "", 0))),"/*@]*/")>;
+/* End of Outputs for SubSystem: '<S40>/Triggered Subsystem' */
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(27, 0, fcnProtoType)>
+%endfunction

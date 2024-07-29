@@ -1,0 +1,136 @@
+%% Common defines and tools for FeaturePath 
+
+%%   Copyright 2018 Bose Corporation
+
+%% Could add "LibGetModelName() +" to the filenames, but then there would be
+%% no good way to write generic inclusion code. Difficult to perform marco
+%% expansion in a #include macro 
+
+%% Define console behavior. Note that vales must match AsyncConsoleMask.m
+%assign ::ASYNC_CONSOLE_PLAYBACK = 2
+%assign ::ASYNC_CONSOLE_PLAYBACK_IN_SRAT = 3
+%if TLC_FALSE==EXISTS(INCLUDE_ASYNC_CONSOLE)
+    %assign ::INCLUDE_ASYNC_CONSOLE = TLC_FALSE
+%endif
+%if ::INCLUDE_ASYNC_CONSOLE && EXISTS(::TALARIA_ENGINE)
+    %% Turn off the asynch console for translation and interpretation engines
+    %% The ::TALARIA_ENGINE variable is set via TLCOptions in assertCoreIndexRole.m
+    %assign ::INCLUDE_ASYNC_CONSOLE = TLC_FALSE
+%endif
+
+%% Assign ASDID_TYPE codes for indirect addressing
+%assign ::ASDID_TYPE_TOP = 0
+%assign ::ASDID_TYPE_RTC = 1
+%assign ::ASDID_TYPE_TSP = 2
+
+%function ModelPrefix() void
+    %if TLC_FALSE == EXISTS(::TALARIA_NO_MODEL_PREFIX)
+        %return LibGetModelName() + "_"
+    %else
+        %return ""
+    %endif
+%endfunction
+
+%function FeaturePathGetApiFileName() void
+    %% Return shared high level API filename
+    %return ModelPrefix() + "TalariaAPI"
+%endfunction
+
+%function FeaturePathGetAsdIdFileName() void
+    %% Return shared high level API filename.
+    %% Note that this one is not model specific - it's utility like rtwtypes
+    %return "ASDID"
+%endfunction
+
+%function FeaturePathGetAsyncConsoleFilename() void
+    %return ModelPrefix() + "AsyncConsole"
+%endfunction
+
+%function FeaturePathGetPartitionFilename() void
+    %return ModelPrefix() + "Partitions"
+%endfunction
+
+%function FeaturePathGetSchFilename() void
+    %return ModelPrefix() + "SCH_API"
+%endfunction
+
+%function FeaturePathSetupAsyncConsoleHandlerTable() void
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "HandlerExterns")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "HandlerTableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "HandlerTableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "HandlerTableBottom")>
+%endfunction
+%function FeaturePathAddAsyncConsoleHandler(handlerInstanceName) void
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetAsyncConsoleFilename())
+    %% Add extern declaration for handler instance :
+    %openfile buffer
+        extern %<ModelPrefix()>AsyncConsoleHandler %<handlerInstanceName>;
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"HandlerExterns",buffer)>
+
+    %% Add handler instance to table
+    %openfile buffer
+        &%<handlerInstanceName>,
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"HandlerTableEntries",buffer)>
+%endfunction
+
+%% Common setup function for "table" sections used to build code
+%function FeaturePathAddTable(fileH,Section,TableName) void
+        %<LibAddSourceFileCustomSection(fileH, Section, "%<TableName>Top")>
+        %<LibAddSourceFileCustomSection(fileH, Section, "%<TableName>Entries")>
+        %<LibAddSourceFileCustomSection(fileH, Section, "%<TableName>Bottom")>
+%endfunction
+
+%% Create code sections to accept the shared ASDID id handler
+%function FeaturePathSetupAsdIdHandler(fileH) void
+    %if TLC_FALSE == EXISTS(::ASDID_SHARED_HANDLER)
+        %assign ::ASDID_SHARED_HANDLER = 1
+        %<FeaturePathAddTable(fileH,"Functions","HandleAsdIdRequest")>
+    %endif
+%endfunction
+
+%% Create code sections to accept shared notification servicing
+%function FeaturePathSetupServiceNotifications(fileH) void
+    %if TLC_FALSE == EXISTS(::ASDID_SHARED_NOTIFICATIONS)
+        %assign ::ASDID_SHARED_NOTIFICATIONS = 1
+        %<FeaturePathAddTable(fileH,"Functions","ServiceNotifications")>
+    %endif
+%endfunction
+
+%function FeaturePathAddAsdIdHandler(headerFileBuffer,handlerCodeBuffer) void
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetApiFileName())
+    %% Ensure the code sections are set up
+    %<FeaturePathSetupAsdIdHandler(fileH)>
+    %% Add include for handler function
+    %<LibSetSourceFileSection(fileH,"Defines",headerFileBuffer)>
+    %% Add handler function
+    %<LibSetSourceFileCustomSection(fileH,"HandleAsdIdRequestEntries",handlerCodeBuffer)>
+%endfunction
+
+%function FeaturePathAddAsdNotificationService(headerFileBuffer,handlerCodeBuffer) void
+    %assign fileH = LibCreateSourceFile("Source","Custom",FeaturePathGetApiFileName())
+    %% Ensure the code sections are set up
+    %<FeaturePathSetupServiceNotifications(fileH)>
+    %% Add include for handler function
+    %<LibSetSourceFileSection(fileH,"Defines",headerFileBuffer)>
+    %% Add handler function
+    %<LibSetSourceFileCustomSection(fileH,"ServiceNotificationsEntries",handlerCodeBuffer)>
+%endfunction
+
+%function FeaturePathGetCoreTag() void
+    %if TLC_FALSE == EXISTS(::CoreTag)
+        %return ""
+    %else
+        %return ::CoreTag
+    %endif
+%endfunction
+
+%function FeaturePathGetCoreIndex() void
+    %if TLC_FALSE == EXISTS(::CoreIndex)
+        %return "0"
+    %else
+        %return ::CoreIndex
+    %endif
+%endfunction

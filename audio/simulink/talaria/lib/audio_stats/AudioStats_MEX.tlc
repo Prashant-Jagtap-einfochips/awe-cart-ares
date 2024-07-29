@@ -1,0 +1,79 @@
+%implements AudioStats_MEX "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetApiFileName())
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "AudioStats")>
+    %openfile buffer
+
+        // ------------------------------------------------------------
+        // AUDIO BUFFER STATISTICS
+        // ------------------------------------------------------------
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"AudioStats",buffer)>
+%endfunction
+
+%% Function: BlockInstanceSetup ================================================
+%% Abstract:
+%%      Set expression folding compliant
+%%
+%function BlockInstanceSetup(block,system) void
+    %<LibBlockSetIsExpressionCompliant(block)>
+
+    %% Emit the desired #define macros (if any) as determined by blank name or not
+    %assign macroName = block.SFcnParamSettings.macroName
+    %assign macroValue = block.SFcnParamSettings.macroValue
+    %assign macroList  = FEVAL("strsplit",macroName,",","CollapseDelimiters",0)
+    %assign macroCount = SIZE(macroValue)[1]
+    %% Dump defines into two header files (shared API and private audio stats)
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetApiFileName())
+    %assign fileHPriv = LibCreateSourceFile("Header","Custom",ModelPrefix() + "AudioStats")
+    %openfile buffer
+        %foreach j = macroCount
+            %if TLC_FALSE == ISEMPTY(macroList[j])
+            #define %<macroList[j]> %<SPRINTF("%d",macroValue[j])> /* '%<LibGetBlockName(block)>' */
+            %endif
+        %endforeach
+        %% handle the code-generation-only final macro of TID (Task ID):
+        %if TLC_FALSE == ISEMPTY(macroList[macroCount])
+            %if ISEQUAL(TYPE(TID),"Unsigned")
+                #define %<macroList[macroCount]> %<SPRINTF("%d",TID[0])> /* '%<LibGetBlockName(block)>' */
+            %else
+                #define %<macroList[macroCount]> %<TID> /* '%<LibGetBlockName(block)>' */
+            %endif
+        %endif
+
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"AudioStats",buffer)>
+    %<LibSetSourceFileSection(fileHPriv,"Defines",buffer)>
+
+%endfunction
+
+
+%% Function: BlockOutputSignal =================================================
+%% Abstract:
+%%      Return the appropriate reference to the parameter.  This function *may*
+%%      be used by Simulink when optimizing the Block IO data structure.
+%%
+%function BlockOutputSignal(block,system,portIdx,ucv,lcv,idx,retType) void
+    %assign portValues = block.SFcnParamSettings.portValue
+    %switch retType
+        %case "Signal"
+            %return "%<portValues[portIdx]>"
+        %case "SignalAddr"
+            %% Hmm... I'm not sure what this would really mean here, but let's try
+            %return "&(%<portValues[portIdx]>)"
+        %%START_ASSERT
+        %default
+            %assign errTxt = "Unsupported return type: %<retType>"
+            %<LibBlockReportError(block,errTxt)>
+        %%END_ASSERT
+    %endswitch
+%endfunction
+
+%% [EOF] constant.tlc

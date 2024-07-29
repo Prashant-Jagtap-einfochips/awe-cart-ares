@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg8"
+   version="1.1"
+   viewBox="0 0 15.633178 7.56215"
+   height="7.56215mm"
+   width="15.633178mm"
+   sodipodi:docname="ModelExtMask.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="3590"
+     inkscape:window-height="1554"
+     id="namedview4536"
+     showgrid="false"
+     inkscape:zoom="8.2571315"
+     inkscape:cx="-40.214869"
+     inkscape:cy="14.290677"
+     inkscape:window-x="4323"
+     inkscape:window-y="1006"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg8" />
+  <defs
+     id="defs2" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-66.672274,-92.679583)"
+     id="layer1"
+     style="stroke-width:0.26458334;stroke-miterlimit:4;stroke-dasharray:none">
+    <rect
+       ry="3.4927557"
+       y="92.9189"
+       x="66.911591"
+       height="7.0835176"
+       width="15.154545"
+       id="rect4529"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.26458334;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:10.00000028;stroke-opacity:1;paint-order:stroke fill markers" />
+  </g>
+  <g
+     aria-label="EXT"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:6.83338642px;line-height:1.25;font-family:'Franklin Gothic Medium Cond';-inkscape-font-specification:'Franklin Gothic Medium Cond';letter-spacing:0px;word-spacing:0px;fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:0.17083466"
+     id="text821">
+    <path
+       d="M 5.6377796,4.9705785 V 6.0583148 H 2.2110766 V 1.5038361 h 3.426703 V 2.5548696 H 3.5824251 v 0.6606497 h 1.661634 v 1.0109942 h -1.661634 v 0.744065 z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Franklin Gothic Heavy';-inkscape-font-specification:'Franklin Gothic Heavy, ';fill:#b3b3b3;fill-opacity:1;stroke-width:0.17083466"
+       id="path823" />
+    <path
+       d="M 10.085487,1.5038361 8.7641873,3.6192496 10.295693,6.0583148 H 8.6707621 L 7.8299353,4.6269072 6.9824352,6.0583148 h -1.28126 L 7.1692856,3.6993284 5.7612343,1.5038361 H 7.3895021 L 8.0968644,2.7283736 8.8309196,1.5038361 Z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Franklin Gothic Heavy';-inkscape-font-specification:'Franklin Gothic Heavy, ';fill:#b3b3b3;fill-opacity:1;stroke-width:0.17083466"
+       id="path825" />
+    <path
+       d="M 12.47784,2.594909 V 6.0583148 H 11.153204 V 2.594909 H 10.208942 V 1.5038361 h 3.213159 V 2.594909 Z"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:'Franklin Gothic Heavy';-inkscape-font-specification:'Franklin Gothic Heavy, ';fill:#b3b3b3;fill-opacity:1;stroke-width:0.17083466"
+       id="path827" />
+  </g>
+</svg>

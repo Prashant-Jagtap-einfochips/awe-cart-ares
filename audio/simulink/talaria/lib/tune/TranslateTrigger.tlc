@@ -1,0 +1,406 @@
+%implements TranslateTrigger "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%addincludepath "../feature_path"
+%include "FeaturePathCommon.tlc"
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %% File Names
+    %assign trigNameRoot = "TranslateTrigger"
+    %assign tuneVarNameRoot = "TuneVar"
+    %assign topRcvNameRoot = "TOP_RcvTrans"
+    %assign translateTriggerFileName = ModelPrefix() + trigNameRoot
+    %assign topRcvTransFileName = ModelPrefix() + topRcvNameRoot
+    %assign tuneVarFileName = ModelPrefix() + tuneVarNameRoot
+    %assign translateErrorsFileName = "TranslateError"
+
+    %% Add include file directly to model header for translation errors
+    %<LibAddToCommonIncludes(translateErrorsFileName+".h")>
+
+    %% The TranslateTrigger block assumes the responsibility for the overall
+    %% "translation engine" DLL entry-points / public API. However, only
+    %% add this engine code (translate_dll) if building a top-model
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %% Add translation engine source file
+        %assign fileH = LibCreateSourceFile("Source","Custom","translate_dll")
+        %openfile buffer
+            %include "tlc_translate_dll.c"
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+        %% ... and header file (for MATLAB loadlibrary
+        %assign fileH = LibCreateSourceFile("Header","Custom","translate_dll")
+        %openfile buffer
+            #include "%<translateTriggerFileName>.h"
+            #include "%<topRcvTransFileName>.h"
+            #include "%<tuneVarFileName>.h"
+
+%if EXISTS(::TALARIA_ENGINE) && (TLC_FALSE == LibIsModelReferenceTarget())
+            // DLL Interface prototypes:
+            // ---- Initialize the engine at startup
+            void InitializeTranslationEngine( void );
+%endif
+            // ---- Optional override of buffer size for returned strings (return 0 on failure)
+            int SetReturnBufferSize(int numBytes);
+
+            // ---- Retrieve list of TuneVar names
+            const char* FirstTuneVar( void );
+            const char* NextTuneVar( void );
+            const char* GetTuneVarsForTop( const char* topNameIn);
+
+            // ---- Set TuneVar values: returns 0 for OK, 1 for error
+            int SetTuneVar(char* name, char* spaceDelimitedValues);
+            void LoadAllTuneVarDefaults(void);
+
+            // ---- Get TuneVar values:
+            char* GetTuneVar(const char* name);
+
+            // ---- Retrieve translated TOP values
+            const char* GetFirstTranslatedTOP( void );
+            const char* GetNextTranslatedTOP( void );
+
+            // ---- Error state and strings
+            unsigned int GetTranslationErrorState( void );
+            const char* GetTranslationErrorStrings( void );
+            void ClearTranslationErrorState( void );
+            const char* GetTuneVarErrorStrings(void);
+
+            // ---- Clear various flags
+            void ClearAllTranslationRequiredFlags( void );
+            void ClearAllTuneSightings(void);
+
+            // ---- Retrieve TOP COMPAT numbers
+            unsigned int GetTopCompat(unsigned int nameHash);
+            unsigned int GetTopCompatByName(const char* featureName);
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- dispatch table *.c file
+    %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+
+    %% Includes :
+    %openfile buffer
+        #include <stdint.h>
+        #include "%<translateErrorsFileName>.h"
+        #include "%<translateTriggerFileName>.h"
+        #include "%<tuneVarFileName>.h"
+        #include "%<topRcvTransFileName>.h"
+        #include "%<ModelPrefix()>ModelCount.h"
+        #include <stdio.h>  // for vsnprintf
+        #include <string.h> // for strncpy
+        #include <stdarg.h> // for variadic args (va_start)
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Setup the top middle and bottom of the table definition
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Prototypes")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Sources")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "Destinations")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableTop")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableEntries")>
+    %<LibAddSourceFileCustomSection(fileH, "Definitions", "TableBottom")>
+
+    %% Forward declare the datatypes
+    %openfile buffer
+
+        // Translation table record
+        typedef void (*TranslationFunc)(void);
+        typedef struct TranslationRecord_tag
+        {
+            int                     updated_tune_vars;      // "dirty flag" counting updated TuneVars
+            TranslationFunc         translation_func;       // translation function
+            int                     tunevar_count;          // indicates how many TuneVars feed this translation
+            enum TuneVarNumber      *tunevars;              // array of TuneVar IDs that feed this translation
+            int                     top_count;              // indicates how many TOPs receive value from this translation
+            enum TOP_RcvTransNumber *tops;                  // array of TOP_RcvTrans numbers that receive values from this translation
+        } TranslationRecord_type;
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %openfile buffer
+
+        // ----- Translation functions (generated in the model):
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Source TuneVars for each translation function:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Sources",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Dependent TOPs for each translation function:
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Destinations",buffer)>
+
+    %openfile buffer
+
+        // -----------------------------------------------------
+        // ----- Translation object table listing all translations
+        static TranslationRecord_type translation_table[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableTop",buffer)>
+    %openfile buffer
+        };
+    
+        // Share table in a public interface for use by top-model
+        void* %<ModelPrefix()>translation_table = translation_table;
+        int %<ModelPrefix()>translation_table_count = sizeof(translation_table) / sizeof(TranslationRecord_type);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableBottom",buffer)>
+    
+    %% Add the source code only for top-model code generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            %include "tlc_translate_trigger.c"
+          %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% Define our model's translation root and register it
+    %openfile buffer
+    TranslationRoot %<ModelPrefix()>TranslationRoot =
+    {
+        &%<ModelPrefix()>tune_var_table,
+        &%<ModelPrefix()>translation_table,
+        &%<ModelPrefix()>TOP_RcvTrans_table,
+        &%<ModelPrefix()>tune_var_table_count,
+        &%<ModelPrefix()>translation_table_count,
+        &%<ModelPrefix()>TOP_RcvTrans_table_count
+    };
+    void %<ModelPrefix()>InitializeTranslationRoot()
+    {
+        RegisterTranslationRoot(&%<ModelPrefix()>TranslationRoot);
+    }
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+
+    %% ------------------- dispatch table *.h file
+    %assign fileH = LibCreateSourceFile("Header","Custom",translateTriggerFileName)
+
+    %openfile buffer
+        // ------------------------------------------------
+        // Structure to access engine parts from each model
+        typedef struct TranslationRoot_tag
+        {
+            void* tunevar_table;
+            void* translation_table;
+            void* top_table;
+            int* tunevar_count;
+            int* translation_count;
+            int* top_count;
+        } TranslationRoot;
+
+    %% Only add model root structures if building code for a top-model
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        // ------------------------------------------------
+        // Iterator for use with TuneVars and Translations
+        typedef struct
+        {
+            int model;
+            int index;
+        }
+        TranslateEngineIterator;
+        extern TranslateEngineIterator INVALID_TRANSLATE_ITERATOR;
+        int IsValidTranslateIterator(TranslateEngineIterator anIterator);
+
+        // Share the translation roots with the rest of our engine
+        extern TranslationRoot* translationRoots[];
+        extern int numTranslationRoots;
+    %endif
+
+    // Register engine
+    void RegisterTranslationRoot(TranslationRoot* aRoot);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Add the source code only for top-model code generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            #ifdef INCLUDE_TRANSLATION_DLL_API
+            // Return the first translation record that has been touched to run (or INVALID_TRANSLATE_ITERATOR if none)
+            TranslateEngineIterator FindFirstNeededTranslation( void );
+
+            // Return the next translation record that has been touched to run (or INVALID_TRANSLATE_ITERATOR if no more)
+            TranslateEngineIterator FindNextNeededTranslation(TranslateEngineIterator afterThisOne);
+            #endif
+
+            // Verify that all TuneVars read by the specified translation have been seen
+            // Returns 0 if OK; nonzero if error and sets translation error state
+            int CheckTranslationSourceSightingsOK(TranslateEngineIterator translationNumIn);
+
+            // Returns space-delimited list of TuneVars (in bufferInOut) that feed specified top
+            // Returns char count placed in buffer
+            int ListTuneVarsForTop(const char* topNameIn, char* bufferInOut, int bufferSizeIn);
+
+            // Touch a translation object to indicate source tuning variables
+            // ... have changed. This indicates the translation must be run.
+            void TouchTranslation(TranslateEngineIterator translationNumIn);
+
+            // Get a translation's dirty flag in the form of updated TuneVar count
+            int GetTranslationUpdatedTuneVarCount(TranslateEngineIterator translationNumIn);
+
+            // Clear all flags that would indicate a translation must be run
+            void ClearAllTranslationRequiredFlags( void );
+
+            // Checks source sightings & calls translation function
+            // Reset dirty flags only if requested and no error in translation
+            // returns error state (0 means OK);
+            int CallTranslation(TranslateEngineIterator translationNumIn,int cleanFlagIfNoError);
+
+            // Returns characters dumped, or 0 if nothing to dump (i.e. top index too high) 
+            int DumpTranslatedTOP(TranslateEngineIterator translationNumIn, int topIndexIn, char* bufferInOut, int bufferSizeIn);
+
+            // Retrieve translation error state
+            unsigned int GetTranslationErrorState( void );
+
+            // Retrieve reported error strings
+            const char* GetTranslationErrorStrings( void );
+
+            // Clear translation errors and error strings
+            void ClearTranslationErrorState( void );
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+
+    %% ------------------- Dump our translation numbers to the TUNEVAR file
+    %% ALERT-Unexplained problem- tuneVarFileName gets wiped
+    %assign tuneVarFileName = ModelPrefix() + "TuneVar"
+    %assign fileH = LibCreateSourceFile("Source","Custom",tuneVarFileName)
+    %<FeaturePathAddTable(fileH,"Typedefs","TranslateEnum")>
+    %openfile buffer
+    // Translation numbers local to this model:
+    enum TranslationNumber {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TranslateEnumTop",buffer)>
+    %openfile buffer
+        NUM_TRANSLATION_NUMBERS
+    };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TranslateEnumBottom",buffer)>
+
+    %% ------------------- translate error *.h file (variadic functions)
+    %assign fileH = LibCreateSourceFile("Header","Custom",translateErrorsFileName)
+    %openfile buffer
+        // MATLAB's loadlibrary does not support variadic functions (...)
+        // and gives the warning that looks something like:
+        //   Warning: The data type 'error' used by function TranslateError does not exist. 
+        // So to eliminate these warnings, the following variadic functions
+        // have been removed from %<translateTriggerFileName>.h which is used
+        // to load translation DLLs into MATLAB. Instead, these functions
+        // are declared here out of the way.
+
+        // Report a translation error (works like printf)
+        // Called from the model code
+        void TranslateError(const char* formatString, ...);
+        void TranslateWarning(const char* formatString, ...);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% Hookup registration of our translation root into model init
+    %assign fileH = LibGetModelDotHFile()
+    %openfile buffer
+        extern void %<ModelPrefix()>InitializeTranslationRoot( void );
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Declarations",buffer)>
+    %openfile buffer
+        // Register translation engine among the model roots
+        %<ModelPrefix()>InitializeTranslationRoot();
+    %closefile buffer
+    %<LibSystemInitializeCustomCode(system, buffer, "execution")>
+    
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+%endfunction
+
+%% Function: Outputs ==========================================================
+%function Outputs(block, system) Output
+
+    %% NOTE: this code is required to be in "Output" due to the invocation
+    %% of the LibBlockExecuteFcnCall method. Otherwise, up in BlockInstanceSetup
+    %% this method returns empty strings. Here... it returns scary looking
+    %% strings, like  /*@[2ef74*/TranslateTest_translation/*@]*/ but somehow
+    %% TLC eventually resolves this mumbo jumbo into the actual function name
+
+    %% File Names
+    %assign translateTriggerFileName = ModelPrefix() + "TranslateTrigger"
+    %assign tuneVarFileName = ModelPrefix() + "TuneVar"
+
+    %% S Function RTW Data Parameters
+    %assign CodeID = SFcnParamSettings.CodeID
+    %assign Tunes = SFcnParamSettings.Tunes
+    %assign TunesList = FEVAL("strsplit",Tunes,",")
+    %assign TunesCount = SIZE(TunesList)[1]
+    %assign TOPs = SFcnParamSettings.TOPs
+    %assign TOPsList = FEVAL("strsplit",TOPs,",")
+    %assign TOPsCount = SIZE(TOPsList)[1]
+
+    %% If there are no TOPs, do nothing
+    %if 0 == TOPsCount
+        %return
+    %endif
+
+    %% Retrieve the function name... just the name
+    %assign functionCallStr = LibBlockExecuteFcnCall(block, 0)
+    %assign funcName = FEVAL("strtok",functionCallStr,"(")
+
+    %% ---------------- TuneVar Source
+    %assign fileH = LibCreateSourceFile("Source","Custom",tuneVarFileName)
+    %% Declare the translation number for the TuneVar to reference as a dependent
+    %openfile buffer
+        ID_%<CodeID>, /* '%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TranslateEnumEntries",buffer)>
+
+    %% ---------------- Source
+    %assign fileH = LibCreateSourceFile("Source","Custom",translateTriggerFileName)
+    %% Declare the translation function. The function's definition will reside in the default model file
+    %openfile buffer
+        extern void /* [%<Tunes>]-->[%<TOPs>] */ \
+            %<funcName>(void); /* %<CodeID>:'%<LibGetBlockName(block)>' */
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Prototypes",buffer)>
+
+    %% Define the array of source TuneVar objects
+    %openfile buffer
+        static enum TuneVarNumber %<CodeID>_Sources[] = { /* '%<LibGetBlockName(block)>' */
+            %foreach j = TunesCount
+                ID_TuneVar_%<TunesList[j]>,
+            %endforeach
+            };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Sources",buffer)>
+
+    %% Define the array of dependent TOP objects
+    %openfile buffer
+        static enum TOP_RcvTransNumber %<CodeID>_Destinations[] = { /* '%<LibGetBlockName(block)>' */
+            %foreach j = TOPsCount
+                ID_TOP_RcvTrans_%<TOPsList[j]>,
+            %endforeach
+            };
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"Destinations",buffer)>
+
+    %% Define an entry in the dispatch table
+    %openfile buffer
+        // Translation record for %<TOPs> '%<LibGetBlockName(block)>'
+        { 0, &%<funcName>, %<TunesCount>, %<CodeID>_Sources, %<TOPsCount>, %<CodeID>_Destinations
+        },
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TableEntries",buffer)>
+
+%endfunction

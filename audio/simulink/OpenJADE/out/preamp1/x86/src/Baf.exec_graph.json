@@ -1,0 +1,25 @@
+{
+    "callrates_list": {
+        "0": {
+            "callrate": "1",
+            "rate_period": "0.00066666666666666664",
+            "base_task": true
+        }
+    },
+    "process_list": {
+        "sys_cr1_in": {
+            "thread_level": 0,
+            "process_id": 0
+        },
+        "BasicAudio_Target_step0": {
+            "thread_level": 0,
+            "process_id": 1
+        },
+        "sys_cr1_out": {
+            "thread_level": 0,
+            "process_id": 2
+        }
+    },
+    "probe_points": null,
+    "accel_process_list": null
+}

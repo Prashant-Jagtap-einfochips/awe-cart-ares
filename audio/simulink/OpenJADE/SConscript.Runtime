@@ -1,0 +1,79 @@
+import os
+
+Import('env')
+Import('target')
+Import('option')
+Import('runtime')
+Import('source_dir')
+
+local_env = env.Clone(
+    CPPPATH=['.','BAF','JSched','Audio_Graph'])
+
+OptArch = local_env['PROCESSOR']
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+
+if 'runtime' in globals() and ('Context' in runtime) and (runtime['Context'] == True):
+    local_env.Append(CPPFLAGS='-DBAF_CALLBACK_CONTEXT')
+
+source = ['BAF.c', 'Module.c', 'Port.c', 'Ports.c', 'JFramework.c', 'Process.c', 'Framework_Builder.c', 'Heap.c', 'JModule.c', 'JModule_Context.c', 'Process_Context.c', 'Error.c', 'ProbePoint.c']
+if 'option' in globals() and option:
+    if 'Print' in option and option['Print']:
+        local_env.Append(CPPFLAGS='-DBAF_PRINTF_SUPPORTED')
+    if 'OJ3Support' in option and (option['OJ3Support'] == False):
+        local_env.Append(CPPFLAGS='-DBAF_REMOVE_OJ3_SUPPORT')
+    if 'PrimeBuffer' in option and option['PrimeBuffer']:
+        local_env.Append(CPPFLAGS='-DBAF_PRIME_BUFFER')
+    if 'JSched' in option and option['JSched']:
+        local_env.Append(CPPFLAGS='-DBAF_PRIORITY_SCHEDULER')
+        source = source + [ 'JSched/JExec.c', 'JSched/JSched.c']
+    if 'Connection' in option and option['Connection']:
+        local_env.Append(CPPFLAGS='-DBAF_CONNECTION')
+        source = source + ['Connection.c', 'Semaphore.c']
+    if 'Logger' in option and option['Logger']:
+        local_env.Append(CPPFLAGS='-DBAF_LOGGER')
+        if 'BAFStatsLogger' in option and option['BAFStatsLogger']:
+            local_env.Append(CPPFLAGS='-DBAF_STATSLOGGER')
+        source = source + ['Logger.c']
+    if 'Lite' in option and option['Lite']:
+        source = [] # no runtime for lite; BAF.c in built in SConscript.Framework
+else : # current defaults
+    local_env.Append(CPPFLAGS='-DBAF_CONNECTION')
+    source = source + ['Connection.c', 'Semaphore.c']
+    local_env.Append(CPPFLAGS='-DBAF_LOGGER')
+    source = source + ['Logger.c']
+
+def my_lib_emitter(target, source, env):
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+Runtime = local_env.Library(target = target, source = source)
+
+env['RuntimeList'] = [os.path.join(source_dir, x) for x in source]
+
+Return("Runtime")

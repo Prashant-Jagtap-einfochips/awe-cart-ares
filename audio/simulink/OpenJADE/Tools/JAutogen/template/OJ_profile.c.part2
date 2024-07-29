@@ -1,0 +1,169 @@
+// Profiling Configuration
+uint32_t profile_cycleOrmips;
+// Profiling threshold (0 - 1)
+real32_T profile_threshold;
+
+
+/*************************************************************************************************/
+/********************************* The APIs exposed to OpenJADE **********************************/
+/*************************************************************************************************/
+void OJ_profileInit(void)
+{
+    int i;
+
+    profile_cycleOrmips = PROFILE_IN_CYCLE;
+    profile_threshold = PROFILE_THRESHOLD;
+	// Here "true" in memset for test purpose
+    memset(pProfileMask, true, sizeof(bool) * max_num_profiling);
+    memset(pProfileContext, 0, sizeof(Profile_Context) * max_num_profiling);
+    for (i = 0; i < max_num_profiling; i ++) {
+        pProfileContext[i].taskprio = -1;
+    }
+}
+
+
+void OJ_profileEnable(uint32_t profile_target)
+{
+    pProfileMask[profile_target] = true;
+}
+
+
+void OJ_profileDisable(uint32_t profile_target)
+{
+    pProfileMask[profile_target] = false;
+}
+
+
+void OJ_profileReset(uint32_t profile_target)
+{
+    Profile_Context* puser = &pProfileContext[profile_target];
+
+    puser->peak_value = 0;
+    puser->avg_value = 0;
+    puser->prof_counter = 0;
+    puser->over_counter = 0;
+}
+
+
+void OJ_profileThreshold(real32_T percentage)
+{
+    profile_threshold = percentage;
+}
+
+
+void OJ_profileCycleOrMips(uint32_t cycle_or_mips)
+{
+    profile_cycleOrmips = cycle_or_mips;
+}
+
+#ifndef PROFILE_STARTSTOP_INLINE
+void OJ_profileStart(uint32_t profile_target)
+{
+    if (pProfileMask[profile_target] == true) {
+        pProfileContext[profile_target].start_counter = READ_CLOCKCYCLE;
+    }
+}
+
+void OJ_profileStop(uint32_t profile_target)
+{
+    uint32_t tmp;
+    Profile_Context* puser = &pProfileContext[profile_target];
+    uint32_t final_counter = READ_CLOCKCYCLE - puser->start_counter;
+    
+    puser->start_counter = 0;
+    tmp = puser->cur_cycles + final_counter;
+    if ((tmp < 100000000) && (puser->prof_counter < 0xFFFFFF00)) {
+        puser->avg_value = (real32_T)(tmp + puser->prof_counter * puser->avg_value) / (puser->prof_counter + 1);    
+        puser->peak_value = (puser->peak_value > (real32_T)tmp) ? (puser->peak_value) : (real32_T)(tmp);
+        puser->prof_counter += 1;
+        if (puser->prof_counter > pProfileCounterPara[profile_target]) {
+            // Do statistical collection
+            if (tmp - puser->avg_value >= puser->avg_value * PROFILE_THRESHOLD) {
+                puser->over_counter += 1;
+
+            }
+        }
+    }
+    puser->cur_cycles = 0; 
+}
+#endif
+
+
+#if 0
+void ContextSwitchHook(int32_t current_prio, int32_t ready_prio)
+{
+    int i, tmp;
+    Profile_Context* puser_profile = pProfileContext;
+
+
+    if (current_prio != ready_prio) {
+        if (current_prio != -1) {
+            puser_profile[current_prio].othertask_start_counter = READ_CLOCKCYCLE;
+            puser_profile[current_prio].switch_counter ++;
+        }
+        
+    }
+    if (ready_prio != -1) {
+        if (puser_profile[ready_prio].start_counter > 0) {  
+            puser_profile[ready_prio].start_counter += (READ_CLOCKCYCLE - puser_profile[ready_prio].othertask_start_counter);
+        }
+    }
+}
+#endif
+
+#if 0
+void ContextSwitchHook(void* current_task_ptr, void* ready_task_ptr)
+{
+    int i;
+    Profile_Context* puser_profile = pProfileContext;
+
+
+    for (i = 0; i < max_num_profiling; i ++) {
+        if (puser_profile->start_counter > 0) {
+            // The first time that the profiling task is preempted by another task
+            //if ((puser_profile->taskptr == NULL) && (current_task_ptr != ready_task_ptr)) {
+            if (puser_profile->taskptr == NULL) {
+                // Copy the profiling task pointer
+                puser_profile->taskptr = current_task_ptr;
+                puser_profile->cur_cycles += (READ_CLOCKCYCLE - puser_profile->start_counter);
+                puser_profile->switch_counter ++;
+            }
+            else if (puser_profile->taskptr == ready_task_ptr) {
+                // Switch back to the profiling task
+                //puser_profile->start_counter += (READ_CLOCKCYCLE - puser_profile->othertask_start_counter);
+                puser_profile->start_counter = READ_CLOCKCYCLE;
+                puser_profile->taskptr = NULL;
+            }
+        }
+        ++ puser_profile;
+    }
+}
+#endif
+
+void ContextSwitchHook(int32_t current_prio, int32_t ready_prio)
+{
+    int i;
+    Profile_Context* puser_profile = pProfileContext;
+
+
+    for (i = 0; i < max_num_profiling; i ++) {
+        if (puser_profile->start_counter > 0) {
+            // The first time that the profiling task is preempted by another task
+            //if ((puser_profile->taskptr == NULL) && (current_task_ptr != ready_task_ptr)) {
+            if (puser_profile->taskprio == -1) {
+                // Copy the profiling task pointer
+                puser_profile->taskprio = current_prio;
+                puser_profile->cur_cycles += (READ_CLOCKCYCLE - puser_profile->start_counter);
+                puser_profile->switch_counter ++;
+            }
+            else if (puser_profile->taskprio == ready_prio) {
+                // Switch back to the profiling task
+                //puser_profile->start_counter += (READ_CLOCKCYCLE - puser_profile->othertask_start_counter);
+                puser_profile->start_counter = READ_CLOCKCYCLE;
+                puser_profile->taskprio = -1;
+            }
+        }
+        ++ puser_profile;
+    }
+}
+

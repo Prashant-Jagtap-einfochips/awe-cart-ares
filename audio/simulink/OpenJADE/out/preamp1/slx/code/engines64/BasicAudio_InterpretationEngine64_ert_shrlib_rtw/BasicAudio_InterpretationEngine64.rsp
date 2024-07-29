@@ -1,0 +1,6 @@
+BasicAudio_InterpretationEngine64.obj
+BasicAudio_InterpretationEngine64_InterpretTrigger.obj
+BasicAudio_InterpretationEngine64_StateVar.obj
+BasicAudio_InterpretationEngine64_TSP_Interpret.obj
+BasicAudio_InterpretationEngine64_TalariaAPI.obj
+interpret_dll.obj

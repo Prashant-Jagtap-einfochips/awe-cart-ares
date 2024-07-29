@@ -1,0 +1,86 @@
+%implements s105_b0_435hk_4_Disable "C"
+
+%function Disable(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign _modelSS = ""
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[8], "Disable",0)
+/* Disable for S-Function (fcgen): '<S14>/Function-Call Generator' incorporates:
+ *  SubSystem: '<S14>/LockEnter'
+ */
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_LockEnter_Disable",8,0)
+%<SLibCG_AccessArg(4 ,1, 0)>
+%endif
+
+%<SLibCG_DumpSSCode("/*@[13e722*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_LockEnter_Disable", ["/*@>13e80b*/%<::tSimStruct>"], 8, 1, 14, 0, 14, 14),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[8]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%assign   Disable_open_FunctionCallGenerator_14_0 = ""
+%openfile Disable_open_FunctionCallGenerator_14_0
+
+/* Disable for S-Function (fcgen): '<S14>/Function-Call Generator' incorporates:
+ *  SubSystem: '<S14>/LockExit'
+ */
+%closefile Disable_open_FunctionCallGenerator_14_0
+
+%assign    Disable_body_FunctionCallGenerator_14_0 = ""
+%openfile  Disable_body_FunctionCallGenerator_14_0
+
+%if !SLibCGSysFcnIsEmptyForTid(CompiledModel.System[10], "Disable",0)
+%if SLibCG_SystemFcnArgAccessed("BasicAudio_Target_LockExit_Disable",10,0)
+%<SLibCG_AccessArg(4 ,1, 0)>
+%endif
+
+%<SLibCG_DumpSSCode("/*@[13e723*/",SLibCGIRGenReusableSysCall("BasicAudio_Target_LockExit_Disable", ["/*@>13e829*/%<::tSimStruct>"], 10, 1, 14, 0, 14, 14),"/*@]*/")>\
+%assign ss = ::CompiledModel.System[10]
+%if !LibSystemIsInlined(ss)
+;
+%else
+\
+%endif
+
+%endif
+%closefile Disable_body_FunctionCallGenerator_14_0
+
+%assign    Disable_close_FunctionCallGenerator_14_0 = ""
+%openfile  Disable_close_FunctionCallGenerator_14_0
+
+/* End of Disable for S-Function (fcgen): '<S14>/Function-Call Generator' */
+%closefile Disable_close_FunctionCallGenerator_14_0
+%<SLibCG_DumpSSCode(Disable_open_FunctionCallGenerator_14_0, Disable_body_FunctionCallGenerator_14_0, Disable_close_FunctionCallGenerator_14_0)>
+
+%closefile cfgTxt
+%<cfgTxt>
+%assign rtmArgSys = ::CompiledModel.System[::CompiledModel.System[::CompiledModel.RTWCGModules.RTWCGModule[4].CGSystemIdx].NonInlinedParentSystemIdx]
+%if SysFcnArgNeeded("Disable", rtmArgSys.Interface.RTMArgDef, rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Disable"))
+%<SLibCG_AccessArg(4, 1, 0)>
+%endif
+%if SLibCG_ArgAccessed(4, 1, 0)
+%<SLibAccessArg(rtmArgSys.Interface.RTMArgDef, "Disable", rtmArgSys.CurrentTID, FcnSysModuleIsRateGrouping(rtmArgSys, "Disable"))>
+%endif
+%if (IsModelReferenceBaseSys(rtmArgSys) && (IsModelRefScalableBuild() || GenerateClassInterface)) ||...
+(GenerateClassInterface && SLibIsMultiInstanceServer(rtmArgSys))
+%<SLibCG_UndoAccessArg(4, 1, 0)>
+%endif
+%endfunction
+%function DisableFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_SetDsm1_Disable(\
+%assign comma = ""
+%if SLibCG_ArgAccessed(4, 1, 0)
+%<comma>%<::tSimStructType> * const %<::tSimStruct>\
+%assign comma = ", "
+%<SLibUpdateSymbolForFunction("BasicAudio_Target_SetDsm1_Disable", SLibGetFcnDefinitionRTMSymbolName(), TLC_FALSE)>\
+%endif
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(4, 1, fcnProtoType)>
+%endfunction

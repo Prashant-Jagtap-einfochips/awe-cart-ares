@@ -1,0 +1,22 @@
+/*! @mainpage JModule API
+
+@tableofcontents
+
+@section feature_intro_sec Introduction
+
+// @image html OpenJADE.jpg
+
+Welcome to the <em>JModule  API.</em> JModule provides APIS and data structures that the JModule Developer will use create a JModule Library item.
+
+@section feature_module_sec JModule Modules
+
+// @image html feature.jpg
+
+@section feature_definition_sec JModule Demoalg Definition Example
+
+// @include JModule_Desc_Demoalg.c
+
+@section feature_adapter_sec JModule Demoalg Adapter Example
+
+// @include JModule_Adapt_Demoalg.c
+*/

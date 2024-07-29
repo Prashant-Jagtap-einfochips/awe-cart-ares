@@ -1,0 +1,22 @@
+{
+    "model_name": "Model",
+    "funcs_names": [
+        "pooliir_init",
+        "pooliir_process"
+    ],
+    "funcs_args_idxs": [
+        [
+            5
+        ],
+        [
+            1
+        ]
+    ],
+    "blocklist_c_files": [
+        "fir_hexagon",
+        "fireven_hexagon",
+        "pooliir_hexagon",
+        "qhdsp_fft_internal",
+        "srcThread"
+    ]
+}

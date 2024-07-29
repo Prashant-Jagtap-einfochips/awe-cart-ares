@@ -1,0 +1,67 @@
+%implements s105_b0_435hk_Functions "C"
+
+%function BasicAudio_Target_eml_find_Fcn0(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+int32_T idx;
+int32_T ii;
+boolean_T exitg1;
+/*@>1829c3*/idx/*@>8620b*/ = /*@>18e91d*/0;
+i_size/*@>17f7d2*/[/*@>1829ea*/0]/*@>17f7d3*/ = /*@>18e920*/1;
+/*@>1829c8*/ii/*@>86221*/ = /*@>18e923*/0;
+exitg1 = false;
+while/*@<86229*/ ((!exitg1) && (/*@>1829cb*/ii/*@>86228*/ < /*@>1829cd*/2)) {
+    /*@>86212*/if (/*@>18ab67*/x/*@>18ab69*/[/*@>18ab65*/ii]) {
+        /*@>1829d1*/idx/*@>18e955*/++;
+        /*@>18952d*/i_data[/*@>1829f5*/idx/*@>17f85e*/ - /*@>1829f7*/1]/*@>86202*/ = /*@>1829db*/ii/*@>1803e7*/ + /*@>1829f8*/1;
+        /*@>86215*/if (/*@>1829d8*/idx/*@>861f6*/ >= /*@>1829da*/2) {
+            exitg1 = true;
+        } else {
+            /*@>18e948*/ii/*@>18e956*/++;
+        }
+    } else {
+        /*@>1829d6*/ii/*@>18e957*/++;
+    }
+}
+/*@>1851f8*/if (/*@>1829dd*/idx/*@>17aaa3*/ < /*@>1829df*/1) {
+    i_size/*@>1851fc*/[/*@>1851ff*/1]/*@>1851fb*/ = /*@>18e926*/0;
+} else {
+    i_size/*@>181310*/[/*@>1829fb*/1]/*@>18130f*/ = /*@>1829e1*/idx;
+}
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_eml_find(\
+%assign comma = ""
+%<comma>const boolean_T x[2]\
+%assign comma = ", "
+%<comma>int32_T i_data[]\
+%assign comma = ", "
+%<comma>int32_T i_size[2]\
+%assign comma = ", "
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(51, 0, fcnProtoType)>
+%return fcnBuff
+%endfunction
+
+%function BasicAudio_Target_TestInterfaceFcn_Fcn1(block) void
+%assign fcnBuff = ""
+%openfile fcnBuff
+%assign cfgTxt = ""
+%openfile cfgTxt
+%closefile cfgTxt
+%<cfgTxt>
+%closefile fcnBuff
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void BasicAudio_Target_TestInterfaceFcn(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(51, 1, fcnProtoType)>
+%return fcnBuff
+%endfunction
+

@@ -1,0 +1,84 @@
+#REQ: 0000968F
+#REQ: baf_payload 
+[SYS_NUM_FRAMES 150]
+
+#REQ: 00000085
+#REQ: baf_payload 
+[SYS_LOG_DISABLE LOG_TYPE_PRINT]
+
+#RSP: 00000085 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_DISABLE LOG_TYPE_PRINT] SUCCESS
+
+#REQ: 00000185
+#REQ: baf_payload 
+[SYS_LOG_DISABLE LOG_TYPE_CAPTURE]
+
+#RSP: 00000185 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_DISABLE LOG_TYPE_CAPTURE] SUCCESS
+
+#REQ: 00000285
+#REQ: baf_payload 
+[SYS_LOG_DISABLE LOG_TYPE_EXEC]
+
+#RSP: 00000285 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_DISABLE LOG_TYPE_EXEC] SUCCESS
+
+#REQ: 00000282
+#REQ: baf_payload 
+[SYS_LOG_CIRCULAR LOG_TYPE_EXEC]
+
+#RSP: 00000282 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_CIRCULAR LOG_TYPE_EXEC] SUCCESS
+
+#REQ: 00000284
+#REQ: baf_payload 
+[SYS_LOG_ENABLE LOG_TYPE_EXEC]
+
+#RSP: 00000284 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_ENABLE LOG_TYPE_EXEC] SUCCESS
+
+#REQ: 00000184
+#REQ: baf_payload 
+[SYS_LOG_ENABLE LOG_TYPE_CAPTURE]
+
+#RSP: 00000184 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_ENABLE LOG_TYPE_CAPTURE] SUCCESS
+
+#REQ: 00000000 10000004 00000BB8 000000F0 00000000 0000001E 00000000
+#REQ: baf_payload rtc_id caller_handle gain_index ramp_db_per_second ramp_milliseconds gain_offset
+[PASSTHRU_SINGLE 0] BasicAudioVolumeSet 3000 240 0 30 0
+
+#RSP: 00000000 00000010 04 00 00 10 B8 0B 00 00 00 00 00 00 F0 00 00 00
+#RSP: baf_payload baf_status rtc_id caller_handle status_code gain_index
+[PASSTHRU_SINGLE 0] 16 BasicAudioVolumeSet 3000 0 240
+
+#NTF: 00000003 00000010 04 00 00 10 B8 0B 00 00 01 00 00 00 F0 00 00 00
+#NTF: baf_payload baf_status rtc_id caller_handle status_code gain_index
+[NOTIFICATION 0] 16 BasicAudioVolumeSet 3000 1 240
+
+#REQ: 00000000 10000004 00000FA0 000000FF 00000000 00000009 00000000
+#REQ: baf_payload rtc_id caller_handle gain_index ramp_db_per_second ramp_milliseconds gain_offset
+[PASSTHRU_SINGLE 0] BasicAudioVolumeSet 4000 255 0 9 0
+
+#RSP: 00000000 00000010 04 00 00 10 A0 0F 00 00 00 00 00 00 FF 00 00 00
+#RSP: baf_payload baf_status rtc_id caller_handle status_code gain_index
+[PASSTHRU_SINGLE 0] 16 BasicAudioVolumeSet 4000 0 255
+
+#NTF: 00000003 00000010 04 00 00 10 A0 0F 00 00 01 00 00 00 FF 00 00 00
+#NTF: baf_payload baf_status rtc_id caller_handle status_code gain_index
+[NOTIFICATION 0] 16 BasicAudioVolumeSet 4000 1 255
+
+#REQ: 00000281
+#REQ: baf_payload 
+[SYS_LOG_DUMP LOG_TYPE_EXEC]
+
+#RSP: 00000281 00000000
+#RSP: baf_payload baf_status
+[SYS_LOG_DUMP LOG_TYPE_EXEC] SUCCESS
+

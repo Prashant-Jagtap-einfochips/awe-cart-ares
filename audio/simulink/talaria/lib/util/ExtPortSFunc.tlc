@@ -1,0 +1,260 @@
+%implements ExtPortSFunc "C"
+
+%%   Copyright 2020 Bose Corporation
+
+%addincludepath "../feature_path" 
+%include "FeaturePathCommon.tlc"
+
+%% Dump into the TalariaAPI files
+%function ExtPortFilename() void
+    %return ModelPrefix() + "ExtPorts"
+%endfunction
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+
+    %% Regardless of which type(s) of external port blocks we have, always
+    %% manifest the API for both input and output buffers.
+
+    %% ----- Header -----------------------
+    %assign fileH = LibCreateSourceFile("Header","Custom",FeaturePathGetApiFileName())
+    %openfile buffer
+        struct ExtBufferRecord
+        {
+            const char* name;
+            float       sample_rate_hertz;
+            float       call_rate_hertz;
+            int         frame_samples;
+            int         channel_count;
+            int         task_rate_factor;
+            int         task_id;
+            const char* datatype_name;
+            int         char_width;
+            unsigned char* buffer_ptr;
+        };
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)> 
+    %openfile buffer
+        // ------------------------------------------------------------
+        // SYNCHRONOUS PROCESSING PROGRAMMATIC API
+        // ------------------------------------------------------------
+        int         GetSyncTaskCount( void );
+        void        UpdateStepFlags( unsigned char* flags );
+        void        ProcessStep( int stepNumber);
+
+        // ------------------------------------------------------------
+        // INPUT BUFFER PROGRAMMATIC API
+        // ------------------------------------------------------------
+        int         GetInBufferCount ( void );
+        int         GetInBufferNumber (const char* bufferName);
+        void        GetInBufferSpec (int bufferNumber, struct ExtBufferRecord* spec);
+        int         SetInBufferData (int bufferNumber, const unsigned char* data);
+        // ------------------------------------------------------------
+        // OUTPUT BUFFER PROGRAMMATIC API
+        // ------------------------------------------------------------
+        int         GetOutBufferCount ( void );
+        int         GetOutBufferNumber (const char* bufferName);
+        void        GetOutBufferSpec (int bufferNumber, struct ExtBufferRecord* spec);
+        unsigned char* GetOutBufferData (int bufferNumber);
+
+  %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% ----- Source -----------------------
+    %assign fileH = LibCreateSourceFile("Source","Custom",ExtPortFilename())
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include "%<FeaturePathGetApiFileName()>.h"
+        #include "%<LibGetMdlPrvHdrBaseName()>.h" // for signal buffer symbols
+        #include "%<LibGetMdlPubHdrBaseName()>.h" // for signal buffer symbols
+        #include <string.h>
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+   
+    %% input buffers
+    %<FeaturePathAddTable(fileH,"Definitions","ExtIn")>
+    %openfile buffer
+        struct ExtBufferRecord InRecords[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"ExtInTop",buffer)>
+    %openfile buffer
+        };
+        const int inRecordCount = sizeof(InRecords) / sizeof(struct ExtBufferRecord);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"ExtInBottom",buffer)>
+
+    %% output buffers
+    %<FeaturePathAddTable(fileH,"Definitions","ExtOut")>
+    %openfile buffer
+        struct ExtBufferRecord OutRecords[] = {
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"ExtOutTop",buffer)>
+    %openfile buffer
+        };
+        const int outRecordCount = sizeof(OutRecords) / sizeof(struct ExtBufferRecord);
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"ExtOutBottom",buffer)>
+
+
+    %openfile buffer
+int GetSyncTaskCount( void )
+{
+    return %<LibGetNumSyncPeriodicTasks()>;
+}
+void UpdateStepFlags( unsigned char* theFlags )
+{
+    MODEL_RUN_FLAGS_UPDATE(theFlags);
+    theFlags[0] = true;
+}
+void ProcessStep( int stepNumber)
+{
+    MODEL_STEP(stepNumber);
+}
+
+// ---------------- In buffer access ---------------------------
+int GetInBufferCount ( void )
+{
+    return inRecordCount;
+}
+int GetInBufferNumber (const char* bufferName)
+{
+    int theValue = -1;
+    int i;
+    for (i=0; i < inRecordCount; i++)
+    {
+        struct ExtBufferRecord* theRecord = &InRecords[i];
+        if (0 == strcmp(bufferName, theRecord->name))
+        {
+            theValue = i;
+            break;
+        }
+    }
+    return theValue;
+}
+void GetInBufferSpec(int bufferNumber, struct ExtBufferRecord *spec)
+{
+    if (bufferNumber < inRecordCount)
+    {
+        struct ExtBufferRecord* record = &(InRecords[bufferNumber]);
+        spec->name = record->name;
+        spec->sample_rate_hertz = record->sample_rate_hertz;
+        spec->call_rate_hertz = record->call_rate_hertz;
+        spec->frame_samples = record->frame_samples;
+        spec->channel_count = record->channel_count;
+        spec->task_rate_factor = record->task_rate_factor;
+        spec->task_id = record->task_id;
+        spec->datatype_name = record->datatype_name;
+        spec->char_width = record->char_width;
+        spec->buffer_ptr = record->buffer_ptr;
+    }
+}
+int SetInBufferData (int bufferNumber, const unsigned char* data)
+{
+    int theValue = -1;
+    if (bufferNumber < inRecordCount)
+    {
+        theValue = 0; // return 0, no error
+        struct ExtBufferRecord* theRecord = &(InRecords[bufferNumber]);
+        memcpy(theRecord->buffer_ptr, data, theRecord->char_width);
+    }
+    return theValue;
+}
+
+// ---------------- Out buffer access ---------------------------
+int GetOutBufferCount ( void )
+{
+    return outRecordCount;
+}
+int GetOutBufferNumber (const char* bufferName)
+{
+    int theValue = -1;
+    int i;
+    for (i=0; i < outRecordCount; i++)
+    {
+        struct ExtBufferRecord* theRecord = &OutRecords[i];
+        if (0 == strcmp(bufferName, theRecord->name))
+        {
+            theValue = i;
+            break;
+        }
+    }
+    return theValue;
+}
+void GetOutBufferSpec(int bufferNumber, struct ExtBufferRecord *spec)
+{
+    if (bufferNumber < outRecordCount)
+    {
+        struct ExtBufferRecord* record = &(OutRecords[bufferNumber]);
+        spec->name = record->name;
+        spec->sample_rate_hertz = record->sample_rate_hertz;
+        spec->call_rate_hertz = record->call_rate_hertz;
+        spec->frame_samples = record->frame_samples;
+        spec->channel_count = record->channel_count;
+        spec->task_rate_factor = record->task_rate_factor;
+        spec->task_id = record->task_id;
+        spec->datatype_name = record->datatype_name;
+        spec->char_width = record->char_width;
+        spec->buffer_ptr = record->buffer_ptr;
+    }
+}
+unsigned char* GetOutBufferData (int bufferNumber)
+{
+    unsigned char* theData = 0;
+    if (bufferNumber < outRecordCount)
+    {
+        struct ExtBufferRecord* theRecord = &(OutRecords[bufferNumber]);
+        theData = theRecord->buffer_ptr;
+    }
+    return theData;
+}
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===========================================
+%function BlockInstanceSetup(block, system) void
+
+    %assign IsIn = ParamSettings.IsIn[0][0]
+    %assign bufferName = ParamSettings.BufferName
+    %assign capsBufferName = FEVAL("upper",bufferName)
+    %assign matlabDataTypeName = ParamSettings.MatlabTypeName
+
+    %if IsIn
+        %% Block is like an INPUT port, so use its output signal
+        %assign signalCompilerDataTypeName = LibBlockOutputSignalDataTypeName(0,"")
+        %assign signalDataTypeId = LibBlockOutputSignalDataTypeId(0)
+        %assign signalPtr = LibBlockOutputSignalAddr(0, "", "", 0)
+        %assign width = LibBlockOutputSignalWidth(0)
+        %assign entriesSection = "ExtInEntries"
+    %else
+        %% Block is like an OUTPUT port, so use its input signal
+        %assign signalCompilerDataTypeName = LibBlockInputSignalDataTypeName(0,"")
+        %assign signalDataTypeId = LibBlockInputSignalDataTypeId(0)
+        %assign signalPtr = LibBlockInputSignalAddr(0, "", "", 0)
+        %assign width = LibBlockInputSignalWidth(0)
+        %assign entriesSection = "ExtOutEntries"
+    %endif
+
+    %openfile buffer
+        /* '%<LibGetBlockName(block)>' */
+        {   "%<bufferName>", 
+            %<capsBufferName>_SAMPLE_RATE_IN_HERTZ,
+            %<capsBufferName>_CALL_RATE_IN_HERTZ,
+            %<capsBufferName>_FRAME_SIZE_IN_SAMPLES,
+            %<capsBufferName>_CHANNEL_COUNT,
+            %<capsBufferName>_TASK_RATE_FACTOR,
+            %<capsBufferName>_TASK_ID,
+            "%<matlabDataTypeName>",
+            sizeof(%<signalCompilerDataTypeName>) * %<width>,
+            (unsigned char*)%<signalPtr>
+        },
+    %closefile buffer
+    %assign fileH = LibCreateSourceFile("Source","Custom",ExtPortFilename())
+    %<LibSetSourceFileCustomSection(fileH,entriesSection,buffer)>
+
+%endfunction
+
+

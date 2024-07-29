@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root last_modified_by="" last_modified_date="Wed Jul 17 15:43:07 2024" model="BasicAudio_TAGGED" model_created_date="Tue Jul 12 02:19:20 2016" model_version="7.0" rtw_modified_timestamp="643112028" version="1.0">
+  <Block id="BasicAudio/Input/Input Wave" libref="dspsrcs4/Sine Wave">
+    <Parameter current_value="double(32)" default="1" id="ModelCfg.In.FrameSamples" internal_name="SamplesPerFrame" internal_prompt="Samples per frame:" />
+  </Block>
+  <Block id="BasicAudio/Input/ModelRootInport" libref="EdgePorts/ModelRootInport">
+    <Component classdef="ModelRootInportConfig" id="ModelCfg.In">
+      <Property current_value="'single'" default="'single'" id="DataType" />
+      <Property current_value="double(32)" default="double(32)" id="FrameSamples" />
+      <Property current_value="double(2)" default="double(2)" id="ChannelCount" />
+      <Property current_value="double(48000)" default="double(44100)" id="SampleRateInHertz" />
+      <Property current_value="'UnitTest_Target_AudioIn'" default="'SYSIN'" id="BufferName" />
+      <Property current_value="'ImportedPointer'" default="'Exported'" enum_list="Exported,ImportedDirect,ImportedPointer,ExportedPointer" id="AccessType" />
+    </Component>
+  </Block>
+  <Block id="BasicAudio/Output/ModelRootOutport" libref="EdgePorts/ModelRootOutport">
+    <Component classdef="ModelRootOutportConfig" id="ModelCfg.Out">
+      <Property current_value="'UnitTest_Target_AudioOut'" default="'SYSOUT'" default_by="ModelRootOutportConfig" id="BufferName" />
+      <Property current_value="'ImportedPointer'" default="'Exported'" enum_list="Exported,ImportedDirect,ImportedPointer,ExportedPointer" id="AccessType" />
+    </Component>
+  </Block>
+</root>

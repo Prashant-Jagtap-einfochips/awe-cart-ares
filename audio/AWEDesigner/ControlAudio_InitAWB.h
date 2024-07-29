@@ -1,7 +1,7 @@
 /* ----------------------------------------------------------------------
 ** Static Audio Weaver command packet header file
-** Source file = C:\Users\110468\Downloads\audioWeaver\CustomModule-ARES\audio\AWEDesigner\ControlAudio.awb
-** Created on 21-Jun-2024 15:54:45
+** Source file = C:\Users\110468\Downloads\audioWeaver\CustomModule\awe-cart-ares\audio\AWEDesigner\ControlAudio.awb
+** Created on 29-Jul-2024 15:08:43
 ** ------------------------------------------------------------------- */
 
 #ifdef __cplusplus

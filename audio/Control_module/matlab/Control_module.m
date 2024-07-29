@@ -8,6 +8,7 @@ function M= Control_module(NAME, MODULE)
 %
 
 % AudioWeaverModule [This tag makes it appear under awe_help]
+CONTROL_MAX_PAYLOAD_SIZE = 256
 
 if (nargin < 2) || isempty(MODULE)
     MODULE = 'Mod';
@@ -51,6 +52,9 @@ add_array(M, 'coeff', 'float', zeros(11,1), 'parameter', 'Coefficent Data');
 M.coeff.range=[0 1];
 M.coeff.units='linear';
 
+add_array(M, 'CONTROL_REQUEST', 'uint', zeros(CONTROL_MAX_PAYLOAD_SIZE,1), 'parameter', 'Control Message Request');
+add_array(M, 'CONTROL_RESPONSE', 'uint', zeros(CONTROL_MAX_PAYLOAD_SIZE,1), 'parameter', 'Control Message Response');
+
 % ----------------------------------------------------------------------
 % Code generation details
 % ----------------------------------------------------------------------
@@ -60,6 +64,9 @@ awe_addcodemarker(M, 'getFunction', 'Insert:\InnerControl_Get.c');
 awe_addcodemarker(M, 'constructorFunction', 'Insert:\InnerControl_Construct.c');
 awe_addcodemarker(M, 'discussion', {'Copies the input to the output. '});
 awe_addcodemarker(M, 'hFileInclude', '#include "ModTestAudio.h"');
+
+awe_addcodemarker(M, 'hFileDefine', strcat("#define CONTROL_MAX_PAYLOAD_SIZE " + "256U"));
+
 
 % ----------------------------------------------------------------------
 % Add the inspector information

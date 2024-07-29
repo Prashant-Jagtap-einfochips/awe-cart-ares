@@ -1,0 +1,30 @@
+
+// Profiling Mask Pointer
+extern bool* pProfileMask;
+// Profiling Context Pointer
+extern Profile_Context* pProfileContext;
+// Profiling MIPS parameter table Pointer
+extern const float* pProfileMipsPara;
+// Profiling Counter table Pointer
+//extern const unsigned int* pProfileCounterPara;
+
+
+
+
+
+
+
+void OJ_profileInit(void);
+void OJ_profileEnable(unsigned int profile_target);
+void OJ_profileDisable(unsigned int profile_target);
+void OJ_profileReset(unsigned int profile_target);
+void OJ_profileThreshold(float percentage);
+void OJ_profileCycleOrMips(unsigned int cycle_or_mips);
+#ifdef SAVE_PROFILING_TO_LOCAL
+void OJ_profileSaveToFile(void);
+#endif
+
+
+
+#endif
+

@@ -1,0 +1,462 @@
+%% methods to generate code supporting TSP inports (state capture)
+%% INCLUDED BY: TSP_SFunc.tlc
+
+%%   Copyright 2018 Bose Corporation
+
+%if ::INCLUDE_ASYNC_CONSOLE
+    %include "TSP_AsyncConsole.tlc"
+%endif
+
+%% Function: BlockTypeSetup ===============================================
+%function TSP_CaptureBlockTypeSetup(block, CoreIndex, IsIndirect) void
+
+    %% Acquire Simulink.Parameter objects
+    %assign EnableAdvancedDefine = LibBlockParameter(EnableAdvanced, "", "", 0)
+    %assign CaptureBufSizeDefine = LibBlockParameter(CaptureBufSize, "", "", 0)
+
+    %% Get our configuration settings
+    %assign config=TSP_CaptureGetConfig()
+
+    %% Add include file directly to model source.
+    %assign captureFilename = "%<config.CaptureFileName>.h"
+    %<LibAddToCommonIncludes(captureFilename)>
+
+    %% --------------------------------------------------------------------
+    %% SOURCE FILE *.c config.CaptureFileName source
+    %% --------------------------------------------------------------------
+    %assign fileH = LibCreateSourceFile("Source","Custom",config.CaptureFileName)
+
+    %% Direct addressing sets up common table shared by entire blocktype
+    %if TLC_FALSE == IsIndirect
+        %assign theTable = TspSetupTable(fileH,IsIndirect,0,0)
+    %endif
+    
+    %% Includes :
+    %openfile buffer
+        #include "rtwtypes.h"
+        #include <string.h> // for memcpy
+        #include <stdbool.h>
+        #include "%<config.CaptureFileName>.h"
+        #include "%<LibGetMdlPrvHdrBaseName()>.h" // for TSP signal buffer symbols
+        #include "%<LibGetMdlPubHdrBaseName()>.h" // for TSP signal buffer symbols
+        %if IsIndirect
+        #include "%<FeaturePathGetPartitionFilename()>.h" // for partition root
+        %endif
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %% Typedefs :
+    %openfile buffer
+        // ------ Local data types:
+        // Struct for TSP capture (inport) control table
+        typedef struct %<config.CaptureFileName>_tag
+        {
+            void*         (*GetBlindReadPtr)(void); // Function pointer to get source signal
+            uint32_t            sizeInChar;          // total size of source signal buffer
+            int32_t             rateFactor;          // rate factor, or "0" if constant
+#if (1 == %<EnableAdvancedDefine>)
+            uint32_t            capturesDesired;     // setup by list add: capture count
+            uint32_t            captureSkipInterval; // setup by list add: how many frames to skip between captures
+            uint32_t            capturesComplete;    // counts captures as they happen
+            uint32_t            skipCounter;         // counts skipped frames as they happen
+            int8_t*             captureAddress;      // capture address setup by trigger
+#endif // (1 == %<EnableAdvancedDefine>)
+        } %<config.CaptureFileName>_type;
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Typedefs",buffer)>
+
+    %% Blind Read Address access functions
+    %openfile buffer
+        // ----- Functions to access Blind Read pointers -----
+    %closefile buffer
+    %<LibAddSourceFileCustomSection(fileH, "Enums", "BlindReadFuncs")>
+    %<LibSetSourceFileCustomSection(fileH,"BlindReadFuncs",buffer)>
+
+    %% Emit code for capture only for top-level model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %% Create the capture trigger signal
+        %openfile buffer
+
+#if (1 == %<EnableAdvancedDefine>)
+            // ----- Trigger signal to activate trigger captures and notification state
+            static uint8_t   triggerActive = false;
+            static uint32_t  triggerRequestTotalCaptureCount = 0;
+            static uint32_t  triggerRequestSequence = 0;
+            static uint32_t  triggerRequestCallerHandle = 0;
+            static uint32_t  triggerCompletedTotalCaptureCount = 0;
+            static uint32_t  triggerCompletedSequence = 0;
+            static uint32_t  triggerCompletedCallerHandle = 0;
+            static uint32_t  triggerLastSentSequence = 0;
+#endif // (1 == %<EnableAdvancedDefine>)
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Definitions",buffer)>
+
+        %% Add C language function definitions
+        %openfile buffer
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            %include "tlc_TSP_Capture.c"
+            %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+        %% ------------------- 
+        %% Hook up the TSP notifications to the shared notification service entrypoint
+        %openfile headerFileBuffer
+            // Declare prototype of TSP's notification service handler
+            int %<ModelPrefix()>ServiceTspNotification(void* pNtfBuf, uint32_t ntfBufSize);
+        %closefile headerFileBuffer
+        %openfile handlerCodeBuffer
+            // Handle TSP notifications
+            if (retVal == 0)
+            {
+                retVal = %<ModelPrefix()>ServiceTspNotification(pNtfBuf, ntfBufSize);
+            }
+        %closefile handlerCodeBuffer
+        %<FeaturePathAddAsdNotificationService(headerFileBuffer,handlerCodeBuffer)>
+    %% end of model reference exclusions
+    %endif
+        
+    %% --------------------------------------------------------------------
+    %% HEADER FILE *.h config.CaptureFileName header
+    %% --------------------------------------------------------------------
+    %assign fileH = LibCreateSourceFile("Header","Custom",config.CaptureFileName)
+    %% Includes :
+    %openfile buffer
+        #include "%<FeaturePathGetAsdIdFileName()>.h" // for SimulinkDatatypeId
+        #include "%<config.IdsFileName>.h" // for TSP access message payload struct types
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Includes",buffer)>
+
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %% Add framework entry point to use the request dispatch table
+        %openfile buffer
+            // ------------------------------------------------------------
+            // ACCESS ROUTINES TO GET TSP VALUES
+            // ------------------------------------------------------------
+            // "RTC" style TSP access handler
+            int %<ModelPrefix()>HandleTspRequest(void* pReqBuf, uint32_t reqBufSize,
+                void* pRspBuf, uint32_t rspBufSize);
+
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+    %endif
+    %% Always add the capture function even for model references:
+    %openfile buffer
+        // Capture TSP during step operations
+        void %<ModelPrefix()>TSP_StepCapture(void* tablePtr, uint32_t tableIndex, const void* sourceBuffer);
+
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %% --------------------------------------------------------------------
+    %% HEADER FILE *.h config.IdsFileName header
+    %% --------------------------------------------------------------------
+    %assign fileH = LibCreateSourceFile("Header","Custom",config.IdsFileName)
+    %% Setup a spot to receive TSP access token macro defines
+    %openfile buffer
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            #include <stdint.h>
+            
+            // ------------------------------------------------------------
+            // TSP COMMAND INFO CODES FOUND INSIDE TOKENS
+            // ------------------------------------------------------------
+            #define TSP_COMMAND_LIST_ADD (%<config.TSP_LIST_ADD>U)
+            #define TSP_COMMAND_LIST_SUB (%<config.TSP_LIST_SUB>U)
+            #define TSP_COMMAND_LIST_CLEAR (%<config.TSP_LIST_CLEAR>U)
+            #define TSP_COMMAND_CAPTURE (%<config.TSP_CAPTURE>U)
+            #define TSP_COMMAND_RETRIEVE (%<config.TSP_RETRIEVE>U)
+            #define TSP_COMMAND_BLIND_READ (%<config.TSP_BLIND_READ>U)
+
+            // ------------------------------------------------------------
+            // TSP ACCESS TOKENS
+            // ------------------------------------------------------------
+            %assign CaptureToken = TSP_GetToken(0,IsIndirect,0,0,CoreIndex,config.TSP_CAPTURE,0)
+            %assign ClearToken = TSP_GetToken(0,IsIndirect,0,0,CoreIndex,config.TSP_LIST_CLEAR,0)
+            #define %<ModelPrefix()>TSPID_CAPTURE (%<CaptureToken>U)
+            #define %<ModelPrefix()>TSPID_CLEAR   (%<ClearToken>U)
+        %endif
+    %closefile buffer
+    %<LibAddSourceFileCustomSection(fileH, "Defines", "TSPINDEXES")>
+    %<LibSetSourceFileCustomSection(fileH,"TSPINDEXES",buffer)>
+    %% Setup a spot to receive XML token dump as a comment
+    %openfile buffer
+        // ------------------------------------------------------------
+        // EMBEDDED XML FILE OF TSP TOKEN VALUES
+        // ------------------------------------------------------------
+    /* [XMLBEGIN]<?xml version="1.0" encoding="utf-8"?>
+       <root version="1.0">
+        %if TLC_FALSE == LibIsModelReferenceTarget()
+            %assign CodeIndexStr = SPRINTF("%d",CoreIndex)
+            <Core coreIndex="%<CodeIndexStr>" captureToken="%<CaptureToken>" clearToken="%<ClearToken>"/>
+        %endif
+    %closefile buffer
+    %<LibAddSourceFileCustomSection(fileH, "UserBottom", "XML")>
+    %<LibSetSourceFileCustomSection(fileH,"XML",buffer)>
+    %openfile buffer
+    </root>
+    [XMLEND] */
+    %closefile buffer
+    %<LibAddSourceFileCustomSection(fileH, "UserBottom", "XMLBottom")>
+    %<LibSetSourceFileCustomSection(fileH,"XMLBottom",buffer)>
+
+    %% Emit definitions for TSP access - but only for top-model generation
+    %if TLC_FALSE == LibIsModelReferenceTarget()
+        %openfile buffer
+            // ------------------------------------------------------------
+            // TSP REQUEST PAYLOADS
+            // ------------------------------------------------------------
+            typedef struct TspListAddReqTag
+            {
+                uint32_t msgId;                   // add token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                uint32_t captureCount;            // startChar:4 charSize:4
+                uint32_t skipInterval;            // startChar:8 charSize:4
+            }
+            TspListAddReqType;
+
+            typedef struct TspListSubReqTag
+            {
+                uint32_t msgId;                   // sub token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+            } TspListSubReqType;
+
+            typedef struct TspListClearReqTag
+            {
+                uint32_t msgId;                   // TSPID_CLEAR - send to desired core
+                uint32_t callerHandle;            // startChar:0 charSize:4
+            } TspListClearReqType;
+
+            typedef struct TspCaptureReqTag
+            {
+                uint32_t msgId;                   // TSPID_CAPTURE
+                uint32_t callerHandle;            // startChar:0 charSize:4
+            } TspCaptureReqType;
+
+            typedef struct TspRetrieveReqTag
+            {
+                uint32_t msgId;                   // retrieve token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                uint32_t captureIndex;            // startChar:4 charSize:4
+                uint32_t charOffset;              // startChar:8 charSize:4
+                uint32_t charCount;               // startChar:12 charSize:4
+            } TspRetrieveReqType;
+
+            typedef struct TspBlindReadReqTag
+            {
+                uint32_t msgId;                   // blind read token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                uint32_t charOffset;              // startChar:8 charSize:4
+                uint32_t charCount;               // startChar:12 charSize:4
+            } TspBlindReadReqType;
+
+            typedef struct TspBlindWriteReqTag
+            {
+                uint32_t msgId;                   // blind read token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                uint32_t charOffset;              // startChar:8 charSize:4
+                uint32_t charCount;               // startChar:12 charSize:4
+                int8_t data[];
+            } TspBlindWriteReqType;
+
+            // ------------------------------------------------------------
+            // TSP RESPONSE PAYLOADS
+            // ------------------------------------------------------------
+            typedef struct TspListAddRspTag
+            {
+                uint32_t msgId;                   // list add token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+            } TspListAddRspType;
+
+            typedef struct TspListSubRspTag
+            {
+                uint32_t msgId;                   // list sub token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+            } TspListSubRspType;
+
+            typedef struct TspListClearRspTag
+            {
+                uint32_t msgId;                   // TSPID_CLEAR
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+            } TspListClearRspType;
+
+            typedef struct TspCaptureRspTag
+            {
+                uint32_t msgId;                   // TSPID_CAPTURE
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+            } TspCaptureRspType;
+
+            typedef struct TspRetrieveRspTag
+            {
+                uint32_t msgId;                   // retrieve token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+                uint32_t charCount;               // startChar:8 charSize:4
+                int8_t data[];
+            } TspRetrieveRspType;
+
+            typedef struct TspBlindReadRspTag
+            {
+                uint32_t msgId;                   // blind read token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+                uint32_t charCount;               // startChar:8 charSize:4
+                int8_t data[];
+            } TspBlindReadRspType;
+
+            typedef struct TspBlindWriteRspTag
+            {
+                uint32_t msgId;                   // blind read token for TSP
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t statusCode;               // startChar:4 charSize:4
+            } TspBlindWriteRspType;
+
+            // ------------------------------------------------------------
+            // TSP NOTIFICATION PAYLOADS
+            // ------------------------------------------------------------
+            typedef struct TspCaptureNtfTag
+            {
+                uint32_t msgId;                   // TSPID_CAPTURE
+                uint32_t callerHandle;            // startChar:0 charSize:4
+                int32_t  statusCode;               // startChar:4 charSize:4 ASDSTATUS_RTC_NOTIFICATION
+                uint32_t totalCaptureCount;       // startChar:8 charSize:4
+            } TspCaptureNtfType;
+        %closefile buffer
+        %<LibSetSourceFileSection(fileH,"PrimitiveTypedefs",buffer)>
+    
+
+        %%---------------------------------------------------------------------
+        %% [SHARED_HANDLER] ASDID HANDLER FUNCTION INTEGRATION
+        %openfile includeBuffer
+            #include "%<config.CaptureFileName>.h" // for TSP msg handler
+        %closefile includeBuffer
+        %openfile handlerBuffer
+            if (ASDID_IS_TSP(asdId))
+            {
+                retVal = %<ModelPrefix()>HandleTspRequest(pReqBuf,reqBufSize,pRspBuf,rspBufSize);
+            }
+        %closefile handlerBuffer
+        %<FeaturePathAddAsdIdHandler(includeBuffer,handlerBuffer)>
+    %% endif for model reference omission
+    %endif
+
+    %if ::INCLUDE_ASYNC_CONSOLE
+        %<TspAsyncConsoleSetup(block, system)>
+    %endif
+
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function TSP_CaptureBlockInstanceSetup(block, system) void
+
+    %% Get our configuration settings
+    %assign config=TSP_CaptureGetConfig()
+    %assign IsIndirect = ParamSettings.IsIndirect[0][0]
+    %assign GroupNumber = ParamSettings.GroupNumber[0][0]
+    %assign PartitionNumber = ParamSettings.PartitionNumber[0][0]
+
+    %assign DTypeConstName = ["TSS_DOUBLE","TSS_SINGLE","TSS_INT8","TSS_UINT8","TSS_INT16","TSS_UINT16","TSS_INT32","TSS_UINT32","TSS_BOOLEAN"]
+    %assign DTypeConstCount = SIZE(DTypeConstName)[1]
+
+    %assign Path        = ParamSettings.Path
+    %assign CoreIndex   = (ParamSettings.CoreIndex[0][0] & 7)
+    %assign RateFactor  = CAST("Unsigned", %<LibGetClockTickStepSize(block.TID)/LibGetClockTickStepSize(0)>)
+
+    %% Retrieve hard fought special input sample time value
+    %assign IsConstantIn = ParamSettings.IsConstantIn[0][0]
+    %if IsConstantIn
+        %assign RateFactor = 0U
+    %endif
+
+    %% Acquire Simulink.Parameter objects
+    %assign EnableAdvancedDefine = LibBlockParameter(EnableAdvanced, "", "", 0)
+    %assign CaptureBufSizeDefine = LibBlockParameter(CaptureBufSize, "", "", 0)
+    %assign AdditionalCaptureCodeCheck = TspGetAdditionalCaptureCodeCheck(block)
+
+    %% use the data type id given to us by the sfunc, not the *actual* dtypeid
+    %% from the port (which could be tricky fixed point numbers)
+    %assign DTypeID     = ParamSettings.DTypeID[0][0]
+    %if (DTypeID < DTypeConstCount)
+        %assign DtName = DTypeConstName[DTypeID]
+    %else
+        %assign DtName = "(SimulinkDatatypeId)%<DTypeID>"
+    %endif
+
+    %assign DTypeStr = ParamSettings.DTypeStr
+
+    %assign dataTypeName  = LibBlockInputSignalDataTypeName(0, "")
+    %assign width         = LibBlockInputSignalWidth(0)
+
+    %% Set up entries for this TSP in the capture source file
+    %assign fileH = LibCreateSourceFile("Source","Custom",config.CaptureFileName)
+    %% ... first, the blind read function
+    %openfile buffer
+        /*  Blind read for '%<LibGetBlockName(block)>' */
+        static void* GetTspBlind%<Path>( void )
+        {
+            return (void*)(%<LibBlockInputSignalAddr(0, "", "", 0)>);
+        }
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"BlindReadFuncs",buffer)>
+
+    %% Figure out this specific TSP's control record locator
+    %assign MyIndex = GETFIELD(::TSP_REC,Path)
+    %addtorecord block BlockTspIndex MyIndex %% For Update function
+
+    %% ... and now the control table and record
+    %assign TableName = TspSetupTable(fileH,IsIndirect,GroupNumber,PartitionNumber)
+    %addtorecord block BlockTspTable TableName %% For Update function
+    %openfile buffer
+        /*  "%<Path>" '%<LibGetBlockName(block)>' Rate-Factor:%<RateFactor>*/
+        {  /*Index %<TableName>.%<MyIndex>*/
+           &GetTspBlind%<Path>, 
+           sizeof(%<dataTypeName>) * %<width>,
+           %<RateFactor>
+#if (1 == %<EnableAdvancedDefine>)
+%if ISEMPTY(AdditionalCaptureCodeCheck)
+            ,0,0,0,0,(int8_t*)NULL
+%else
+    #if 1%<AdditionalCaptureCodeCheck>
+            ,0,0,0,0,(int8_t*)NULL
+    #else
+            ,0,(uint32_t)-1,0,0,(int8_t*)NULL
+    #endif
+%endif
+#endif // (1 == %<EnableAdvancedDefine>)
+        },
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"%<TableName>%<MyIndex>",buffer)>
+
+    %% Calculate this TSP's many tokens
+    %assign addToken      = TSP_GetToken(0,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,config.TSP_LIST_ADD,MyIndex)
+    %assign subToken      = TSP_GetToken(0,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,config.TSP_LIST_SUB,MyIndex)
+    %assign retrieveToken = TSP_GetToken(0,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,config.TSP_RETRIEVE,MyIndex)
+    %assign blindReadToken= TSP_GetToken(0,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,config.TSP_BLIND_READ,MyIndex)
+    %assign blindWriteToken=TSP_GetToken(1,IsIndirect,GroupNumber,PartitionNumber,CoreIndex,config.TSP_BLIND_READ,MyIndex)
+
+    %% Write XML in comment of the "IDs" file
+    %assign fileH = LibCreateSourceFile("Header","Custom",config.IdsFileName)
+    %openfile buffer
+        <TSP id="%<Path>" addToken="%<addToken>" subToken="%<subToken>" retrieveToken="%<retrieveToken>" blindReadToken="%<blindReadToken>" blindWriteToken="%<blindWriteToken>" dataType="%<DTypeStr>" width="%<width>" dimensions="%<LibBlockInputSignalDimensions(0)>" coreIndex="%<FeaturePathGetCoreIndex()>" coreTag="%<FeaturePathGetCoreTag()>"/>
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"XML",buffer)>
+    %openfile buffer
+        #define TSP_ADD_%<Path> (%<addToken>U)
+        #define TSP_SUB_%<Path> (%<subToken>U)
+        #define TSP_RETRIEVE_%<Path> (%<retrieveToken>U)
+        #define TSP_BLIND_READ_%<Path> (%<blindReadToken>U)
+    %closefile buffer
+    %<LibSetSourceFileCustomSection(fileH,"TSPINDEXES",buffer)>
+
+    %if ::INCLUDE_ASYNC_CONSOLE
+        %<TspAsyncConsoleBlockInstance(block, system)>
+    %endif
+
+
+%endfunction
+

@@ -1,0 +1,15 @@
+thread_level,process_id,max_cycles,min_cycles,avg_cycles
+0,sys_cr1_in,1,1,1.0
+0,BasicAudio_Target_step0,1,1,1.0
+0,sys_cr1_out,1,1,1.0
+
+
+thread_level,process_id,max_mips,min_mips,avg_mips
+0,sys_cr1_in,0.0015,0.0015,0.0015
+0,BasicAudio_Target_step0,0.0015,0.0015,0.0015
+0,sys_cr1_out,0.0015,0.0015,0.0015
+
+Totals
+thread_level,process_id,max_mips,min_mips,avg_mips
+,,0.0045000000000000005,0.0045000000000000005,0.0045000000000000005
+

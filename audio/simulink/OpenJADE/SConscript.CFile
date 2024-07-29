@@ -1,0 +1,34 @@
+import os
+
+Import('env')
+#Import('jframework')
+Import('target')
+Import('jmodule')
+
+#local_env = env.Clone(
+#    CPPPATH=['.', runtime+'/Audio_Graph', runtime+'/BAF', runtime, 'JModule_Lib', 'JModule_Lib/Sys', config_path] +
+#            [jmodule['Path'] for jmodule in jframework['JModule']]
+#    )
+local_env = env.Clone()
+
+source_list = []
+
+for cFile in jmodule['CModel']['CFiles'] :
+    source_list += ['./' + jmodule['CModel']['Path'] + '/' + cFile]
+
+def my_lib_emitter(target, source, env):
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+CModel = local_env.Library(
+    target = target,
+    source = source_list )
+
+Return("CModel")

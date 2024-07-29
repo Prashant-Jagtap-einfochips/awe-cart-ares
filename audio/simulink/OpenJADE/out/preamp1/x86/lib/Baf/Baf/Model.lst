@@ -1,0 +1,9 @@
+BasicAudio_Target.c
+BasicAudio_Target_BasicAudio0_TOP.c
+BasicAudio_Target_RTC_NTF.c
+BasicAudio_Target_RTC_REQ_RSP.c
+BasicAudio_Target_SCH_API.c
+BasicAudio_Target_StructStaticInit.c
+BasicAudio_Target_TOP_Access.c
+BasicAudio_Target_TalariaAPI.c
+BasicAudio_Target_data.c

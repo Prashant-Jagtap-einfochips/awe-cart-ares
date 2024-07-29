@@ -1,0 +1,48 @@
+import os
+
+Import('env')
+Import('jframework')
+
+#local_env = env.Clone(
+#    CPPPATH=['.', runtime+'/Audio_Graph', runtime+'/BAF', runtime, 'JModule_Lib', 'JModule_Lib/Sys', config_path] +
+#            [jmodule['Path'] for jmodule in jframework['JModule']]
+#    )
+
+#if ('SOC_ID' in jframework) and ('CORE_ID' in jframework) :
+#    local_env.Append(CPPFLAGS=['-DSOC_ID='+jframework['SOC_ID'],'-DCORE_ID='+jframework['CORE_ID']])
+#source_list = ['JModule_Lib/Sys/JModule_Adapt_Sys.c', 'JModule_Lib/Sys/JModule_Desc_Sys.c',  'JModule_Lib/JModule_List.c', 'Audio_Graph/Audio_Graph.c', 'Audio_Graph/Connection_List.c', 'Audio_Graph/Execution_List.c', 'Audio_Graph/Port_List.c', 'Audio_Graph/Module_List.c']
+#for jmodule in  jframework['JModule']:
+#    if ('TalariaModel' in jmodule) and jmodule['TalariaModel']:
+#        local_env.Append(CPPFLAGS=['-DMODEL='+jmodule['TalariaModel']['Name']])
+#    source_list.append( jmodule['Path'] + '/JModule_Adapt_' + jmodule['Name']+'.c')
+#    source_list.append( jmodule['Path'] + '/JModule_Desc_'  + jmodule['Name']+'.c')
+
+#dirs = ['Audio_Graph/', 'JModule_Lib/', 'JModule_Lib/Sys'] + ['JModule_Lib/' + x + '/' for x in jframework['ModuleNames']]
+#
+#for dir in dirs : 
+#    Execute(Mkdir(dir))
+
+target_list = ['Audio_Graph/Audio_Graph.c', 'Audio_Graph/Connection_List.c', 'Audio_Graph/Execution_List.c', 'Audio_Graph/Module_List.c', 'Audio_Graph/Port_List.c', 'JModule_Lib/JModule_Id.h', 'JModule_Lib/JModule_List.c']
+
+for module in jframework['ModuleNames'] :
+    target_list += ['JModule_Lib/' + module + '/' + 'JModule_Adapt_' + module + '.h','JModule_Lib/' + module + '/' + 'JModule_Adapt_' + module + '.c', 'JModule_Lib/' + module + '/' + 'JModule_Desc_' + module + '.h', 'JModule_Lib/' + module + '/' + 'JModule_Desc_' + module + '.c']
+
+target_list += ['JModule_Lib/Sys/JModule_Adapt_Sys.h', 'JModule_Lib/Sys/JModule_Adapt_Sys.c', 'JModule_Lib/Sys/JModule_Desc_Sys.h', 'JModule_Lib/Sys/JModule_Desc_Sys.c']
+                                                       #JModule_Lib/Sys/JModule_Adapt_Sys.c
+
+source_list = []
+
+for name in jframework['ModuleNames'] :
+    source_list += [name + '.xml']
+
+source_list += [jframework['FrameworkName'] + '.xml']
+
+source_list += ['Sys.xml']
+
+source_list += ['ReadXML.txt'] + ['ParamSchema.json']
+
+xml_builder = env.XmlReader(
+    target = target_list, 
+    source = source_list)
+
+Return("xml_builder")

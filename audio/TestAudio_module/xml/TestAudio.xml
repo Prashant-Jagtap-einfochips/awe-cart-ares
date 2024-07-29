@@ -15,6 +15,13 @@
         <property propsheet = 'Build Settings' name='objectAlias' type='string' value=''/>
         <property propsheet = 'Build Settings' name='clockDivider' type='string' value='' isValueEditable='0'/>
         <property propsheet = 'Build Settings' name='isTunable' type='bool' value='1' min = '0'/>
+        <property propsheet = 'Array: CONTROL_REQUEST' name='CONTROL_REQUEST' description='Control Message Request' dim1='256' type='uint'  isRangeEditable='0' format='%.10g' hide='0' isComplex='0'/>
+        <property propsheet = 'Array: CONTROL_RESPONSE' name='CONTROL_RESPONSE' description='Control Message Response' dim1='256' type='uint'  isRangeEditable='0' format='%.10g' hide='0' isComplex='0'/>
+        <property propsheet = 'Variables' name='STATE' description='Toggles AudioPP Active/Bypass' type='int'  isRangeEditable='0' value='1' format='%.10g' hide='1' isComplex='0'/>
+        <property propsheet = 'Variables' name='logCTRL' description='Debug Start/Stop' type='int'  isRangeEditable='0' value='1' format='%.10g' hide='1' isComplex='0'/>
+        <property propsheet = 'Variables' name='pHandle' description='Instance handle' type='int'  isRangeEditable='0' value='' format='%g' hide='1' isComplex='0'/>
+        <property propsheet = 'Variables' name='validCtrlRsp' description='valid control response' type='int'  isRangeEditable='0' value='0' format='%.10g' hide='1' isComplex='0'/>
+        <property propsheet = 'Variables' name='algoState' description='algorithm state active/bypass' type='int'  isRangeEditable='0' value='0' format='%.10g' hide='1' isComplex='0'/>
         <property propsheet = 'Variables' name='gain' description='Linear gain' type='int' min='0' max='10' step='' isRangeEditable='1' value='1' format='%.10g' hide='0' isComplex='0'/>
         <property propsheet = 'Array: coeff' name='coeff' description='Coefficent Data' dim1='11' type='float' min='0' max='1' step='' isRangeEditable='1' format='%g' hide='0' isComplex='0'/>
         <pin name='in' legend='in' usage='input' pos='left' show='0' hide='0'  />

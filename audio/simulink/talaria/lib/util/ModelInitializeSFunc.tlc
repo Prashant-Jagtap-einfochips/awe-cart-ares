@@ -1,0 +1,92 @@
+%implements ModelInitializeSFunc "C"
+
+%%   Copyright 2020 Bose Corporation
+
+%%-------------------------------------------------------------------------
+%% ModelBlockCallFunction: Copied from %MATLABROOT%\rtw\c\tlc\block\modelref.tlc
+%function ModelBlockCallFunction(block, system, sysFcn, localTid) Output
+  %if Accelerator
+    /* Call into Simulink */
+    %if sysFcn == "SystemInitialize"
+      %<SLibCallMdlRefSystemInitializeInSimulink(system, block)>
+    %elseif sysFcn == "SystemReset"
+      %<SLibCallMdlRefSystemResetInSimulink(system, block)>
+    %else
+      %assign accFunction = GetAcceleratorStringForFunction(sysFcn)
+      %<SLibCallBlockInSimulink(system, block, accFunction)>
+    %endif
+  %else
+    %<GetFunctionStr(block, sysFcn, 0, localTid, 0, "")>
+  %endif
+%endfunction
+
+%%-------------------------------------------------------------------------
+%% Create our own model reference block function to get model initialize
+%function OurModelInitialize(block, system) Output
+  %assign sysFcn = "Registration"
+  %assign blockInterface = GetModelrefInterface(block)
+  %if ISFIELD(blockInterface, "%<sysFcn>Fcn")
+    %<ModelBlockCallFunction(block, system, sysFcn, "")>
+  %endif
+%endfunction
+
+%%-------------------------------------------------------------------------
+%function BlockTypeSetup(block, system) void
+    %assign TalariaResetName = "TalariaReset"
+    %assign IsTriggered = (LibBlockSampleTime(block) == -1.0)
+    %if IsTriggered
+        %openfile buffer
+         extern void %<TalariaResetName>%<LibGetModelName()>( void );
+        %closefile buffer
+        %<LibCacheFunctionPrototype(buffer)>
+    %endif
+%endfunction
+
+%%-------------------------------------------------------------------------
+%function Outputs(block, system) Output
+    %assign TalariaResetName = "TalariaReset"
+    %assign SampleTime = LibBlockSampleTime(block)
+    %assign IsTriggered = (LibBlockSampleTime(block) == -1.0)
+    %if IsTriggered
+        /* ModelInitializeSFunc invoke reset function '%<LibGetBlockName(block)>' */
+        %<TalariaResetName>%<LibGetModelName()>();
+    %else
+        %if ISFIELD(system,"IncludedModelReference")
+            %assign NumModelRef = SIZE(system.IncludedModelReference)[1]
+            %foreach  r = NumModelRef
+                %assign Idx = system.IncludedModelReference[r].BlockIdx
+                %assign refBlock = system.Block[Idx]
+                %assign ReferencedModelName = refBlock.ParamSettings.ReferencedModelName
+
+                %openfile buffer
+                    /* ModelInitializeSFunc define reset function '%<LibGetBlockName(block)>' for model block '%<LibGetBlockName(refBlock)>' */
+                    void %<TalariaResetName>%<ReferencedModelName>( void )
+                    {
+                        %if ParamSettings.doModelInit[0][0]
+                            /* Model Initialize aka Registration */
+                            %<OurModelInitialize(refBlock,system)>
+                        %endif
+                        %if ParamSettings.doSystemInit[0][0]
+                            /* SystemInitialize */
+                            %<GENERATE(refBlock,"SystemInitialize",system)>
+                        %endif
+                        %if ParamSettings.doInitConditions[0][0]
+                            /* InitializeConditions */
+                            %<GENERATE(refBlock,"InitializeConditions",system)>
+                        %endif
+                        %if ParamSettings.doSystemReset[0][0]
+                            /* SystemReset */
+                            %<GENERATE(refBlock,"SystemReset",system)>
+                        %endif
+                        %if ParamSettings.doStart[0][0]
+                            /* Start */
+                            %<GENERATE(refBlock,"Start",system)>
+                        %endif
+                    }
+                %closefile buffer
+                %assign srcFile = LibGetModelDotCFile()
+                %<LibSetSourceFileSection(srcFile, "Functions", buffer)>
+            %endforeach  
+        %endif
+    %endif
+%endfunction

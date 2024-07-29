@@ -1,0 +1,71 @@
+// Profiling Mask Pointer
+extern bool* pProfileMask;
+// Profiling Context Pointer
+extern Profile_Context* pProfileContext;
+// Profiling MIPS parameter table Pointer
+extern const real32_T* pProfileMipsPara;
+// Profiling Counter table Pointer
+extern const uint32_t* pProfileCounterPara;
+
+
+// Profiling Configuration
+extern uint32_t profile_cycleOrmips;
+// Profiling threshold (0 - 1)
+extern real32_T profile_threshold;
+
+
+
+
+
+
+void OJ_profileInit(void);
+void OJ_profileEnable(uint32_t profile_target);
+void OJ_profileDisable(uint32_t profile_target);
+void OJ_profileReset(uint32_t profile_target);
+void OJ_profileThreshold(real32_T percentage);
+void OJ_profileCycleOrMips(uint32_t cycle_or_mips);
+
+
+#ifdef PROFILE_STARTSTOP_INLINE
+static inline void OJ_profileStart(uint32_t profile_target)
+{
+    if (pProfileMask[profile_target] == true) {
+        pProfileContext[profile_target].start_counter = READ_CLOCKCYCLE;
+    }
+}
+
+static inline void OJ_profileStop(uint32_t profile_target)
+{
+    uint32_t tmp;
+    Profile_Context* puser = &pProfileContext[profile_target];
+    uint32_t final_counter = READ_CLOCKCYCLE - puser->start_counter;
+    
+
+    puser->start_counter = 0;
+    tmp = puser->cur_cycles + final_counter;
+    if ((tmp < 100000000) && (puser->prof_counter < 0xFFFFFF00)) {
+        puser->avg_value = (real32_T)(tmp + puser->prof_counter * puser->avg_value) / (puser->prof_counter + 1);    
+        puser->peak_value = (puser->peak_value > (real32_T)tmp) ? (puser->peak_value) : (real32_T)(tmp);
+        puser->prof_counter += 1;
+        if (puser->prof_counter > pProfileCounterPara[profile_target]) {
+            // Do statistical collection
+            if (tmp - puser->avg_value >= puser->avg_value * PROFILE_THRESHOLD) {
+                puser->over_counter += 1;
+
+            }
+        }
+    }
+    puser->cur_cycles = 0; 
+}
+#else
+void OJ_profileStart(uint32_t profile_target);
+void OJ_profileStop(uint32_t profile_target);
+#endif
+
+
+//void ContextSwitchHook(void* current_task_ptr, void* ready_task_ptr);
+void ContextSwitchHook(int32_t current_prio, int32_t ready_prio);
+
+
+#endif
+

@@ -1,0 +1,90 @@
+%implements HW_Verify_SFunc "C"
+
+%%   Copyright 2018 Bose Corporation
+
+%% Function: BlockTypeSetup ===============================================
+%function BlockTypeSetup(block, system) void
+    %assign HWV_Filename = "HW_Verify"
+
+    %% Add include file directly to model header
+    %% Could use %<LibAddToCommonIncludes(typedefHdrFileShort+".h")> but that wouldn't annotate with who we are
+    %assign fileH = LibGetModelDotHFile()
+    %openfile buffer
+        #include "%<HWV_Filename>.h" // from HW_Verify_SFunc.tlc
+    %closefile buffer
+    %% Add to "defines" which should come after the includes
+    %<LibSetSourceFileSection(fileH,"Defines",buffer)>
+
+    %assign fileH = LibCreateSourceFile("Header","Custom",HWV_Filename)
+    %openfile buffer
+        %include "tlc_HW_Verify.h"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+
+    %assign fileH = LibCreateSourceFile("Source","Custom",HWV_Filename)
+    %openfile buffer
+        %include "tlc_HW_Verify.c"
+    %closefile buffer
+    %<LibSetSourceFileSection(fileH,"Functions",buffer)>
+%endfunction
+
+%% Function: BlockInstanceSetup ===============================================
+%function BlockInstanceSetup(block, system) void
+
+%endfunction
+
+
+
+
+%% Function: InitializeConditions =============================
+%% Insert code into startup initialization to verify that the model's
+%% hardware configuration settings match the discovered hardware
+%% characteristics found on the target.
+%function Start(block, system) Output
+    /* %<Type> Block: %<Name> */
+    // Fill out expected hardware implmentation values
+    HWV_HWImpl expectedHW = 
+    {
+        %<ConfigSet.ProdBitPerChar>, /*ProdBitPerChar*/
+        %<ConfigSet.ProdBitPerShort>, /*ProdBitPerShort*/
+        %<ConfigSet.ProdBitPerInt>, /*ProdBitPerInt*/
+        %<ConfigSet.ProdBitPerLong>, /*ProdBitPerLong*/
+        %<ConfigSet.ProdBitPerLongLong>, /*ProdBitPerLongLong*/
+        %<ConfigSet.ProdBitPerFloat>, /*ProdBitPerFloat*/
+        %<ConfigSet.ProdBitPerDouble>, /*ProdBitPerDouble*/
+        %<ConfigSet.ProdBitPerPointer>, /*ProdBitPerPointer*/
+        %<ConfigSet.ProdBitPerSizeT>, /*ProdBitPerSizeT*/
+        %<ConfigSet.ProdBitPerPtrDiffT>, /*ProdBitPerPtrDiffT*/
+        HWV_%<ConfigSet.ProdEndianess>,    /*ProdEndianess*/
+        HWV_%<ConfigSet.ProdIntDivRoundTo>, /*ProdIntDivRoundTo*/
+        %<ConfigSet.ProdShiftRightIntArith>, /*ProdShiftRightIntArith*/
+        %<ConfigSet.ProdLongLongMode>, /* ProdLongLongMode */
+        %<ConfigSet.PortableWordSizes>, /* PortableWordSizes*/
+        "%<ConfigSet.ProdHWDeviceType>" /* ProdHWDeviceType*/
+    };
+    // create struct to hold actual HW implmentation values discovered
+    HWV_HWImpl actualHW;
+    HWV_HWImpl_TestResults resultsHW;
+
+    // Gather actual hardware implementation results and compare
+    HWV_HardwareVerifyImplementation(&actualHW,&expectedHW,&resultsHW);
+    
+    // If anything does not match up, execute the failure code
+    if (resultsHW.bitsPerChar.status        == HWV_FAIL ||
+        resultsHW.bitsPerShort.status       == HWV_FAIL ||
+        resultsHW.bitsPerInt.status         == HWV_FAIL ||
+        resultsHW.bitsPerLong.status        == HWV_FAIL ||
+        resultsHW.bitsPerLongLong.status    == HWV_FAIL ||
+        resultsHW.bitsPerFloat.status       == HWV_FAIL ||
+        resultsHW.bitsPerDouble.status      == HWV_FAIL ||
+        resultsHW.bitsPerPointer.status     == HWV_FAIL ||
+        resultsHW.bitsPerSizeT.status       == HWV_FAIL ||
+        resultsHW.bitsPerPtrDiffT.status    == HWV_FAIL ||
+        resultsHW.byteOrder.status          == HWV_FAIL ||
+        resultsHW.intDivRoundTo.status      == HWV_FAIL ||
+        resultsHW.shiftRightBehavior.status == HWV_FAIL ||
+        resultsHW.supportLongLong.status    == HWV_FAIL )
+    {
+    %<ParamSettings.Callback>
+    }
+%endfunction

@@ -1,0 +1,94 @@
+%implements s2_b0_h85hk_TLCInterface "C"
+
+%function getSystemOutputFcnCallInfo_2_3_1_0_1_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>2c77*/BasicAudio_InterpretationEngine64_ifunc"; Args [] }
+%return fcnInfo
+%endfunction
+%function getOutputAddr_2_0_1_1_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_CoreIndexSFunc
+
+%return "&/*@<2d01*//*@>2cf7*/rtb_CoreIndexSFunc"
+%endfunction
+
+%function getOutput_2_0_1_1_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_CoreIndexSFunc
+
+%return "/*@>2d10*/rtb_CoreIndexSFunc"
+%endfunction
+
+%function getOutputAddr_2_2_1_1_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<2d5f*//*@>2d53*/BasicAudio_InterpretationEngine64_B./*@>2d65*/TSP"
+%endfunction
+
+%function getOutput_2_2_1_1_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>2d73*/BasicAudio_InterpretationEngine64_B./*@>2d86*/TSP"
+%endfunction
+
+%function getParamAddr_2_2_1_1_2_1_1(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCPAddr(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParam_2_2_1_1_2_1_1(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCP(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParamAddr_2_2_1_1_2_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCPAddr(block, 0, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParam_2_2_1_1_2_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCP(block, 0, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getInputAddr_2_6_1_1_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<2dd0*//*@>2dc4*/BasicAudio_InterpretationEngine64_B./*@>2dd6*/State"
+%endfunction
+
+%function getInput_2_6_1_1_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>2de4*/BasicAudio_InterpretationEngine64_B./*@>2df7*/State"
+%endfunction
+
+%function getOutputAddr_2_2_1_1_6_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<2e39*//*@>2e2d*/BasicAudio_InterpretationEngine64_B./*@>2e3f*/TSP"
+%endfunction
+
+%function getOutput_2_2_1_1_6_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>2e4d*/BasicAudio_InterpretationEngine64_B./*@>2e60*/TSP"
+%endfunction
+
+%function getParamAddr_2_2_1_1_6_1_1(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCPAddr(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParam_2_2_1_1_6_1_1(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCP(block, 1, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParamAddr_2_2_1_1_6_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCPAddr(block, 0, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getParam_2_2_1_1_6_1_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return SLibCGB_CSCP(block, 0, 1, "", lcv, ucv, sigIdx, reim)
+%endfunction
+
+%function getSystemOutputFcnCallInfo_2_3_1_1_1_0(opaqueBlk) void
+%assign _modelSS = ""
+%createrecord fcnInfo { Name "/*@>2c7b*/BasicAudio_InterpretationEngine64_ifunc"; Args [] }
+%return fcnInfo
+%endfunction

@@ -1,0 +1,14 @@
+#ifndef RTW_HEADER_BasicAudio_RTC_COMPAT_h_
+#define RTW_HEADER_BasicAudio_RTC_COMPAT_h_
+
+// Auto-generated code for model BasicAudio
+/**** RTC TOKEN COMPATIBILITY HASH VALUES ****/
+#define RTC_COMPAT {0x1A7BF40EUL}
+#define RTC_COMPAT_NAME {"BasicAudio"}
+#define RTC_COMPAT_NAME_HASH {0x9FD22631UL}
+/**** COMPAT HASH VALUES BY MODULE ****/
+#define BASICAUDIO_RTC_COMPAT 0x1A7BF40EUL
+/**** NAME HASH VALUES BY MODULE ****/
+#define BASICAUDIO_RTC_NAME_HASH 0x9FD22631UL
+
+#endif /* RTW_HEADER_BasicAudio_RTC_COMPAT_h_ */

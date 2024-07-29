@@ -1,0 +1,14 @@
+#ifndef RTW_HEADER_BasicAudio_TSP_COMPAT_h_
+#define RTW_HEADER_BasicAudio_TSP_COMPAT_h_
+
+// Auto-generated code for model BasicAudio
+/**** TSP TOKEN COMPATIBILITY HASH VALUES ****/
+#define TSP_COMPAT {0xD202EF8DUL}
+#define TSP_COMPAT_NAME {"BasicAudio"}
+#define TSP_COMPAT_NAME_HASH {0x9FD22631UL}
+/**** COMPAT HASH VALUES BY MODULE ****/
+#define BASICAUDIO_TSP_COMPAT 0xD202EF8DUL
+/**** NAME HASH VALUES BY MODULE ****/
+#define BASICAUDIO_TSP_NAME_HASH 0x9FD22631UL
+
+#endif /* RTW_HEADER_BasicAudio_TSP_COMPAT_h_ */
