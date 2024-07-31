@@ -209,9 +209,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>TestAudioLib.lib;FrameDLL.lib;Baf1.lib;Baf2_1.lib;Baf2_2.lib;Baf2_3.lib;Baf2_4.lib;Baf2_5.lib;Baf2_6.lib;Baf3.lib;Baf4.lib;Baf5.lib</AdditionalDependencies>
+      <AdditionalDependencies>TestAudioLib.lib;FrameDLL.lib;Baf.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../../lib/VC2019/release</AdditionalLibraryDirectories>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <PostBuildEvent>
       <Command>if not exist "C:\DSP Concepts\AWE Designer 8.D.2.3 Pro\Bin\win32-vc142-rel\..\win32-vc142-rel" mkdir "C:\DSP Concepts\AWE Designer 8.D.2.3 Pro\Bin\win32-vc142-rel\..\win32-vc142-rel"
