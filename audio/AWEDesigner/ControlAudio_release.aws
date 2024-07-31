@@ -8,10 +8,10 @@
 0,bind_wire,wire1,Input
 0,bind_wire,wire2,Output
 0,create_module,Control1,ModuleControl,0,0,0
-0,write_float_array,Control1.coeff[0],0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+0,write_float_array,Control1.coeff[0],0.0,0.5,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
 0,create_module,SYS_toFloat,ModuleTypeConversion,1,1,0,wire1,wire3,1,0
 0,create_module,SYS_deint,ModuleDeinterleave,1,4,0,wire3,wire4,wire5,wire5,wire5
-0,create_module,TestAudio1,ModuleTestAudio,1,1,0,wire4,wire5,0,0,0,1,1
+0,create_module,TestAudio1,ModuleTestAudio,1,1,0,wire4,wire5,0,0,5,1,1
 0,create_module,Sink1,ModuleSink,1,0,0,wire5,0
 0,write_float_array,Sink1.yRange[0],-5.0,5.0
 0,create_module,SYS_inter,ModuleInterleave,1,1,0,wire5,wire4

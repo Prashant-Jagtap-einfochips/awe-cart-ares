@@ -194,7 +194,7 @@ void awe_modTestAudioProcess(void *pInstance)
     
     if (S->algoState == AUDIOPP_STATE_ACTIVE)
     {
-    #if 0
+    #if 1
         BAF *pBAF = (BAF *)S->pHandle;
         BAF_exec(pBAF, BASE_TASKID, (void *)pInstance);
     #else

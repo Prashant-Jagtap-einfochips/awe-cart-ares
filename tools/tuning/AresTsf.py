@@ -30,7 +30,7 @@ class AresTsf(object):
     def __init__(self, tsf_file=None, argv=None):
         if argv is not None:
             tsf_file = self._parse_args(argv)
-            self._tsf_file = "C:\\Users\\110468\\Downloads\\audioWeaver\\CustomModule-ARES-Set1\\audio\\AWEDesigner\\ControlAudio_release.tsf"
+            self._tsf_file = "C:\\Users\\110468\\Downloads\\audioWeaver\\CustomModule\\awe-cart-ares\\audio\\AWEDesigner\\ControlAudio_release.tsf"
             self.tsf_symbols = {}
             self._parse_tsf_file()
 
