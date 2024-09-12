@@ -1,0 +1,9 @@
+; TestModuleDLL.def : Declares the module parameters for the DLL.
+
+LIBRARY		 "BoseAudio"
+
+EXPORTS
+	; Explicit exports go here
+	ModuleDepend
+	RegisterModules
+	GetSchema

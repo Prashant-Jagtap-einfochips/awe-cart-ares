@@ -1,0 +1,37 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 7
+    },
+    "configurePresets": [
+        {
+            "name": "win32-rel",
+            "displayName": "Windows Win32 (x86) Release",
+            "description": "Build for Win32 (x86) release with MSBuild",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "architecture": "Win32"
+        },
+        {
+            "name": "win32-dbg",
+            "displayName": "Windows Win32 (x86) Debug",
+            "description": "Build for Win32 (x86) debug with MSBuild",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "architecture": "Win32"
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "win32-rel",
+            "configurePreset": "win32-rel",
+            "configuration": "Release"
+        },
+        {
+            "name": "win32-dbg",
+            "configurePreset": "win32-dbg",
+            "configuration": "Debug"
+        }
+    ]
+}
