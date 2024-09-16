@@ -10,8 +10,9 @@ import glob
 from makers import maker
 
 defaults = {
-    'matlab_loc': 'C:\\Program Files\\MATLAB\\R2022b\\',
-    'make_name': 'make_bose_audio_post_processing'
+    #'matlab_loc': 'C:\\Program Files\\MATLAB\\R2022b\\',
+    'matlab_loc': '/mnt/c/Program Files/MATLAB/R2022b/',
+    'make_name': 'make_TestAudio_module_pack'
 }
 
 def define_common_args(parser):
@@ -20,7 +21,7 @@ def define_common_args(parser):
 
 class MatlabAWEMaker(maker.Maker):
     # Will assume a default AWE package
-    MATLAB_EXE = 'bin\\matlab.exe'
+    MATLAB_EXE = 'bin/matlab.exe'
     
     def __init__(self, args):
         self.name = type(self).__name__
@@ -50,10 +51,12 @@ class MatlabAWEMaker(maker.Maker):
         cmd += '"' + os.path.join(self.matlab, self.MATLAB_EXE) + '"'
         cmd += ' -batch '
         cmd += '" '
+        cmd += 'addpath(\'C:/DSP Concepts/AWE Designer 8.D.2.6 Pro/matlab\'); '
         cmd += 'awe_init; '
-        cmd += 'addpath ' + os.path.join(maker.PROJECT_ROOT, 'matlab') + '; '
+        cmd += 'addpath(\'C:/data/work/develop-ares/matlab\'); '
         cmd += self.make_name + '; '
         cmd += 'awe_server_command(\'exit\'); '
         cmd += 'quit force; '
         cmd += '"'
         self.cmd = cmd
+
