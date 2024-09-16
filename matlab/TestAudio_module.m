@@ -18,6 +18,9 @@ end
 M.name=NAME;
 M.defaultName='TestAudio';
 
+% Set to interpreted, this prevents breakpoints but allows usage with Standard license
+M.isInterpreted = 1
+
 % Add input and output pins with no data or size restrictions
 PT=new_pin_type([], [], [], '*32', []);
 add_pin(M, 'input', 'in', 'Input signal', PT);
