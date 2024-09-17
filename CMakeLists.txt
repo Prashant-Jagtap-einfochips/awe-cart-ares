@@ -48,8 +48,8 @@ add_library(BoseAudio SHARED
             ${INCLUDE_DIR}/TestAudio.h
             ${CMAKE_CURRENT_LIST_DIR}/TestAudioSchema.cpp
             ${BUILD_DLL_DIR}/ModulelibDLL.cpp
-            ${BUILD_DLL_DIR}/ModuleLibDLL.def
-            ${BUILD_DLL_DIR}/ModuleTable.cpp
+            ${BUILD_DLL_DIR}/ModuleLibDLLAudio.def
+            ${BUILD_DLL_DIR}/ModuleTableAudio.cpp
             ${BUILD_DLL_DIR}/Resource.h
             ${BUILD_DLL_DIR}/stdafx.cpp
             ${BUILD_DLL_DIR}/stdafx.h)
@@ -68,4 +68,32 @@ target_link_options(BoseAudio PUBLIC "/SAFESEH:NO")
 target_link_libraries(BoseAudio PUBLIC BoseAudioLib
                                 PUBLIC ${FRAME_DLL_LIB}
                                 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/build/CART/BAF/lib/Baf2.lib)
+
+# BoseControlLib.lib
+add_library(BoseControlLib STATIC 
+            ${SOURCE_DIR}/ModControl.c)
+
+target_include_directories(BoseControlLib PUBLIC ${INCLUDE_DIR})
+
+# BoseControl.dll
+add_library(BoseControl SHARED 
+            ${INCLUDE_DIR}/Control.h
+            ${CMAKE_CURRENT_LIST_DIR}/ControlSchema.cpp
+            ${BUILD_DLL_DIR}/ModulelibDLL.cpp
+            ${BUILD_DLL_DIR}/ModuleLibDLLControl.def
+            ${BUILD_DLL_DIR}/ModuleTableControl.cpp
+            ${BUILD_DLL_DIR}/Resource.h
+            ${BUILD_DLL_DIR}/stdafx.cpp
+            ${BUILD_DLL_DIR}/stdafx.h)
+
+target_include_directories(BoseControl PUBLIC 
+                           ${BUILD_DLL_DIR}
+                           ${INCLUDE_DIR}
+                           ${CMAKE_CURRENT_LIST_DIR}
+                           ${SOURCE_DIR}
+                           ${INCLUDE_DIR}/Targets)
+
+# Link the custom module library and FrameDll.lib to DLL
+target_link_libraries(BoseControl PUBLIC BoseControlLib
+                                  PUBLIC ${FRAME_DLL_LIB})
 

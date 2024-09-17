@@ -1,0 +1,11 @@
+; TestModuleDLL.def : Declares the module parameters for the DLL.
+
+LIBRARY		 "ModulePackAweAdvancedDLL"
+
+EXPORTS
+	; Explicit exports go here
+	ModuleDepend
+	ModuleVersion
+	RegisterModules
+	RegisterModules2
+	GetSchema
