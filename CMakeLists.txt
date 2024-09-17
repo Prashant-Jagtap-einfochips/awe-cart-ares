@@ -35,6 +35,7 @@ ENDIF (MSVC)
 # BoseAudioLib.lib
 add_library(BoseAudioLib STATIC 
             ${SOURCE_DIR}/ModTestAudio.c
+            ${SOURCE_DIR}/mathwrap.c
             ${SOURCE_DIR}/BAF_callbacks.c)
 
 target_include_directories(BoseAudioLib PUBLIC ${INCLUDE_DIR})
