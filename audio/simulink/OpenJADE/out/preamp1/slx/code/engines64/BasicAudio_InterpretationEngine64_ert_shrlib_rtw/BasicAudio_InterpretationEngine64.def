@@ -1,9 +1,0 @@
-        EXPORTS
-        BasicAudio_InterpretationEngine64_M
-    BasicAudio_InterpretationEngine64_initialize
-            BasicAudio_InterpretationEngine64_step
-        BasicAudio_InterpretationEngine64_terminate
-
-
-        
-
