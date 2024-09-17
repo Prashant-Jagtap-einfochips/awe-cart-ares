@@ -1,0 +1,37 @@
+# Bose Coding Standard
+
+# Brace style
+--style=stroustrup          # FMT01.2
+
+# Tab options
+--indent=spaces=4           # FMT05.1
+
+# Brace modifier options
+--attach-closing-while      # Proposed change to FMT01.2
+                            # https://wiki.bose.com/display/PAGODA/CR001
+
+# Indentation options
+--indent-switches           # EXP02.1
+--min-conditional-indent=0  # Aligns multi-line conditions with opening paren
+
+# Padding options
+--break-blocks              # FMT07.1
+--pad-oper                  # FMT04.3
+--pad-comma                 # FMT04.9
+--pad-header                # FMT04.1
+--unpad-paren               # FMT04.7, FMT04.8
+--align-pointer=type        # Proposed new recommendation FMT07
+                            # https://wiki.bose.com/display/PAGODA/CR001
+
+# Formatting options
+--break-closing-braces      # FMT01.2
+--break-one-line-headers    # Proposed change to FMT01.2
+                            # https://wiki.bose.com/display/PAGODA/CR001
+--add-braces                # FMT01.1
+--attach-return-type        # Proposed new recommendation FMT05.6
+                            # https://wiki.bose.com/display/PAGODA/CR001
+--convert-tabs              # FMT05.1
+
+# Other options
+--preserve-date
+

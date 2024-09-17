@@ -21,59 +21,55 @@
 #include "BAF.h"
 #include "ModTestAudio.h"
 
-void BAF_Callback_sys_process_ctx(uint32_t proc_Id, uint32_t frame_size, uint32_t num_chan_in, uint32_t num_chan_out, void *src, void *dst, void *arg)
+void BAF_Callback_sys_process_ctx(uint32_t proc_Id, uint32_t frame_size, uint32_t num_chan_in, uint32_t num_chan_out, void* src, void* dst, void* arg)
 {
-    awe_modTestAudioInstance *S = (awe_modTestAudioInstance*)arg;
-    WireInstance **pWires = ClassModule_GetWires(S);
+    awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)arg;
+    WireInstance** pWires = ClassModule_GetWires(S);
     UINT32 numInPins = ClassModule_GetNInWires(S);
-    FLOAT32 *ptrSrc = (FLOAT32 *)(pWires[0]->buffer);
-    FLOAT32 *ptrDst = (FLOAT32 *)(pWires[numInPins]->buffer);
-    FLOAT32 *ptrSrcBaf = (FLOAT32 *)src;
-    FLOAT32 *ptrDstBaf = (FLOAT32 *)dst;
+    FLOAT32* ptrSrc = (FLOAT32*)(pWires[0]->buffer);
+    FLOAT32* ptrDst = (FLOAT32*)(pWires[numInPins]->buffer);
+    FLOAT32* ptrSrcBaf = (FLOAT32*)src;
+    FLOAT32* ptrDstBaf = (FLOAT32*)dst;
     UINT32 numChannelsIn = ClassWire_GetChannelCount(pWires[0]);
     UINT32 numChannelsOut = ClassWire_GetChannelCount(pWires[numInPins]);
     UINT32 blockSize = ClassWire_GetBlockSize(pWires[0]);
     UINT32 i = 0;
     UINT32 j = 0;
 
-    if (proc_Id == 0)
-    {
+    if (proc_Id == 0) {
         /* Audio input channels */
-        for (i = 0; i < numChannelsIn; i++)
-        {
-           FLOAT32 *pSrc = (ptrSrc + i);
-           FLOAT32 *pDst = ptrDstBaf + (i * blockSize);
-           for (j = 0; j < blockSize; j++)
-           {
-              *pDst = *pSrc;
-              pSrc += numChannelsIn;
-              pDst += 1;
-           }
+        for (i = 0; i < numChannelsIn; i++) {
+            FLOAT32* pSrc = (ptrSrc + i);
+            FLOAT32* pDst = ptrDstBaf + (i * blockSize);
+
+            for (j = 0; j < blockSize; j++) {
+                *pDst = *pSrc;
+                pSrc += numChannelsIn;
+                pDst += 1;
+            }
         }
     }
-    else if (proc_Id == 1)
-    {
+    else if (proc_Id == 1) {
         /* Audio output channels */
-        for (i = 0; i < numChannelsOut; i++)
-        {
-           FLOAT32 *pSrc = ptrSrcBaf + (i * blockSize);
-           FLOAT32 *pDst = (ptrDst + i);
-           for (j = 0; j < blockSize; j++)
-           {
-              *pDst = *pSrc;
-              pSrc += 1;
-              pDst += numChannelsOut;
-           }
+        for (i = 0; i < numChannelsOut; i++) {
+            FLOAT32* pSrc = ptrSrcBaf + (i * blockSize);
+            FLOAT32* pDst = (ptrDst + i);
+
+            for (j = 0; j < blockSize; j++) {
+                *pDst = *pSrc;
+                pSrc += 1;
+                pDst += numChannelsOut;
+            }
         }
     }
 }
 
-int BAF_printf(const char *format, ...)
+int BAF_printf(const char* format, ...)
 {
     return 0;
 }
 
-void BAF_Callback_post(uint32_t priority, void *arg)
+void BAF_Callback_post(uint32_t priority, void* arg)
 {
 
 }
@@ -88,8 +84,8 @@ uint32_t BAF_Callback_clock(void)
     return 0;
 }
 
-uint32_t BAF_Callback_Stats(uint32_t *log, uint32_t len, uint32_t start_stop)
+uint32_t BAF_Callback_Stats(uint32_t* log, uint32_t len, uint32_t start_stop)
 {
-   return 0;
+    return 0;
 }
 
