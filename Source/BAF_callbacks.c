@@ -89,3 +89,20 @@ uint32_t BAF_Callback_Stats(uint32_t* log, uint32_t len, uint32_t start_stop)
     return 0;
 }
 
+typedef void BAF_Semaphore;
+
+BAF_Semaphore* BAF_Semaphore_create(uint32_t count)
+{
+    return 0;
+}
+
+void BAF_Semaphore_post(BAF_Semaphore* sem)
+{
+
+}
+
+void BAF_Semaphore_pend(BAF_Semaphore* sem)
+{
+
+}
+

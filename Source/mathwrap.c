@@ -1,3 +1,7 @@
+
+// Math functions wrapped to fix linker errors
+// Adapted from c/Program\ Files\ \(x86\)/Windows\ Kits/10/Include/10.0.22621.0/ucrt/corecrt_math.h
+
 #define _Check_return_
 #define __CRTDECL
 #define _In_
@@ -34,5 +38,9 @@ _Check_return_ float __CRTDECL expf(_In_ float _X)
 _Check_return_ float __CRTDECL sqrtf(_In_ float _X)
 {
     return (float)sqrt(_X);
+}
+_Check_return_ float __CRTDECL fmodf(_In_ float _X, _In_ float _Y)
+{
+    return (float)fmod(_X, _Y);
 }
 
