@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <Buffer id="N01S1_1_D1_8_F12">
+    <Signal id="ARM_Out1" output_block="Model/ARM" output_number="1" />
+  </Buffer>
+  <Buffer id="N02S1_10_D1_8_F12">
+    <Signal id="InLineRMS_Mic" output_block="Model/InLineRMS" output_number="1" />
+  </Buffer>
+  <Buffer id="N03S1_8_D1_2_F12">
+    <Signal id="InputSelect_ENT" output_block="Model/InputSelect" output_number="1" />
+    <Signal id="InputSelect_ANN" output_block="Model/InputSelect" output_number="2" />
+    <Signal id="InputSelect_Mic" output_block="Model/InputSelect" output_number="3" />
+  </Buffer>
+  <Buffer id="N06S1_2_D1_3_F13">
+    <Signal id="NEAR_NearEnable" output_block="Model/NEAR" output_number="5" />
+    <Signal id="AudioPilot35_MusicOut" output_block="Model/PreAmp/DeciRate/AudioPilot35" output_number="1" />
+  </Buffer>
+  <Buffer id="N04S1_2_D1_7_F13">
+    <Signal id="NEAR_NearFr" output_block="Model/NEAR" output_number="3" />
+    <Signal id="NEAR_NearNonHrOutDr" output_block="Model/NEAR" output_number="1" />
+  </Buffer>
+  <Buffer id="N05S1_2_D1_6_F13">
+    <Signal id="NEAR_NearHrOutDr" output_block="Model/NEAR" output_number="2" />
+  </Buffer>
+  <Buffer id="N00S1_7_D1_9_F12">
+    <Signal id="PostProcess_Out1" output_block="Model/PostProcess" output_number="1" />
+  </Buffer>
+  <Buffer id="N15S1_6_D1_2_F13">
+    <Signal id="HFRefSelector_Out1" output_block="Model/PreAmp/DeciRate/Medusa5H3/HFRefSelector" output_number="1" />
+  </Buffer>
+  <Buffer id="N07S1_3_D1_2_F13">
+    <Signal id="MedusaPart1Bands_Mono" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart1Bands" output_number="6" />
+    <Signal id="MedusaPart2Fdp_HfRef" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart2Fdp" output_number="3" />
+  </Buffer>
+  <Buffer id="N10S1_3_D1_4_F13">
+    <Signal id="MedusaPart3Mixing_FullRateMixerComps" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="5" />
+    <Signal id="MedusaPart3Mixing_PeripheralComps" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="4" />
+  </Buffer>
+  <Buffer id="N08S1_3_D1_6_F13">
+    <Signal id="MedusaPart3Mixing_HeadrestGains" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="1" />
+    <Signal id="MedusaPart3Mixing_HfRefSurround" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="6" />
+  </Buffer>
+  <Buffer id="N09S1_3_D1_5_F13">
+    <Signal id="MedusaPart3Mixing_OverheadComps" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="3" />
+    <Signal id="MedusaPart3Mixing_HeadrestComps" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart3Mixing" output_number="2" />
+  </Buffer>
+  <Buffer id="N12S1_4_D1_6_F13">
+    <Signal id="MedusaPart4PeripheralEqs_PeripheralChannels" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart4PeripheralEqs" output_number="1" />
+    <Signal id="MedusaPart4PeripheralEqs_FullRateChannels" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart4PeripheralEqs" output_number="2" />
+  </Buffer>
+  <Buffer id="N11S1_5_D1_6_F13">
+    <Signal id="MedusaPart5OverheadEq_OverheadChannels" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart5OverheadEq" output_number="1" />
+    <Signal id="MedusaPart6HeadrestEq_HeadrestChannels" output_block="Model/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart6HeadrestEq" output_number="1" />
+  </Buffer>
+  <Buffer id="N13S1_6_D1_7_F13">
+    <Signal id="PreAmpPart2_FRSpkr" output_block="Model/PreAmp/DeciRate/Medusa5H3/PreAmpPart2" output_number="1" />
+    <Signal id="PreAmpPart2_DRNonHeadrestSpkr" output_block="Model/PreAmp/DeciRate/Medusa5H3/PreAmpPart2" output_number="2" />
+    <Signal id="VLS_VLSOut" output_block="Model/PreAmp/DeciRate/Medusa5H3/VLS" output_number="1" />
+  </Buffer>
+  <Buffer id="N14S1_6_D1_3_F13">
+    <Signal id="PreAmpPart2_FadeGains" output_block="Model/PreAmp/DeciRate/Medusa5H3/PreAmpPart2" output_number="2" />
+  </Buffer>
+</root>

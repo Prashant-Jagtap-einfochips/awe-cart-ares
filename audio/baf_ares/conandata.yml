@@ -1,0 +1,39 @@
+# These version are artifact number in Artifactory, not tag number in git repository.
+version: '0.0.01'
+
+# package dependencies
+requirements:
+  - 'model/1.0.3@bosecorp'
+
+tags:
+
+source:
+
+config:
+  Windows:
+    'ip5_multi_x64_dll':
+        'ip5_x64_dll'
+  Neutrino:
+     'ip5_multi_rel_lib':
+        'ip5_rel_lib'
+  Linux:
+     'ip5_multi_linux':
+        'ip5_linux'
+
+ip5_rel_lib:
+  'arch': ['hexagon_v66','hexagon_v73','qnx_nto_aarch64']
+ip5_multi_rel_lib:
+  'arch': 'hexagon_v73'
+ip5_linux:
+  'arch': 'amd64'
+ip5_multi_linux:
+  'arch': 'amd64'
+
+ # architecture buid tools (the default path is specified in SConfig.py if the arch is not listed)
+tools_path:
+  'x86': '${MATLAB_MINGW_6_3}/bin/'
+  'x64': '${MATLAB_MINGW_6_3}/bin/'
+  'matlab': '${MATLAB_R2022B}/'
+  'hexagon': '${HEXAGON_SDK_5_3_0}/tools/HEXAGON_Tools/8.6.05/Tools/bin/'
+  'qnx_nto_aarch64': '${QNX_SDP_7_1}/'
+

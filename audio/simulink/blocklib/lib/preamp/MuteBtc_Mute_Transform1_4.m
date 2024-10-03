@@ -1,6 +1,0 @@
-function outData = MuteBtc_Mute_Transform1_4(inData)
-% Transform function automatically created by AutomateMask
-   outData = MaskUtil.TransformFunctionRename(inData, ...
-      {'MaskFeatureName'}, ...
-      {'FeatureName'});
-end

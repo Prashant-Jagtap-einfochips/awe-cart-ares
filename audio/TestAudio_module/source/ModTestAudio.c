@@ -194,9 +194,15 @@ void awe_modTestAudioProcess(void *pInstance)
     
     if (S->algoState == AUDIOPP_STATE_ACTIVE)
     {
-    #if 0
+    #if 1
         BAF *pBAF = (BAF *)S->pHandle;
-        BAF_exec(pBAF, BASE_TASKID, (void *)pInstance);
+        //BAF_exec(pBAF, BASE_TASKID, (void *)pInstance);
+        BAF_schedule(pBAF, (void*)pInstance);
+        /*for (i = 0; i < numSamples; i++)
+        {
+            *pDst = 1;
+            pDst += 1;
+        }*/
     #else
     	WireInstance **pWires = ClassModule_GetWires(S);
         UINT32 numInPins = ClassModule_GetNInWires(S);
@@ -408,6 +414,20 @@ UINT32 awe_modTestAudioGet(void *pInstance, UINT32 mask)
     return 0;
 }
 
+_Check_return_ float __CRTDECL floorf(_In_ float _X)
+{
+    return (float)floor(_X);
+}
+
+_Check_return_ float __CRTDECL ceilf(_In_ float _X)
+{
+    return (float)ceil(_X);
+}
+
+_Check_return_ float __CRTDECL log10f(_In_ float _X)
+{
+    return (float)log10(_X);
+}
 
 #ifdef __cplusplus
 }

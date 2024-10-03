@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="Message_Id.xsl"?>
+<root version="1.0">
+	<ERROR id="SUCCESS" Value="0"/>
+	<ERROR id="ERROR_OUT_OF_MEMORY" Value="-127"/>
+	<ERROR id="ERROR_BAD_ALIGNMENT" Value="-126"/>,
+	<ERROR id="ERROR_JMODULE_NOT_FOUND" Value="-125"/>,
+	<ERROR id="ERROR_INVALID_MODULE" Value="-124"/>,
+	<ERROR id="ERROR_PORT_NOT_FOUND" Value="-123"/>,
+	<ERROR id="ERROR_INDEX_OUT_OF_RANGE" Value="-122"/>,
+	<ERROR id="ERROR_BAD_CALL_INTERVAL" Value="-121"/>,
+	<ERROR id="ERROR_MODULE_TOO_MANY" Value="-120"/>,
+	<ERROR id="ERROR_EXEC_TOO_MANY" Value="-119"/>,
+	<ERROR id="ERROR_BUFFER_TOO_MANY" Value="-118"/>,
+	<ERROR id="ERROR_BAD_CONNECTION" Value="-117"/>,
+	<ERROR id="ERROR_MODULE_NULL" Value="-116"/>,
+	<ERROR id="ERROR_INVALID_LOG" Value="-115"/>,
+	<ERROR id="ERROR_ENABLED_LOG" Value="-114"/>,
+	<ERROR id="ERROR_BUFFER_TOO_SMALL" Value="-113"/>,
+	<ERROR id="ERROR_BUFFER_NULL" Value="-112"/>,
+	<ERROR id="WARNING_PORT_NOT_CONNECTED" Value="-111"/>
+	<ERROR id="ERROR_INVALID_COMMAND" Value="-110"/>,
+	<LOGGER id="LOG_TYPE_PRINT" Token="0x00000000"/>
+	<LOGGER id="LOG_TYPE_CAPTURE" Token="0x00000001"/>
+	<LOGGER id="LOG_TYPE_EXEC" Token="0x00000002"/>
+	<MESSAGE id="PASSTHRU_SINGLE" Token="0x00000000">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Passthru message to specific JModule (first in the Module_List_obj, by default)
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="PASSTHRU_BROADCAST" Token="0x00000001">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="8" bit_width="24"/>
+		<Description>
+		Passthru message to all JModules
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="VERSION" Token="0x00000002">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="8" bit_width="24"/>
+		<Description>
+		Version query
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="NOTIFICATION_POLL" Token="0x00000003">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="8" bit_width="24"/>
+		<Description>
+		Polling message. Invokes the poll API for all JModules
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="NOTIFICATION" Token="0x00000004">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Id for notification response, received by the notification callback
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="MESSAGE_PASSTHRU_SINGLE_BLIND" Token="0x00000005">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Passthru message to specific JModule, no response (first in the Module_List_obj, by default)
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="MESSAGE_PASSTHRU_BROADCAST_BLIND" Token="0x00000006">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="8" bit_width="24"/>
+		<Description>
+		Passthru message to all JModules, no response
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="MESSAGE_ADD_STAT" Token="0x00000007">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="StatId" bit_offset="8" bit_width="4"/>
+		<Signal id="Reserved" bit_offset="12" bit_width="4"/>
+		<Signal id="Size" bit_offset="16" bit_width="16"/>
+		<Description>
+		Add stat monitoring variable of certain size
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="MESSAGE_GET_STAT" Token="0x00000008">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="StatId" bit_offset="8" bit_width="4"/>
+		<Signal id="Size" bit_offset="12" bit_width="4"/>
+		<Signal id="Offset" bit_offset="16" bit_width="16"/>
+		<Description>
+		Return stat monitoring content
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_START" Token="0x00000080">
+		<Signal id="Reserved" bit_offset="0" bit_width="32"/>
+		<Description>
+		SYS messages start tag
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_DUMP" Token="0x00000081">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Dump log messages using printf, if implemented
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_CIRCULAR" Token="0x00000082">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Set logger to circular mode
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_LINEAR" Token="0x00000083">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Set logger to linear mode. Logging will stop after buffer is full
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_ENABLE" Token="0x00000084">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Enable (unfreeze) logging
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_DISABLE" Token="0x00000085">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Disable (freeeze) logging
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_FRAMEWORK" Token="0x00000086">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="8" bit_width="24"/>
+		<Description>
+		Dump framework content using printf, if implemented
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_PRINT" Token="0x00000087">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="16" bit_width="16"/>
+		<Description>
+		Place message into the logger
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_LOG_PULL" Token="0x00000088">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="LoggerID" bit_offset="8" bit_width="8"/>
+		<Signal id="Count" bit_offset="16" bit_width="16"/>
+		<Description>
+		Pull Count data records from the specific log. Each record is 64-bits in size
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_CAPTURE_IN" Token="0x00000089">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="PortID" bit_offset="24" bit_width="8"/>
+		<Description>
+		Input port capture
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_CAPTURE_OUT" Token="0x0000008A">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="PortID" bit_offset="24" bit_width="8"/>
+		<Description>
+		Output port capture
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_MUTE_SINGLE" Token="0x0000008B">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="24" bit_width="8"/>
+		<Description>
+		Mute Process0 outputs of specific JModule
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_BYPASS_SINGLE" Token="0x0000008C">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="24" bit_width="8"/>
+		<Description>
+		Copy Process0, Port0 input to output of specific JModule. If input buffer is smaller than output buffer, the input is repeated.
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_ACTIVE_SINGLE" Token="0x0000008D">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="24" bit_width="8"/>
+		<Description>
+		Activate (run JModule process API) of the specific JModule. Processes are all active by default
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_GEN_SINGLE" Token="0x0000008E">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="JModuleID" bit_offset="8" bit_width="8"/>
+		<Signal id="JModuleProcessID" bit_offset="16" bit_width="8"/>
+		<Signal id="Reserved" bit_offset="24" bit_width="8"/>
+		<Description>
+		Place internal wave generator at the Process0 outputs of specific JModule
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_NUM_FRAMES" Token="0x0000008F">
+		<Signal id="MsgID" bit_offset="0" bit_width="8"/>
+		<Signal id="NumFrames" bit_offset="8" bit_width="24"/>
+		<Description>
+		Halt processing after NumFrames frames
+		</Description>
+	</MESSAGE>
+	<MESSAGE id="SYS_END" Token="0x00000090">
+		<Signal id="Reserved" bit_offset="0" bit_width="32"/>
+		<Description>
+		SYS messages end tag
+		</Description>
+	</MESSAGE>
+</root>
+
+

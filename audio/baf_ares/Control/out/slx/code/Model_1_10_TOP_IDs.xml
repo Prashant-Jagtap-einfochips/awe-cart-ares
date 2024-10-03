@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="MicInRMSChannelEnable" writeToken="0x00600000" readToken="0x80600000" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_10" coreIndex="10"/>
+        <TOP id="MicInRMSmovingAvgLen" writeToken="0x00600001" readToken="0x80600001" dataType="uint32" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_10" coreIndex="10"/>
+</root>

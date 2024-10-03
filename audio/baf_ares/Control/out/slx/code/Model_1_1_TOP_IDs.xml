@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="ArmPreAmpAtmosDnRefMixerWeights_514" writeToken="0x00400001" readToken="0x80400001" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpAtmosDnRefMixerWeights_L_R" writeToken="0x00400002" readToken="0x80400002" dataType="single" width="8" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassBoostCoeffs" writeToken="0x00400003" readToken="0x80400003" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassBoostMaximum_dB" writeToken="0x00400004" readToken="0x80400004" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassCutCoeffs" writeToken="0x00400005" readToken="0x80400005" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassCutMaximum_dB" writeToken="0x00400006" readToken="0x80400006" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassOffset" writeToken="0x00400007" readToken="0x80400007" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassScale" writeToken="0x00400008" readToken="0x80400008" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpBassramptime" writeToken="0x00400009" readToken="0x80400009" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgBoostCoeffs" writeToken="0x0040000a" readToken="0x8040000a" dataType="single" width="5" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgBoostMaximum_dB" writeToken="0x0040000b" readToken="0x8040000b" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgCutCoeffs" writeToken="0x0040000c" readToken="0x8040000c" dataType="single" width="5" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgCutMaximum_dB" writeToken="0x0040000d" readToken="0x8040000d" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgOffset" writeToken="0x0040000e" readToken="0x8040000e" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgRampTime" writeToken="0x0040000f" readToken="0x8040000f" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpMidrangeCfgScale" writeToken="0x00400010" readToken="0x80400010" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleBoostCoeffs" writeToken="0x00400011" readToken="0x80400011" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleBoostMaximum_dB" writeToken="0x00400012" readToken="0x80400012" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleCutCoeffs" writeToken="0x00400013" readToken="0x80400013" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleCutMaximum_dB" writeToken="0x00400014" readToken="0x80400014" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleOffset" writeToken="0x00400015" readToken="0x80400015" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleScale" writeToken="0x00400016" readToken="0x80400016" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpTrebleramptime" writeToken="0x00400017" readToken="0x80400017" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpVolumeRefCfgRampTime" writeToken="0x00400018" readToken="0x80400018" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpVolumeRefCfgTable_dB" writeToken="0x0040001a" readToken="0x8040001a" dataType="single" width="8" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpVolumeRefCfgmaxgain" writeToken="0x0040001b" readToken="0x8040001b" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpAtmosDnRefMixerStereoDnMix" writeToken="0x00400000" readToken="0x80400000" dataType="uint32" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+        <TOP id="ArmPreAmpVolumeRefCfgTable_Idx" writeToken="0x00400019" readToken="0x80400019" dataType="uint32" width="8" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_1" coreIndex="1"/>
+</root>

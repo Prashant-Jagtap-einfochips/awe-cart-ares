@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <REQ id="GetTalariaVersion1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="1" coreTag="1_1" id="GetTalariaVersion1" msgId="0x10f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="1" coreTag="1_1" id="GetTopCompatHash1" msgId="0x10f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="1" coreTag="1_1" id="GetTspCompatHash1" msgId="0x10f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="1" coreTag="1_1" id="GetRtcCompatHash1" msgId="0x10f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="2" coreTag="1_2" id="GetTalariaVersion2" msgId="0x20f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="GetTopCompatHash2" msgId="0x20f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="GetTspCompatHash2" msgId="0x20f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="GetRtcCompatHash2" msgId="0x20f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash3">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="3" coreTag="1_3" id="GetTalariaVersion3" msgId="0x30f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="3" coreTag="1_3" id="GetTopCompatHash3" msgId="0x30f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="3" coreTag="1_3" id="GetTspCompatHash3" msgId="0x30f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="3" coreTag="1_3" id="GetRtcCompatHash3" msgId="0x30f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash4">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="4" coreTag="1_4" id="GetTalariaVersion4" msgId="0x40f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="4" coreTag="1_4" id="GetTopCompatHash4" msgId="0x40f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="4" coreTag="1_4" id="GetTspCompatHash4" msgId="0x40f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="4" coreTag="1_4" id="GetRtcCompatHash4" msgId="0x40f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash5">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="5" coreTag="1_5" id="GetTalariaVersion5" msgId="0x50f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="5" coreTag="1_5" id="GetTopCompatHash5" msgId="0x50f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="5" coreTag="1_5" id="GetTspCompatHash5" msgId="0x50f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="5" coreTag="1_5" id="GetRtcCompatHash5" msgId="0x50f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash6">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="6" coreTag="1_6" id="GetTalariaVersion6" msgId="0x60f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="GetTopCompatHash6" msgId="0x60f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="GetTspCompatHash6" msgId="0x60f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="GetRtcCompatHash6" msgId="0x60f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash7">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="7" coreTag="1_7" id="GetTalariaVersion7" msgId="0x70f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="GetTopCompatHash7" msgId="0x70f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="GetTspCompatHash7" msgId="0x70f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="GetRtcCompatHash7" msgId="0x70f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash0">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="8" coreTag="1_8" id="GetTalariaVersion0" msgId="0x00f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="8" coreTag="1_8" id="GetTopCompatHash0" msgId="0x00f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="8" coreTag="1_8" id="GetTspCompatHash0" msgId="0x00f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="8" coreTag="1_8" id="GetRtcCompatHash0" msgId="0x00f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash1">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="9" coreTag="1_9" id="GetTalariaVersion1" msgId="0x10f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="GetTopCompatHash1" msgId="0x10f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="GetTspCompatHash1" msgId="0x10f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="GetRtcCompatHash1" msgId="0x10f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <REQ id="GetTalariaVersion2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="GetTalariaVersion2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t"  id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="2" dtypeStr="uint8_t"    id="version_string" width="8" />
+  </RSP>
+  <REQ id="GetTopCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTopCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetTspCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetTspCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <REQ id="GetRtcCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+  </REQ>
+  <RSP id="GetRtcCompatHash2">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="name_hash" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="compat_hash" width="1" />
+  </RSP>
+  <RTC coreIndex="10" coreTag="1_10" id="GetTalariaVersion2" msgId="0x20f70000" payloadMetaHash="0x30BF4187">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="20" />
+  </RTC>
+  <RTC coreIndex="10" coreTag="1_10" id="GetTopCompatHash2" msgId="0x20f70001" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="10" coreTag="1_10" id="GetTspCompatHash2" msgId="0x20f70002" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+  <RTC coreIndex="10" coreTag="1_10" id="GetRtcCompatHash2" msgId="0x20f70003" payloadMetaHash="0x5FD74328">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="20" />
+  </RTC>
+</root>

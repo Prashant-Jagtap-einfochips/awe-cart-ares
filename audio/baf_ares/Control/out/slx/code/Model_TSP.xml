@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+   <TSP fullname="Model_TAGGED/InLineRMS/TSP" id="MicInRMS">
+      <Name>MicInRMS</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/NEAR/Near1p1/TargetStateVar/TSP"
+        id="NearPhoneZones_Enable">
+      <Name>NearPhoneZones_Enable</Name>
+      <DataType>uint32</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/NEAR/Near1p1/VolumeMute/VolMuteCh1/Ann1NonEntGainCalc/boost/Target StateVar/TSP"
+        id="NearAnn1NonEntGainCalcGetNonEntBoostLeveldB">
+      <Name>NearAnn1NonEntGainCalcGetNonEntBoostLeveldB</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/NEAR/Near1p1/VolumeMute/VolMuteCh2/Ann2NonEntGainCalc/boost/Target StateVar/TSP"
+        id="NearAnn2NonEntGainCalcGetNonEntBoostLeveldB">
+      <Name>NearAnn2NonEntGainCalcGetNonEntBoostLeveldB</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/NEAR/Near1p1/VolumeMute/VolMuteCh3/Ann3NonEntGainCalc/boost/Target StateVar/TSP"
+        id="NearAnn3NonEntGainCalcGetNonEntBoostLeveldB">
+      <Name>NearAnn3NonEntGainCalcGetNonEntBoostLeveldB</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/NEAR/Near1p1/VolumeMute/VolMuteCh4/Ann4NonEntGainCalc/boost/Target StateVar/TSP"
+        id="NearAnn4NonEntGainCalcGetNonEntBoostLeveldB">
+      <Name>NearAnn4NonEntGainCalcGetNonEntBoostLeveldB</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PostProcess/PostProcess/EnergyLimiter/EnergyLimiter1/EnergyRunningAvg&#xA;/Target StateVar/TSP"
+        id="PostProcessEnergyLimiterConfigComputedEnergy">
+      <Name>PostProcessEnergyLimiterConfigComputedEnergy</Name>
+      <DataType>single</DataType>
+      <Width>21</Width>
+      <TotalCharSize>84</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PostProcess/PostProcess/EnergyLimiter/EnergyLimiter1/EnergyRunningAvg&#xA;/Target StateVar1/TSP"
+        id="PostProcessEnergyLimiterConfigCurGain">
+      <Name>PostProcessEnergyLimiterConfigCurGain</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PostProcess/PostProcess/EnergyLimiter/EnergyLimiter1/EnergyRunningAvg&#xA;/Target StateVar2/TSP"
+        id="PostProcessEnergyLimiterConfigEnergyThreshold">
+      <Name>PostProcessEnergyLimiterConfigEnergyThreshold</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>0</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PostProcess/PostProcess/EnergyLimiter/EnergyLimiter1/EnergyRunningAvg&#xA;/Target StateVar3/TSP"
+        id="PostProcessEnergyLimiterConfigCurState">
+      <Name>PostProcessEnergyLimiterConfigCurState</Name>
+      <DataType>int16</DataType>
+      <Width>1</Width>
+      <TotalCharSize>2</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PostProcess/PostProcess/EnergyLimiter/EnergyLimiter1/EnergyRunningAvg&#xA;/Target StateVar4/TSP"
+        id="PostProcessEnergyLimiterConfigEnableFlag">
+      <Name>PostProcessEnergyLimiterConfigEnableFlag</Name>
+      <DataType>int16</DataType>
+      <Width>1</Width>
+      <TotalCharSize>2</TotalCharSize>
+      <Units/>
+      <RateFactor>12</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/ConfigurationRtcInputs/APHvac/TSP"
+        id="PreAmpAudiopilotHvacDbspl">
+      <Name>PreAmpAudiopilotHvacDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/ConfigurationRtcInputs/VehicleSpeed/TSP"
+        id="PreAmpAudiopilotVehicleSpeed">
+      <Name>PreAmpAudiopilotVehicleSpeed</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/AudiopilotBassBoost/TSP"
+        id="PreAmpAudiopilotAudiopilotBassBoostDb">
+      <Name>PreAmpAudiopilotAudiopilotBassBoostDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/AudiopilotMidrangeBoost/TSP"
+        id="PreAmpAudiopilotAudiopilotMidrangeBoostDb">
+      <Name>PreAmpAudiopilotAudiopilotMidrangeBoostDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/AudiopilotTrebleBoost/TSP"
+        id="PreAmpAudiopilotAudiopilotTrebleBoostDb">
+      <Name>PreAmpAudiopilotAudiopilotTrebleBoostDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/DyneqBassBoost/TSP"
+        id="PreAmpAudiopilotDyneqBassBoostDb">
+      <Name>PreAmpAudiopilotDyneqBassBoostDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/HfNoise/TSP"
+        id="PreAmpAudiopilotHfNoiseDbspl">
+      <Name>PreAmpAudiopilotHfNoiseDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/IgnoreMic/TSP"
+        id="PreAmpAudiopilotIgnoreMicFlag">
+      <Name>PreAmpAudiopilotIgnoreMicFlag</Name>
+      <DataType>boolean</DataType>
+      <Width>1</Width>
+      <TotalCharSize>0.125</TotalCharSize>
+      <Units/>
+      <RateFactor>0</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/LfNoise/TSP"
+        id="PreAmpAudiopilotLfNoiseDbspl">
+      <Name>PreAmpAudiopilotLfNoiseDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/NoiseRatio/TSP"
+        id="PreAmpAudiopilotNoiseRatio">
+      <Name>PreAmpAudiopilotNoiseRatio</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/TotalBassBoost/TSP"
+        id="PreAmpAudiopilotTotalBassBoostDb">
+      <Name>PreAmpAudiopilotTotalBassBoostDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/Monitoring/WbNoise/TSP"
+        id="PreAmpAudiopilotWbNoiseDbspl">
+      <Name>PreAmpAudiopilotWbNoiseDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/RampedEnable/audiopilot boost gain/TSP"
+        id="PreAmpAudiopilotAudiopilotBoostGain">
+      <Name>PreAmpAudiopilotAudiopilotBoostGain</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/GainCalculation/RampedEnable/dyneq boost gain/TSP"
+        id="PreAmpAudiopilotDyneqBoostGain">
+      <Name>PreAmpAudiopilotDyneqBoostGain</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/HfNoiseMusicSeparation&#xA;/MicPsdLevel/TargetStateVar/TSP"
+        id="PreAmpAudiopilotHfNoiseMicPsdLevel">
+      <Name>PreAmpAudiopilotHfNoiseMicPsdLevel</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/HfNoiseMusicSeparation&#xA;/NoisePsdLevel/TSP"
+        id="PreAmpAudiopilotHfNoisePowerSpectralDensity">
+      <Name>PreAmpAudiopilotHfNoisePowerSpectralDensity</Name>
+      <DataType>single</DataType>
+      <Width>65</Width>
+      <TotalCharSize>260</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/PostProcessing/HfImpulseRejection/MinSearch/Flatness/TSP"
+        id="PreAmpAudiopilotHfNoiseImpulseRejectionFlatness">
+      <Name>PreAmpAudiopilotHfNoiseImpulseRejectionFlatness</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/PostProcessing/HfImpulseRejection/Pmin/TSP"
+        id="PreAmpAudiopilotHfNoiseImpulseRejectionPmin">
+      <Name>PreAmpAudiopilotHfNoiseImpulseRejectionPmin</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/PostProcessing/PostSlew/TSP"
+        id="PreAmpAudiopilotHfNoisePostSlew">
+      <Name>PreAmpAudiopilotHfNoisePostSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/HFNoiseEstimatorCoh/PostProcessing/PreSlew/TSP"
+        id="PreAmpAudiopilotHfNoisePreSlew">
+      <Name>PreAmpAudiopilotHfNoisePreSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/FilterOut/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionFilterOut">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionFilterOut</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/GammaTauS/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionFiltCoef">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionFiltCoef</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/ImpulseVariance/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionImpulseVariance">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionImpulseVariance</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/MusicVariance/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionMusicVariance">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionMusicVariance</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/NoiseVariance/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionNoiseVariance">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionNoiseVariance</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/LfNoiseImpulseRejection/TotalVariance/TSP"
+        id="PreAmpAudiopilotLfNoiseImpulseRejectionTotalVariance">
+      <Name>PreAmpAudiopilotLfNoiseImpulseRejectionTotalVariance</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/MicLevel/TSP"
+        id="PreAmpAudiopilotLfNoiseMicLevel">
+      <Name>PreAmpAudiopilotLfNoiseMicLevel</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/MicOut/TSP"
+        id="PreAmpAudiopilotLfNoiseMicOut">
+      <Name>PreAmpAudiopilotLfNoiseMicOut</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/MusicOut/TSP"
+        id="PreAmpAudiopilotLfNoiseMusicOut">
+      <Name>PreAmpAudiopilotLfNoiseMusicOut</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/NoiseOut/TSP"
+        id="PreAmpAudiopilotLfNoiseNoiseOut">
+      <Name>PreAmpAudiopilotLfNoiseNoiseOut</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>9984</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/PostSlew/TSP"
+        id="PreAmpAudiopilotLfNoisePostSlew">
+      <Name>PreAmpAudiopilotLfNoisePostSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/PreSlew/TSP"
+        id="PreAmpAudiopilotLfNoisePreSlew">
+      <Name>PreAmpAudiopilotLfNoisePreSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/PreSpeedBound/TSP"
+        id="PreAmpAudiopilotLfNoisePreSpeedBound">
+      <Name>PreAmpAudiopilotLfNoisePreSpeedBound</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/SpeedBoundsAndNoiseSlew/SpeedBounds/CurrentMaximum&#xA;/TSP"
+        id="PreAmpAudiopilotLfNoiseSpeedBoundsCurrMax">
+      <Name>PreAmpAudiopilotLfNoiseSpeedBoundsCurrMax</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/SpeedBoundsAndNoiseSlew/SpeedBounds/CurrentMinimum/TSP"
+        id="PreAmpAudiopilotLfNoiseSpeedBoundsCurrMin">
+      <Name>PreAmpAudiopilotLfNoiseSpeedBoundsCurrMin</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/LFNoiseEstimatorCoh/SpeedBoundsAndNoiseSlew/SpeedBounds/Flag/TSP"
+        id="PreAmpAudiopilotLfNoiseSpeedBoundsFlag">
+      <Name>PreAmpAudiopilotLfNoiseSpeedBoundsFlag</Name>
+      <DataType>double</DataType>
+      <Width>1</Width>
+      <TotalCharSize>8</TotalCharSize>
+      <Units/>
+      <RateFactor>3328</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/RatioCalculation/PostSlew/TSP"
+        id="PreAmpAudiopilotRatioPostSlew">
+      <Name>PreAmpAudiopilotRatioPostSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/RatioCalculation/PreSlew/TSP"
+        id="PreAmpAudiopilotRatioPreSlew">
+      <Name>PreAmpAudiopilotRatioPreSlew</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/Audiopilot_3_5/NoiseEstimationVariant/RegularNoiseEstimation/RatioCalculation/UpdateFlag/TSP"
+        id="PreAmpAudiopilotRatioUpdateFlag">
+      <Name>PreAmpAudiopilotRatioUpdateFlag</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>832</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/EntertainmentLevelDetection/AudiopilotLevelDetect/Monitor/env/TSP"
+        id="PreAmpLevelWatchAudiopilotEnvDb">
+      <Name>PreAmpLevelWatchAudiopilotEnvDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/EntertainmentLevelDetection/AudiopilotLevelDetect/Monitor/level/TSP"
+        id="PreAmpLevelWatchAudiopilotLevelDbspl">
+      <Name>PreAmpLevelWatchAudiopilotLevelDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/EntertainmentLevelDetection/DyneqLevelDetect/Monitor/env/TSP"
+        id="PreAmpLevelWatchDyneqEnvDb">
+      <Name>PreAmpLevelWatchDyneqEnvDb</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/AudioPilot35/EntertainmentLevelDetection/DyneqLevelDetect/Monitor/level/TSP"
+        id="PreAmpLevelWatchDyneqLevelDbspl">
+      <Name>PreAmpLevelWatchDyneqLevelDbspl</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart1Bands/CAE Treble Boost/Audio Passthrough/Target StateVar/TSP"
+        id="PreAmpMedusaSettingsDummyState">
+      <Name>PreAmpMedusaSettingsDummyState</Name>
+      <DataType>int32</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart2Fdp/CalcDecayRate/MedusaMonoDetector/Mono Detector/Target StateVar/TSP"
+        id="PreAmpMedusaSettingsMonoDetectorLevelCenter">
+      <Name>PreAmpMedusaSettingsMonoDetectorLevelCenter</Name>
+      <DataType>single</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart2Fdp/CalcDecayRate/MedusaMonoDetector/Target StateVar/TSP"
+        id="PreAmpMedusaSettingsMonoDetectorIsStereo">
+      <Name>PreAmpMedusaSettingsMonoDetectorIsStereo</Name>
+      <DataType>uint32</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <TSP fullname="Model_TAGGED/PreAmp/DeciRate/Medusa5H3/Medusa5H3VlsSystem/MedusaPart2Fdp/CalcDecayRate/MedusaMonoDetector/Target StateVar1/TSP"
+        id="PreAmpMedusaSettingsMonoDetectorIsActive">
+      <Name>PreAmpMedusaSettingsMonoDetectorIsActive</Name>
+      <DataType>int32</DataType>
+      <Width>1</Width>
+      <TotalCharSize>4</TotalCharSize>
+      <Units/>
+      <RateFactor>13</RateFactor>
+   </TSP>
+   <MaxCharSize>260</MaxCharSize>
+</root>

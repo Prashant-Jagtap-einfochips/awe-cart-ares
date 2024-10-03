@@ -35,19 +35,31 @@ void BAF_Callback_sys_process_ctx(uint32_t proc_Id, uint32_t frame_size, uint32_
     UINT32 blockSize = ClassWire_GetBlockSize(pWires[0]);
     UINT32 i = 0;
     UINT32 j = 0;
-
+    
+#if 0
+    FLOAT32* pDst = ptrDst + (i * blockSize);
+    for (i = 0; i < blockSize; i++)
+    {
+        *pDst = 0;
+        pDst += 1;
+    }
+#endif
+#if 1
     if (proc_Id == 0)
     {
         /* Audio input channels */
-        for (i = 0; i < numChannelsIn; i++)
+        //for (i = 0; i < numChannelsIn; i++)
+		for (i = 0; i < (frame_size/blockSize); i++)
         {
-           FLOAT32 *pSrc = (ptrSrc + i);
+           FLOAT32 *pSrc = (ptrSrc);
            FLOAT32 *pDst = ptrDstBaf + (i * blockSize);
-           for (j = 0; j < blockSize; j++)
-           {
-              *pDst = *pSrc;
-              pSrc += numChannelsIn;
-              pDst += 1;
+           if (1 == i) {
+               for (j = 0; j < blockSize; j++)
+               {
+                   *pDst = *pSrc;
+                   pSrc += 1;
+                   pDst += 1;
+               }
            }
         }
     }
@@ -55,6 +67,7 @@ void BAF_Callback_sys_process_ctx(uint32_t proc_Id, uint32_t frame_size, uint32_
     {
         /* Audio output channels */
         for (i = 0; i < numChannelsOut; i++)
+		//for (i = 0; i < (frame_size/blockSize); i++)
         {
            FLOAT32 *pSrc = ptrSrcBaf + (i * blockSize);
            FLOAT32 *pDst = (ptrDst + i);
@@ -62,10 +75,11 @@ void BAF_Callback_sys_process_ctx(uint32_t proc_Id, uint32_t frame_size, uint32_
            {
               *pDst = *pSrc;
               pSrc += 1;
-              pDst += numChannelsOut;
+              pDst += 1;
            }
         }
     }
+#endif
 }
 
 int BAF_printf(const char *format, ...)
@@ -75,7 +89,10 @@ int BAF_printf(const char *format, ...)
 
 void BAF_Callback_post(uint32_t priority, void *arg)
 {
-
+    awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)arg;
+    BAF* pBAF = (BAF*)S->pHandle;
+    uint32_t taskID = priority;
+    BAF_exec(pBAF, taskID, arg);
 }
 
 void BAF_Callback_post_mask(uint32_t exec_mask, void* arg)

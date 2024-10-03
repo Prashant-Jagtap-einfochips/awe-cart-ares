@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="PreAmpMedusaSettingsHeadrestEqHeadrestCompEqFirCoeffs" writeToken="0x0e200001" readToken="0x8e200001" dataType="single" width="10600" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsHeadrestEqHeadrestCompEqIirpooliirCoeffs" writeToken="0x0e200003" readToken="0x8e200003" dataType="single" width="1620" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsHeadrestEqHeadrestCompEqFilterLengths" writeToken="0x0e200000" readToken="0x8e200000" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsHeadrestEqHeadrestCompEqIirPooliirNumStages" writeToken="0x0e200002" readToken="0x8e200002" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsHeadrestEqHeadrestCompEqPaddedFilterLengths" writeToken="0x0e200004" readToken="0x8e200004" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqFirCoeffs" writeToken="0x08200000" readToken="0x88200000" dataType="single" width="10600" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqOutputMapping" writeToken="0x08200003" readToken="0x88200003" dataType="single" width="4" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqPoolIirpooliirCoeffs" writeToken="0x08200006" readToken="0x88200006" dataType="single" width="1620" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqFirLengths" writeToken="0x08200001" readToken="0x88200001" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqInputMapping" writeToken="0x08200002" readToken="0x88200002" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqPaddedFirLengths" writeToken="0x08200004" readToken="0x88200004" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_5" coreIndex="5"/>
+        <TOP id="PreAmpMedusaSettingsOverheadHeqPoolIirPooliirNumStages" writeToken="0x08200005" readToken="0x88200005" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_5" coreIndex="5"/>
+</root>

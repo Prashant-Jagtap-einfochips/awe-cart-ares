@@ -1,6 +1,0 @@
-function outData = Volume_volume_Transform163(inData)
-% Transform function automatically created by RenameLibraryMaskParameters
-   outData = MaskUtil.TransformFunctionRename(inData, ...
-      {'MaskVolumeName'}, ...
-      {'MaskFeatureName'});
-end

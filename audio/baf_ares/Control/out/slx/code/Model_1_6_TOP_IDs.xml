@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="PreAmpVLSXtalkCancellationDelay" writeToken="0x0a200004" readToken="0x8a200004" dataType="int32" width="16" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSXtalkCancellationIirpooliirCoeffs" writeToken="0x0a200006" readToken="0x8a200006" dataType="single" width="976" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSGenerationDrvPaddedFIRLengths" writeToken="0x0a200001" readToken="0x8a200001" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSGenerationPaxPaddedFIRLengths" writeToken="0x0a200003" readToken="0x8a200003" dataType="uint32" width="20" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSXtalkCancellationIirPooliirNumStages" writeToken="0x0a200005" readToken="0x8a200005" dataType="uint32" width="16" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSGenerationDrvFIRCoeffs" writeToken="0x0a200000" readToken="0x8a200000" dataType="single" width="5760" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpVLSGenerationPaxFIRCoeffs" writeToken="0x0a200002" readToken="0x8a200002" dataType="single" width="5760" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpMedusaSettingsDeciRateSpeakerDelay" writeToken="0x0f200000" readToken="0x8f200000" dataType="int32" width="37" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpMedusaSettingsFullRateSpeakerDelay" writeToken="0x0f200001" readToken="0x8f200001" dataType="int32" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControlBoostDisable" writeToken="0x09200000" readToken="0x89200000" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControlEnableSilentExtreme" writeToken="0x09200001" readToken="0x89200001" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControlRampTime" writeToken="0x09200002" readToken="0x89200002" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControlTableDb" writeToken="0x09200003" readToken="0x89200003" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControlTableIdx" writeToken="0x09200004" readToken="0x89200004" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeControloffset" writeToken="0x09200005" readToken="0x89200005" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeRamperDRChannelToRamperMap" writeToken="0x09200006" readToken="0x89200006" dataType="single" width="37" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeRamperDRTOPFilterCoefficients" writeToken="0x09200007" readToken="0x89200007" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeRamperFRChannelToRamperMap" writeToken="0x09200008" readToken="0x89200008" dataType="single" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpFadeRamperFRTOPFilterCoefficients" writeToken="0x09200009" readToken="0x89200009" dataType="single" width="3" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpMuteControlRampTime" writeToken="0x0920000a" readToken="0x8920000a" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDRChannelToRamperMap" writeToken="0x0920000b" readToken="0x8920000b" dataType="single" width="37" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDRMutesBass" writeToken="0x0920000c" readToken="0x8920000c" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDROffset" writeToken="0x0920000d" readToken="0x8920000d" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDRRampTime" writeToken="0x0920000e" readToken="0x8920000e" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDRTableDb" writeToken="0x0920000f" readToken="0x8920000f" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyDRTableIdx" writeToken="0x09200010" readToken="0x89200010" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFRChannelToRamperMap" writeToken="0x09200011" readToken="0x89200011" dataType="single" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFRMutesBass" writeToken="0x09200012" readToken="0x89200012" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFROffset" writeToken="0x09200013" readToken="0x89200013" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFRRampTime" writeToken="0x09200014" readToken="0x89200014" dataType="single" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFRTableDb" writeToken="0x09200015" readToken="0x89200015" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+        <TOP id="PreAmpSleepingBeautyFRTableIdx" writeToken="0x09200016" readToken="0x89200016" dataType="single" width="30" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_6" coreIndex="6"/>
+</root>

@@ -1,0 +1,56 @@
+import os
+
+Import('env')
+#Import('jframework')
+Import('target')
+Import('jmodule')
+
+#local_env = env.Clone(
+#    CPPPATH=['.', runtime+'/Audio_Graph', runtime+'/BAF', runtime, 'JModule_Lib', 'JModule_Lib/Sys', config_path] +
+#            [jmodule['Path'] for jmodule in jframework['JModule']]
+#    )
+local_env = env.Clone()
+
+source_list = []
+source_list.extend( Glob(  jmodule['CModel']['Path']+'/*.c', exclude=[jmodule['CModel']['Path']+'/'+ cfile for cfile in jmodule['CModel']['CFiles']] ) )
+source_list.extend( Glob(  jmodule['CModel']['Path']+'/*.asm', exclude=[jmodule['CModel']['Path']+'/'+ cfile for cfile in jmodule['CModel']['CFiles']]  ) )
+source_list.extend( Glob(  jmodule['CModel']['Path']+'/*.S', exclude=[jmodule['CModel']['Path']+'/'+ cfile for cfile in jmodule['CModel']['CFiles']]  ) )
+
+def my_lib_emitter(target, source, env):
+    lsttarget = ('%s' % (target[0])).replace(env['LIBSUFFIX'], env['LIBSUFFIX'].replace('.','_')+'.lst')
+    os.makedirs(os.path.dirname(lsttarget), exist_ok = True)
+    with open(lsttarget, 'w') as f:
+        for x in source:
+            f.write(x.get_abspath()+'\n')
+    return target, source
+
+if local_env['optionLib']:
+    local_env.Append(LIBEMITTER=my_lib_emitter)
+
+option = jmodule
+OptArch = local_env['PROCESSOR']
+if option and ('BuildOptions' in option) and (option['BuildOptions']):
+    if (OptArch in option['BuildOptions']) and (option['BuildOptions'][OptArch]):
+        if ('cpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['cpp_flags']):
+            custom_cppflags = option['BuildOptions'][OptArch]['cpp_flags']
+            cppflags= local_env['build_options']['Base']['cppflags']
+            for custom_cppflag in custom_cppflags:
+                if custom_cppflag in local_env['build_options']:
+                    cppflags.extend(local_env['build_options'][custom_cppflag]['cppflags'])
+                else:
+                    cppflags.extend([custom_cppflag])
+            local_env.Replace(CPPFLAGS = cppflags)
+        if ('xcpp_flags' in option['BuildOptions'][OptArch]) and (option['BuildOptions'][OptArch]['xcpp_flags']):
+            for xcpp_flag in option['BuildOptions'][OptArch]['xcpp_flags']:
+                if xcpp_flag == 'genpgo':
+                    local_env.Append(CPPFLAGS = local_env['build_options']['GenPGO']['cppflags'])
+                elif (xcpp_flag == 'usepgo') and (OptArch in ['sharc','gul','gxp']):
+                    pgo_file = local_env['variant_root'] + OptArch + '/pgo/Baf.pgo'
+                    local_env.Append(CPPFLAGS = pgo_file)
+                else:
+                    local_env.Append(CPPFLAGS = xcpp_flag)
+CModel = local_env.Library(
+    target = target,
+    source = source_list )
+
+Return("CModel")

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="PreAmpMedusaSettingsFrEqDelay" writeToken="0x07200000" readToken="0x87200000" dataType="int32" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsFullRateHoligramPoolIirTunableConfigpooliirCoeffs" writeToken="0x07200002" readToken="0x87200002" dataType="single" width="693" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqFirCoeffs" writeToken="0x07200003" readToken="0x87200003" dataType="single" width="32330" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqOutputMapping" writeToken="0x07200006" readToken="0x87200006" dataType="single" width="13" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqPoolIirpooliirCoeffs" writeToken="0x07200009" readToken="0x87200009" dataType="single" width="4941" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsFullRateHoligramPoolIirTunableConfigPooliirNumStages" writeToken="0x07200001" readToken="0x87200001" dataType="uint32" width="21" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqFirLengths" writeToken="0x07200004" readToken="0x87200004" dataType="uint32" width="61" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqInputMapping" writeToken="0x07200005" readToken="0x87200005" dataType="uint32" width="61" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqPaddedFirLengths" writeToken="0x07200007" readToken="0x87200007" dataType="uint32" width="61" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_4" coreIndex="4"/>
+        <TOP id="PreAmpMedusaSettingsPeripheralHeqPoolIirPooliirNumStages" writeToken="0x07200008" readToken="0x87200008" dataType="uint32" width="61" isComplex="0" preOverlay="false" postOverlay="true" coreTag="1_4" coreIndex="4"/>
+</root>

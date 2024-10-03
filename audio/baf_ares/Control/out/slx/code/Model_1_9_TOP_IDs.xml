@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+
+
+        <TOP id="TestRouterASDRouterEnableAux" writeToken="0x00500000" readToken="0x80500000" dataType="int32" width="1" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_9" coreIndex="9"/>
+        <TOP id="TestRouterASDRouterMainSelect" writeToken="0x00500001" readToken="0x80500001" dataType="int32" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_9" coreIndex="9"/>
+        <TOP id="TestRouterAuxSelect" writeToken="0x00500002" readToken="0x80500002" dataType="int32" width="21" isComplex="0" preOverlay="false" postOverlay="false" coreTag="1_9" coreIndex="9"/>
+</root>

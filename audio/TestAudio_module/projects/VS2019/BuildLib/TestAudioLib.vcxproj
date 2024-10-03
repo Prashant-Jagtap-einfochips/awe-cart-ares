@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\source\BAF_callbacks.c" />
     <ClCompile Include="..\..\..\Source\ModTestAudio.c" />
+    <ClCompile Include="..\..\..\source\Semaphore.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0E6DB024-F878-4160-B1B0-2D403E6C1615}</ProjectGuid>
@@ -108,7 +109,7 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../../Include;../../../Include/Targets;./;;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Include;../../../Include/Targets;./;$(ProjectRoot);..\..\..\..\baf_ares\CART\Runtime\BAF;..\..\..\..\baf_ares\CART\Runtime\CART;..\..\..\..\baf_ares\CART\Runtime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <PostBuildEvent>
@@ -154,7 +155,7 @@
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>../../../../simulink/OpenJADE/Runtime/BAF;../../../Include;../../../Include/Targets;./;$(ProjectRoot);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../Include;../../../Include/Targets;./;$(ProjectRoot);..\..\..\..\baf_ares\CART\Runtime\BAF;..\..\..\..\baf_ares\CART\Runtime\CART;..\..\..\..\baf_ares\CART\Runtime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>

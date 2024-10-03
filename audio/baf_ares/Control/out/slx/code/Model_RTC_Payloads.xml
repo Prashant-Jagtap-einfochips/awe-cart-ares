@@ -1,0 +1,1258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+  <NTF id="ArmPreAmpBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="ArmPreAmpBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="ArmPreAmpBassSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="ArmPreAmpMidrangeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="ArmPreAmpMidrangeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="ArmPreAmpMidrangeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="ArmPreAmpTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="ArmPreAmpTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="ArmPreAmpTrebleSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="1" coreTag="1_1" id="ArmPreAmpBassSet" msgId="0x10400000" payloadMetaHash="0xB435421A">
+    <Description>Provide the target value as a 32-bit signed integer index value (to be mapped through a tunable calibration into a normalized float between -1 and 1). To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="1" coreTag="1_1" id="ArmPreAmpMidrangeCfgSet" msgId="0x10400001" payloadMetaHash="0xB435421A">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="1" coreTag="1_1" id="ArmPreAmpTrebleSet" msgId="0x10400002" payloadMetaHash="0xB435421A">
+    <Description>Provide the target value as a 32-bit signed integer index value (to be mapped through a tunable calibration into a normalized float between -1 and 1). To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="ArmPreAmpVolumeRefCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="ArmPreAmpVolumeRefCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+    <Signal charOffset="20" dtypeNum="6" dtypeStr="int32_t" id="gain_offset" width="1" />
+  </REQ>
+  <RSP id="ArmPreAmpVolumeRefCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="1" coreTag="1_1" id="ArmPreAmpVolumeRefCfgSet" msgId="0x10400003" payloadMetaHash="0x3B6D65F2">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="24" RSP="16" />
+  </RTC>
+  <REQ id="NearDr_RouterSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="17" />
+  </REQ>
+  <RSP id="NearDr_RouterSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="17" />
+  </RSP>
+  <REQ id="NearDr_Channel2_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearDr_Channel2_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearDr_Channel1_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearDr_Channel1_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearDr_Channel3_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearDr_Channel3_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearDr_Channel4_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearDr_Channel4_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearFr_RouterSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="17" />
+  </REQ>
+  <RSP id="NearFr_RouterSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="17" />
+  </RSP>
+  <REQ id="NearFr_Channel2_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearFr_Channel2_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearFr_Channel1_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearFr_Channel1_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearFr_Channel3_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearFr_Channel3_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearFr_Channel4_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearFr_Channel4_Virtualization">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="2" coreTag="1_2" id="NearFr_Channel1_Virtualization" msgId="0x10110017" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearFr_Channel2_Virtualization" msgId="0x10110018" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearFr_Channel3_Virtualization" msgId="0x10110019" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearFr_Channel4_Virtualization" msgId="0x1011001a" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearFr_RouterSet" msgId="0x1011001b" payloadMetaHash="0xD9CEE300">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="76" RSP="80" />
+  </RTC>
+  <REQ id="NearChannel2_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="loc" width="2" />
+  </REQ>
+  <RSP id="NearChannel2_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearChannel1_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="loc" width="2" />
+  </REQ>
+  <RSP id="NearChannel1_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearChannel4_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="loc" width="2" />
+  </REQ>
+  <RSP id="NearChannel4_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearChannel3_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="loc" width="2" />
+  </REQ>
+  <RSP id="NearChannel3_Location">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearPhoneZones_Enable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearPhoneZones_Enable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="NearAnnNoiseLevel">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="1" dtypeStr="float" id="NoiseSig" width="1" />
+  </REQ>
+  <NTF id="NearAnn1Ann1MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="NearAnn1Ann1MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn1Ann1MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="NearAnn1NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="vncEnable" width="1" />
+  </REQ>
+  <RSP id="NearAnn1NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="enable" width="1" />
+  </RSP>
+  <NTF id="NearAnn1VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="NearAnn1VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="volume_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn1VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="NearAnn2Ann2MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="NearAnn2Ann2MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn2Ann2MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="NearAnn2NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="vncEnable" width="1" />
+  </REQ>
+  <RSP id="NearAnn2NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="enable" width="1" />
+  </RSP>
+  <NTF id="NearAnn2VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="NearAnn2VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="volume_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn2VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="NearAnn3Ann3MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="NearAnn3Ann3MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn3Ann3MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="NearAnn3NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="vncEnable" width="1" />
+  </REQ>
+  <RSP id="NearAnn3NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="enable" width="1" />
+  </RSP>
+  <NTF id="NearAnn3VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="NearAnn3VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="volume_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn3VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="NearAnn4Ann4MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="NearAnn4Ann4MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn4Ann4MuteSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="NearAnn4NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="vncEnable" width="1" />
+  </REQ>
+  <RSP id="NearAnn4NonEntGainCalcvncEnableRTC">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="enable" width="1" />
+  </RSP>
+  <NTF id="NearAnn4VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="NearAnn4VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="volume_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="NearAnn4VolumeSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <REQ id="NearEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="Enable" width="1" />
+  </REQ>
+  <RSP id="NearEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn1VolumeSet" msgId="0x10100002" payloadMetaHash="0x569B6C88">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn2VolumeSet" msgId="0x10100005" payloadMetaHash="0x569B6C88">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn3VolumeSet" msgId="0x10100008" payloadMetaHash="0x569B6C88">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn4VolumeSet" msgId="0x1010000b" payloadMetaHash="0x569B6C88">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearPhoneZones_Enable" msgId="0x1011001c" payloadMetaHash="0x41D4C2C5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn1NonEntGainCalcvncEnableRTC" msgId="0x10110001" payloadMetaHash="0x8D6E73D5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn1Ann1MuteSet" msgId="0x10100000" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn2NonEntGainCalcvncEnableRTC" msgId="0x10110004" payloadMetaHash="0x8D6E73D5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn2Ann2MuteSet" msgId="0x10100003" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn3NonEntGainCalcvncEnableRTC" msgId="0x10110007" payloadMetaHash="0x8D6E73D5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn3Ann3MuteSet" msgId="0x10100006" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn4NonEntGainCalcvncEnableRTC" msgId="0x1011000a" payloadMetaHash="0x8D6E73D5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnn4Ann4MuteSet" msgId="0x10100009" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearAnnNoiseLevel" msgId="0x1012000c" payloadMetaHash="0xB0272F3F">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearChannel1_Location" msgId="0x1011000d" payloadMetaHash="0xA6514C61">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="16" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearChannel2_Location" msgId="0x1011000e" payloadMetaHash="0xA6514C61">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="16" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearChannel3_Location" msgId="0x1011000f" payloadMetaHash="0xA6514C61">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="16" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearChannel4_Location" msgId="0x10110010" payloadMetaHash="0xA6514C61">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="16" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearDr_Channel1_Virtualization" msgId="0x10110011" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearDr_Channel2_Virtualization" msgId="0x10110012" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearDr_Channel3_Virtualization" msgId="0x10110013" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearDr_Channel4_Virtualization" msgId="0x10110014" payloadMetaHash="0x2204F7FF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearDr_RouterSet" msgId="0x10110015" payloadMetaHash="0xD9CEE300">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="76" RSP="80" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="NearEnable" msgId="0x10110016" payloadMetaHash="0x41D4C2C5">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <REQ id="PreAmpAudiopilotsetHVACSetting">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="1" dtypeStr="float" id="HVACSetting" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotmuteReference">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="muteReference" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotmuteReference">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="muteReference" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotsetSpeedIn">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="1" dtypeStr="float" id="speedIn" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotgetBassBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotgetBassBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="1" dtypeStr="float" id="bassBoost" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotgetMidBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotgetMidBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="1" dtypeStr="float" id="midBoost" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotgetTrebleBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotgetTrebleBoost">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="1" dtypeStr="float" id="trebleBoost" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotsetDynEQBoostOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="DynEQBoostOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="DynEQBoostOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetVNCBassBoostOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="VNCBassBoostOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="VNCBassBoostOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetVNCMidBoostOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="VNCMidBoostOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="VNCMidBoostOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetVNCTrebleBoostOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="VNCTrebleBoostOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="VNCTrebleBoostOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetLoudSignalOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="LoudSignalOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="LoudSignalOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetVNCSignalOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="VNCSignalOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="VNCSignalOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotgetAverageAudioPilotBoostLevel">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotgetAverageAudioPilotBoostLevel">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="1" dtypeStr="float" id="level" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotsetHFNoiseOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="HFNoiseOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="HFNoiseOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetLFNoiseOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="LFNoiseOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="LFNoiseOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetRatioOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="RatioOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="RatioOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetWBNoiseOverRide">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="WBNoiseOverRideFlag" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="WBNoiseOverRide" width="1" />
+  </REQ>
+  <REQ id="PreAmpAudiopilotsetDyneqOn">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="dyneq_on" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotsetDyneqOn">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="dyneq_on" width="1" />
+  </RSP>
+  <REQ id="PreAmpAudiopilotsetAudioPilotOn">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="audiopilot_on" width="1" />
+  </REQ>
+  <RSP id="PreAmpAudiopilotsetAudioPilotOn">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="audiopilot_on" width="1" />
+  </RSP>
+  <NTF id="PreAmpVolumeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpVolumeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+    <Signal charOffset="20" dtypeNum="6" dtypeStr="int32_t" id="gain_offset" width="1" />
+  </REQ>
+  <RSP id="PreAmpVolumeCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotmuteReference" msgId="0x14210004" payloadMetaHash="0x247693AC">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetSpeedIn" msgId="0x1422000d" payloadMetaHash="0xA43BA642">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetHVACSetting" msgId="0x14220009" payloadMetaHash="0x6EE8A0D9">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetDynEQBoostOverRide" msgId="0x14220006" payloadMetaHash="0x299F303C">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetVNCTrebleBoostOverRide" msgId="0x14220011" payloadMetaHash="0xCBB6EED1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetLoudSignalOverRide" msgId="0x1422000b" payloadMetaHash="0x79599FBF">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetVNCSignalOverRide" msgId="0x14220010" payloadMetaHash="0xD688E8DC">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetLFNoiseOverRide" msgId="0x1422000a" payloadMetaHash="0x8E903DE4">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetWBNoiseOverRide" msgId="0x14220012" payloadMetaHash="0x9ECB53E9">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetHFNoiseOverRide" msgId="0x14220008" payloadMetaHash="0x86AD18E3">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetRatioOverRide" msgId="0x1422000c" payloadMetaHash="0x49205226">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetDyneqOn" msgId="0x14210007" payloadMetaHash="0x53D37064">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetAudioPilotOn" msgId="0x14210005" payloadMetaHash="0xA612D44C">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetVNCBassBoostOverRide" msgId="0x1422000e" payloadMetaHash="0x83723975">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotgetBassBoost" msgId="0x14210001" payloadMetaHash="0x2D89CD76">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotsetVNCMidBoostOverRide" msgId="0x1422000f" payloadMetaHash="0xD332BCCC">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="0" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotgetMidBoost" msgId="0x14210002" payloadMetaHash="0x9875CD1C">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotgetTrebleBoost" msgId="0x14210003" payloadMetaHash="0x42018522">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpAudiopilotgetAverageAudioPilotBoostLevel" msgId="0x14210000" payloadMetaHash="0xF7974203">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="16" />
+  </RTC>
+  <RTC coreIndex="2" coreTag="1_2" id="PreAmpVolumeCfgSet" msgId="0x14200013" payloadMetaHash="0x3B6D65F2">
+    <Description>Sets new target volume.Provide the target volume as 8 bit index value to be mapped through a tunable VolumeTable. To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="24" RSP="16" />
+  </RTC>
+  <NTF id="PreAmpBalance_CfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpBalance_CfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpBalance_CfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="3" coreTag="1_3" id="PreAmpBalance_CfgSet" msgId="0x1b200000" payloadMetaHash="0xB435421A">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <NTF id="PreAmpMedusaSettingsFadeControl">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </NTF>
+  <REQ id="PreAmpMedusaSettingsFadeControl">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="fade_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsFadeControl">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="fade_index" width="1" />
+  </RSP>
+  <NTF id="PreAmpMedusaSettingsSurroundLevelControlIndex">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="surround_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpMedusaSettingsSurroundLevelControlIndex">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="surround_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsSurroundLevelControlIndex">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="surround_index" width="1" />
+  </RSP>
+  <RTC coreIndex="3" coreTag="1_3" id="PreAmpMedusaSettingsFadeControl" msgId="0x16200000" payloadMetaHash="0xBF84709F">
+    <Description>Contains the value indicated by the surround knob.</Description>
+    <PayloadSizes NTF="12" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="3" coreTag="1_3" id="PreAmpMedusaSettingsSurroundLevelControlIndex" msgId="0x16200002" payloadMetaHash="0x86D84C4B">
+    <Description>Contains the value indicated by the surround knob.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <REQ id="PreAmpMedusaSettingsPostUpmixDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsPostUpmixDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="3" coreTag="1_3" id="PreAmpMedusaSettingsPostUpmixDisable" msgId="0x16210001" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <REQ id="PreAmpMedusaSettingsHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="4" coreTag="1_4" id="PreAmpMedusaSettingsHoligramDisable" msgId="0x17210000" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <REQ id="PreAmpMedusaSettingsOverheadHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsOverheadHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="5" coreTag="1_5" id="PreAmpMedusaSettingsOverheadHoligramDisable" msgId="0x18210000" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <REQ id="PreAmpMedusaSettingsHeadrestEqHeadrestHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaSettingsHeadrestEqHeadrestHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="5" coreTag="1_5" id="PreAmpMedusaSettingsHeadrestEqHeadrestHoligramDisable" msgId="0x1e210000" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <NTF id="PreAmpFadeControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpFadeControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpFadeControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="PreAmpMuteControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="PreAmpMuteControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpMuteControlSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="PreAmpResetSleepingBeauty">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpResetSleepingBeauty">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <NTF id="PreAmpSleepingBeautyDRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpSleepingBeautyDRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpSleepingBeautyDRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <NTF id="PreAmpSleepingBeautyFRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </NTF>
+  <REQ id="PreAmpSleepingBeautyFRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PreAmpSleepingBeautyFRSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="gain_index" width="1" />
+  </RSP>
+  <RTC coreIndex="6" coreTag="1_6" id="PreAmpMuteControlSet" msgId="0x19200001" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="PreAmpFadeControlSet" msgId="0x19200000" payloadMetaHash="0xB435421A">
+    <Description>Provide the target value as a 32-bit signed integer index value (to be mapped through a tunable calibration into a normalized float between -1 and 1). To use slope-based ramping:----------------------------------When db_per_second has a non-zero value,ramp_milliseconds is ignored and db_per_second controls the ramp. To use time-based ramping:----------------------------------The value of db_per_second must be zero for ramp milliseconds to then control the ramping.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="PreAmpSleepingBeautyDRSet" msgId="0x19200003" payloadMetaHash="0xB435421A">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="PreAmpSleepingBeautyFRSet" msgId="0x19200004" payloadMetaHash="0xB435421A">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="6" coreTag="1_6" id="PreAmpResetSleepingBeauty" msgId="0x19210002" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <NTF id="PostProcessEnergyLimiterConfigEnableLimiter">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ELNotification" width="1" />
+  </NTF>
+  <REQ id="PostProcessEnergyLimiterConfigEnableLimiter">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="EnableGainLimiter" width="1" />
+  </REQ>
+  <RSP id="PostProcessEnergyLimiterConfigEnableLimiter">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <NTF id="PostProcessMuteCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </NTF>
+  <REQ id="PostProcessMuteCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ramp_db_per_second" width="1" />
+    <Signal charOffset="16" dtypeNum="7" dtypeStr="uint32_t" id="ramp_milliseconds" width="1" />
+  </REQ>
+  <RSP id="PostProcessMuteCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="mute_switch" width="1" />
+  </RSP>
+  <REQ id="PostProcessPostLimiterEqShutdown">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PostProcessPostLimiterEqShutdown">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="PostProcessLimiterSoftclipParamSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="paramSet" width="1" />
+  </REQ>
+  <RSP id="PostProcessLimiterSoftclipParamSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="paramSet" width="1" />
+  </RSP>
+  <REQ id="PostProcessLimiterSoftclipDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="disableMsg" width="1" />
+  </REQ>
+  <RSP id="PostProcessLimiterSoftclipDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="disableMsg" width="1" />
+  </RSP>
+  <RTC coreIndex="7" coreTag="1_7" id="PostProcessLimiterSoftclipParamSet" msgId="0x10310002" payloadMetaHash="0xFF02D3AC">
+    <Description>Choose parameter set for limiter and soft clipper.1: normal set2: used in start-stop situation</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="PostProcessLimiterSoftclipDisable" msgId="0x10310001" payloadMetaHash="0x6AD144C2">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="PostProcessEnergyLimiterConfigEnableLimiter" msgId="0x10300000" payloadMetaHash="0x87256586">
+    <Description>[]</Description>
+    <PayloadSizes NTF="16" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="PostProcessMuteCfgSet" msgId="0x10300003" payloadMetaHash="0xF0568ABA">
+    <Description>Command a mute by specifying whether mute is active (non zero mute_switch) or inactive (mute_switch is "0"). If db_per_second is non-zero, it commands the timing of the mute, otherwise the ramp_milliseconds is used.</Description>
+    <PayloadSizes NTF="16" REQ="20" RSP="16" />
+  </RTC>
+  <RTC coreIndex="7" coreTag="1_7" id="PostProcessPostLimiterEqShutdown" msgId="0x10310004" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <REQ id="PreAmpMedusaPostHoligramPostHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+  </REQ>
+  <RSP id="PreAmpMedusaPostHoligramPostHoligramDisable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="7" coreTag="1_7" id="PreAmpMedusaPostHoligramPostHoligramDisable" msgId="0x11210000" payloadMetaHash="0x97135BB1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="8" RSP="12" />
+  </RTC>
+  <REQ id="InputSelectRouterCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="14" />
+  </REQ>
+  <RSP id="InputSelectRouterCfgSet">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="6" dtypeStr="int32_t" id="routerMap" width="14" />
+  </RSP>
+  <RTC coreIndex="8" coreTag="1_8" id="InputSelectRouterCfgSet" msgId="0x10010000" payloadMetaHash="0x5CBCA93C">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="64" RSP="68" />
+  </RTC>
+  <REQ id="TestRouterASDRouterAuxEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="EnableAuxFlag" width="1" />
+  </REQ>
+  <RSP id="TestRouterASDRouterAuxEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="TestRouterASDRouterAuxGain">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="AuxGain" width="21" />
+  </REQ>
+  <RSP id="TestRouterASDRouterAuxGain">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="TestRouterASDRouterAuxSelect">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="AuxSelect" width="21" />
+  </REQ>
+  <RSP id="TestRouterASDRouterAuxSelect">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="TestRouterASDRouterMainGain">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="1" dtypeStr="float" id="mainGain" width="21" />
+  </REQ>
+  <RSP id="TestRouterASDRouterMainGain">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <REQ id="TestRouterASDRouterMainSelect">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="mainSelect" width="21" />
+  </REQ>
+  <RSP id="TestRouterASDRouterMainSelect">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+  </RSP>
+  <RTC coreIndex="9" coreTag="1_9" id="TestRouterASDRouterMainSelect" msgId="0x10510004" payloadMetaHash="0x6BA78DF7">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="92" RSP="12" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="TestRouterASDRouterMainGain" msgId="0x10510003" payloadMetaHash="0xECCF1840">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="92" RSP="12" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="TestRouterASDRouterAuxEnable" msgId="0x10510000" payloadMetaHash="0x41CB1A64">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="12" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="TestRouterASDRouterAuxSelect" msgId="0x10510002" payloadMetaHash="0x1E134FD7">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="92" RSP="12" />
+  </RTC>
+  <RTC coreIndex="9" coreTag="1_9" id="TestRouterASDRouterAuxGain" msgId="0x10510001" payloadMetaHash="0x36ED1FAD">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="92" RSP="12" />
+  </RTC>
+  <REQ id="MicInRMSOutputRMS">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="outputRMS" width="1" />
+  </REQ>
+  <RSP id="MicInRMSOutputRMS">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="ResponsePayload" width="1" />
+  </RSP>
+  <RTC coreIndex="10" coreTag="1_10" id="MicInRMSOutputRMS" msgId="0x10610001" payloadMetaHash="0xF4046C18">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <REQ id="MicInRMSEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="7" dtypeStr="uint32_t" id="enable" width="1" />
+  </REQ>
+  <RSP id="MicInRMSEnable">
+    <Signal charOffset="0" dtypeNum="7" dtypeStr="uint32_t" id="msgId" width="1" />
+    <Signal charOffset="4" dtypeNum="7" dtypeStr="uint32_t" id="caller_handle" width="1" />
+    <Signal charOffset="8" dtypeNum="6" dtypeStr="int32_t" id="status_code" width="1" />
+    <Signal charOffset="12" dtypeNum="7" dtypeStr="uint32_t" id="EnableResponsePayload" width="1" />
+  </RSP>
+  <RTC coreIndex="10" coreTag="1_10" id="MicInRMSEnable" msgId="0x10610000" payloadMetaHash="0x3E800AD1">
+    <Description>[]</Description>
+    <PayloadSizes NTF="0" REQ="12" RSP="16" />
+  </RTC>
+  <COMPAT compat_hash="0x4744F6C0" id="ArmPreAmp" name_hash="0x599E876A" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x4744F6C0" id="ArmPreAmp" name_hash="0x599E876A" />
+  <COMPAT compat_hash="0x2280F459" id="MicIn" name_hash="0xE14F1E06" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x2280F459" id="MicIn" name_hash="0xE14F1E06" />
+  <COMPAT compat_hash="0x9D439432" id="InputSelect" name_hash="0xF8044409" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x9D439432" id="InputSelect" name_hash="0xF8044409" />
+  <COMPAT compat_hash="0xA7C82B1E" id="Near" name_hash="0xD67EB32F" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0xA7C82B1E" id="Near" name_hash="0xD67EB32F" />
+  <COMPAT compat_hash="0x645C1111" id="PostProcess" name_hash="0x062DAD3B" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x645C1111" id="PostProcess" name_hash="0x062DAD3B" />
+  <COMPAT compat_hash="0x1C48CD3A" id="PreAmp" name_hash="0xC3A89EEB" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x1C48CD3A" id="PreAmp" name_hash="0xC3A89EEB" />
+  <COMPAT compat_hash="0x7A4E323B" id="TestRouter" name_hash="0x8CC5BE54" type="OverlayGroup" />
+  <OverlayGroup compat_hash="0x7A4E323B" id="TestRouter" name_hash="0x8CC5BE54" />
+</root>

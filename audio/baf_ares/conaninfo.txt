@@ -1,0 +1,6 @@
+[settings]
+arch=x86_64
+os=Windows
+[requires]
+cart/1.Y.Z@bosecorp
+cfg/1.Y.Z@bosecorp

@@ -1,13 +1,13 @@
 <designer>
     <module type='Third Party' width='7' width.min='' width.max='' height='6' height.min='' height.max=''>
-        <browsername>Test Audio</browsername>
-        <legend>Test Audio</legend>
+        <browsername>Test Audio (Interpreted)</browsername>
+        <legend>Test Audio (Interpreted)</legend>
         <image>../images/TestAudio.bmp</image>
         <svgimage></svgimage>
         <targetclasses>ModuleTestAudio</targetclasses>
         <datatype>float,fract32,int</datatype>
         <searchtags>TestAudio pass thru through copy</searchtags>
-        <mfile>TestAudio_module</mfile>
+        <mfile>TestAudio_module interpreted</mfile>
         <helpfile>../Doc/TestAudio.html</helpfile>
         <examples></examples>
         <property propsheet = 'Build Settings' name='allocationPriority' type='int' value='0'/>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+
+    
+          <Struct id="Model_1_2_N00S1_7_D1_9_F12">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="PostProcess_Out1" width="672"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N01S1_1_D1_8_F12">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="ARM_Out1" width="384"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N02S1_10_D1_8_F12">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="InLineRMS_Mic" width="32"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N03S1_8_D1_2_F12">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="InputSelect_ANN" width="32"/>
+    <Field charOffset="128" dtypeNum="1" dtypeStr="float" id="InputSelect_ENT" width="384"/>
+    <Field charOffset="1664" dtypeNum="1" dtypeStr="float" id="InputSelect_Mic" width="32"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N04S1_2_D1_7_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="NEAR_NearFr" width="672"/>
+    <Field charOffset="2688" dtypeNum="1" dtypeStr="float" id="NEAR_NearNonHrOutDr" width="136"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N05S1_2_D1_6_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="NEAR_NearHrOutDr" width="224"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N06S1_2_D1_3_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="AudioPilot35_MusicOut" width="320"/>
+    <Field charOffset="1280" dtypeNum="7" dtypeStr="uint32_t" id="NEAR_NearEnable" width="1"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N07S1_3_D1_2_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart1Bands_Mono" width="32"/>
+    <Field charOffset="128" dtypeNum="1" dtypeStr="float" id="MedusaPart2Fdp_HfRef" width="128"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N08S1_3_D1_6_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_HeadrestGains" width="24"/>
+    <Field charOffset="96" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_HfRefSurround" width="224"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N09S1_3_D1_5_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_HeadrestComps" width="80"/>
+    <Field charOffset="320" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_OverheadComps" width="160"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N10S1_3_D1_4_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_FullRateMixerComps" width="672"/>
+    <Field charOffset="2688" dtypeNum="1" dtypeStr="float" id="MedusaPart3Mixing_PeripheralComps" width="168"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N11S1_5_D1_6_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart5OverheadEq_OverheadChannels" width="32"/>
+    <Field charOffset="128" dtypeNum="1" dtypeStr="float" id="MedusaPart6HeadrestEq_HeadrestChannels" width="160"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N12S1_4_D1_6_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="MedusaPart4PeripheralEqs_FullRateChannels" width="672"/>
+    <Field charOffset="2688" dtypeNum="1" dtypeStr="float" id="MedusaPart4PeripheralEqs_PeripheralChannels" width="104"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N13S1_6_D1_7_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="PreAmpPart2_DRNonHeadrestSpkr" width="136"/>
+    <Field charOffset="544" dtypeNum="1" dtypeStr="float" id="PreAmpPart2_FRSpkr" width="672"/>
+    <Field charOffset="3232" dtypeNum="1" dtypeStr="float" id="VLS_VLSOut" width="32"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N14S1_6_D1_3_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="PreAmpPart2_FadeGains" width="2"/>
+    
+          </Struct>
+          <Struct id="Model_1_2_N15S1_6_D1_2_F13">
+
+
+    <Field charOffset="0" dtypeNum="1" dtypeStr="float" id="HFRefSelector_Out1" width="160"/>
+  </Struct>
+</root>

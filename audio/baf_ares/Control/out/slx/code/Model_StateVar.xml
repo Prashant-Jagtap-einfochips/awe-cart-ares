@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root version="1.0">
+   <OverlayGroup id="Near">
+      <ToolGroup Name="Default" id="Near_Default">
+         <StateVar id="NearPhoneZones_Enable">
+            <Name>PhoneZones_Enable</Name>
+            <SubPath/>
+         </StateVar>
+         <StateVar id="NearAnn1NonEntGainCalcGetNonEntBoostLeveldB">
+            <Name>GetNonEntBoostLeveldB</Name>
+            <SubPath>Ann1NonEntGainCalc</SubPath>
+         </StateVar>
+         <StateVar id="NearAnn2NonEntGainCalcGetNonEntBoostLeveldB">
+            <Name>GetNonEntBoostLeveldB</Name>
+            <SubPath>Ann2NonEntGainCalc</SubPath>
+         </StateVar>
+         <StateVar id="NearAnn3NonEntGainCalcGetNonEntBoostLeveldB">
+            <Name>GetNonEntBoostLeveldB</Name>
+            <SubPath>Ann3NonEntGainCalc</SubPath>
+         </StateVar>
+         <StateVar id="NearAnn4NonEntGainCalcGetNonEntBoostLeveldB">
+            <Name>GetNonEntBoostLeveldB</Name>
+            <SubPath>Ann4NonEntGainCalc</SubPath>
+         </StateVar>
+      </ToolGroup>
+   </OverlayGroup>
+   <OverlayGroup id="PostProcess">
+      <ToolGroup Name="Default" id="PostProcess_Default">
+         <StateVar id="PostProcessEnergyLimiterConfigComputedEnergy">
+            <Name>ComputedEnergy</Name>
+            <SubPath>EnergyLimiterConfig</SubPath>
+         </StateVar>
+         <StateVar id="PostProcessEnergyLimiterConfigCurGain">
+            <Name>CurGain</Name>
+            <SubPath>EnergyLimiterConfig</SubPath>
+         </StateVar>
+         <StateVar id="PostProcessEnergyLimiterConfigEnergyThreshold">
+            <Name>EnergyThreshold</Name>
+            <SubPath>EnergyLimiterConfig</SubPath>
+         </StateVar>
+         <StateVar id="PostProcessEnergyLimiterConfigCurState">
+            <Name>CurState</Name>
+            <SubPath>EnergyLimiterConfig</SubPath>
+         </StateVar>
+         <StateVar id="PostProcessEnergyLimiterConfigEnableFlag">
+            <Name>EnableFlag</Name>
+            <SubPath>EnergyLimiterConfig</SubPath>
+         </StateVar>
+      </ToolGroup>
+   </OverlayGroup>
+   <OverlayGroup id="PreAmp">
+      <ToolGroup Name="Default" id="PreAmp_Default">
+         <StateVar id="PreAmpAudiopilotHvacDbspl">
+            <Name>HvacDbspl</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotVehicleSpeed">
+            <Name>VehicleSpeed</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotAudiopilotBassBoostDb">
+            <Name>AudiopilotBassBoostDb</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotAudiopilotMidrangeBoostDb">
+            <Name>AudiopilotMidrangeBoostDb</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotAudiopilotTrebleBoostDb">
+            <Name>AudiopilotTrebleBoostDb</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotDyneqBassBoostDb">
+            <Name>DyneqBassBoostDb</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoiseDbspl">
+            <Name>HfNoiseDbspl</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotIgnoreMicFlag">
+            <Name>IgnoreMicFlag</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseDbspl">
+            <Name>LfNoiseDbspl</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotNoiseRatio">
+            <Name>NoiseRatio</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotTotalBassBoostDb">
+            <Name>TotalBassBoostDb</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotWbNoiseDbspl">
+            <Name>WbNoiseDbspl</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotAudiopilotBoostGain">
+            <Name>AudiopilotBoostGain</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotDyneqBoostGain">
+            <Name>DyneqBoostGain</Name>
+            <SubPath>Audiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoiseMicPsdLevel">
+            <Name>MicPsdLevel</Name>
+            <SubPath>AudiopilotHfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoiseNoisePsdLevel">
+            <Name>NoisePsdLevel</Name>
+            <SubPath>AudiopilotHfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoiseImpulseRejectionFlatness">
+            <Name>Flatness</Name>
+            <SubPath>AudiopilotHfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoiseImpulseRejectionPmin">
+            <Name>Pmin</Name>
+            <SubPath>AudiopilotHfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoisePostSlew">
+            <Name>PostSlew</Name>
+            <SubPath>AudiopilotHfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotHfNoisePreSlew">
+            <Name>PreSlew</Name>
+            <SubPath>AudiopilotHfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionFilterOut">
+            <Name>FilterOut</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionGammaTauS">
+            <Name>GammaTauS</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionImpulseVarianceDb">
+            <Name>ImpulseVarianceDb</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionMusicVarianceDb">
+            <Name>MusicVarianceDb</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionNoiseVarianceDb">
+            <Name>NoiseVarianceDb</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseImpulseRejectionTotalVarianceDb">
+            <Name>TotalVarianceDb</Name>
+            <SubPath>AudiopilotLfNoiseImpulseRejection</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseMicLevel">
+            <Name>MicLevel</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseMicOut">
+            <Name>MicOut</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseMusicOut">
+            <Name>MusicOut</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseNoiseOut">
+            <Name>NoiseOut</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoisePostSlew">
+            <Name>PostSlew</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoisePreSlew">
+            <Name>PreSlew</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoisePreSpeedBound">
+            <Name>PreSpeedBound</Name>
+            <SubPath>AudiopilotLfNoise</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseSpeedBoundsCurrMax">
+            <Name>CurrMax</Name>
+            <SubPath>AudiopilotLfNoiseSpeedBounds</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseSpeedBoundsCurrMin">
+            <Name>CurrMin</Name>
+            <SubPath>AudiopilotLfNoiseSpeedBounds</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotLfNoiseSpeedBoundsFlag">
+            <Name>Flag</Name>
+            <SubPath>AudiopilotLfNoiseSpeedBounds</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotRatioPostSlew">
+            <Name>PostSlew</Name>
+            <SubPath>AudiopilotRatio</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotRatioPreSlew">
+            <Name>PreSlew</Name>
+            <SubPath>AudiopilotRatio</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpAudiopilotRatioUpdateFlag">
+            <Name>UpdateFlag</Name>
+            <SubPath>AudiopilotRatio</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpLevelWatchAudiopilotEnvDb">
+            <Name>EnvDb</Name>
+            <SubPath>LevelWatchAudiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpLevelWatchAudiopilotLevelDbspl">
+            <Name>LevelDbspl</Name>
+            <SubPath>LevelWatchAudiopilot</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpLevelWatchDyneqEnvDb">
+            <Name>EnvDb</Name>
+            <SubPath>LevelWatchDyneq</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpLevelWatchDyneqLevelDbspl">
+            <Name>LevelDbspl</Name>
+            <SubPath>LevelWatchDyneq</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpMedusaSettingsDummyState">
+            <Name>DummyState</Name>
+            <SubPath>MedusaSettings</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpMedusaSettingsMonoDetectorLevelCenter">
+            <Name>LevelCenter</Name>
+            <SubPath>MedusaSettingsMonoDetector</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpMedusaSettingsMonoDetectorIsStereo">
+            <Name>IsStereo</Name>
+            <SubPath>MedusaSettingsMonoDetector</SubPath>
+         </StateVar>
+         <StateVar id="PreAmpMedusaSettingsMonoDetectorIsActive">
+            <Name>IsActive</Name>
+            <SubPath>MedusaSettingsMonoDetector</SubPath>
+         </StateVar>
+      </ToolGroup>
+   </OverlayGroup>
+</root>
