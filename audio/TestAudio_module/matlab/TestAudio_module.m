@@ -17,6 +17,7 @@ end
 
 M.name=NAME;
 M.defaultName='TestAudio';
+M.isInterpreted = 1;
 
 % Add input and output pins with no data or size restrictions
 PT=new_pin_type([], [], [], '*32', []);

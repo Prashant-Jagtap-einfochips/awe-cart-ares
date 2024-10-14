@@ -124,7 +124,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>TestAudioLib.lib;FrameDLL.lib</AdditionalDependencies>
+      <AdditionalDependencies>TestAudioLib.lib;FrameDLL.lib;Baf.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>../../../lib/VC2019/debug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>

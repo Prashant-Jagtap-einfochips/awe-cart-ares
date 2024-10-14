@@ -1,13 +1,13 @@
 <designer>
     <module type='Third Party' width='7' width.min='' width.max='' height='6' height.min='' height.max=''>
-        <browsername>Control</browsername>
-        <legend>Control</legend>
+        <browsername>Control (Interpreted)</browsername>
+        <legend>Control (Interpreted)</legend>
         <image>../images/Control.bmp</image>
         <svgimage></svgimage>
         <targetclasses>ModuleControl</targetclasses>
         <datatype></datatype>
         <searchtags>Control pass thru through copy</searchtags>
-        <mfile>Control_module</mfile>
+        <mfile>Control_module interpreted</mfile>
         <helpfile>../Doc/Control.html</helpfile>
         <examples></examples>
         <property propsheet = 'Build Settings' name='allocationPriority' type='int' value='0'/>

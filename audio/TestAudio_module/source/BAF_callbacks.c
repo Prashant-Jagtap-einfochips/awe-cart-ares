@@ -75,7 +75,10 @@ int BAF_printf(const char *format, ...)
 
 void BAF_Callback_post(uint32_t priority, void *arg)
 {
-
+    awe_modTestAudioInstance* S = (awe_modTestAudioInstance*)arg;
+    BAF* pBAF = (BAF*)S->pHandle;
+    uint32_t taskID = priority;
+    BAF_exec(pBAF, taskID, arg);
 }
 
 void BAF_Callback_post_mask(uint32_t exec_mask, void* arg)

@@ -25,6 +25,7 @@ end
 
 M.name=NAME;
 M.defaultName='Control';
+M.isInterpreted = 1;
 
 M.preBuildFunc = @control_prebuild;
 M.postBuildFunc = @control_postbuild;
@@ -81,66 +82,4 @@ add_control(M, '.coeff');
 M.moduleBrowser.path = 'Third Party';
 M.moduleBrowser.image = '../images/Control.bmp';
 M.moduleBrowser.searchTags = 'pass thru through copy';
-return;
-
-
-% ----------------------------------------------------------------------
-% Prebuild
-% This function will check if the module to control exists in the system
-% ----------------------------------------------------------------------
-
-function M = control_prebuild(M, ~, TSYS)
-
-% make_standardmodulepack will call this with no arguments
-if nargin < 3
-    return;
-end
-
-% Validate modVar by throwing an error if any issues found
-% This can probably be optimized to find the module and not a module variable
-modVar = [M.constructorArgument{1}.value '.coeff'];
-[targetMod, varName] = verify_mod_var(TSYS, M, modVar);
-
-return;
-
-% ----------------------------------------------------------------------
-% Postbuild
-% Since the target module array size could change during its prebuild
-% the check for array index exceeding the target variable array size is
-% done in this postBuild
-% ----------------------------------------------------------------------
-
-function M = control_postbuild(M, ~, TSYS)
-
-% Sanity check
-if nargin < 3
-    return;
-end
-
-M = new_set_pointer_variables(TSYS, M);
-
-ptrExpr = [M.constructorArgument{1}.value '.coeff'];
-hierName = find_hierarchy_name(M, ptrExpr);
-
-% Check for if varName is an array element
-ind = find(hierName == '[');
-if (isempty(ind))
-    return;
-end
-
-arrayIndex = str2num(hierName(ind+1:end-1));
-varName = hierName(1:ind-1);
-
-try
-    O = get_object(TSYS, varName);
-catch err
-    error('AWE:modVarErrorModNotFound', 'Unable to find variable %s in the system - %s', varName, err.message);
-end
-
-arraySize = prod(O.size);
-
-if (arrayIndex >= arraySize)
-    error('AWE:modVarInvalidArrayIndex', '%s index %d exceeds size of array %d', ptrExpr, arrayIndex, arraySize);
-end
-
 return;

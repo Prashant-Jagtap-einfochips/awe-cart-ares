@@ -197,6 +197,7 @@ void awe_modTestAudioProcess(void *pInstance)
     #if 1
         BAF *pBAF = (BAF *)S->pHandle;
         BAF_exec(pBAF, BASE_TASKID, (void *)pInstance);
+        //BAF_schedule(pBAF, (void*)pInstance);
     #else
     	WireInstance **pWires = ClassModule_GetWires(S);
         UINT32 numInPins = ClassModule_GetNInWires(S);
